@@ -2,6 +2,8 @@
 
 > Plan d'implémentation de [SPECIFICATION.md](./SPECIFICATION.md), découpé en phases séquentielles avec critères de sortie explicites.
 > Principe général : **valider le comportement utilisateur avant l'architecture.**
+>
+> **Version 2** — révision alignée sur SPECIFICATION.md v2 : renvois de sections mis à jour, hypothèse d'effectif explicitée (§2), livrables de cadrage complétés (§3), périmètre du POC élargi aux prérequis de la sélection massive (§4), menace sur la validité des tests utilisateurs (§5), migration des références entre versions de dataset (§6), et **révision du critère de sortie des imports** (§7), dont la formulation initiale reposait sur une capacité que les sources n'offrent pas.
 
 ## 1. Contexte et principes directeurs
 
@@ -10,9 +12,9 @@ Le cahier des charges positionne clairement le cœur du produit comme la **mémo
 Quatre principes guident le découpage :
 
 1. **Le POC prouve un comportement, pas une architecture.** Il ne s'agit pas de démontrer que le système tient 10 millions de jeux, mais qu'un utilisateur reconstruit rapidement son histoire et trouve le résultat intéressant.
-2. **Pas d'optimisation prématurée.** Formats binaires (MemoryPack…), cache distribué, CDN : tout cela n'a de sens qu'après validation produit. Le cahier des charges cite MemoryPack (§15.1), mais ce choix n'est pas verrouillé.
+2. **Pas d'optimisation prématurée.** Formats binaires (MemoryPack…), cache distribué, CDN : tout cela n'a de sens qu'après validation produit. Le cahier des charges cite MemoryPack (§17.1), mais ce choix n'est pas verrouillé.
 3. **Portes de sortie entre phases.** Une phase ne démarre que lorsque le critère de sortie de la précédente est atteint ; sinon on itère sur le produit, pas sur l'architecture.
-4. **La réduction de friction est la priorité produit.** L'effort de reconstruction doit rester minimal (§19) : les imports (Phase 4) sont plus importants que le social (Phase 5).
+4. **La réduction de friction est la priorité produit.** L'effort de reconstruction doit rester minimal (§24) : les imports (Phase 4) sont plus importants que le social (Phase 5).
 
 ## 2. Vue synthétique
 
@@ -29,6 +31,10 @@ Quatre principes guident le découpage :
 
 **Horizon Phase 0 → 6 : environ 26 à 45 semaines (6 à 11 mois)** en séquentiel, selon les résultats des validations. La Phase 7 est continue et démarre dès que la charge le justifie.
 
+> ⚠️ **Ces durées n'ont pas de sens sans hypothèse de charge.** Aucun effectif n'est indiqué : la même liste de livrables représente environ 6 mois pour deux à trois développeurs à temps plein, et facilement deux à trois fois plus pour une personne seule à temps partiel. **L'estimation ci-dessus suppose l'équivalent d'un à deux développeurs à temps plein**, hypothèse à confirmer ou corriger (question ouverte n°2 de [SPECIFICATION.md](./SPECIFICATION.md) §25) — sans quoi les durées ne sont pas exploitables pour planifier quoi que ce soit.
+>
+> Elles n'incluent pas non plus la **constitution du référentiel** au-delà du dataset POC, qui est un poste de charge distinct et durable ([SPECIFICATION.md](./SPECIFICATION.md) §18.6).
+
 ## 3. Phase 0 — Cadrage technique et produit
 
 **Durée : 1 à 2 semaines.**
@@ -37,12 +43,19 @@ Quatre principes guident le découpage :
 ### Livrables
 
 - **Modèle de domaine initial** ;
-- **Distinction Work / GameVersion / Release / Edition** (affinement du modèle Game / Release / Edition de §4.2) ;
-- **Modèle PlayerEvent / Experience / OwnedItem** (§3.3 architecture événementielle, §4.2 UserGameExperience / UserOwnedItem) ;
-- **TemporalValue et gestion de l'incertitude temporelle** (§5.3 : ExactDate, Month, Year, Range, ApproximateYear, Age, Unknown) ;
-- **Format des identifiants canoniques** (préparation du risque de canonicalisation, §18.1) ;
-- **Stratégie minimale de sourcing des données** (§16.5 : connaissances internes d'abord) ;
-- **Définition des KPI du POC** (sous-ensemble opérationnel de §17.1).
+- **Distinction Work / GameVersion / Release / Edition** (affinement du modèle Game / Release / Edition de §6.2) ;
+- **Modèle PlayerEvent / Experience / OwnedItem** (§5 architecture événementielle, §6.2 UserGameExperience / UserOwnedItem) ;
+- **TemporalValue et gestion de l'incertitude temporelle** (§7.3 : ExactDate, Month, Year, Range, ApproximateYear, Age, Unknown) ;
+- **Format des identifiants canoniques** (préparation du risque de canonicalisation, §23.1) ;
+- **Stratégie minimale de sourcing des données** (§18.5 : connaissances internes d'abord) ;
+- **Définition des KPI du POC** (sous-ensemble opérationnel de §22.1), **avec valeurs cibles chiffrées engagées avant les tests** et décision associée en cas d'échec (§22.2) ;
+- **Ordonnancement des `TemporalValue`** (§7.5) : normalisation en intervalle, point représentatif, algèbre de comparaison, traitement de `Unknown`. C'est le point le plus sous-spécifié du modèle et il conditionne toute la timeline ;
+- **Décision « modèle événementiel » vs « infrastructure d'event sourcing »** (§5.5) : position par défaut = table en ajout seul dans PostgreSQL + projections calculées, sans event store dédié ;
+- **Stratégie de correction et de rétraction des événements** (§5.3) : les souvenirs sont faillibles, la correction est une fonctionnalité de premier plan ;
+- **Stratégie d'effacement** (§19.4) : purge physique par utilisateur ou crypto-shredding. À trancher ici, car le choix engage le stockage et coûte une migration s'il est différé ;
+- **Benchmark concurrentiel** (§2) : vérifier ce que couvrent réellement les produits existants et confirmer que le différenciateur temporel tient ;
+- **Vérification juridique des sources envisagées** (§19.1) : licences, CGU, droit sui generis des bases de données — avant tout import, pas après ;
+- **Estimation du coût de curation du référentiel** au-delà du POC (§18.6).
 
 ### Périmètre volontairement restreint
 
@@ -50,7 +63,9 @@ On ne cherche pas encore à avoir une base exhaustive. Pour le POC, un dataset d
 
 ### Critère de sortie
 
-> On sait modéliser proprement un parcours utilisateur complexe sans bricolage — par exemple l'historique temporel de §5.1 (Game Boy 1991 → retrogaming 2018) ou la chaîne d'éditions de §4.1 (FFVII : PS PAL Platinum → version numérique PS3 → remake PS5).
+> On sait modéliser proprement un parcours utilisateur complexe sans bricolage — par exemple l'historique temporel de §7.1 (Game Boy 1991 → retrogaming 2018) ou la chaîne d'éditions de §6.1 (FFVII : PS PAL Platinum → version numérique PS3 → remake PS5).
+
+Ces deux parcours, plus les cas limites de §6.3 (remake, compilation, rétrocompatibilité), sont écrits sous forme de **jeux d'événements de référence** et conservés comme tests permanents (§17.4). Le modèle est validé quand ils se rejouent en produisant l'état attendu — pas quand le diagramme paraît élégant.
 
 ## 4. Phase 1 — POC fonctionnel
 
@@ -60,13 +75,13 @@ Le POC doit répondre à **une seule question** :
 
 > Est-ce qu'un utilisateur peut reconstruire rapidement une partie significative de son histoire vidéoludique et trouver le résultat intéressant ?
 
-C'est cohérent avec le point UX central du cahier des charges (§19) : réduire au maximum l'effort de reconstruction.
+C'est cohérent avec le point UX central du cahier des charges (§24) : réduire au maximum l'effort de reconstruction.
 
 ### Périmètre (limité volontairement)
 
 - Recherche d'un jeu ou d'une console ;
-- **Sélection en masse de jeux par plateforme** (mécanisme clé §19.3 : console → période approximative → cocher joué / terminé / possédé) ;
-- Statuts simples : **joué / terminé / possédé** ;
+- **Sélection en masse de jeux par plateforme** (mécanisme clé §24.3 : console → période approximative → cocher joué / terminé / possédé) ;
+- Statuts simples : **joué / terminé / possédé**, et **« jamais joué » comme déclaration explicite** (§24.3) ;
 - Dates ou périodes approximatives (TemporalValue) ;
 - Événements utilisateur (PlayerEvent) ;
 - Timeline ;
@@ -74,12 +89,27 @@ C'est cohérent avec le point UX central du cahier des charges (§19) : réduire
 - Page de profil simple ;
 - Données de référence locales.
 
+### Ajouts au périmètre (issus de la révision v2)
+
+Quatre éléments sont remontés en Phase 1 parce que la fonctionnalité centrale — la sélection massive — ou le critère de sortie de la Phase 2 en dépendent directement :
+
+| Ajout | Pourquoi il ne peut pas attendre |
+|---|---|
+| **Score de notoriété** sur les sorties (§3.3) | « L'application montre les principaux jeux de la plateforme » n'a pas de sens sans un ordre. Sur 100 à 300 jeux, un classement manuel suffit |
+| **Région de sortie** PAL / NTSC-U / NTSC-J (§3.4) | Un joueur PAL à qui l'on propose la ludothèque NTSC-J ne se reconnaît pas. La région conditionne aussi les dates affichées |
+| **Jeu absent du référentiel** (§3.5) | Avec 100 à 300 jeux, le cas est permanent. Sans issue, le testeur est bloqué au premier titre manquant et le test ne mesure plus l'UX |
+| **Souvenir minimal** : note libre sur un événement (§9) | C'est ce qui produit « oui, ça me ressemble » — exactement le critère de sortie de la Phase 2. Coût très faible, effet direct sur la porte suivante |
+
+Le **responsive** est une contrainte de conception dès cette phase, pas une amélioration ultérieure (§21.2) : cocher rapidement une longue liste est un geste tactile, et un profil partagé se consulte majoritairement sur mobile.
+
+La **restitution doit être immédiate** pendant la saisie (§24.4) : la timeline se remplit à mesure que l'on coche. Un POC qui ne montre le résultat qu'à la fin ne teste pas la bonne chose.
+
 ### Architecture du POC
 
 | Brique | Choix | Justification |
 |---|---|---|
 | Backend | **.NET 10 LTS + EF Core 10** (verrouillé) | la spec dit « .NET 6+ » mais c'est obsolète ; .NET 8 arrive en EOL en nov. 2026, .NET 10 est supporté jusqu'en nov. 2028 |
-| Données utilisateur | **PostgreSQL 17+** | transactionnel, personnel, continuellement modifié (§12) |
+| Données utilisateur | **PostgreSQL 17+** | transactionnel, personnel, continuellement modifié (§15) |
 | Dataset de référence | SQLite ou fichier précompilé simple (JSON) | pas d'optimisation prématurée ; le format binaire arrive en Phase 7 |
 | Frontend | **React + TypeScript (Vite)** (verrouillé) | timeline et sélection en masse = UI interactives, SPA justifiée ; TanStack Query pour l'état serveur |
 | Dev local | Docker Compose (Postgres seul) | le POC tourne en local ou sur une instance unique |
@@ -87,7 +117,7 @@ C'est cohérent avec le point UX central du cahier des charges (§19) : réduire
 | Moteur de recommandation | ❌ pas encore | Phase 6 |
 | Social complet | ❌ pas encore | Phase 5 |
 
-**Note sur MemoryPack** : le cahier des charges le cite actuellement (§15.1), mais il n'est pas verrouillé. Le benchmark se fera en Phase 7, avec une charge réelle.
+**Note sur MemoryPack** : le cahier des charges le cite actuellement (§17.1), mais il n'est pas verrouillé. Le benchmark se fera en Phase 7, avec une charge réelle.
 
 ### Critère de sortie
 
@@ -105,7 +135,7 @@ Avant d'étendre techniquement, tester le produit auprès de **10 à 30 joueurs*
 - Joueur occasionnel ;
 - Joueur ayant 20+ ans d'historique.
 
-### Métriques prioritaires (définies dans §17.1)
+### Métriques prioritaires (définies dans §22.1)
 
 - % utilisateurs ayant renseigné ≥ 25 jeux ;
 - % utilisateurs ayant renseigné ≥ 3 consoles ;
@@ -118,9 +148,21 @@ Avant d'étendre techniquement, tester le produit auprès de **10 à 30 joueurs*
 
 Si la réponse est **non**, il ne sert à rien de construire le social : on itère d'abord sur la saisie et la restitution du parcours.
 
+### Menace sur la validité du test
+
+Le dataset POC ne couvre que NES, SNES, Game Boy/GBA, N64, PS1, PS2 et Switch. Un testeur venu du PC, de l'Amiga, de l'arcade ou du mobile ne trouvera pas ses jeux — et le test mesurera alors **la couverture du référentiel**, pas la qualité de l'expérience de saisie.
+
+Deux précautions :
+- **recruter des testeurs dont le parcours est majoritairement couvert** par le dataset, et le dire explicitement dans le protocole ;
+- **instrumenter les recherches infructueuses et les déclarations non résolues** (§3.5) : c'est la mesure directe du taux de couverture, et elle doit être rapportée séparément de la mesure d'UX pour ne pas contaminer la porte.
+
+Si les deux signaux sont mélangés, un échec de couverture sera lu comme un échec produit, ou l'inverse.
+
 ### Critère de sortie (porte dure)
 
 > La majorité des testeurs répond oui à la question qualitative, et les métriques montrent que la reconstruction est jugée rapide par rapport à l'effort perçu. Sinon → retour Phase 1 (simplification), pas Phase 3.
+
+> ⚠️ **« La majorité » doit être remplacé par un seuil chiffré, fixé en Phase 0 et avant le premier test** (§22.2). Un critère qualitatif défini après coup sera toujours interprété favorablement. Pour un produit dont la thèse tient en « ce profil me ressemble », 51 % est un signal faible : le seuil devrait être nettement plus exigeant et assumé comme tel, avec la décision associée (itérer / pivoter / arrêter) écrite à l'avance.
 
 ## 6. Phase 3 — MVP exploitable
 
@@ -157,7 +199,21 @@ Une fois le concept validé, on industrialise.
 | `Locale` | langue / région de l'alias ou du contenu |
 | `Confidence` | niveau de confiance de la donnée ou du lien |
 
-Le risque de canonicalisation est déjà correctement identifié dans la spécification (§18.1 : « Pokémon Red = Pokémon Rouge = ポケットモンスター 赤 »). Il est traité **légèrement** ici : alias manuels + confidence, pas encore de déduplication automatique (Phase 7).
+Le risque de canonicalisation est déjà correctement identifié dans la spécification (§23.1 : « Pokémon Red = Pokémon Rouge = ポケットモンスター 赤 »). Il est traité **légèrement** ici : alias manuels + confidence, pas encore de déduplication automatique (Phase 7).
+
+### Migration des références utilisateur entre versions du dataset
+
+Introduire `DatasetVersion` sans traiter la migration est un piège : dès la première fusion ou scission de fiches, les événements utilisateur pointent vers des entités qui n'existent plus. Il faut donc, dans cette phase et non plus tard (§15.3) :
+
+- des **identifiants canoniques stables**, jamais réattribués ;
+- un **journal des fusions et scissions** permettant de rediriger les références existantes ;
+- une **règle explicite pour les scissions**, où la redirection est ambiguë (rattachement au plus probable avec `Confidence`, ou arbitrage par l'utilisateur).
+
+Sans ce mécanisme, la première canonicalisation sérieuse casse silencieusement des profils déjà constitués — c'est-à-dire précisément le capital que le produit demande à l'utilisateur de construire.
+
+### Conformité
+
+L'authentification amène les comptes, donc les obligations : base légale, information, conservation, portabilité et effacement (§19.3). La stratégie d'effacement décidée en Phase 0 (§19.4) est implémentée ici. La visibilité doit être **granulaire par bloc** (timeline, collection, statistiques, journal), et non un simple interrupteur privé/public (§12).
 
 ### Critère de sortie
 
@@ -194,9 +250,39 @@ Le modèle conserve systématiquement la provenance :
 | `ImportedAt` | date de l'import |
 | `Confidence` | fiabilité du mapping source → canonique |
 
-### Critère de sortie
+### ⚠️ Limite structurelle : les imports donnent le « quoi », rarement le « quand »
 
-> Un joueur Steam ou rétro reconstruit 10+ ans d'historique en quelques minutes via import, avec un taux de mapping acceptable. Ce KPI alimente directement « % profils ayant importé une source externe » (§17.1).
+C'est la principale faiblesse du plan initial, parce qu'elle porte sur le **critère de sortie de la phase la plus importante après le POC**.
+
+L'objectif énoncé ci-dessus — « reconstruire 10 ou 20 ans de gaming sans saisie manuelle » — suppose que les sources exposent une **histoire datée**. Or elles exposent surtout un **inventaire présent** :
+
+| Source | Ce qu'elle donne | Signal temporel réellement disponible |
+|---|---|---|
+| Steam | jeux possédés, temps de jeu cumulé, dernière session | **pas de date d'acquisition** exposée par l'API publique ; le temps cumulé est un total sans historique |
+| RetroAchievements | jeux joués, succès datés | horodatages réels, mais **de la session sur RA** (années 2010+), pas de la partie d'origine en 1995 |
+| Playnite / LaunchBox | bibliothèque locale, métadonnées | dates d'ajout à l'outil, pas dates de vie |
+| CSV | ce que l'utilisateur y a mis | tout ou rien |
+
+Deux conséquences :
+
+1. **Pour la période pré-2010 — le cœur du différenciateur du produit (§2.4) — aucun import ne donne de dates.** L'import ne remplace donc pas la saisie sur la partie qui compte le plus.
+2. **Même sur Steam, l'import produit une collection, pas une timeline.** Le rattacher à une année exige une inférence ou une intervention de l'utilisateur.
+
+### Correctifs proposés
+
+- **Exploiter les horodatages de succès comme proxy de date de jeu.** Le premier succès débloqué sur un titre est une bonne approximation de « quand j'y ai joué », disponible sur Steam et sur RetroAchievements. À enregistrer avec une `Confidence` réduite et une `TemporalValue` de granularité mois ou année — jamais comme une date exacte.
+- **Prévoir une « passe temporelle assistée » après l'import** : l'utilisateur voit les titres importés sans date et les répartit en masse sur des bandes de périodes, dans le même geste que la sélection massive de la Phase 1. C'est cette passe, et non l'import brut, qui produit réellement l'historique.
+- **Vérifier la disponibilité effective de chaque API au moment de l'implémentation** : les capacités et les conditions d'utilisation évoluent, et le tableau ci-dessus doit être reconfirmé avant de s'engager sur un critère de sortie.
+
+### Critère de sortie (révisé)
+
+Le critère initial confondait deux résultats de nature différente. Il est scindé :
+
+> **a) Couverture** — un joueur Steam importe sa bibliothèque en quelques minutes, avec un taux de mapping vers le référentiel canonique jugé acceptable (seuil chiffré fixé à l'avance).
+>
+> **b) Historicisation** — après import, la part des titres portant une date ou une période exploitable atteint le seuil fixé, grâce aux proxys de datation et à la passe temporelle assistée.
+
+Seul (b) alimente réellement la promesse « reconstruire 10 ou 20 ans » ; (a) seul produit une liste, pas une histoire. Le KPI « % profils ayant importé une source externe » (§22.1) mesure l'adoption, pas la valeur : il doit être suivi conjointement au nombre moyen d'événements **datés** par profil.
 
 ## 8. Phase 5 — Social léger
 
@@ -211,10 +297,10 @@ Le modèle conserve systématiquement la provenance :
 - Comparaison de deux profils ;
 - Jeux en commun ;
 - Consoles en commun ;
-- Compatibilité simple (§9.3) ;
+- Compatibilité simple (§13.3) ;
 - Suivi d'autres joueurs.
 
-**Pas de forum à ce stade.** Le social prévu dans le cahier des charges (§9, §16.1) est introduit progressivement, au lieu de devenir une seconde application à construire.
+**Pas de forum à ce stade.** Le social prévu dans le cahier des charges (§13, §21.1) est introduit progressivement, au lieu de devenir une seconde application à construire.
 
 ### Critère de sortie
 
@@ -226,12 +312,12 @@ Le modèle conserve systématiquement la provenance :
 
 Une fois que **suffisamment de données utilisateur** existent (volume + qualité des parcours) :
 
-- Recommandations contextuelles (§10 : « Tu as beaucoup joué aux JRPG entre 1997 et 2005 mais tu n'as jamais joué à Chrono Trigger ») ;
+- Recommandations contextuelles (§14 : « Tu as beaucoup joué aux JRPG entre 1997 et 2005 mais tu n'as jamais joué à Chrono Trigger ») ;
 - Détection de franchises incomplètes ;
 - Redécouverte nostalgique ;
 - Anniversaires gaming ;
-- « Il y a 20 ans… » (réactivation des événements historiques — valeur directe de l'architecture événementielle, §3.3) ;
-- Évolution des goûts (§6.2) ;
+- « Il y a 20 ans… » (réactivation des événements historiques — valeur directe de l'architecture événementielle, §5) ;
+- Évolution des goûts (§8.2) ;
 - Suggestions de backlog ;
 - Comparaison de périodes.
 
@@ -248,7 +334,7 @@ La recommandation basée sur le parcours prévue dans la spécification ne devie
 À ce stade **seulement**, on pousse les optimisations techniques :
 
 - Dataset binaire ;
-- MemoryPack / FlatBuffers / format custom (décision par benchmark, §15.1) ;
+- MemoryPack / FlatBuffers / format custom (décision par benchmark, §17.1) ;
 - MemoryMappedFile ;
 - Index pré-calculés ;
 - Cache distribué ;
@@ -258,7 +344,7 @@ La recommandation basée sur le parcours prévue dans la spécification ne devie
 - Déduplication automatique ;
 - Pipeline CI/CD de données.
 
-Le besoin de performance sur plusieurs millions d'entités existe bien (§18.1). Mais ce travail doit arriver **après** la validation produit, et être déclenché par des mesures réelles de charge — pas par anticipation.
+Le besoin de performance sur plusieurs millions d'entités existe bien (§23.1). Mais ce travail doit arriver **après** la validation produit, et être déclenché par des mesures réelles de charge — pas par anticipation.
 
 ## 11. Le jalon de validation du projet
 
@@ -279,15 +365,30 @@ C'est le vrai jalon : il est mesuré dès la Phase 2 (tests utilisateurs), conso
 | 6 | Cold start — données insuffisantes | Activation conditionnée au volume réel de parcours enrichis |
 | 7 | Optimisation prématurée | Déclenchement par mesure de charge, jamais par anticipation |
 
+### Risques transverses (ajoutés en v2)
+
+Ils ne sont portés par aucune phase en particulier, ce qui est précisément la raison pour laquelle ils sont oubliés.
+
+| Risque | Où il se matérialise | Décision |
+|---|---|---|
+| **Effectif non défini** | toutes les durées de ce document | Fixer l'hypothèse de charge (§2) avant d'utiliser le planning |
+| **Coût de curation du référentiel** | dès la sortie du POC | Estimer en Phase 0 ; restreindre le périmètre plutôt que promettre l'exhaustivité |
+| **Licences et droit sui generis des sources** | Phases 0, 3 et 4 | Vérifier avant import ; licence obligatoire par source ([SPECIFICATION.md](./SPECIFICATION.md) §19.1) |
+| **RGPD contre journal en ajout seul** | conception du stockage, Phase 0 | Purge par utilisateur ou crypto-shredding — décidé avant d'écrire le schéma (§19.4) |
+| **Concurrence établie** | positionnement, continu | Tenir le différenciateur temporel ; ne pas dériver vers un journal de jeux de plus (§2) |
+| **Modèle économique absent** | pérennité | Question ouverte n°3 (§25) |
+
 ## 13. Correspondance avec SPECIFICATION.md
+
+> Numérotation de SPECIFICATION.md **v2** (la v1 comportait des sections dupliquées et des numéros manquants ; tous les renvois de ce document ont été mis à jour).
 
 | Phase | Sections du cahier des charges couvertes |
 |---|---|
-| 0 | §3.3 (événements), §4.2 (modèle), §5 (temps), §16 (sourcing minimal), §17 (KPI) |
-| 1 | §3 (états), §4 (éditions), §5 (TemporalValue), §7 (profil simple), §19 (saisie massive) |
-| 2 | §17 (KPI de valeur) |
-| 3 | §3, §7 (valorisation), §12 (séparation des données), §16.3–16.4 (fusion / traçabilité), §18.1 (canonicalisation) |
-| 4 | §16 (sources et provenance) |
-| 5 | §9 (dimension sociale) |
-| 6 | §6.2 (représentation synthétique), §10 (recommandation) |
-| 7 | §12.1 (données binaires), §15.1 (formats), §18.1 (performance) |
+| 0 | §2 (positionnement), §5 (événements), §6.2 (modèle), §7 (temps), §17.4 (tests), §18.5 (sourcing minimal), §19 (cadre juridique), §22 (KPI et cibles) |
+| 1 | §3.3–3.5 (notoriété, région, jeu manquant), §4 (états), §6 (éditions), §7 (TemporalValue), §9 (souvenir minimal), §11 (profil simple), §24 (saisie massive) |
+| 2 | §22 (KPI de valeur et cibles chiffrées) |
+| 3 | §4, §10 (backlog / wishlist), §11 (valorisation), §12 (visibilité), §15 (séparation et versionnement), §18.3–18.4 (fusion / traçabilité), §19.3 (RGPD), §23.1 (canonicalisation) |
+| 4 | §18 (sources et provenance) |
+| 5 | §12 (visibilité), §13 (dimension sociale), §19.5 (contenu public) |
+| 6 | §8.2 (représentation synthétique), §10.3 (backlog), §14 (recommandation) |
+| 7 | §15 (données binaires), §17.1 (formats), §23.1 (performance) |

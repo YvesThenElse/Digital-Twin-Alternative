@@ -1,5 +1,8 @@
 # Spécification du Projet : Plateforme Vidéoludique
 
+> **Version 2** — révision structurelle. Les sections dupliquées de la v1 (§2 et §4 apparaissaient deux fois, deux §16 distincts) ont été fusionnées, la numérotation a été rendue continue (§8, §11 et §14 manquaient), et les points laissés ouverts ont été explicités. Les passages **ajoutés** en v2 sont signalés par 🆕.
+> Plan d'implémentation associé : [PHASING.md](./PHASING.md).
+
 ## 1. Vision et Concept
 
 ### 1.1 Concept de Base
@@ -15,12 +18,14 @@ La plateforme est conçue comme une "biographie interactive du joueur" qui repr�
 Le projet se concentre sur la construction de la **mémoire vidéoludique personnelle d'un joueur**.
 
 Toutes les autres fonctionnalités secondaires doivent être conçues pour enrichir cette mémoire centrale :
-- Collection manager
-- Journal personnel
-- Backlog manager
-- Système de statistiques
-- Forum (si nécessaire)
-- API développeurs (si nécessaire)
+- Collection manager (§4)
+- Journal personnel (§9)
+- Backlog manager (§10)
+- Système de statistiques (§11)
+- Forum (si nécessaire — §21)
+- API développeurs (si nécessaire — §21)
+
+> 🆕 En v1, le journal personnel et le backlog étaient annoncés ici puis jamais spécifiés. Ils font désormais l'objet des sections §9 et §10.
 
 ### 1.4 Phasage Stratégique
 Le développement sera effectué en phases :
@@ -29,9 +34,40 @@ Le développement sera effectué en phases :
 3. **Phase 3** : Recommandations et challenges
 4. **Phase 4** : Forum, compétitions, notes et API
 
-## 2. Référentiel Vidéoludique
+Le découpage opérationnel réel, avec critères de sortie, est détaillé dans [PHASING.md](./PHASING.md) (phases 0 à 7).
 
-### 2.1 Structure du Référentiel
+## 2. 🆕 Positionnement et Concurrence
+
+### 2.1 Pourquoi cette section
+La v1 ne contenait aucune analyse concurrentielle. C'est le principal angle mort : le concept « journal de jeux + profil » est un marché déjà occupé, et la valeur du projet dépend entièrement de ce qui le distingue.
+
+### 2.2 Catégories d'acteurs existants
+| Catégorie | Exemples connus | Ce qu'ils couvrent |
+|---|---|---|
+| Journal de jeux / profil social | Backloggd, Grouvee, Backloggery | Ce que je joue et ce que j'en pense, aujourd'hui |
+| Suivi de complétion | HowLongToBeat, Completionator | Durée et progression |
+| Collection physique | VGCollect, Collectorz Game Collector, GameEye | Ce que je possède, avec éditions et parfois cote |
+| Bibliothèque locale / lanceur | Playnite, LaunchBox | Ce qui est installé et lançable |
+| Rétrospective automatique | Steam Replay, rétrospectives constructeurs | Une année, générée sans effort |
+| Analogie hors domaine | Letterboxd (cinéma) | Le journal transformé en identité culturelle |
+
+> ⚠️ Cette liste doit être vérifiée et actualisée : les périmètres fonctionnels de ces produits évoluent vite et ne sont pas garantis exacts ici. Un benchmark réel est un livrable de la Phase 0.
+
+### 2.3 Différenciateur revendiqué
+Aucun de ces produits ne traite correctement, à notre connaissance, la combinaison suivante — qui constitue le pari du projet :
+
+1. **Reconstruction rétroactive sur plusieurs décennies**, y compris la période pré-numérique où aucune donnée n'existe ;
+2. **Incertitude temporelle assumée** (§7) plutôt que des dates inventées ou absentes ;
+3. **Granularité d'édition** : le même titre possédé plusieurs fois, sur plusieurs supports, à plusieurs époques (§6) ;
+4. **Séparation possession / expérience** (§4.2) ;
+5. **Restitution narrative** : la timeline, pas la liste.
+
+### 2.4 Tension centrale à assumer
+Le différenciateur du produit et sa principale difficulté sont **la même chose** : la période la plus intéressante à reconstruire (avant ~2010) est précisément celle pour laquelle aucun import automatique n'existe. Tout le travail de réduction de friction (§24) porte donc sur de la saisie assistée, pas sur de l'import. Voir aussi la limite documentée des imports en Phase 4 de [PHASING.md](./PHASING.md).
+
+## 3. Référentiel Vidéoludique
+
+### 3.1 Structure du Référentiel
 Le référentiel global est essentiellement statique et contient :
 - Constructeurs (manufacturers)
 - Consoles et plateformes
@@ -47,35 +83,35 @@ Le référentiel global est essentiellement statique et contient :
 - Accessoires et périphériques
 - Relations entre ces différents objets
 
-### 2.2 Navigation Relationnelle
+### 3.2 Navigation Relationnelle
 Le référentiel doit permettre une navigation relationnelle fluide :
 Console → jeux → studio → autres jeux → autres plateformes → différentes éditions, etc.
 
-## 2. Référentiel Vidéoludique
+### 3.3 🆕 Notoriété (attribut requis, non optionnel)
+La sélection massive (§24.3) repose sur une phrase de la v1 restée non spécifiée : « l'application lui montre **les principaux** jeux de cette plateforme ». « Principaux » selon quel critère ?
 
-### 2.1 Structure du Référentiel
-Le référentiel global est essentiellement statique et contient :
-- Constructeurs (manufacturers)
-- Consoles et plateformes
-- Générations de consoles
-- Jeux
-- Studios et éditeurs
-- Dates de sortie
-- Genres
-- Caractéristiques techniques
-- Différentes versions d'un jeu
-- Éditions physiques et numériques
-- Remasters, remakes, ports et rééditions
-- Accessoires et périphériques
-- Relations entre ces différents objets
+Le référentiel doit donc porter un score de **notoriété** par sortie (`Notability`), servant à ordonner les listes de sélection massive. Sources possibles, à trancher en Phase 0 : ventes connues, présence dans les listes de référence, volume de couverture, curation manuelle. Sur un dataset POC de 100 à 300 jeux, un classement manuel est acceptable et probablement supérieur.
 
-### 2.2 Navigation Relationnelle
-Le référentiel doit permettre une navigation relationnelle fluide :
-Console → jeux → studio → autres jeux → autres plateformes → différentes éditions, etc.
+Sans cet attribut, la fonctionnalité produit la plus importante du projet ne peut pas fonctionner.
 
-## 3. Profil Vidéoludique Utilisateur
+### 3.4 🆕 Région et localisation des sorties
+La sélection massive n'a de sens que si elle présente **la bibliothèque qu'a réellement vue l'utilisateur** : un joueur PAL et un joueur NTSC-J n'ont pas connu le même catalogue SNES, ni les mêmes titres, ni les mêmes dates.
 
-### 3.1 États des Jeux
+La région (PAL / NTSC-U / NTSC-J, et le pays lorsqu'il est pertinent) est donc requise **dès la Phase 1** au niveau de la `Release`, et non repoussée avec le reste de la canonicalisation. Elle conditionne aussi les dates de sortie affichées, qui diffèrent parfois de plusieurs années entre régions.
+
+### 3.5 🆕 Jeu absent du référentiel
+Avec un dataset POC volontairement réduit (100 à 300 jeux), l'utilisateur rencontrera constamment des titres absents. La v1 ne prévoyait rien.
+
+Le système doit accepter une **déclaration non résolue** (`UnresolvedGameClaim`) : l'utilisateur saisit un titre libre, éventuellement une plateforme et une période, et l'événement est enregistré normalement. Ces déclarations sont :
+- visibles dans son profil comme les autres ;
+- marquées comme non canoniques (pas de fiche, pas de statistiques agrégées) ;
+- rattachables ultérieurement à une entité canonique, sans perte de l'historique ni des dates.
+
+Elles constituent en outre le meilleur signal de priorisation pour l'extension du référentiel : ce que les utilisateurs cherchent et ne trouvent pas.
+
+## 4. Profil Vidéoludique Utilisateur
+
+### 4.1 États des Jeux
 Chaque utilisateur peut déclarer différents états pour chaque jeu :
 - Possédé actuellement
 - Possédé autrefois
@@ -89,13 +125,30 @@ Chaque utilisateur peut déclarer différents états pour chaque jeu :
 - Souhaité / wishlist
 - Éventuellement prêté ou échangé
 
-### 3.2 Séparation Importante
+> 🆕 **« Terminé à 100 % » doit être défini.** Selon les jeux et les époques, cela peut signifier : tous les succès, toutes les collectibles, toutes les fins, ou le sentiment subjectif de l'avoir épuisé. Le choix retenu est **la déclaration subjective de l'utilisateur**, sans vérification ; l'interface doit le formuler ainsi (« je l'ai fait à fond ») pour éviter une fausse promesse de rigueur. Une complétion vérifiée par succès importés reste possible plus tard, et devra alors être distinguée visuellement de la complétion déclarée.
+
+### 4.2 Séparation Importante
 La possession et l'expérience doivent être séparées :
 - Un utilisateur peut avoir joué à un jeu sans l'avoir possédé
 - Un utilisateur peut avoir possédé un jeu sans l'avoir réellement joué
 
-### 3.3 Architecture Événementielle
-Au lieu de stocker principalement des états, le système sera construit autour d'événements :
+### 4.3 🆕 Matériel possédé
+La v1 modélise la possession uniquement autour des jeux (§6.2), alors que le profil public promet « 18 consoles possédées » (§11.1) et que la timeline de référence commence par une console (« 1991 — Première console : Game Boy », §7.1).
+
+Le matériel est donc un objet possédable de plein droit :
+- consoles et plateformes ;
+- accessoires et périphériques ;
+- éventuellement variantes matérielles (modèle, révision, coloris, édition limitée).
+
+`UserOwnedItem` couvre indifféremment un exemplaire de jeu ou un exemplaire de matériel, et les mêmes événements d'acquisition et de cession s'y appliquent.
+
+### 4.4 🆕 Prêt et échange
+Les états « prêté » et « emprunté » de §4.1 sont modélisés comme des événements de possession temporaire (`LentItem`, `BorrowedItem`, avec retour éventuel). Le tiers concerné est du texte libre par défaut ; le rattachement à un autre compte de la plateforme relève de la phase sociale et n'est pas requis avant.
+
+## 5. Architecture Événementielle
+
+### 5.1 Principe
+Au lieu de stocker principalement des états, le système est construit autour d'événements.
 
 #### Exemples d'Événements
 - 1994  DiscoveredGame
@@ -119,37 +172,70 @@ Au lieu de stocker principalement des états, le système sera construit autour 
   - Comparaison entre deux périodes
   - Génération automatique de storytelling
 
-## 4. Gestion des Éditions
+### 5.2 🆕 Deux axes temporels distincts
+C'est la différence structurante avec un event sourcing classique, et elle n'était pas explicitée en v1.
 
-### 4.1 Granularité Supérieure
+Dans un système événementiel habituel, l'événement est enregistré au moment où il se produit. Ici, un utilisateur déclare **en 2026** qu'il a terminé Final Fantasy VII **en 1998**. Chaque événement porte donc deux temps :
+
+| Champ | Nature | Précision |
+|---|---|---|
+| `OccurredAt` | quand cela s'est produit dans la vie du joueur | `TemporalValue` (§7), potentiellement incertain ou inconnu |
+| `RecordedAt` | quand la déclaration a été enregistrée | horodatage système, exact |
+
+Confondre les deux rend impossibles à la fois la timeline (qui utilise `OccurredAt`) et l'audit, l'annulation ou la mesure d'usage (qui utilisent `RecordedAt`).
+
+### 5.3 🆕 Les événements sont des souvenirs, pas des faits
+Un log d'événements classique est immuable parce qu'il enregistre des faits observés. Ici il enregistre des **déclarations de mémoire**, qui sont faillibles : l'utilisateur se trompera d'année, confondra deux versions, ou voudra corriger.
+
+Conséquences :
+
+1. **La correction est une fonctionnalité, pas une exception.** Un événement doit pouvoir être modifié ou rétracté par son auteur, simplement, sans que l'interface n'expose une mécanique de « correction d'événement ».
+2. **La révision est conservée côté système** (versionnement de l'événement ou événement de correction), pour la traçabilité et l'annulation, sans être imposée à l'utilisateur.
+3. **`Confidence` s'applique aussi aux événements utilisateur**, pas seulement aux données de référence : « je crois que c'était vers 1995 » n'a pas le même statut que « c'était mon anniversaire, donc mars 1994 ».
+
+### 5.4 🆕 Cohérence des parcours
+Certaines combinaisons sont contradictoires (terminé avant d'avoir découvert), d'autres seulement inhabituelles et parfaitement légitimes (joué après avoir vendu : emprunt, émulation, réachat).
+
+Le système signale les incohérences **en avertissement doux et jamais en blocage**. Une saisie approximative acceptée vaut mieux qu'une saisie exacte abandonnée : c'est une conséquence directe du principe de friction minimale (§24).
+
+### 5.5 🆕 Portée technique : modèle événementiel ≠ infrastructure d'event sourcing
+Le projet impose par ailleurs de ne pas sur-ingénierer ([PHASING.md](./PHASING.md) §1). Il faut donc lever une ambiguïté de la v1 : adopter un **modèle de domaine événementiel** n'oblige pas à adopter une **infrastructure CQRS/Event Sourcing complète** (event store dédié, reconstruction de projections, sagas, snapshots).
+
+Position retenue, à valider en Phase 0 :
+- les événements sont des lignes d'une table PostgreSQL en ajout seul ;
+- les états (collection actuelle, jeux terminés…) sont des projections calculées à la lecture, puis matérialisées uniquement lorsque la mesure le justifie ;
+- aucun produit d'event store spécialisé avant preuve d'un besoin réel.
+
+### 5.6 🆕 Effacement et immuabilité
+Un log en ajout seul entre en tension directe avec le droit à l'effacement. Le traitement est décrit en §19.4 ; la contrainte doit être prise en compte **dès la conception du stockage**, pas après.
+
+## 6. Gestion des Éditions
+
+### 6.1 Granularité Supérieure
 La plateforme permet une granularité supérieure au simple couple "utilisateur + jeu". Un même titre peut avoir été possédé plusieurs fois :
 - Final Fantasy VII → PlayStation PAL → Platinum → version numérique PS3 → remake PS5
 
-### 4.2 Modèle de Données
+### 6.2 Modèle de Données
 Le modèle doit distinguer au minimum :
-- Game : œuvre vidéoludique abstraite
-- Release : sortie du jeu sur une plateforme donnée
-- Edition : édition commerciale précise
-- UserGameExperience : relation entre l'utilisateur et cette œuvre/sortie
-- UserOwnedItem : exemplaire ou édition réellement possédé par l'utilisateur
+- **Game** (ou *Work*) : œuvre vidéoludique abstraite
+- **Release** : sortie du jeu sur une plateforme et une région données
+- **Edition** : édition commerciale précise
+- **UserGameExperience** : relation entre l'utilisateur et cette œuvre/sortie
+- **UserOwnedItem** : exemplaire ou édition réellement possédé par l'utilisateur (jeu ou matériel, §4.3)
 
-## 4. Gestion des Éditions
+[PHASING.md](./PHASING.md) §3 affine ce modèle en une chaîne à quatre niveaux **Work / GameVersion / Release / Edition**, la distinction supplémentaire servant à séparer l'œuvre de ses refontes (remake, remaster) sans les confondre avec de simples portages.
 
-### 4.1 Granularité Supérieure
-La plateforme permet une granularité supérieure au simple couple "utilisateur + jeu". Un même titre peut avoir été possédé plusieurs fois :
-- Final Fantasy VII → PlayStation PAL → Platinum → version numérique PS3 → remake PS5
+### 6.3 🆕 Cas limites à trancher en Phase 0
+Le modèle doit être validé contre les cas suivants, qui cassent les modélisations naïves :
+- un **remake** est-il la même œuvre (FFVII 1997 / FFVII Remake 2020) ? Réponse attendue : œuvres liées, pas identiques ;
+- une **compilation** contenant plusieurs jeux (posséder la compilation implique-t-il posséder les jeux ?) ;
+- un **jeu-service** en évolution continue, sans version stable ;
+- un jeu **retiré de la vente** ou dont les serveurs sont fermés ;
+- une **rétrocompatibilité** ou une console virtuelle : jouer un jeu Mega Drive sur Switch relève de quelle sortie ?
 
-### 4.2 Modèle de Données
-Le modèle doit distinguer au minimum :
-- Game : œuvre vidéoludique abstraite
-- Release : sortie du jeu sur une plateforme donnée
-- Edition : édition commerciale précise
-- UserGameExperience : relation entre l'utilisateur et cette œuvre/sortie
-- UserOwnedItem : exemplaire ou édition réellement possédé par l'utilisateur
+## 7. Dimension Temporelle
 
-## 5. Dimension Temporelle
-
-### 5.1 Historique Temporel
+### 7.1 Historique Temporel
 Le temps constitue une dimension majeure du produit. Les informations utilisateur représentent une histoire dans le temps :
 - 1991 — Première console : Game Boy
 - 1992 — Premier jeu Zelda
@@ -160,7 +246,7 @@ Le temps constitue une dimension majeure du produit. Les informations utilisateu
 - 2018 — Retour au retrogaming
 - 2026 — Rachat d'une PlayStation originale
 
-### 5.2 Flexibilité Temporelle
+### 7.2 Flexibilité Temporelle
 Le modèle doit accepter :
 - Date précise
 - Mois/année
@@ -169,7 +255,7 @@ Le modèle doit accepter :
 - Âge approximatif
 - Événement sans date
 
-### 5.3 Type Temporel Spécifique
+### 7.3 Type Temporel Spécifique
 Pour garantir la précision et la flexibilité requises, une notion explicite de valeur temporelle doit être créée :
 
 **TemporalValue** : Type spécifique pour gérer les différentes granularités temporelles
@@ -183,19 +269,42 @@ Types de TemporalValue :
 - Age : Âge approximatif (ex: vers mes 12 ans)
 - Unknown : Événement sans date précise
 
-### 5.4 Importance de la Précision Historique
+### 7.4 Importance de la Précision Historique
 Il est crucial de préserver l'incertitude historique au lieu d'inventer une précision qui n'existe pas. Cette approche permet de :
 - Respecter l'authenticité des souvenirs
 - Maintenir la flexibilité nécessaire pour les données approximatives
 - Créer une expérience utilisateur cohérente avec la nature subjective de la mémoire
 
-## 6. « Digital Twin » du Joueur
+### 7.5 🆕 Ordonnancement : le point non résolu de la v1
+Déclarer sept variantes de `TemporalValue` est simple ; **les trier ne l'est pas**, et c'est pourtant l'opération que la timeline effectue en permanence. Comment ordonner `Year(1994)`, `Range(1993–1997)`, `Age(~12 ans)` et `Unknown` sur un même axe ?
 
-### 6.1 Jumeau Numérique Vidéoludique
+Règles à figer en Phase 0 :
+
+1. **Toute `TemporalValue` se normalise en un intervalle** `[début, fin]` fermé, plus un **point représentatif** utilisé pour le tri (par convention, le milieu de l'intervalle).
+2. **L'ordre est partiel, pas total** : `Range(1993–1997)` et `Year(1995)` se chevauchent et ne sont pas comparables strictement. Les opérations de comparaison doivent utiliser une algèbre d'intervalles explicite (relations d'Allen : avant, chevauche, contient, égal…) et non un `<` naïf sur des dates.
+3. **`Unknown` n'a pas de place sur l'axe** : ces événements sont regroupés dans une zone dédiée (« à une date inconnue »), jamais projetés arbitrairement.
+4. **L'affichage doit rendre l'incertitude visible** : une bande pour un intervalle, un point pour une date exacte. Afficher un souvenir vague comme une date précise trahit le principe §7.4.
+
+### 7.6 🆕 Dépendance de `Age` à l'année de naissance
+`Age` est le seul type non résolvable de manière autonome : « vers mes 12 ans » n'est convertible qu'avec l'année de naissance de l'utilisateur. Cela implique :
+- une **dépendance fonctionnelle** : le profil doit porter une année de naissance, au moins approximative, sinon `Age` reste non résolu et se comporte comme `Unknown` ;
+- une **conséquence RGPD** : l'année de naissance est une donnée personnelle supplémentaire, qui doit être facultative, justifiée à l'utilisateur (« pour situer vos souvenirs ») et non publiée par défaut (§12.3) ;
+- un **stockage sous forme brute** : conserver « 12 ans », et non la conversion en 1994, pour que la correction de l'année de naissance recalcule automatiquement tous les souvenirs concernés.
+
+### 7.7 🆕 Requêtes temporelles : strict ou permissif
+« Quels jeux possédais-tu en 1997 ? » n'a pas de réponse unique lorsque les intervalles sont flous. Deux modes doivent être définis et le mode retenu doit être visible dans l'interface :
+- **strict** : seuls les éléments dont l'intervalle est entièrement inclus dans la période ;
+- **permissif** : tous les éléments dont l'intervalle chevauche la période.
+
+Le mode permissif est le défaut recommandé pour la restitution narrative ; le mode strict pour les statistiques annoncées comme des chiffres.
+
+## 8. « Digital Twin » du Joueur
+
+### 8.1 Jumeau Numérique Vidéoludique
 L'ensemble des informations constitue une sorte de jumeau numérique vidéoludique représentant :
 - Ce que le joueur possède + ce qu'il a possédé + ce qu'il a joué + ce qu'il a terminé + ce qu'il aime + ce qu'il recherche + son évolution dans le temps
 
-### 6.2 Représentation Synthétique
+### 8.2 Représentation Synthétique
 Le système peut produire automatiquement une représentation synthétique du joueur :
 - Plateformes préférées
 - Générations préférées
@@ -211,7 +320,7 @@ Le système peut produire automatiquement une représentation synthétique du jo
 - Raretés éventuelles
 - Évolution des goûts
 
-### 6.3 Terminologie et Vocabulaire
+### 8.3 Terminologie et Vocabulaire
 #### Concept d'Architecture :
 - **Player Digital Twin** : Terme technique pour l'ensemble des données représentant le joueur
 
@@ -224,9 +333,49 @@ Le système peut produire automatiquement une représentation synthétique du jo
 
 Le vocabulaire marketing pourra venir plus tard, mais le concept technique reste **Player Digital Twin**.
 
-## 7. Valorisation du Profil
+> 🆕 Réserve de terminologie : « digital twin » désigne habituellement une réplique **synchronisée et simulable** d'un système physique. Ici il s'agit d'une biographie reconstruite, sans synchronisation ni simulation. Le terme est acceptable en interne s'il est compris ainsi, mais `PlayerHistory` ou `PlayerProfile` décrivent plus honnêtement l'objet et éviteront des attentes erronées dans le code.
 
-### 7.1 Page Publique Configurable
+## 9. 🆕 Journal Personnel et Souvenirs
+
+### 9.1 Pourquoi cette section est ajoutée
+Le journal personnel est annoncé en §1.3 de la v1 puis jamais spécifié, alors qu'il porte directement le critère de validation du projet : faire dire à l'utilisateur « **oui, ça me ressemble** » ([PHASING.md](./PHASING.md) §5).
+
+Or une liste de jeux cochés, aussi complète soit-elle, ne ressemble à personne : elle est statistiquement identique à celle de milliers d'autres joueurs de la même génération. Ce qui rend un profil personnel, c'est la phrase « on l'a fini à deux avec mon frère pendant les vacances de 1997 ».
+
+### 9.2 Périmètre minimal
+- Une **note libre** attachée à un événement, à un jeu, ou à une période de la timeline ;
+- Optionnellement un **titre** court, servant de repère sur la timeline ;
+- Visibilité contrôlée indépendamment du reste du profil (§12).
+
+### 9.3 Recommandation de phasage
+Cette fonctionnalité est **peu coûteuse à construire et directement alignée sur le critère de sortie de la Phase 2**. Une version minimale (note libre sur un événement) est recommandée dès la Phase 1, contre son report initial en phase ultérieure.
+
+### 9.4 Extensions ultérieures
+Photos personnelles (coût de stockage et de modération), enregistrements audio, import de souvenirs depuis d'autres sources. Non prioritaires.
+
+## 10. 🆕 Backlog et Wishlist
+
+### 10.1 Deux notions distinctes
+La v1 mentionne le « backlog manager » (§1.3) et la « wishlist » (§4.1) sans jamais les distinguer. Ce sont deux intentions différentes :
+
+| Notion | Question posée | Exemple |
+|---|---|---|
+| **Wishlist** | Qu'est-ce que je veux **posséder** ? | Racheter une PlayStation d'origine |
+| **Backlog** | Qu'est-ce que je veux **jouer** ? | Un jeu possédé depuis trois ans, jamais lancé |
+
+Un jeu possédé et non joué appartient au backlog mais pas à la wishlist ; un jeu convoité et jamais acquis, l'inverse. La séparation possession / expérience (§4.2) impose donc de les séparer aussi côté intentions.
+
+### 10.2 Attributs
+- Priorité ou envie ;
+- Origine de l'intention (recommandation, cadeau, franchise suivie, nostalgie) ;
+- Date d'entrée dans la liste — ce qui en fait, comme le reste, des événements (§5).
+
+### 10.3 Lien avec la recommandation
+Le backlog est la cible naturelle des suggestions de la Phase 6 (§14) : recommander un jeu déjà dans le backlog de l'utilisateur est le cas le plus facile à rendre pertinent.
+
+## 11. Valorisation du Profil
+
+### 11.1 Page Publique Configurable
 Le profil peut comporter une page publique présentant :
 - 32 ans de gaming
 - 18 consoles possédées
@@ -237,7 +386,7 @@ Le profil peut comporter une page publique présentant :
 - Première console : Mega Drive
 - Franchise favorite : Zelda
 
-### 7.2 Éléments Particuliers
+### 11.2 Éléments Particuliers
 Des éléments particuliers peuvent être mis en avant :
 - Jeu préféré
 - Console préférée
@@ -247,9 +396,41 @@ Des éléments particuliers peuvent être mis en avant :
 - Accomplissements rares
 - Séries entièrement terminées
 
-## 9. Dimension Sociale
+### 11.3 🆕 Le temps de jeu n'est pas une donnée disponible
+« 6 420 heures enregistrées » figure dans l'exemple ci-dessus, mais **aucun élément du modèle ne produit cette valeur**. C'est la seule statistique annoncée que les données ne savent pas alimenter.
 
-### 9.1 Suivi et Comparaison
+Le temps de jeu n'existe que dans trois cas, de fiabilité très inégale :
+
+| Origine | Fiabilité | Couverture |
+|---|---|---|
+| Importé (Steam et équivalents) | mesurée, mais compte le temps application ouverte | PC moderne uniquement |
+| Saisi manuellement | déclaratif | quelques jeux marquants au mieux |
+| Estimé (durée moyenne connue du jeu × complétion) | approximatif | large, mais ce n'est pas *son* temps |
+
+Règles retenues :
+1. Le temps de jeu est un attribut **facultatif et typé par origine**, jamais un champ unique ;
+2. Aucun total agrégé ne mélange les trois origines sans le dire explicitement ;
+3. Pour l'essentiel du parcours rétro, la bonne réponse est **de ne pas afficher d'heures** plutôt que d'en inventer — cohérent avec §7.4.
+
+### 11.4 🆕 Statistiques et incertitude
+Les compteurs affichés doivent rester cohérents avec §7.7 : « 32 ans de gaming » dérivé d'un premier événement daté `Range(1990–1993)` doit s'afficher comme un ordre de grandeur, pas comme un chiffre exact.
+
+## 12. 🆕 Visibilité et Partage
+
+### 12.1 Le binaire privé/public est insuffisant
+La v1 et le plan ne prévoient qu'une visibilité « privée / publique » globale. C'est trop grossier pour un objet aussi personnel : un utilisateur peut vouloir exposer sa collection sans exposer son journal, ou ses statistiques sans ses dates.
+
+### 12.2 Granularité requise
+Visibilité indépendante, au minimum, pour : la timeline, la collection actuelle, la collection historique, les statistiques agrégées, le journal (§9), la wishlist et le backlog (§10).
+
+### 12.3 Risque d'inférence
+Un profil qui affiche « première console à 8 ans, en 1991 » publie de fait une date de naissance. Le croisement des dates et des âges (§7.6) permet de reconstituer des informations que l'utilisateur n'a pas eu l'intention de publier. Deux mesures :
+- l'âge n'est jamais publié, seules les années le sont, et le profil signale ce croisement lors de l'activation du partage ;
+- les pages publiques ne sont pas indexables par défaut (URL non devinable, `noindex`), l'indexation étant un choix explicite.
+
+## 13. Dimension Sociale
+
+### 13.1 Suivi et Comparaison
 Les utilisateurs peuvent :
 - Suivre d'autres joueurs
 - Comparer leurs parcours
@@ -259,63 +440,90 @@ Les utilisateurs peuvent :
 - Comparer leurs expériences sur une franchise
 - Participer à des challenges
 
-### 9.2 Exemples de Comparaison
+### 13.2 Exemples de Comparaison
 - Yves et Marc ont joué à 127 jeux en commun
 - Vous avez tous les deux possédé une Super Nintendo, mais seulement 34 % de vos bibliothèques étaient communes
 
-### 9.3 Compatibilité Vidéoludique
+### 13.3 Compatibilité Vidéoludique
 Le système peut produire une compatibilité vidéoludique entre deux profils.
 
-## 10. Recommandation Basée sur le Parcours
+> 🆕 La métrique doit être définie avant d'être affichée. Une similarité brute (jeux communs / jeux totaux) donnera des scores dominés par les grands succès que tout le monde a joués, donc peu informatifs. Une pondération par rareté (les titres peu partagés valent davantage) et par époque produit un résultat nettement plus parlant. À trancher en Phase 5, mais à ne pas exposer comme un pourcentage tant que la formule n'est pas assumée.
 
-### 10.1 Recommandation Contextualisée
+## 14. Recommandation Basée sur le Parcours
+
+### 14.1 Recommandation Contextualisée
 La recommandation exploite la biographie complète :
 - « Tu as beaucoup joué aux JRPG entre 1997 et 2005 mais tu n'as jamais joué à Chrono Trigger. »
 - « Tu as terminé six jeux développés par Arkane sans avoir joué à Prey. »
 
-## 12. Séparation des Données
+### 14.2 🆕 Absence de preuve ≠ preuve d'absence
+Ces formulations reposent sur une inférence dangereuse : « tu n'as jamais joué à X » signifie en réalité « tu n'as pas déclaré avoir joué à X ». Sur un profil reconstruit de mémoire, l'écart est énorme.
 
-### 12.1 Univers de Données Distincts
-- **REFERENCE DATA** : Données globales (jeux, consoles, studios, etc.) - Binaire / immutable
-- **USER DATA** : Données personnelles - Base transactionnelle classique
+Les recommandations doivent donc être formulées de manière non assertive (« tu ne l'as pas encore ajouté ») et exclure les jeux que l'utilisateur a explicitement marqués comme non joués (§24.3), sous peine de produire l'effet inverse de celui recherché : au lieu de « cette plateforme me connaît », « cette plateforme se trompe sur moi ».
 
-### 12.2 Architecture
+## 15. Séparation des Données
+
+### 15.1 Univers de Données Distincts
+- **REFERENCE DATA** : Données globales (jeux, consoles, studios, etc.) — volumineuses, en lecture seule, communes à tous les utilisateurs
+- **USER DATA** : Données personnelles — base transactionnelle classique
+
+### 15.2 Architecture
 - Les données globales sont volumineuses, en lecture seule, rarement modifiées, communes à tous les utilisateurs
-- Les données utilisateur sont transactionnelles, personnelles et continument modifiées
+- Les données utilisateur sont transactionnelles, personnelles et continûment modifiées
 
-## 13. Principe Produit
+> 🆕 **Correction de la v1** : celle-ci qualifiait les données de référence de « binaire / immutable » comme s'il s'agissait d'un principe d'architecture. Le format de stockage (binaire, MemoryPack ou autre) est une **décision d'optimisation reportée en Phase 7 et tranchée par benchmark** ([PHASING.md](./PHASING.md) §10). Ce qui relève du principe, c'est la séparation des deux univers et le caractère lecture seule du référentiel — pas son encodage.
 
-### 13.1 Résumé du Concept
+### 15.3 🆕 Versionnement et migration des références
+Le référentiel évolue : deux fiches sont fusionnées, une fiche est scindée en deux éditions distinctes, un identifiant est corrigé. Or les événements utilisateur pointent vers ces entités.
+
+Il faut donc, dès l'introduction de `DatasetVersion` (Phase 3) :
+- des identifiants canoniques **stables**, jamais réattribués ;
+- un **journal des fusions et scissions**, permettant de réécrire ou rediriger les références utilisateur lors d'un changement de version ;
+- une règle explicite pour les scissions, où la redirection est ambiguë (rattachement au plus probable, avec `Confidence`, ou demande à l'utilisateur).
+
+Sans ce mécanisme, la première canonicalisation sérieuse casse silencieusement des profils existants.
+
+## 16. Principe Produit
+
+### 16.1 Résumé du Concept
 Une plateforme qui transforme 30 ans de jeux vidéo en une histoire personnelle, consultable, mesurable et partageable.
 
-### 13.2 Valeur du Produit
+### 16.2 Valeur du Produit
 - Le catalogue universel de jeux constitue la fondation technique
 - La véritable valeur du produit vient de la couche située au-dessus : l'histoire personnelle du joueur, sa collection, ses accomplissements, ses souvenirs, ses statistiques et ses interactions avec les autres joueurs
 
-## 15. Spécifications Techniques
+## 17. Spécifications Techniques
 
-### 15.1 Technologies Suggérées
-- Backend : .NET 6+ (C#)
-- Frontend : React
-- Base de données : PostgreSQL pour les données utilisateur, format binaire pour les données de référence
-- Format de données : MemoryPack pour les données de référence
+### 17.1 Technologies
+Décisions verrouillées dans [PHASING.md](./PHASING.md) §4 :
+- **Backend** : .NET 10 LTS + EF Core 10 *(la mention « .NET 6+ » de la v1 est obsolète)*
+- **Frontend** : React + TypeScript (Vite), TanStack Query pour l'état serveur
+- **Base de données utilisateur** : PostgreSQL 17+
+- **Dataset de référence (POC)** : SQLite ou fichier précompilé simple
+- **Format binaire / MemoryPack** : **non verrouillé**, décision par benchmark en Phase 7
 
-### 15.2 Architecture de l'Application
+### 17.2 Architecture de l'Application
 - API RESTful pour les interactions
 - Services de gestion des données utilisateur
 - Services de génération de timeline
 - Services de recommandation
 - Services de gestion des relations sociales
 
-### 15.3 Sécurité et Confidentialité
-- Gestion des données personnelles
+### 17.3 Sécurité et Confidentialité
+- Gestion des données personnelles (détaillée en §19)
 - Protection des informations sensibles
 - Contrôles d'accès
 - Politique de confidentialité claire
 
-## 16. Gestion des Données et Source
+### 17.4 🆕 Stratégie de test
+La mention « tests automatisés rigoureux » (§23.2) est trop générique pour orienter l'effort. Deux zones concentrent le risque réel et méritent un traitement spécifique :
 
-### 16.1 Provenance des Données
+1. **L'algèbre de `TemporalValue`** (§7.5) : normalisation, comparaison, chevauchement, tri. Le domaine est purement fonctionnel et combinatoire — c'est le cas d'école du **test basé sur les propriétés** (invariants du type « le tri est stable quel que soit l'ordre d'insertion », « normaliser deux fois équivaut à normaliser une fois »).
+2. **Les projections d'événements** (§5.1) : rejouer un flux d'événements doit produire un état déterministe. Des jeux d'événements de référence (les parcours de §7.1 et §6.1) servent de tests de non-régression permanents et de validation du modèle en Phase 0.
+
+## 18. Gestion des Données et Source
+
+### 18.1 Provenance des Données
 La gestion des données est un aspect critique du projet. Le référentiel vidéoludique doit être alimenté à partir de plusieurs sources :
 
 #### Sources Internes
@@ -329,46 +537,103 @@ La gestion des données est un aspect critique du projet. Le référentiel vidé
 - Fichiers de données publiés
 - Contributions communautaires
 
-### 16.2 Licences et Fiabilité
+### 18.2 Licences et Fiabilité
 - Toutes les données doivent être accompagnées de leurs licences respectives
 - Priorité à la fiabilité et à la véracité des données
 - Mécanismes de validation et de vérification des sources
 
-### 16.3 Fusion des Sources
+### 18.3 Fusion des Sources
 - Mécanismes de fusion et de canonicalisation des données provenant de différentes sources
 - Gestion des conflits de données entre sources
 - Système de priorité des sources selon la fiabilité
 
-### 16.4 Traçabilité
+### 18.4 Traçabilité
 - Système de traçabilité des données à leur source originale
 - Historique des modifications
 - Capacité à retrouver la provenance de chaque donnée
 
-### 16.5 Approche de Développement
+Champs de provenance : `Source`, `ExternalId`, `CanonicalId`, `Alias`, `Locale`, `Confidence`, `DatasetVersion`, et pour les imports utilisateur `ExternalUserId`, `ExternalGameId`, `ImportedAt`.
+
+### 18.5 Approche de Développement
 L'approche initiale se base sur les connaissances internes et expertise existante, avant de se tourner vers les sources externes. Cette approche permet :
 - De commencer avec une base de données fiable et vérifiée
 - De valider l'architecture avant d'intégrer des données externes
 - De garantir la qualité des données dès les premières versions
 
-## 16. Évolution Future
+### 18.6 🆕 Coût réel de la curation
+Un dataset POC de 100 à 300 jeux est curable manuellement. Un référentiel crédible en Phase 3 se compte en dizaines de milliers d'entrées, et c'est le poste de charge le plus lourd et le plus durable du projet — bien avant le développement.
 
-### 16.1 Fonctionnalités à Ajouter
+Ce coût doit être évalué explicitement en Phase 0, car il conditionne à la fois le calendrier et le modèle économique (§25). Trois voies, non exclusives : import d'une source ouverte compatible, contribution communautaire modérée, curation interne restreinte à un périmètre assumé.
+
+## 19. 🆕 Cadre Juridique et Conformité
+
+Cette section n'existait pas en v1, qui se limitait à « toutes les données doivent être accompagnées de leurs licences » (§18.2) et à quatre puces génériques sur la confidentialité (§17.3). Pour un projet qui agrège des données tierces **et** constitue par nature une archive de données personnelles, c'est insuffisant.
+
+### 19.1 Droits sur les données de référence
+Trois régimes distincts, souvent confondus :
+
+1. **Les faits ne sont pas protégeables** en tant que tels (un titre, une date de sortie, un éditeur).
+2. **Le droit sui generis des bases de données** (directive 96/9/CE, applicable dans l'UE) protège en revanche l'**investissement** du producteur d'une base : l'extraction substantielle d'une base tierce peut être illicite même quand chaque donnée prise isolément est un simple fait. C'est le risque principal, et il est spécifique au contexte européen — il ne disparaît pas parce que « ce ne sont que des métadonnées ».
+3. **Les conditions d'utilisation** des API et des sites priment de toute façon contractuellement, indépendamment du droit d'auteur.
+
+**Conséquence pratique** : privilégier les sources dont la licence autorise explicitement la réutilisation et la redistribution (les jeux de données sous CC0 ou licences ouvertes équivalentes sont les seuls confortables), et vérifier les CGU **avant** tout import, pas après. La licence de chaque source doit être un champ du référentiel, pas une note.
+
+### 19.2 Visuels
+Jaquettes, captures, logos et marques sont protégés et ne relèvent pas du régime des données factuelles. Le référentiel doit fonctionner **sans visuels** par défaut, l'ajout d'illustrations étant une décision distincte et documentée (source licenciée, contribution utilisateur avec garantie, ou absence assumée).
+
+### 19.3 RGPD — le produit est une archive personnelle
+Le produit collecte, par conception : un historique de vie sur plusieurs décennies, des goûts, des habitudes, éventuellement une année de naissance (§7.6) et des identifiants de comptes tiers (§18.4). Ce n'est pas un cas marginal de conformité, c'est le cœur du produit.
+
+À traiter au plus tard en Phase 3 (authentification), et à anticiper dès la Phase 0 :
+- **base légale** du traitement et information de l'utilisateur ;
+- **minimisation** : ne pas collecter l'année de naissance si `Age` n'est pas utilisé ;
+- **durée de conservation** et sort des comptes inactifs ;
+- **portabilité** : l'export (déjà prévu en Phase 3) sert aussi cet objectif ;
+- **droit d'effacement** (voir §19.4) ;
+- **sous-traitants et localisation de l'hébergement**.
+
+### 19.4 Effacement contre journal en ajout seul
+C'est la contrainte architecturale la plus concrète de cette section, et elle est incompatible avec une lecture naïve de §5 : un log d'événements immuable ne peut pas satisfaire une demande d'effacement par un simple marqueur de suppression.
+
+Deux stratégies acceptables, à trancher en Phase 0 car elles engagent le stockage :
+- **suppression physique par utilisateur** : le partitionnement des événements par utilisateur rend la purge triviale — c'est l'option la plus simple et elle suffit ici ;
+- **crypto-shredding** : les données personnelles sont chiffrées avec une clé par utilisateur, détruite à la demande d'effacement — pertinent seulement si des projections ou des sauvegardes rendent la purge physique difficile.
+
+Choisir après coup coûte une migration de stockage. Choisir maintenant coûte une décision.
+
+### 19.5 Contenu utilisateur public
+Le journal (§9) et les profils publics (§12) introduisent du contenu librement rédigé et visible par des tiers : un mécanisme minimal de signalement et de retrait est nécessaire dès l'ouverture du partage (Phase 5), sans construire pour autant une chaîne de modération lourde.
+
+## 20. 🆕 Internationalisation
+
+Le sujet est intrinsèquement multilingue : la spécification cite elle-même « Pokémon Red = Pokémon Rouge = ポケットモンスター 赤 » comme risque majeur (§23.1). Deux niveaux à ne pas confondre :
+
+1. **Les données** : titres localisés, alias, région — déjà traités par `Alias` et `Locale` (§18.4) et par §3.4. Cette partie est requise tôt.
+2. **L'interface** : la langue du produit. Non traitée en v1. La décision (français d'abord, anglais d'abord, ou bilingue) a des conséquences sur le marché visé (§25) et sur la structure du frontend, où le rattrapage tardif est coûteux. La recommandation minimale est de ne pas coder les libellés en dur dès la Phase 1, même si une seule langue est livrée.
+
+Le jeu de caractères doit gérer sans réserve les écritures non latines, y compris dans la recherche (translittération, recherche insensible aux diacritiques).
+
+## 21. Évolution Future
+
+### 21.1 Fonctionnalités à Ajouter
 - Système de forum communautaire
 - Événements et compétitions
 - Système de critiques et de notes
 - Intégration avec les plateformes de jeux
 - API pour les développeurs
 
-### 16.2 Améliorations de l'Expérience Utilisateur
+### 21.2 Améliorations de l'Expérience Utilisateur
 - Interface responsive
 - Système de thèmes
 - Personnalisation avancée
 - Notifications intelligentes
 - Expérience mobile optimisée
 
-## 17. Critères de Succès
+> 🆕 **Réserve sur le mobile.** Il est listé ici comme une amélioration ultérieure, alors que la saisie massive (§24.3) — le geste central du produit — est une interaction de type « cocher rapidement une longue liste », particulièrement adaptée au tactile, et que la consultation d'un profil partagé arrivera majoritairement depuis un mobile. Le responsive doit être une contrainte de conception dès la Phase 1, pas une amélioration de Phase 7.
 
-### 17.1 Indicateurs Clés de Performance
+## 22. Critères de Succès
+
+### 22.1 Indicateurs Clés de Performance
 Les KPI doivent mesurer l'efficacité de la proposition de valeur :
 
 #### Indicateurs de Réussite de la Proposition de Valeur
@@ -389,15 +654,25 @@ Les KPI doivent mesurer l'efficacité de la proposition de valeur :
 - Engagement social (suivi, partage, commentaires)
 - Satisfaction utilisateur
 
-### 17.2 Objectifs de Développement
+### 22.2 🆕 Des indicateurs sans cible ne sont pas des critères
+Aucun seuil n'est associé à ces KPI, et le critère de sortie de la Phase 2 se contente de « la majorité des testeurs ». Un indicateur sans valeur cible fixée **à l'avance** ne peut pas servir de porte de décision : il sera interprété favorablement une fois les résultats connus.
+
+Chaque KPI retenu pour le POC doit donc porter, dès la Phase 0 :
+- une **valeur cible chiffrée**, engagée avant le test ;
+- une **définition opérationnelle** (à partir de quand un profil est-il « renseigné » ? le temps de reconstruction se mesure-t-il en temps écoulé ou en temps actif ?) ;
+- la **décision associée** en cas d'échec : itérer, pivoter, ou arrêter.
+
+Pour un produit dont la thèse est « ce profil me ressemble », une majorité à 51 % est un signal faible ; le seuil devrait être nettement plus exigeant, et assumé comme tel.
+
+### 22.3 Objectifs de Développement
 - Version de base avec fonctionnalités essentielles
 - Améliorations continues basées sur les retours utilisateurs
 - Évolution vers une communauté active
 - Expansion de la base de données de référence
 
-## 18. Risques et Solutions
+## 23. Risques et Solutions
 
-### 18.1 Risques Techniques
+### 23.1 Risques Techniques
 - **Entity resolution / canonicalisation du référentiel** : La gestion des identités canoniques est un défi majeur. Exemples :
   - Pokémon Red, Pokemon Red, Pokémon Rouge, ポケットモンスター 赤, Pokémon Version Rouge = même jeu
   - PC, Windows, Windows PC, Steam, Steam Deck = mêmes plateformes
@@ -405,25 +680,37 @@ Les KPI doivent mesurer l'efficacité de la proposition de valeur :
 - **Performance avec de grandes quantités de données** : Optimisation pour gérer des millions d'entités
 - **Intégration de nouvelles fonctionnalités sans casser l'architecture existante**
 
-### 18.2 Solutions
+### 23.2 🆕 Risques non techniques (ajoutés)
+Ils sont plus susceptibles de tuer le projet que les risques techniques ci-dessus :
+
+| Risque | Nature | Atténuation |
+|---|---|---|
+| **Coût de constitution du référentiel** | charge durable, sous-estimée (§18.6) | périmètre restreint et assumé ; source ouverte compatible |
+| **Concurrence établie** (§2) | le créneau « journal de jeux » est occupé | tenir le différenciateur temporel, ne pas dériver vers un clone |
+| **Friction de saisie** | la valeur exige un effort que peu consentiront | §24, mesuré dès la Phase 2 |
+| **Effet de cold start social** | comparaisons et compatibilité sans valeur à faible population | ne pas conditionner la valeur individuelle au social |
+| **Droit sui generis et CGU des sources** (§19.1) | juridique | vérification préalable, licence obligatoire par source |
+| **Absence de modèle économique** (§25) | pérennité | à trancher, le coût de curation étant récurrent |
+
+### 23.3 Solutions
 - Architecture modulaire et évolutive
-- Tests automatisés rigoureux
+- Tests automatisés rigoureux (§17.4)
 - Documentation complète du modèle de données
 - Méthodologie de développement agile
 
-## 19. Principes d'UX Critiques
+## 24. Principes d'UX Critiques
 
-### 19.1 Effort Minimal pour la Reconstruction de l'Historique
-Le vrai problème produit n’est pas « que peut-on stocker ? », mais :
+### 24.1 Effort Minimal pour la Reconstruction de l'Historique
+Le vrai problème produit n'est pas « que peut-on stocker ? », mais :
 
 **Pourquoi quelqu'un passerait-il deux heures à encoder 20 ou 30 ans de jeux vidéo ?**
 
-C’est actuellement le trou principal des spécifications.
+C'était le trou principal de la v1 des spécifications, et il reste la question centrale du projet.
 
-### 19.2 Exigence UX : Minimalisme de l'Effort
+### 24.2 Exigence UX : Minimalisme de l'Effort
 L'effort demandé à l'utilisateur pour reconstruire son historique doit être minimal.
 
-### 19.3 Mécanismes de Rapidité de Saisie
+### 24.3 Mécanismes de Rapidité de Saisie
 Pour éviter la corvée de saisie, l'application devrait permettre :
 
 #### Sélection Massive de Jeux
@@ -433,7 +720,7 @@ L'utilisateur sélectionne :
 - Super Nintendo
 - 1993–1997
 
-L'application lui montre les principaux jeux de cette plateforme.
+L'application lui montre les principaux jeux de cette plateforme (ordonnés par notoriété, §3.3, et filtrés par région, §3.4).
 
 L'utilisateur coche rapidement :
 - ✓ joué
@@ -443,27 +730,27 @@ L'utilisateur coche rapidement :
 - jamais joué
 - ✓ possédé
 
-### 19.4 Caractéristique Majeure du Produit
+> 🆕 **« Jamais joué » est une information, pas une absence.** Cocher explicitement « jamais joué » doit être enregistré comme une déclaration positive : cela distingue « il ne l'a pas joué » de « il ne s'est pas prononcé », améliore la qualité du profil, et conditionne la pertinence des recommandations (§14.2).
+
+### 24.4 🆕 Récompenser avant de demander
+Un utilisateur ne fournira l'effort de saisie que s'il en perçoit le bénéfice **pendant** la saisie, pas à la fin. La restitution doit donc être immédiate et progressive : la timeline se remplit à mesure que l'on coche, les premières statistiques apparaissent après quelques jeux, la première console saisie déclenche déjà une phrase de récit.
+
+Corollaire : ne jamais imposer un formulaire long avant le premier retour visible, et ne jamais exiger de date précise pour enregistrer un souvenir.
+
+### 24.5 Caractéristique Majeure du Produit
 Cette fonctionnalité de saisie rapide pourrait devenir une caractéristique majeure du produit, en rendant l'utilisation de la plateforme attrayante même pour les joueurs ayant des collections importantes.
 
-## 2. Référentiel Vidéoludique
+## 25. 🆕 Questions Ouvertes
 
-### 2.1 Structure du Référentiel
-Le référentiel global est essentiellement statique et contient :
-- Constructeurs (manufacturers)
-- Consoles et plateformes
-- Générations de consoles
-- Jeux
-- Studios et éditeurs
-- Dates de sortie
-- Genres
-- Caractéristiques techniques
-- Différentes versions d'un jeu
-- Éditions physiques et numériques
-- Remasters, remakes, ports et rééditions
-- Accessoires et périphériques
-- Relations entre ces différents objets
+Ces points ne peuvent pas être tranchés depuis les documents existants et appellent une décision explicite. Ils sont classés par impact.
 
-### 2.2 Navigation Relationnelle
-Le référentiel doit permettre une navigation relationnelle fluide :
-Console → jeux → studio → autres jeux → autres plateformes → différentes éditions, etc.
+| # | Question | Pourquoi elle bloque |
+|---|---|---|
+| 1 | **Quelle est la nature du projet ?** exercice de R&D, projet personnel, produit commercial ? | Détermine si le modèle économique, la conformité et le coût de curation sont des sujets réels ou hors périmètre |
+| 2 | **Quelle est la taille et la disponibilité de l'équipe ?** | Les durées de [PHASING.md](./PHASING.md) (26 à 45 semaines) n'ont aucune signification sans cette donnée : elles varient d'un facteur 3 ou 4 entre un développeur à temps partiel et une équipe de trois |
+| 3 | **Modèle économique** | Le référentiel est un coût récurrent (§18.6) ; l'hébergement et la conformité aussi |
+| 4 | **Marché visé : francophone ou international ?** | Conditionne l'i18n (§20), le référentiel régional (§3.4) et le benchmark concurrentiel (§2) |
+| 5 | **Périmètre des plateformes** : consoles uniquement, ou PC, arcade, mobile ? | Le PC et le mobile font exploser le volume du référentiel et affaiblissent la notion d'édition |
+| 6 | **Position sur le temps de jeu** (§11.3) | Affiché, facultatif, ou absent — impacte le modèle et la page publique |
+| 7 | **Visuels : avec ou sans jaquettes au lancement ?** (§19.2) | Impacte fortement l'attrait visuel du produit et le risque juridique |
+| 8 | **Hébergement et localisation des données** | Découle de §19.3 |
