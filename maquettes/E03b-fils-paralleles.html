@@ -1,0 +1,589 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fils parallèles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --surface:#FAF8F5; --surface-2:#FFFFFF; --surface-3:#F2EEE8;
+    --line:#E5E0D8; --line-strong:#D2CABE;
+    --ink:#1A1815; --ink-2:#57524B; --ink-3:#8A8279;
+    --shadow:0 1px 2px rgba(26,24,21,.06), 0 8px 24px -12px rgba(26,24,21,.18);
+    --era-1:#A6572F; --era-2:#B0842B; --era-3:#6E7F4A;
+    --era-4:#3F7A80; --era-5:#4A6BA8; --era-6:#6B5EA8;
+    --focus:#3F7A80; --r-s:4px; --r-m:10px;
+    --lane:17px; --yearw:46px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --surface:#16140F; --surface-2:#1E1B16; --surface-3:#24201A;
+      --line:#2E2A26; --line-strong:#3D3832;
+      --ink:#F2EFE9; --ink-2:#A8A199; --ink-3:#6E6862;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+      --era-1:#C9713F; --era-2:#D8A63C; --era-3:#8CA061;
+      --era-4:#57A0A8; --era-5:#6D8FD0; --era-6:#8F81D0;
+      --focus:#7FB3B8;
+    }
+  }
+  :root[data-theme="dark"]{
+    --surface:#16140F; --surface-2:#1E1B16; --surface-3:#24201A;
+    --line:#2E2A26; --line-strong:#3D3832;
+    --ink:#F2EFE9; --ink-2:#A8A199; --ink-3:#6E6862;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --era-1:#C9713F; --era-2:#D8A63C; --era-3:#8CA061;
+    --era-4:#57A0A8; --era-5:#6D8FD0; --era-6:#8F81D0;
+    --focus:#7FB3B8;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--surface);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;text-align:left}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
+
+  .shell{max-width:1080px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:13px}
+  .shell__bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+  .shell__id{font-family:"Fraunces",Georgia,serif;font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .shell__id span{color:var(--ink-3);font-weight:400}
+  .switch{margin-left:auto;display:flex;gap:2px;padding:2px;background:var(--surface-3);border:1px solid var(--line);border-radius:var(--r-m)}
+  .switch button{padding:6px 13px;border-radius:7px;font-size:12.5px;font-weight:500;color:var(--ink-2)}
+  .switch button[aria-pressed="true"]{background:var(--surface-2);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .shell__note{color:var(--ink-3);font-size:12.5px;max-width:72ch}
+  .shell__note b{color:var(--ink-2);font-weight:600}
+
+  .app{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-m);
+    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
+    height:min(800px,calc(100vh - 200px));min-height:min(580px,76vh);position:relative;
+  }
+  @supports (height:100dvh){
+    .app{height:min(800px,calc(100dvh - 200px));min-height:min(580px,76dvh)}
+  }
+  .nav{padding:11px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex:none}
+  .nav__t{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600}
+  .add{margin-left:auto;height:33px;padding:0 14px;border-radius:var(--r-s);background:var(--ink);color:var(--surface-2);font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .scroll{flex:1;overflow-y:auto}
+
+  /* synthèse compacte : le fil est la vedette, pas les chiffres */
+  .synth{padding:22px 22px 18px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:20px 40px;align-items:flex-end}
+  .synth__p{font-family:"Fraunces",Georgia,serif;font-size:clamp(20px,2.7vw,26px);line-height:1.25;letter-spacing:-.018em;margin:0;max-width:24ch;flex:1;min-width:230px}
+  .synth__p b{font-weight:600}
+  .synth__p i{font-style:normal;color:var(--ink-3)}
+  .stats{display:flex;gap:26px}
+  .stat b{font-family:"Fraunces",Georgia,serif;font-size:23px;font-weight:600;display:block;line-height:1;font-variant-numeric:tabular-nums}
+  .stat span{font-size:11px;color:var(--ink-3)}
+
+  /* en-tête des fils actifs, collant */
+  .heads{
+    position:sticky;top:0;z-index:4;background:var(--surface-2);
+    border-bottom:1px solid var(--line);padding:9px 20px 8px;
+    display:flex;gap:8px 14px;flex-wrap:wrap;min-height:38px;align-items:center;
+  }
+  .heads__l{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-right:2px}
+  .hd{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-2);padding:2px 0}
+  .hd i{width:9px;height:9px;border-radius:2px;flex:none}
+
+  /* ── le tressage ── */
+  .rows{padding:6px 20px 20px}
+  .r{display:flex;align-items:stretch;min-height:34px}
+  .r__y{
+    flex:none;width:var(--yearw);padding:9px 9px 0 0;text-align:right;
+    font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;line-height:1.2;
+  }
+  .r__y em{font-style:italic;display:block;font-size:11px}
+
+  .r__g{flex:none;display:flex;position:relative}
+  .ln{width:var(--lane);position:relative;flex:none}
+  /* segment vertical du fil */
+  .ln::before{
+    content:"";position:absolute;left:50%;transform:translateX(-50%);
+    width:3px;border-radius:2px;background:var(--c);opacity:.5;
+  }
+  .ln--full::before{top:0;bottom:0}
+  .ln--start::before{top:15px;bottom:0}
+  .ln--end::before{top:0;height:15px}
+  .ln--solo::before{display:none}
+  /* nœuds */
+  .nd{position:absolute;left:50%;top:15px;transform:translate(-50%,-50%);z-index:2}
+  .nd--open{width:11px;height:11px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px var(--surface-2)}
+  .nd--close{width:11px;height:3px;border-radius:2px;background:var(--c);box-shadow:0 0 0 3px var(--surface-2)}
+  .nd--game{width:7px;height:7px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px var(--surface-2)}
+  .nd--done{width:9px;height:9px;border-radius:50%;border:2.5px solid var(--c);background:var(--surface-2);box-shadow:0 0 0 2px var(--surface-2)}
+  .nd--cluster{width:11px;height:22px;border-radius:6px;background:var(--c);box-shadow:0 0 0 3px var(--surface-2)}
+  /* raccord du nœud vers la colonne de contenu */
+  .r__g::after{content:"";position:absolute;left:var(--cx);top:15px;width:var(--cw);height:2px;background:var(--c);opacity:.35}
+  .r--nolink .r__g::after{display:none}
+
+  .r__b{flex:1;min-width:0;padding:6px 0 10px 10px}
+  .r__b .ttl{font-size:14.5px;line-height:1.3}
+  .r__b .sub{font-size:12px;color:var(--ink-3);margin-top:1px}
+
+  /* naissance et fin d'un fil : le seul endroit où la console est le sujet */
+  .r--start .ttl{font-family:"Fraunces",Georgia,serif;font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .r--end .ttl{font-size:13px;color:var(--ink-3)}
+  .r--end .ttl b{color:var(--ink-2);font-weight:500}
+
+  .gm{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;width:100%;padding:3px 8px;margin:-3px -8px;border-radius:var(--r-s);transition:background .12s}
+  .gm:hover{background:var(--surface-3)}
+  .gm__n{font-size:14.5px;font-weight:500;flex:1;min-width:0}
+  .gm__m{display:flex;gap:4px;flex:none;align-self:center}
+  .mk{display:inline-block;flex:none;color:var(--c)}
+  .mk-done{width:10px;height:10px;border-radius:50%;border:2.5px solid currentColor}
+  .mk-own{width:8px;height:8px;border-radius:1.5px;background:currentColor}
+  .gm__x{font-size:11px;color:var(--focus);flex:none;align-self:center;white-space:nowrap}
+
+  /* ── miniatures : un jeu se reconnaît à son image, pas à une pastille de texte ──
+     Tuile générée depuis le titre et l'époque, faute de jaquettes sous licence
+     (SPECIFICATION §19.2). La légende porte le nom, la tuile porte l'œil. */
+  .art{
+    position:relative;overflow:hidden;flex:none;border-radius:3px;
+    display:grid;place-items:center;background-color:var(--era-2);
+  }
+  .art::before{content:"";position:absolute;inset:0;background:var(--art-pattern);opacity:.22}
+  .art > span{
+    position:relative;z-index:1;font-family:"Fraunces",Georgia,serif;font-weight:800;
+    color:#FFF8EA;text-align:center;line-height:1.02;letter-spacing:-.015em;padding:0 8%;
+    text-shadow:0 1px 2px rgba(0,0,0,.3);overflow-wrap:break-word;hyphens:auto;
+  }
+
+  /* grappe : une session de saisie devient une étagère */
+  .cl__n,.cl__all{display:flex;flex-wrap:wrap;gap:12px 10px;margin-top:10px}
+  .cl__all{display:none}
+  .r.is-open .cl__all{display:flex}
+  .r.is-open .cl__n{display:none}
+  .sh{width:64px;display:flex;flex-direction:column;gap:5px}
+  .sh .art{width:100%;aspect-ratio:3/4;box-shadow:0 1px 2px rgba(0,0,0,.16)}
+  .sh .art > span{font-size:8.5px}
+  .sh em{font-style:normal;font-size:10.5px;line-height:1.22;color:var(--ink-3)}
+  .cl__more{font-size:12.5px;color:var(--focus);margin-top:10px;text-decoration:underline;text-underline-offset:3px}
+
+  /* jeu isolé : même vignette, à l'échelle de la ligne */
+  .gm__art{width:32px;height:43px;align-self:center}
+  .gm__art > span{font-size:6px}
+
+  .note{
+    font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:15px;line-height:1.45;
+    color:var(--ink);margin:8px 0 0;padding-left:12px;border-left:2px solid var(--c);max-width:50ch;
+  }
+
+  /* les fils traversent le vide : le trou devient une invitation sans casser la continuité */
+  .r--gap .r__b{padding-top:10px;padding-bottom:12px}
+  .gapb{font-size:12px;color:var(--ink-3);padding:5px 11px;border-radius:999px;border:1px dashed var(--line-strong)}
+  .gapb:hover{color:var(--ink);border-color:var(--ink-3)}
+
+  /* mise en lumière d'une même œuvre à travers les fils */
+  .app.is-lit .r{opacity:.32;transition:opacity .18s}
+  .app.is-lit .r.lit{opacity:1}
+  .r.lit .gm{background:color-mix(in srgb,var(--focus) 12%,transparent)}
+  .litbar{
+    position:sticky;bottom:0;z-index:6;display:none;align-items:center;gap:11px;
+    padding:11px 20px;background:var(--surface-2);border-top:1px solid var(--line-strong);
+    box-shadow:0 -10px 26px -14px rgba(26,24,21,.4);font-size:13px;
+  }
+  .app.is-lit .litbar{display:flex}
+  .litbar b{font-family:"Fraunces",Georgia,serif;font-size:15px;font-weight:600}
+  .litbar span{color:var(--ink-3);flex:1;min-width:0}
+  .litbar button{font-size:12.5px;color:var(--focus);text-decoration:underline;text-underline-offset:3px;flex:none}
+
+  .drawer{margin:0 20px 20px;border-top:1px solid var(--line);padding-top:13px}
+  .drawer__h{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--ink-2);width:100%;padding:5px 0}
+  .drawer__h b{color:var(--ink);font-weight:600}
+  .drawer__h svg{transition:transform .18s;color:var(--ink-3);flex:none}
+  .drawer.is-open .drawer__h svg{transform:rotate(90deg)}
+  .drawer__c{display:none;flex-wrap:wrap;gap:5px;padding:8px 0 2px}
+  .drawer.is-open .drawer__c{display:flex}
+  .drawer__c span{font-size:12.5px;padding:3px 9px;border-radius:999px;border:1px dashed var(--line-strong);color:var(--ink-3)}
+  .drawer__n{font-size:12px;color:var(--ink-3);margin:8px 0 0}
+
+  /* ─────────────── responsive ───────────────
+     Contrainte propre à cet écran : la gouttière de fils et la colonne
+     d'années sont incompressibles au-delà d'un certain point. Elles
+     rétrécissent par paliers, et le contenu garde toujours la priorité. */
+
+  @media (max-width:900px){
+    .shell{padding:16px 14px 34px}
+    .app{height:min(800px,calc(100vh - 176px))}
+  }
+  @supports (height:100dvh){
+    @media (max-width:900px){ .app{height:min(800px,calc(100dvh - 176px))} }
+  }
+
+  @media (max-width:720px){
+    :root{--lane:15px;--yearw:42px}
+    .shell__note{font-size:12px}
+    /* le commutateur passe sous le titre et occupe la largeur */
+    .switch{margin-left:0;width:100%}
+    .switch button{flex:1;text-align:center}
+
+    .synth{flex-direction:column;align-items:stretch;gap:16px;padding:18px 16px 15px}
+    .synth__p{min-width:0;max-width:none;font-size:21px}
+    .stats{gap:0;justify-content:space-between}
+    .stat b{font-size:20px}
+
+    /* la légende devient une bande qui défile : huit plateformes ne
+       peuvent pas occuper trois lignes collantes en haut de l'écran */
+    .heads{flex-wrap:nowrap;overflow-x:auto;padding:8px 14px;gap:14px;scrollbar-width:none}
+    .heads::-webkit-scrollbar{display:none}
+    .hd{white-space:nowrap;flex:none}
+    .heads__l{flex:none}
+
+    .rows{padding:6px 12px 18px}
+    .r__b{padding-left:9px}
+    .r--start .ttl{font-size:16.5px}
+    .gm__n{font-size:14px}
+    /* le badge d'œuvre récurrente descend sur sa propre ligne */
+    .gm__x{order:3;flex-basis:100%;align-self:flex-start;margin-top:1px}
+    .note{font-size:14px;max-width:none}
+    .cl__n,.cl__all{gap:11px 9px}
+    .sh{width:60px}
+
+    .litbar{flex-wrap:wrap;gap:6px 11px;padding:10px 14px}
+    #litInfo{flex-basis:100%;order:3;font-size:12px}
+    .drawer{margin:0 14px 18px}
+  }
+
+  @media (max-width:430px){
+    :root{--lane:13px;--yearw:36px}
+    .shell{padding:14px 10px 30px}
+    .shell__id{font-size:17px}
+    .rows{padding:6px 9px 16px}
+    .r__y{font-size:11.5px;padding-right:7px}
+    .r__b{padding-left:8px}
+    .synth__p{font-size:19.5px}
+    .stat b{font-size:18px}
+    .stat span{font-size:10.5px}
+    .nav{padding:10px 14px}
+    .drawer{margin:0 10px 16px}
+    .sh{width:54px}
+    .sh em{font-size:10px}
+    .sh .art > span{font-size:7.5px}
+    .gm__art{width:29px;height:39px}
+  }
+
+  /* écrans très étroits : on sacrifie la colonne d'années, pas les fils.
+     L'année se replie dans le contenu, en tête de ligne. */
+  @media (max-width:340px){
+    :root{--yearw:0px}
+    .r__y{display:none}
+    .r__b{padding-left:10px}
+    .r__b::before{
+      content:attr(data-y);font-size:11px;color:var(--ink-3);
+      font-variant-numeric:tabular-nums;display:block;margin-bottom:1px;
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
+</style>
+
+<div class="shell">
+  <div class="shell__bar">
+    <div class="shell__id">Fils parallèles <span>· E03, seconde piste</span></div>
+    <div class="switch" role="group" aria-label="Jeu de données">
+      <button id="dA" aria-pressed="true">Après une session</button>
+      <button id="dB" aria-pressed="false">Profil de 30 ans</button>
+    </div>
+  </div>
+  <p class="shell__note">
+    Le temps descend ; chaque plateforme est un <b>fil</b> qui naît, coexiste avec les autres, s'interrompt,
+    parfois reprend. Les jeux sont posés dessus, nommés en clair. Cliquez un jeu revenu plusieurs fois
+    dans votre vie — <b>Final Fantasy VII</b> dans le profil long — pour voir la même œuvre traverser trois fils.
+  </p>
+
+  <div class="app" id="app">
+    <div class="nav">
+      <span class="nav__t">Mon histoire</span>
+      <button class="add">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="scroll" id="scroll">
+      <section class="synth">
+        <p class="synth__p" id="phrase"></p>
+        <div class="stats" id="stats"></div>
+      </section>
+      <div class="heads" id="heads"></div>
+      <div class="rows" id="rows"></div>
+      <div class="drawer" id="drawer">
+        <button class="drawer__h" id="drawerH">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+          <span><b id="drawerN"></b> moments sans fil ni date</span>
+        </button>
+        <div class="drawer__c" id="drawerC"></div>
+        <p class="drawer__n">Ni date, ni plateforme retrouvée : les poser sur un fil inventerait deux précisions à la fois.</p>
+      </div>
+    </div>
+
+    <div class="litbar" id="litbar">
+      <b id="litName"></b>
+      <span id="litInfo"></span>
+      <button id="litClose">tout réafficher</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ERAS=[[1990,"--era-1"],[1995,"--era-2"],[2000,"--era-3"],[2006,"--era-4"],[2013,"--era-5"],[9999,"--era-6"]];
+const eraVar=y=>ERAS.find(e=>y<=e[0])[1];
+
+/* ── tuiles générées ──
+   La teinte de base vient du jeton d'époque, lu à chaud pour suivre le thème.
+   Le décalage de teinte et la trame dérivent du titre : deux voisines ne sont
+   jamais identiques, toutes restent dans la famille de leur génération. */
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return Math.abs(h);}
+function hexToHsl(hex){
+  const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;
+  let h=0,s=0;
+  if(d){s=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d+(g<b?6:0)):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;}
+  return [h,s*100,l*100];
+}
+const PATTERNS=[
+  d=>`repeating-linear-gradient(${45+d%20}deg, rgba(255,255,255,.5) 0 6%, transparent 6% 26%)`,
+  d=>`radial-gradient(circle at center, rgba(255,255,255,.5) 6%, transparent 7%) 0 0/${18+d%10}% ${14+d%8}%`,
+  d=>`repeating-linear-gradient(90deg, rgba(0,0,0,.26) 0 5%, transparent 5% ${22+d%10}%)`,
+  d=>`repeating-linear-gradient(0deg, rgba(255,255,255,.38) 0 3%, transparent 3% 21%), repeating-linear-gradient(90deg, rgba(255,255,255,.38) 0 3%, transparent 3% 21%)`,
+  d=>`repeating-conic-gradient(from ${d%90}deg at 50% 50%, rgba(255,255,255,.28) 0 11deg, transparent 11deg 29deg)`,
+  d=>`repeating-radial-gradient(circle at 22% 14%, transparent 0 14%, rgba(0,0,0,.2) 14% 17%)`
+];
+const hexCache={};
+function eraHex(v){
+  if(!hexCache[v]){
+    const c=getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+    hexCache[v]=/^#[0-9a-f]{6}$/i.test(c)?c:"#B0842B";
+  }
+  return hexCache[v];
+}
+function art(title,y){
+  const n=hash(title),[h,s,l]=hexToHsl(eraHex(eraVar(y)));
+  const hue=(h+(n%21)-10+360)%360;
+  const lum=Math.max(24,Math.min(58,l+((n>>5)%13)-6));
+  return `background-color:hsl(${hue.toFixed(0)} ${s.toFixed(0)}% ${lum.toFixed(0)}%);`
+       + `--art-pattern:${PATTERNS[n%PATTERNS.length](n)};`;
+}
+const shelf=(list,y)=>list.map(g=>
+  `<span class="sh"><span class="art" style="${art(g,y)}"><span>${g.split(":")[0]}</span></span><em>${g}</em></span>`
+).join("");
+
+/* Un fil = une plateforme sur une période. Une reprise ouvre un second
+   segment sur la même voie : la Super Nintendo revendue en 2001 et rachetée
+   en 2018 est le même objet qui revient, pas une nouvelle console. */
+const A={
+  phrase:"Vous jouez depuis <b>≈ 35 ans</b>.<br>Tout a commencé avec une <b>Game Boy</b>, <i>vers 1991</i>.",
+  stats:[["35","jeux"],["9","terminés"],["3","consoles"]],
+  unknown:["Sonic 2","Un jeu de foot sur Amiga","Tetris en salle","Prince of Persia","Un shoot spatial"],
+  rows:[
+    {y:1991,t:"approx",p:"gb",k:"start",ttl:"Game Boy",sub:"Offerte à Noël"},
+    {y:1992,p:"gb",k:"cluster",n:8,ttl:"8 jeux déclarés",
+     top:["Tetris","Super Mario Land","Zelda: Link's Awakening","Pokémon Rouge"],
+     all:["Tetris","Super Mario Land","Zelda: Link's Awakening","Pokémon Rouge","Kirby's Dream Land","Wario Land","F-1 Race","Castlevania: The Adventure"]},
+    {y:1993,p:"snes",k:"start",ttl:"Super Nintendo",sub:"La console de mes douze ans"},
+    {y:1994,p:"snes",k:"cluster",n:24,ttl:"24 jeux déclarés",
+     top:["Super Mario World","Zelda: A Link to the Past","Donkey Kong Country","Super Metroid"],
+     all:["Super Mario World","Zelda: A Link to the Past","Donkey Kong Country","Super Metroid","Secret of Mana","Street Fighter II Turbo","Star Wing","Terranigma","Mega Man X","F-Zero","Yoshi's Island","Super Mario Kart"]},
+    {y:1994,p:"gb",k:"end",ttl:"Game Boy rangée"},
+    {y:1997,p:"snes",k:"end",ttl:"Super Nintendo rangée"},
+    {y:1997,p:"ps1",k:"start",ttl:"PlayStation",sub:"Découverte chez un cousin"}
+  ],
+  plats:{gb:"Game Boy",snes:"Super Nintendo",ps1:"PlayStation"}
+};
+
+const B={
+  phrase:"Vous jouez depuis <b>≈ 35 ans</b>.<br>Tout a commencé avec une <b>Game Boy</b>, <i>vers 1991</i>.",
+  stats:[["487","jeux"],["214","terminés"],["18","consoles"],["37","à 100 %"]],
+  unknown:["Sonic 2","Un jeu de foot sur Amiga","Un shoot spatial en salle","Theme Hospital","Un RPG japonais jamais retrouvé","Prince of Persia","…et 6 autres"],
+  rows:[
+    {y:1991,t:"approx",p:"gb",k:"start",ttl:"Game Boy",sub:"Offerte à Noël"},
+    {y:1992,p:"gb",k:"cluster",n:8,ttl:"8 jeux",
+     top:["Tetris","Super Mario Land","Zelda: Link's Awakening"],
+     all:["Tetris","Super Mario Land","Zelda: Link's Awakening","Pokémon Rouge","Kirby's Dream Land","Wario Land","F-1 Race","Castlevania"]},
+    {y:1993,p:"snes",k:"start",ttl:"Super Nintendo",sub:"La console de mes douze ans"},
+    {y:1993,p:"snes",k:"cluster",n:24,ttl:"24 jeux",
+     top:["Super Mario World","Zelda: A Link to the Past","Donkey Kong Country"],
+     all:["Super Mario World","Zelda: A Link to the Past","Donkey Kong Country","Super Metroid","Secret of Mana","Star Wing","Terranigma","Mega Man X","F-Zero","Yoshi's Island"]},
+    {y:1994,p:"gb",k:"end",ttl:"Game Boy rangée"},
+    {y:1996,p:"snes",k:"game",ttl:"Terranigma",st:"done"},
+    {y:1997,p:"ps1",k:"start",ttl:"PlayStation",sub:"Découverte chez un cousin"},
+    {y:1998,t:"exact",p:"ps1",k:"game",ttl:"Final Fantasy VII",st:"done",work:"ff7",
+     wsub:"PlayStation · édition PAL Platinum",
+     note:"Fini un dimanche de novembre, chez mon frère. On avait commencé le vendredi soir."},
+    {y:1999,p:"ps1",k:"game",ttl:"Metal Gear Solid",st:"done"},
+    {y:2000,p:"ps1",k:"cluster",n:31,ttl:"31 jeux",
+     top:["Resident Evil 2","Gran Turismo","Silent Hill"],
+     all:["Resident Evil 2","Gran Turismo","Silent Hill","Tekken 3","Crash Bandicoot","Tomb Raider","Wipeout","Castlevania SOTN"]},
+    {y:2001,p:"snes",k:"end",ttl:"Super Nintendo vendue"},
+    {y:2002,p:"ps1",k:"end",ttl:"PlayStation vendue"},
+    {y:2002,p:"ps2",k:"start",ttl:"PlayStation 2"},
+    {y:2003,p:"ps2",k:"game",ttl:"Final Fantasy X",st:"done"},
+    {y:2004,p:"pc",k:"start",ttl:"PC",sub:"Half-Life 2 y était pour beaucoup"},
+    {y:2004,p:"pc",k:"game",ttl:"Half-Life 2",st:"done"},
+    {y:2005,p:"ps2",k:"game",ttl:"Shadow of the Colossus",st:"done"},
+    {y:2007,p:"pc",k:"game",ttl:"Portal",st:"done"},
+    {y:2008,p:"ps2",k:"end",ttl:"PlayStation 2 rangée"},
+    {y:2008,p:"x360",k:"start",ttl:"Xbox 360"},
+    {y:2010,p:"x360",k:"game",ttl:"Mass Effect 2",st:"done"},
+    {y:2011,p:"x360",k:"game",ttl:"Dark Souls",st:"done"},
+    {y:2012,p:"pc",k:"game",ttl:"Final Fantasy VII",st:"own",work:"ff7",wsub:"version numérique, rachetée sur PC"},
+    {y:2013,p:"pc",k:"cluster",n:55,ttl:"55 jeux",
+     top:["Braid","Mass Effect","Deus Ex: Human Revolution"],
+     all:["Braid","Mass Effect","Deus Ex: Human Revolution","Bastion","FTL","The Witcher 2","Limbo"]},
+    {y:2015,p:"x360",k:"end",ttl:"Xbox 360 rangée"},
+    {y:2018,t:"approx",p:"snes",k:"start",ttl:"Super Nintendo, de retour",sub:"Rachetée dans un vide-grenier",
+     note:"La même console que celle de mes douze ans. Vingt-cinq ans après, la manette n'avait pas bougé."},
+    {y:2019,p:"sw",k:"start",ttl:"Nintendo Switch"},
+    {y:2020,p:"sw",k:"game",ttl:"Hades",st:"done"},
+    {y:2021,p:"sw",k:"game",ttl:"Breath of the Wild",st:"done"},
+    {y:2024,p:"ps5",k:"start",ttl:"PlayStation 5"},
+    {y:2025,p:"ps5",k:"game",ttl:"Final Fantasy VII Remake",st:"own",work:"ff7",wsub:"le remake, vingt-sept ans après"}
+  ],
+  plats:{gb:"Game Boy",snes:"Super Nintendo",ps1:"PlayStation",ps2:"PlayStation 2",pc:"PC",x360:"Xbox 360",sw:"Nintendo Switch",ps5:"PlayStation 5"}
+};
+
+let data=A, openIdx=-1, lit=null;
+const $=id=>document.getElementById(id);
+const app=$("app");
+
+/* Attribution des voies : une plateforme prend la première voie libre à sa
+   naissance et la rend à sa fin. Une reprise retrouve sa voie si elle est libre. */
+function layout(rows){
+  const segs=[], lanesEnd=[], home={};
+  rows.forEach((r,i)=>{
+    if(r.k==="start"){
+      let ln = (home[r.p]!==undefined && (lanesEnd[home[r.p]]===undefined || lanesEnd[home[r.p]]<i))
+             ? home[r.p] : lanesEnd.findIndex(v=>v===undefined||v<i);
+      if(ln<0) ln=lanesEnd.length;
+      lanesEnd[ln]=Infinity; home[r.p]=ln;
+      segs.push({p:r.p,lane:ln,from:i,to:Infinity});
+    }
+    if(r.k==="end"){
+      const s=[...segs].reverse().find(s=>s.p===r.p && s.to===Infinity);
+      if(s){ s.to=i; lanesEnd[s.lane]=i; }
+    }
+  });
+  const maxLane=Math.max(0,...segs.map(s=>s.lane))+1;
+  return {segs,maxLane};
+}
+
+function render(){
+  $("phrase").innerHTML=data.phrase;
+  $("stats").innerHTML=data.stats.map(([n,l])=>`<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+
+  const rows=data.rows, {segs,maxLane}=layout(rows);
+  const laneOf=(i,p)=>{const s=segs.find(s=>s.p===p&&s.from<=i&&i<=s.to);return s?s.lane:0;};
+
+  /* fils actifs, en tête collante */
+  const active=[...new Set(segs.map(s=>s.p))];
+  $("heads").innerHTML='<span class="heads__l">Fils</span>'+active.map(p=>{
+    const s=segs.find(x=>x.p===p);
+    const y=rows[s.from].y;
+    return `<span class="hd"><i style="background:var(${eraVar(y)})"></i>${data.plats[p]}</span>`;
+  }).join("");
+
+  const html=[];
+  rows.forEach((r,i)=>{
+    const prev=rows[i-1];
+    if(prev && r.y-prev.y>=5) html.push(gapRow(prev.y,r.y,i,segs,maxLane));
+
+    const ln=laneOf(i,r.p), c=eraVar(r.y);
+    const lanes=[];
+    for(let L=0;L<maxLane;L++){
+      const s=segs.find(s=>s.lane===L && s.from<=i && i<=s.to);
+      if(!s){ lanes.push(`<span class="ln"></span>`); continue; }
+      const cc=eraVar(rows[s.from].y);
+      let cls="ln--full";
+      if(s.from===i) cls = s.to===i ? "ln--solo" : "ln--start";
+      else if(s.to===i) cls="ln--end";
+      let node="";
+      if(L===ln){
+        if(r.k==="start") node='<span class="nd nd--open"></span>';
+        else if(r.k==="end") node='<span class="nd nd--close"></span>';
+        else if(r.k==="cluster") node='<span class="nd nd--cluster"></span>';
+        else node=`<span class="nd ${r.st==="done"?"nd--done":"nd--game"}"></span>`;
+      }
+      lanes.push(`<span class="ln ${cls}" style="--c:var(${cc})">${node}</span>`);
+    }
+
+    const when = r.t==="approx" ? `<em>vers</em>${r.y}` : r.t==="exact" ? `${r.y}<em>15 nov.</em>` : r.y;
+    const whenPlain = r.t==="approx" ? `vers ${r.y}` : r.t==="exact" ? `15 nov. ${r.y}` : `${r.y}`;
+    const cx=`calc(${ln} * var(--lane) + var(--lane) / 2)`;
+    const cw=`calc(${maxLane-ln} * var(--lane) - var(--lane) / 2 + 10px)`;
+
+    let body="";
+    if(r.k==="start")
+      body=`<div class="ttl">${r.ttl}</div>${r.sub?`<div class="sub">${r.sub}</div>`:""}`;
+    else if(r.k==="end")
+      body=`<div class="ttl"><b>${r.ttl}</b></div>`;
+    else if(r.k==="cluster")
+      body=`<div class="sub">${r.ttl} · ${data.plats[r.p]}</div>
+        <div class="cl__n">${shelf(r.top,r.y)}</div>
+        <div class="cl__all">${shelf(r.all,r.y)}</div>
+        <button class="cl__more" data-open="${i}">${openIdx===i?"replier":`+ ${r.n-r.top.length} autres`}</button>`;
+    else
+      body=`<button class="gm" data-work="${r.work||""}" data-i="${i}">
+          <span class="art gm__art" style="${art(r.ttl,r.y)}"><span>${r.ttl.split(":")[0]}</span></span>
+          <span class="gm__n">${r.ttl}</span>
+          ${r.work?`<span class="gm__x">3 fois dans votre histoire ↗</span>`:""}
+          <span class="gm__m">${r.st==="done"?'<i class="mk mk-done"></i>':""}${r.st==="own"?'<i class="mk mk-own"></i>':""}</span>
+        </button>${r.wsub?`<div class="sub">${r.wsub}</div>`:""}`;
+
+    html.push(`<div class="r r--${r.k} ${openIdx===i?"is-open":""} ${lit&&r.work===lit?"lit":""}"
+        style="--c:var(${c});--cx:${cx};--cw:${cw}">
+      <div class="r__y">${when}</div>
+      <div class="r__g">${lanes.join("")}</div>
+      <div class="r__b" data-y="${whenPlain}">${body}${r.note?`<p class="note">${r.note}</p>`:""}</div>
+    </div>`);
+  });
+  $("rows").innerHTML=html.join("");
+
+  $("drawerN").textContent=data.unknown.length;
+  $("drawerC").innerHTML=data.unknown.map(u=>`<span>${u}</span>`).join("");
+}
+
+function gapRow(a,b,i,segs,maxLane){
+  const lanes=[];
+  for(let L=0;L<maxLane;L++){
+    const s=segs.find(s=>s.lane===L && s.from<i && i<=s.to);
+    lanes.push(s?`<span class="ln ln--full" style="--c:var(${eraVar(a)})"></span>`:`<span class="ln"></span>`);
+  }
+  return `<div class="r r--gap r--nolink">
+    <div class="r__y"></div><div class="r__g">${lanes.join("")}</div>
+    <div class="r__b"><button class="gapb">compléter ${a+1}–${b-1}</button></div></div>`;
+}
+
+$("rows").addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]");
+  if(o){ const i=+o.dataset.open; openIdx=openIdx===i?-1:i; render(); return; }
+  const g=e.target.closest("[data-work]");
+  if(g && g.dataset.work){
+    lit=g.dataset.work;
+    const occ=data.rows.filter(r=>r.work===lit);
+    $("litName").textContent=occ[0].ttl.replace(" Remake","");
+    $("litInfo").textContent=`${occ.length} fois entre ${occ[0].y} et ${occ[occ.length-1].y}, sur ${new Set(occ.map(o=>o.p)).size} plateformes — une même œuvre, plusieurs sorties.`;
+    app.classList.add("is-lit");
+    render();
+  }
+});
+$("litClose").addEventListener("click",()=>{ lit=null; app.classList.remove("is-lit"); render(); });
+$("drawerH").addEventListener("click",()=>$("drawer").classList.toggle("is-open"));
+
+function setData(d,w){
+  data=d; openIdx=-1; lit=null;
+  app.classList.remove("is-lit");
+  $("drawer").classList.remove("is-open");
+  $("dA").setAttribute("aria-pressed",String(w==="A"));
+  $("dB").setAttribute("aria-pressed",String(w==="B"));
+  render(); $("scroll").scrollTop=0;
+}
+$("dA").addEventListener("click",()=>setData(A,"A"));
+$("dB").addEventListener("click",()=>setData(B,"B"));
+
+/* les jetons d'époque changent entre thème clair et sombre :
+   on vide le cache et on recompose les tuiles */
+const mq=window.matchMedia("(prefers-color-scheme: dark)");
+const onTheme=()=>{ Object.keys(hexCache).forEach(k=>delete hexCache[k]); render(); };
+if(mq.addEventListener) mq.addEventListener("change",onTheme);
+else if(mq.addListener) mq.addListener(onTheme);
+
+render();
+</script>

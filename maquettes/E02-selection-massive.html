@@ -1,0 +1,570 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sélection massive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* ───────── jetons — palette complète en clair ───────── */
+  :root{
+    --surface:#FAF8F5;
+    --surface-2:#FFFFFF;
+    --surface-3:#F2EEE8;
+    --line:#E5E0D8;
+    --line-strong:#D2CABE;
+    --ink:#1A1815;
+    --ink-2:#57524B;
+    --ink-3:#8A8279;
+    --shadow:0 1px 2px rgba(26,24,21,.06), 0 8px 24px -12px rgba(26,24,21,.18);
+
+    /* époques : gradient de température, du passé chaud au présent froid */
+    --era-1:#A6572F;  /* 8 bits          jusqu'à 1990 */
+    --era-2:#B0842B;  /* 16 bits         1990–1995    */
+    --era-3:#6E7F4A;  /* 32/64 bits      1995–2000    */
+    --era-4:#3F7A80;  /* 128 bits        2000–2006    */
+    --era-5:#4A6BA8;  /* HD              2006–2013    */
+    --era-6:#6B5EA8;  /* moderne         depuis 2013  */
+
+    --era-2-ink:#7E5D14;
+    --era-3-ink:#4E5B32;
+
+    --tile-text:#FFF8EA;
+    --focus:#3F7A80;
+
+    --r-s:4px;
+    --r-m:10px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --surface:#16140F;
+      --surface-2:#1E1B16;
+      --surface-3:#24201A;
+      --line:#2E2A26;
+      --line-strong:#3D3832;
+      --ink:#F2EFE9;
+      --ink-2:#A8A199;
+      --ink-3:#6E6862;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+      --era-2-ink:#D8AC50;
+      --era-3-ink:#9AAF74;
+      --focus:#7FB3B8;
+    }
+  }
+  :root[data-theme="dark"]{
+    --surface:#16140F;
+    --surface-2:#1E1B16;
+    --surface-3:#24201A;
+    --line:#2E2A26;
+    --line-strong:#3D3832;
+    --ink:#F2EFE9;
+    --ink-2:#A8A199;
+    --ink-3:#6E6862;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --era-2-ink:#D8AC50;
+    --era-3-ink:#9AAF74;
+    --focus:#7FB3B8;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--surface);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", system-ui, "Segoe UI", sans-serif;
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+  :focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:2px}
+
+  /* ───────── chrome de maquette : discret, ne concurrence pas l'écran ───────── */
+  .shell{max-width:1360px;margin:0 auto;padding:20px 16px 40px;display:flex;flex-direction:column;gap:14px}
+  .shell__bar{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 18px}
+  .shell__id{font-family:"Fraunces",Georgia,serif;font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .shell__id span{color:var(--ink-3);font-weight:400}
+  .shell__note{color:var(--ink-3);font-size:12.5px;max-width:52ch}
+  .switch{margin-left:auto;display:flex;gap:2px;padding:2px;background:var(--surface-3);border-radius:var(--r-m);border:1px solid var(--line)}
+  .switch button{
+    padding:5px 13px;border-radius:7px;font-size:12.5px;font-weight:500;color:var(--ink-2);
+    transition:background .12s ease, color .12s ease;
+  }
+  .switch button[aria-pressed="true"]{background:var(--surface-2);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+  /* ───────── coquille d'application ───────── */
+  .app{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:var(--r-m);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    display:flex;flex-direction:column;
+    height:min(760px, calc(100vh - 150px));
+    min-height:520px;
+    width:100%;
+    transition:max-width .28s cubic-bezier(.2,.8,.2,1);
+  }
+  .app[data-view="mobile"]{max-width:390px;align-self:center}
+
+  /* en-tête */
+  .head{padding:14px 16px 12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:11px;flex:none}
+  .head__top{display:flex;align-items:center;gap:11px}
+  .back{width:32px;height:32px;display:grid;place-items:center;border-radius:var(--r-s);color:var(--ink-2);flex:none}
+  .back:hover{background:var(--surface-3)}
+  .head__title{display:flex;flex-direction:column;gap:1px;min-width:0}
+  .head__title b{font-family:"Fraunces",Georgia,serif;font-size:19px;font-weight:600;letter-spacing:-.01em;line-height:1.15}
+  .head__title small{color:var(--ink-3);font-size:12px;display:flex;align-items:center;gap:6px}
+  .chip-region{
+    border:1px solid var(--line-strong);border-radius:999px;padding:0 7px;
+    font-size:10.5px;font-weight:600;letter-spacing:.06em;color:var(--ink-2);
+  }
+
+  /* période */
+  .period{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .period__label{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .period__pills{display:flex;gap:5px;flex-wrap:wrap}
+  .pill{
+    padding:4px 11px;border:1px solid var(--line-strong);border-radius:999px;
+    font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;
+    transition:border-color .12s ease, color .12s ease, background .12s ease;
+  }
+  .pill:hover{border-color:var(--ink-3)}
+  .pill[aria-pressed="true"]{
+    background:color-mix(in srgb, var(--era-2) 13%, transparent);
+    border-color:color-mix(in srgb, var(--era-2) 55%, transparent);
+    color:var(--era-2-ink);font-weight:600;
+  }
+
+  /* barre de contrôle */
+  .controls{
+    padding:9px 16px;border-bottom:1px solid var(--line);background:var(--surface);
+    display:flex;align-items:center;gap:12px;flex:none;
+  }
+  .count{font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .count b{color:var(--ink);font-weight:600}
+  .search{
+    margin-left:auto;display:flex;align-items:center;gap:7px;
+    background:var(--surface-2);border:1px solid var(--line-strong);border-radius:var(--r-s);
+    padding:5px 9px;min-width:0;
+  }
+  .search svg{flex:none;color:var(--ink-3)}
+  .search input{
+    border:none;background:none;font:inherit;font-size:13px;color:var(--ink);
+    width:130px;min-width:0;outline:none;
+  }
+  .search input::placeholder{color:var(--ink-3)}
+
+  /* contenu */
+  .content{flex:1;overflow-y:auto;overscroll-behavior:contain}
+
+  /* ══ tuile générée : la réponse au problème des jaquettes ══ */
+  .art{
+    position:relative;overflow:hidden;flex:none;
+    display:grid;place-items:center;
+    border-radius:var(--r-s);
+  }
+  .art::before{content:"";position:absolute;inset:0;background:var(--art-pattern);opacity:.22}
+  .art span{
+    position:relative;z-index:1;
+    font-family:"Fraunces",Georgia,serif;font-weight:800;
+    color:var(--tile-text);text-align:center;line-height:1.02;
+    letter-spacing:-.015em;padding:0 8%;
+    text-shadow:0 1px 3px rgba(0,0,0,.22);
+    overflow-wrap:break-word;hyphens:auto;
+  }
+
+  /* ══ MOBILE — liste dense, la ligne entière est la cible ══ */
+  .list{display:flex;flex-direction:column}
+  .row{position:relative;border-bottom:1px solid var(--line)}
+  .row__main{
+    width:100%;display:flex;align-items:center;gap:12px;
+    padding:8px 16px;min-height:56px;text-align:left;
+    transition:background .12s ease;
+  }
+  .row__main:hover{background:var(--surface-3)}
+  .row__art{width:36px;height:48px;font-size:7px}
+  .row__art span{font-size:7.5px}
+  .row__txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+  .row__name{font-size:14.5px;font-weight:500;line-height:1.25}
+  .row__year{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .row__state{display:flex;align-items:center;gap:5px;flex:none;min-width:26px;justify-content:flex-end}
+
+  .row.is-out .row__art,.row.is-out .row__txt{opacity:.4}
+  .row.is-out .row__name{text-decoration:line-through;text-decoration-color:var(--ink-3)}
+
+  /* affinage : n'existe que sur la ligne active, cibles pleines */
+  .refine{display:none;gap:8px;padding:0 16px 12px 64px}
+  .row.is-open .refine{display:flex}
+  .refine button{
+    flex:1;min-height:44px;border:1px solid var(--line-strong);border-radius:var(--r-s);
+    font-size:13px;color:var(--ink-2);display:flex;align-items:center;justify-content:center;gap:7px;
+    transition:border-color .12s ease,background .12s ease,color .12s ease;
+  }
+  .refine button:hover{border-color:var(--ink-3)}
+  .refine button[aria-pressed="true"]{
+    background:color-mix(in srgb, var(--era-2) 13%, transparent);
+    border-color:color-mix(in srgb, var(--era-2) 55%, transparent);
+    color:var(--era-2-ink);font-weight:600;
+  }
+  .refine .drop{flex:0 0 44px;color:var(--ink-3);font-size:16px}
+
+  /* ══ marques d'état : rond = vécu, carré = objet possédé ══ */
+  .mk{display:inline-block;flex:none}
+  .mk-played{width:9px;height:9px;border-radius:50%;background:var(--era-2-ink)}
+  .mk-done{width:11px;height:11px;border-radius:50%;border:2.5px solid var(--era-2-ink)}
+  .mk-owned{width:9px;height:9px;border-radius:1.5px;background:var(--era-2-ink)}
+  .mk-never{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-3)}
+  .refine .mk-done,.refine .mk-owned{background:currentColor;border-color:currentColor}
+  .refine .mk-done{background:none;border:2.5px solid currentColor}
+
+  /* ══ DESKTOP — grille visuelle ══ */
+  .grid{display:none;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;padding:20px}
+  .cell{display:flex;flex-direction:column;gap:7px}
+  .cell__frame{position:relative;width:100%;aspect-ratio:3/4}
+  .cell__art{position:absolute;inset:0;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+  .cell__art span{font-size:clamp(13px,1.35vw,17px)}
+  .cell__btn{position:absolute;inset:0;border-radius:var(--r-s)}
+  .cell__meta{display:flex;align-items:flex-start;gap:6px}
+  .cell__meta div{flex:1;min-width:0}
+  .cell__name{font-size:13px;font-weight:500;line-height:1.3}
+  .cell__year{font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .cell__state{display:flex;gap:4px;padding-top:3px;flex:none}
+  .cell.is-out .cell__art,.cell.is-out .cell__meta{opacity:.4}
+  .cell.is-out .cell__name{text-decoration:line-through;text-decoration-color:var(--ink-3)}
+
+  /* affinages au survol : gratuits sur desktop, ils n'existent pas sur mobile */
+  .hover{
+    position:absolute;left:6px;right:6px;bottom:6px;
+    display:flex;gap:4px;padding:6px;
+    background:color-mix(in srgb, #1A1815 78%, transparent);
+    backdrop-filter:blur(6px);border-radius:var(--r-s);
+    opacity:0;pointer-events:none;transition:opacity .12s ease;
+  }
+  .cell:hover .hover,.cell:focus-within .hover{opacity:1;pointer-events:auto}
+  .hover button{
+    flex:1;min-height:30px;border-radius:3px;color:#F2EFE9;font-size:11px;font-weight:500;
+    display:grid;place-items:center;background:rgba(255,255,255,.09);
+  }
+  .hover button:hover{background:rgba(255,255,255,.2)}
+  .hover button[aria-pressed="true"]{background:var(--era-2);color:#1A1815}
+
+  @media (min-width:900px){
+    .app[data-view="desktop"] .list{display:none}
+    .app[data-view="desktop"] .grid{display:grid}
+  }
+
+  /* ══ pied : la récompense — une bande qui pousse, pas un compteur ══ */
+  .foot{
+    flex:none;border-top:1px solid var(--line);background:var(--surface);
+    padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .foot__left{flex:1;min-width:180px;display:flex;flex-direction:column;gap:7px}
+  .band{display:flex;gap:2px;height:9px;align-items:stretch}
+  .band__seg{border-radius:1.5px;transition:flex-grow .4s cubic-bezier(.2,.8,.2,1)}
+  .band__empty{flex:1;border-radius:1.5px;background:var(--line);min-width:16px}
+  .foot__stats{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .foot__stats b{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;color:var(--ink)}
+  .cta{
+    padding:10px 17px;border-radius:var(--r-s);background:var(--ink);color:var(--surface-2);
+    font-size:13.5px;font-weight:600;white-space:nowrap;
+    transition:opacity .12s ease;
+  }
+  .cta:hover{opacity:.85}
+
+  .empty{padding:48px 24px;text-align:center;color:var(--ink-3);font-size:14px}
+
+  /* légende de maquette */
+  .key{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:12px;color:var(--ink-3);padding:0 2px}
+  .key span{display:flex;align-items:center;gap:7px}
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition-duration:.01ms !important}
+  }
+  @media (max-width:899px){
+    .switch{display:none}
+    .app{max-width:none !important;height:calc(100vh - 190px)}
+  }
+</style>
+
+<div class="shell">
+  <div class="shell__bar">
+    <div class="shell__id">Sélection massive <span>· E02</span></div>
+    <div class="switch" role="group" aria-label="Point de rupture">
+      <button id="vMobile" aria-pressed="false">Mobile 390</button>
+      <button id="vDesktop" aria-pressed="true">Desktop</button>
+    </div>
+  </div>
+  <p class="shell__note">
+    Un geste déclare « joué ». L'affinage terminé et possédé est une seconde passe, jamais exigée.
+    Aucune jaquette : les vignettes sont générées depuis le titre, la plateforme et l'époque.
+  </p>
+
+  <div class="app" id="app" data-view="desktop">
+
+    <header class="head">
+      <div class="head__top">
+        <button class="back" aria-label="Retour">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="head__title">
+          <b>Super Nintendo</b>
+          <small><span class="chip-region">PAL</span> titres et noms de la zone PAL</small>
+        </div>
+      </div>
+      <div class="period">
+        <span class="period__label">J'y jouais</span>
+        <div class="period__pills" role="group" aria-label="Période appliquée aux nouvelles déclarations">
+          <button class="pill" aria-pressed="false">1990–1992</button>
+          <button class="pill" aria-pressed="true">1993–1997</button>
+          <button class="pill" aria-pressed="false">1998–2000</button>
+          <button class="pill" aria-pressed="false">je ne sais plus</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <span class="count"><b id="cTotal">26</b> jeux · <b id="cDone">8</b> déclarés</span>
+      <label class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Filtrer la liste" aria-label="Filtrer la liste">
+      </label>
+    </div>
+
+    <div class="content" id="content">
+      <div class="list" id="list" role="list"></div>
+      <div class="grid" id="grid" role="list"></div>
+    </div>
+
+    <footer class="foot">
+      <div class="foot__left">
+        <div class="band" id="band"></div>
+        <div class="foot__stats" id="stats"></div>
+      </div>
+      <button class="cta">Voir mon histoire →</button>
+    </footer>
+
+  </div>
+
+  <div class="key">
+    <span><i class="mk mk-played"></i> joué — un vécu, donc rond</span>
+    <span><i class="mk mk-done"></i> terminé</span>
+    <span><i class="mk mk-owned"></i> possédé — un objet, donc carré</span>
+    <span><i class="mk mk-never"></i> jamais joué</span>
+  </div>
+</div>
+
+<script>
+/* ── Ludothèque Super Nintendo, zone PAL, triée par notoriété ──
+   Star Wing, Super Probotector et Illusion of Time sont les noms PAL
+   de Star Fox, Contra III et Illusion of Gaia — la région change les
+   titres autant que les dates. Terranigma n'est jamais sorti aux USA. */
+const GAMES = [
+  ["Super Mario World", 1992], ["The Legend of Zelda: A Link to the Past", 1992],
+  ["Donkey Kong Country", 1994], ["Super Metroid", 1994],
+  ["Super Mario Kart", 1993], ["Street Fighter II Turbo", 1993],
+  ["Yoshi's Island", 1995], ["Secret of Mana", 1994],
+  ["Star Wing", 1993], ["Mega Man X", 1994],
+  ["Donkey Kong Country 2", 1995], ["F-Zero", 1992],
+  ["Super Probotector: Alien Rebels", 1994], ["Mortal Kombat II", 1994],
+  ["Terranigma", 1996], ["Illusion of Time", 1994],
+  ["Killer Instinct", 1995], ["Super Punch-Out!!", 1994],
+  ["Aladdin", 1993], ["The Lion King", 1994],
+  ["Donkey Kong Country 3", 1996], ["Kirby Super Star", 1996],
+  ["International Superstar Soccer", 1995], ["Pilotwings", 1992],
+  ["Super Tennis", 1992], ["SimCity", 1992]
+];
+
+const ERAS = [
+  {max:1990, v:"--era-1", hex:"#A6572F", name:"8 bits"},
+  {max:1995, v:"--era-2", hex:"#B0842B", name:"16 bits"},
+  {max:2000, v:"--era-3", hex:"#6E7F4A", name:"32/64 bits"},
+  {max:2006, v:"--era-4", hex:"#3F7A80", name:"128 bits"},
+  {max:2013, v:"--era-5", hex:"#4A6BA8", name:"HD"},
+  {max:9999, v:"--era-6", hex:"#6B5EA8", name:"moderne"}
+];
+const eraOf = y => ERAS.find(e => y <= e.max);
+
+function hexToHsl(hex){
+  const r = parseInt(hex.slice(1,3),16)/255,
+        g = parseInt(hex.slice(3,5),16)/255,
+        b = parseInt(hex.slice(5,7),16)/255;
+  const mx = Math.max(r,g,b), mn = Math.min(r,g,b), l = (mx+mn)/2, d = mx-mn;
+  let h = 0, s = 0;
+  if (d){
+    s = d / (1 - Math.abs(2*l - 1));
+    h = mx === r ? ((g-b)/d + (g<b ? 6 : 0)) : mx === g ? (b-r)/d + 2 : (r-g)/d + 4;
+    h *= 60;
+  }
+  return [h, s*100, l*100];
+}
+
+/* Trame dérivée du titre : deux voisins ne sont jamais identiques,
+   mais tous restent dans la famille chromatique de leur époque. */
+function hash(s){ let h = 2166136261; for (let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return Math.abs(h); }
+
+const PATTERNS = [
+  d => `repeating-linear-gradient(${45+d%20}deg, rgba(255,255,255,.5) 0 1.5px, transparent 1.5px 9px)`,
+  d => `radial-gradient(circle at center, rgba(255,255,255,.55) 1.2px, transparent 1.3px) 0 0/${9+d%5}px ${9+d%5}px`,
+  d => `repeating-linear-gradient(90deg, rgba(0,0,0,.28) 0 2px, transparent 2px ${10+d%6}px)`,
+  d => `repeating-linear-gradient(0deg, rgba(255,255,255,.4) 0 1px, transparent 1px 8px), repeating-linear-gradient(90deg, rgba(255,255,255,.4) 0 1px, transparent 1px 8px)`,
+  d => `repeating-conic-gradient(from ${d%90}deg at 50% 50%, rgba(255,255,255,.3) 0 12deg, transparent 12deg 30deg)`,
+  d => `repeating-radial-gradient(circle at 20% 15%, transparent 0 6px, rgba(0,0,0,.22) 6px 7px)`
+];
+
+function artStyle(title, year){
+  const n = hash(title);
+  const [h, s, l] = hexToHsl(eraOf(year).hex);
+  const hue = (h + (n % 21) - 10 + 360) % 360;      // ±10° de teinte
+  const lum = Math.max(24, Math.min(58, l + ((n >> 5) % 13) - 6));
+  return `background-color:hsl(${hue.toFixed(0)} ${s.toFixed(0)}% ${lum.toFixed(0)}%);`
+       + `--art-pattern:${PATTERNS[n % PATTERNS.length](n)};`;
+}
+
+/* état : 0 rien · p joué · t terminé · o possédé · n jamais joué */
+const state = GAMES.map(() => ({p:false, t:false, o:false, n:false}));
+[0,1,3,5,8,11,15,24].forEach(i => state[i].p = true);
+[1,3].forEach(i => state[i].t = true);
+[0,1,5,11].forEach(i => state[i].o = true);
+state[24].p = false; state[24].n = true;
+
+const list = document.getElementById("list");
+const grid = document.getElementById("grid");
+const q = document.getElementById("q");
+let openRow = -1;
+
+const marks = s => (s.n ? '<i class="mk mk-never"></i>'
+  : (s.t ? '<i class="mk mk-done"></i>' : s.p ? '<i class="mk mk-played"></i>' : '')
+  + (s.o ? '<i class="mk mk-owned"></i>' : ''));
+
+function visible(){
+  const term = q.value.trim().toLowerCase();
+  return GAMES.map((g,i) => ({g,i}))
+    .filter(({g}) => !term || g[0].toLowerCase().includes(term));
+}
+
+function render(){
+  const items = visible();
+
+  if (!items.length){
+    list.innerHTML = grid.innerHTML =
+      '<p class="empty">Aucun titre ne correspond.<br>Vous pouvez l\'ajouter comme jeu non répertorié.</p>';
+  } else {
+    list.innerHTML = items.map(({g,i}) => {
+      const s = state[i], cls = ["row", s.n && "is-out", openRow === i && "is-open"].filter(Boolean).join(" ");
+      return `<div class="${cls}" role="listitem">
+        <button class="row__main" data-act="play" data-i="${i}" aria-pressed="${s.p||s.t}">
+          <span class="art row__art" style="${artStyle(g[0],g[1])}"><span>${g[0].split(":")[0]}</span></span>
+          <span class="row__txt">
+            <span class="row__name">${g[0]}</span>
+            <span class="row__year">${g[1]}</span>
+          </span>
+          <span class="row__state" data-act="open" data-i="${i}">${marks(s)}</span>
+        </button>
+        <div class="refine">
+          <button data-act="done" data-i="${i}" aria-pressed="${s.t}"><i class="mk mk-done"></i> terminé</button>
+          <button data-act="own"  data-i="${i}" aria-pressed="${s.o}"><i class="mk mk-owned"></i> possédé</button>
+          <button class="drop" data-act="never" data-i="${i}" aria-label="Jamais joué">×</button>
+        </div>
+      </div>`;
+    }).join("");
+
+    grid.innerHTML = items.map(({g,i}) => {
+      const s = state[i], cls = ["cell", s.n && "is-out"].filter(Boolean).join(" ");
+      return `<div class="${cls}" role="listitem">
+        <div class="cell__frame">
+          <span class="art cell__art" style="${artStyle(g[0],g[1])}"><span>${g[0].split(":")[0]}</span></span>
+          <button class="cell__btn" data-act="play" data-i="${i}" aria-pressed="${s.p||s.t}" aria-label="${g[0]} — j'y ai joué"></button>
+          <div class="hover">
+            <button data-act="play"  data-i="${i}" aria-pressed="${s.p||s.t}">joué</button>
+            <button data-act="done"  data-i="${i}" aria-pressed="${s.t}">terminé</button>
+            <button data-act="own"   data-i="${i}" aria-pressed="${s.o}">possédé</button>
+            <button data-act="never" data-i="${i}" aria-pressed="${s.n}" aria-label="Jamais joué">×</button>
+          </div>
+        </div>
+        <div class="cell__meta">
+          <div>
+            <div class="cell__name">${g[0]}</div>
+            <div class="cell__year">${g[1]}</div>
+          </div>
+          <div class="cell__state">${marks(s)}</div>
+        </div>
+      </div>`;
+    }).join("");
+  }
+  tally();
+}
+
+function tally(){
+  const dec = state.filter(s => s.p || s.t || s.o);
+  const done = state.filter(s => s.t).length;
+  const owned = state.filter(s => s.o).length;
+
+  const byEra = {};
+  state.forEach((s,i) => {
+    if (!(s.p || s.t || s.o)) return;
+    const e = eraOf(GAMES[i][1]);
+    byEra[e.v] = (byEra[e.v] || 0) + 1;
+  });
+
+  const band = document.getElementById("band");
+  const total = Object.values(byEra).reduce((a,b) => a+b, 0);
+  band.innerHTML = total
+    ? Object.entries(byEra).map(([v,n]) =>
+        `<span class="band__seg" style="flex:${n} 1 0;background:var(${v})"></span>`).join("")
+      + (total < 26 ? `<span class="band__empty" style="flex:${(26-total)*.55} 1 0"></span>` : "")
+    : '<span class="band__empty"></span>';
+
+  document.getElementById("stats").innerHTML =
+    `<b>${dec.length}</b> jeu${dec.length>1?"x":""} · ${done} terminé${done>1?"s":""} · ${owned} possédé${owned>1?"s":""}`;
+  document.getElementById("cDone").textContent = dec.length;
+  document.getElementById("cTotal").textContent = visible().length;
+}
+
+document.getElementById("content").addEventListener("click", e => {
+  const t = e.target.closest("[data-act]");
+  if (!t) return;
+  const i = +t.dataset.i, s = state[i];
+
+  switch (t.dataset.act){
+    case "open":  e.stopPropagation(); openRow = openRow === i ? -1 : i; break;
+    case "play":  s.n = false; if (s.t) { s.t = s.p = false; } else { s.p = !s.p; } break;
+    case "done":  s.n = false; s.t = !s.t; if (s.t) s.p = true; break;
+    case "own":   s.n = false; s.o = !s.o; break;
+    case "never": s.n = !s.n; if (s.n) { s.p = s.t = s.o = false; openRow = -1; } break;
+  }
+  render();
+});
+
+/* Le clavier est le mode le plus rapide sur desktop — le budget d'un geste en dépend. */
+document.getElementById("content").addEventListener("keydown", e => {
+  const t = e.target.closest("[data-act]");
+  if (!t) return;
+  const i = +t.dataset.i, s = state[i], k = e.key.toLowerCase();
+  if (!["t","p","x"].includes(k)) return;
+  e.preventDefault();
+  s.n = false;
+  if (k === "t"){ s.t = !s.t; if (s.t) s.p = true; }
+  if (k === "p"){ s.o = !s.o; }
+  if (k === "x"){ s.n = true; s.p = s.t = s.o = false; }
+  render();
+});
+
+q.addEventListener("input", () => { openRow = -1; render(); });
+
+document.querySelectorAll(".period__pills .pill").forEach(b =>
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".period__pills .pill")
+      .forEach(o => o.setAttribute("aria-pressed", String(o === b)));
+  }));
+
+const app = document.getElementById("app");
+const vM = document.getElementById("vMobile"), vD = document.getElementById("vDesktop");
+function view(v){
+  app.dataset.view = v;
+  vM.setAttribute("aria-pressed", String(v === "mobile"));
+  vD.setAttribute("aria-pressed", String(v === "desktop"));
+}
+vM.addEventListener("click", () => view("mobile"));
+vD.addEventListener("click", () => view("desktop"));
+
+render();
+</script>
