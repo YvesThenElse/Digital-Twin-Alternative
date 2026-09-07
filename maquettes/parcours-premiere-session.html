@@ -1,0 +1,1335 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Première session</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --surface:#FAF8F5; --surface-2:#FFFFFF; --surface-3:#F2EEE8;
+    --line:#E5E0D8; --line-strong:#D2CABE;
+    --ink:#1A1815; --ink-2:#57524B; --ink-3:#8A8279;
+    --shadow:0 1px 2px rgba(26,24,21,.06), 0 8px 24px -12px rgba(26,24,21,.18);
+    --era-1:#A6572F; --era-2:#B0842B; --era-3:#6E7F4A;
+    --era-4:#3F7A80; --era-5:#4A6BA8; --era-6:#6B5EA8;
+    --era-ink:#7E5D14; --ok:#5C7040;
+    --focus:#3F7A80; --r-s:4px; --r-m:10px;
+    --lane:17px; --yearw:46px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --surface:#16140F; --surface-2:#1E1B16; --surface-3:#24201A;
+      --line:#2E2A26; --line-strong:#3D3832;
+      --ink:#F2EFE9; --ink-2:#A8A199; --ink-3:#6E6862;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+      --era-1:#C9713F; --era-2:#D8A63C; --era-3:#8CA061;
+      --era-4:#57A0A8; --era-5:#6D8FD0; --era-6:#8F81D0;
+      --era-ink:#D8AC50; --ok:#9AAF74; --focus:#7FB3B8;
+    }
+  }
+  :root[data-theme="dark"]{
+    --surface:#16140F; --surface-2:#1E1B16; --surface-3:#24201A;
+    --line:#2E2A26; --line-strong:#3D3832;
+    --ink:#F2EFE9; --ink-2:#A8A199; --ink-3:#6E6862;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --era-1:#C9713F; --era-2:#D8A63C; --era-3:#8CA061;
+    --era-4:#57A0A8; --era-5:#6D8FD0; --era-6:#8F81D0;
+    --era-ink:#D8AC50; --ok:#9AAF74; --focus:#7FB3B8;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--surface);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;text-align:left}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
+
+  .shell{max-width:1080px;margin:0 auto;padding:14px 14px 36px;display:flex;flex-direction:column;gap:11px}
+
+  /* ── instrumentation : c'est elle qui fait de ce prototype un instrument ── */
+  .hud{
+    position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;
+    padding:10px 14px;background:var(--surface-2);border:1px solid var(--line);
+    border-radius:var(--r-m);box-shadow:var(--shadow);
+  }
+  .hud__id{font-family:"Fraunces",Georgia,serif;font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+  .hud__id span{color:var(--ink-3);font-weight:400;font-size:13px}
+  .hud__m{display:flex;gap:14px;margin-left:auto;align-items:baseline}
+  .m{display:flex;align-items:baseline;gap:5px;font-size:12px;color:var(--ink-3)}
+  .m b{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .m.is-live b{color:var(--era-ink)}
+  .hud__r{font-size:12px;color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;flex:none}
+  .hud__r:hover{color:var(--ink)}
+
+  .steps{display:flex;gap:5px;width:100%;order:3}
+  .steps i{flex:1;height:3px;border-radius:2px;background:var(--line);transition:background .3s}
+  .steps i.on{background:var(--era-2)}
+
+  .app{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-m);
+    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
+    height:min(760px,calc(100vh - 150px));min-height:min(560px,74vh);position:relative;
+  }
+  @supports (height:100dvh){.app{height:min(760px,calc(100dvh - 150px));min-height:min(560px,74dvh)}}
+  .sc{display:none;flex-direction:column;flex:1;min-height:0}
+  .app[data-s="w1"] #w1,.app[data-s="w2"] #w2,.app[data-s="w3"] #w3,
+  .app[data-s="w2y"] #w2y,.app[data-s="w2a"] #w2a,.app[data-s="w2b"] #w2b,
+  .app[data-s="pick"] #pick,.app[data-s="add"] #add,.app[data-s="story"] #story{display:flex}
+
+  /* ── tuiles générées ── */
+  .art{position:relative;overflow:hidden;flex:none;border-radius:var(--r-s);display:grid;place-items:center;background-color:var(--era-2)}
+  .art::before{content:"";position:absolute;inset:0;background:var(--art-pattern);opacity:.22}
+  .art > span{
+    position:relative;z-index:1;font-family:"Fraunces",Georgia,serif;font-weight:800;
+    color:#FFF8EA;text-align:center;line-height:1.03;letter-spacing:-.015em;padding:0 8%;
+    text-shadow:0 1px 3px rgba(0,0,0,.3);overflow-wrap:break-word;hyphens:auto;
+  }
+
+  /* ── E01 ── */
+  .w{flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:28px 24px;overflow-y:auto}
+  .w h2{font-family:"Fraunces",Georgia,serif;font-size:clamp(22px,3.4vw,30px);font-weight:400;line-height:1.22;letter-spacing:-.018em;margin:0;text-wrap:balance;max-width:20ch}
+  .w h2 b{font-weight:600}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:12px;max-width:560px}
+  .card{
+    border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;background:var(--surface-2);
+    display:flex;flex-direction:column;transition:transform .14s,border-color .14s,box-shadow .14s;
+  }
+  .card:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:var(--shadow)}
+  .card .art{width:100%;aspect-ratio:4/3;border-radius:0}
+  .card .art > span{font-size:13px}
+  .card em{font-style:normal;font-size:12.5px;font-weight:500;padding:8px 9px;line-height:1.25}
+  .alt{font-size:13px;color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;align-self:flex-start}
+  .alt:hover{color:var(--ink-2)}
+
+  /* ── datation ──
+     Le référentiel connaît la fenêtre commerciale de la console. Elle sert
+     de cadre et surtout d'amorce de mémoire : rappeler « sortie en 1992 »
+     aide bien plus à se situer qu'une liste de décennies. */
+  .ctx{
+    display:flex;gap:10px;padding:12px 14px;border-radius:var(--r-s);
+    background:var(--surface-3);font-size:13px;color:var(--ink-2);max-width:470px;line-height:1.45;
+  }
+  .ctx b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .ctx svg{flex:none;color:var(--ink-3);margin-top:2px}
+
+  /* la première question porte sur le type de souvenir, pas sur un niveau de confiance */
+  .fork{display:flex;flex-direction:column;gap:9px;max-width:470px}
+  .fk{
+    display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 15px;
+    border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface-2);
+    transition:transform .14s,border-color .14s,box-shadow .14s;
+  }
+  .fk:hover{transform:translateY(-1px);border-color:var(--line-strong);box-shadow:var(--shadow)}
+  .fk div{flex:1;min-width:0}
+  .fk b{font-family:"Fraunces",Georgia,serif;font-size:16.5px;font-weight:600;display:block;line-height:1.25}
+  .fk span{font-size:12.5px;color:var(--ink-3);display:block;margin-top:1px}
+  .fk svg{flex:none;color:var(--ink-3)}
+
+  /* grille d'années : la fenêtre commerciale est teintée, l'occasion reste
+     atteignable en pointillé — on ne l'interdit pas, on la signale */
+  .years{display:flex;flex-wrap:wrap;gap:7px;max-width:540px}
+  .yr{
+    min-width:62px;min-height:44px;padding:0 11px;border-radius:var(--r-s);
+    border:1px solid var(--line-strong);font-size:14px;font-variant-numeric:tabular-nums;
+    display:inline-flex;align-items:center;justify-content:center;transition:all .12s;
+  }
+  .yr.new{background:color-mix(in srgb,var(--era-2) 10%,transparent);border-color:color-mix(in srgb,var(--era-2) 42%,transparent)}
+  .yr.used{border-style:dashed;color:var(--ink-3)}
+  .yr:hover{border-color:var(--ink-3)}
+  .yr[aria-pressed="true"]{background:var(--ink);color:var(--surface-2);border-color:var(--ink);border-style:solid;font-weight:600}
+  .lg{display:flex;gap:18px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-3)}
+  .lg span{display:flex;align-items:center;gap:7px}
+  .lg i{width:15px;height:15px;border-radius:3px;flex:none}
+  .lg i.n{background:color-mix(in srgb,var(--era-2) 10%,transparent);border:1px solid color-mix(in srgb,var(--era-2) 42%,transparent)}
+  .lg i.u{border:1px dashed var(--line-strong)}
+
+  /* bandes dérivées de la fenêtre, pas de décennies génériques */
+  .bands{display:flex;flex-direction:column;gap:8px;max-width:470px}
+  .bd{
+    display:flex;align-items:center;gap:12px;min-height:60px;padding:11px 15px;
+    border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface-2);
+    transition:transform .14s,border-color .14s,box-shadow .14s;
+  }
+  .bd:hover{transform:translateY(-1px);border-color:var(--line-strong);box-shadow:var(--shadow)}
+  .bd div{flex:1;min-width:0}
+  .bd b{font-size:15px;font-weight:500;display:block}
+  .bd small{font-size:12px;color:var(--ink-3);display:block}
+  .bd em{font-style:normal;font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;flex:none}
+
+  /* âge : le souvenir le plus fiable, souvent — encore faut-il l'année de naissance */
+  .agebox{display:flex;flex-wrap:wrap;gap:16px 26px;align-items:flex-end;max-width:540px}
+  .fld{display:flex;flex-direction:column;gap:6px}
+  .fld label{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .fld input{
+    width:112px;font-family:"Fraunces",Georgia,serif;font-size:28px;font-weight:600;text-align:center;
+    padding:6px 4px;border:1px solid var(--line-strong);border-radius:var(--r-s);
+    background:var(--surface);color:var(--ink);font-variant-numeric:tabular-nums;
+  }
+  .arrow{font-size:22px;color:var(--ink-3);padding-bottom:10px}
+  .out{
+    font-family:"Fraunces",Georgia,serif;font-size:26px;font-weight:600;padding-bottom:6px;
+    font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+  }
+  .out.warn{color:var(--ink-3);font-size:15px;font-weight:400;font-family:"IBM Plex Sans",sans-serif;max-width:24ch;line-height:1.35}
+  .why{font-size:12.5px;color:var(--ink-3);max-width:52ch;margin:0}
+
+  /* ce qui sera réellement enregistré, dit sans détour */
+  .rec{
+    display:inline-flex;align-items:center;gap:9px;padding:9px 13px;border-radius:999px;
+    border:1px solid var(--line);background:var(--surface-3);font-size:13px;color:var(--ink-2);align-self:flex-start;
+  }
+  .rec b{color:var(--ink);font-weight:600}
+
+  /* récompense */
+  .rw{display:flex;flex-direction:column;gap:18px;max-width:620px}
+  .hubopts{display:flex;flex-direction:column;gap:11px;max-width:480px}
+  .hb{
+    display:flex;align-items:center;gap:14px;padding:15px 16px;text-align:left;
+    border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface-2);
+    transition:transform .14s,border-color .14s,box-shadow .14s;
+  }
+  .hb:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:var(--shadow)}
+  .hb>div:first-child{flex:1;min-width:0}
+  .hb b{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;display:block;line-height:1.25}
+  .hb span{font-size:12.5px;color:var(--ink-3);display:block;margin-top:2px}
+  .hb--go{border-color:var(--ink);background:var(--ink)}
+  .hb--go b{color:var(--surface-2)}
+  .hb--go span{color:color-mix(in srgb,var(--surface-2) 62%,transparent)}
+  .hb--go:hover{border-color:var(--ink);opacity:.92}
+  .hb__pv{display:flex;gap:4px;flex:none}
+  .hb__pv .art{width:32px;aspect-ratio:3/4;border-radius:3px}
+  .hb__pv .art > span{font-size:5.5px}
+  .hb svg{flex:none;color:var(--ink-3)}
+  .go{
+    min-height:50px;padding:0 22px;border-radius:var(--r-s);background:var(--ink);color:var(--surface-2);
+    font-size:14.5px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;align-self:flex-start;
+  }
+  .go:hover{opacity:.87}
+
+  /* ── E02 ── */
+  .hd{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px;flex:none}
+  .hd__t{display:flex;align-items:center;gap:11px}
+  .ic{width:31px;height:31px;border-radius:var(--r-s);display:grid;place-items:center;color:var(--ink-2);flex:none}
+  .ic:hover{background:var(--surface-3)}
+  .hd__n{font-family:"Fraunces",Georgia,serif;font-size:18px;font-weight:600;line-height:1.15;flex:1;min-width:0}
+  .hd__c{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;flex:none}
+  .pills{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+  .pl{padding:4px 11px;border:1px solid var(--line-strong);border-radius:999px;font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .pl[aria-pressed="true"]{background:color-mix(in srgb,var(--era-2) 14%,transparent);border-color:color-mix(in srgb,var(--era-2) 55%,transparent);color:var(--era-ink);font-weight:600}
+  .pills small{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-right:2px}
+
+  /* ── mode cartes : une jaquette à la fois, défaut de la saisie ── */
+  .dw{flex:1;display:none;flex-direction:column;min-height:0}
+  .app[data-m="cards"] .dw{display:flex}
+  .app[data-m="cards"] .list,.app[data-m="cards"] .grid{display:none !important}
+  .dstage{flex:1;position:relative;isolation:isolate;z-index:0;display:grid;place-items:center;padding:16px;overflow:hidden}
+  .deck{position:relative;width:min(270px,66vw);aspect-ratio:3/4}
+  .dcard{
+    position:absolute;inset:0;border-radius:14px;overflow:hidden;
+    box-shadow:0 2px 6px rgba(26,24,21,.1),0 20px 44px -20px rgba(26,24,21,.42);
+    background:var(--surface-3);will-change:transform;touch-action:none;user-select:none;
+  }
+  .dcard.behind{pointer-events:none}
+  .dart{position:absolute;inset:0;display:grid;place-items:center}
+  .dart::before{content:"";position:absolute;inset:0;background:var(--art-pattern);opacity:.22}
+  .dtitle{
+    position:relative;z-index:1;font-family:"Fraunces",Georgia,serif;font-weight:800;
+    font-size:clamp(20px,5.6vw,30px);line-height:1.02;letter-spacing:-.02em;color:#FFF8EA;
+    text-align:center;padding:0 10%;text-shadow:0 2px 8px rgba(0,0,0,.3);overflow-wrap:break-word;hyphens:auto;
+  }
+  .dfoot{
+    position:absolute;left:0;right:0;bottom:0;z-index:1;padding:30px 14px 12px;color:#FFF8EA;
+    background:linear-gradient(to top,rgba(20,16,10,.84),transparent);display:flex;align-items:baseline;gap:8px;
+  }
+  .dfoot b{font-size:13.5px;font-weight:600;flex:1;min-width:0;line-height:1.25}
+  .dfoot span{font-size:11.5px;opacity:.82;font-variant-numeric:tabular-nums;flex:none}
+  .dstamp{
+    position:absolute;top:18px;z-index:2;padding:5px 12px;border-radius:var(--r-s);
+    font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+    opacity:0;transition:opacity .08s linear;border:2px solid;
+  }
+  .dstamp.yes{left:14px;color:#EAF2DC;border-color:#EAF2DC;background:rgba(110,127,74,.85);transform:rotate(-9deg)}
+  .dstamp.no{right:14px;color:#F0EDE7;border-color:#F0EDE7;background:rgba(70,66,60,.8);transform:rotate(9deg)}
+
+  .dpad{flex:none;display:flex;align-items:center;justify-content:center;gap:13px;padding:0 16px 6px}
+  .dbig{
+    width:54px;height:54px;border-radius:50%;border:1.5px solid var(--line-strong);
+    background:var(--surface-2);display:grid;place-items:center;transition:transform .12s,background .12s,border-color .12s;
+  }
+  .dbig:hover{transform:translateY(-2px)}
+  .dbig.yes{width:64px;height:64px;border-color:color-mix(in srgb,var(--ok) 55%,transparent);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+  .dbig.yes:hover{background:color-mix(in srgb,var(--ok) 20%,transparent)}
+  .dsm{width:38px;height:38px;border-radius:50%;color:var(--ink-3);display:grid;place-items:center}
+  .dsm:hover{background:var(--surface-3);color:var(--ink-2)}
+  .dsm:disabled{opacity:.3;cursor:default}
+  .dhint{flex:none;text-align:center;font-size:11px;color:var(--ink-3);margin:0 0 8px}
+  .dhint kbd{font:inherit;font-size:10px;border:1px solid var(--line-strong);border-radius:3px;padding:1px 4px;background:var(--surface)}
+  .dprog{position:absolute;top:12px;right:16px;font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;z-index:3}
+
+  .dscrim{position:absolute;inset:0;z-index:30;background:rgba(20,17,12,.42);opacity:0;pointer-events:none;transition:opacity .2s}
+  .app.dsheet-on .dscrim{opacity:1;pointer-events:auto}
+  .dsheet{
+    position:absolute;left:0;right:0;bottom:0;z-index:40;background:var(--surface-2);
+    border-top:1px solid var(--line-strong);border-radius:14px 14px 0 0;
+    box-shadow:0 -18px 44px -14px rgba(26,24,21,.5);padding:12px 16px 16px;
+    display:flex;flex-direction:column;gap:12px;transform:translateY(101%);
+    transition:transform .22s cubic-bezier(.2,.8,.2,1);max-height:92%;overflow-y:auto;
+  }
+  .app.dsheet-on .dsheet{transform:translateY(0)}
+  .dgrip{width:36px;height:4px;border-radius:2px;background:var(--line-strong);align-self:center;flex:none}
+  .dsheet>b{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;line-height:1.2}
+  .dopts{display:flex;gap:9px}
+  .dopts button{
+    flex:1;min-height:50px;border:1px solid var(--line-strong);border-radius:var(--r-s);
+    font-size:13.5px;color:var(--ink-2);display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .dopts button[aria-pressed="true"]{background:color-mix(in srgb,var(--era-2) 14%,transparent);border-color:color-mix(in srgb,var(--era-2) 55%,transparent);color:var(--era-ink);font-weight:600}
+  .dsGo{min-height:46px;border-radius:var(--r-s);background:var(--ink);color:var(--surface-2);font-size:13.5px;font-weight:600;display:grid;place-items:center}
+
+  .dend{
+    position:absolute;inset:0;z-index:6;background:var(--surface-2);display:none;
+    flex-direction:column;align-items:center;justify-content:center;gap:13px;padding:26px;text-align:center;
+  }
+  .dend h3{font-family:"Fraunces",Georgia,serif;font-size:21px;font-weight:600;margin:0;letter-spacing:-.015em}
+  .dend p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:34ch}
+
+  .list{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+  .grid{flex:1;overflow-y:auto;display:none;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:15px;padding:16px;align-content:start}
+  @media (min-width:1000px){ .list{display:none} .grid{display:grid} }
+
+  .rw2{border-bottom:1px solid var(--line)}
+  .rw2__m{width:100%;display:flex;align-items:center;gap:11px;padding:7px 16px;min-height:56px}
+  .rw2__m:hover{background:var(--surface-3)}
+  .rw2__a{width:34px;height:45px}
+  .rw2__a > span{font-size:6.5px}
+  .rw2__t{flex:1;min-width:0}
+  .rw2__t b{display:block;font-size:14.5px;font-weight:500;line-height:1.25}
+  .rw2__t span{font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .rw2__s{display:flex;gap:5px;align-items:center;justify-content:flex-end;flex:none;min-width:30px;padding:6px 0}
+  .rw2.out .rw2__a,.rw2.out .rw2__t{opacity:.4}
+  .rw2.out .rw2__t b{text-decoration:line-through;text-decoration-color:var(--ink-3)}
+  .rf{display:none;gap:8px;padding:0 16px 11px 61px}
+  .rw2.open .rf{display:flex}
+  .rf button{flex:1;min-height:44px;border:1px solid var(--line-strong);border-radius:var(--r-s);font-size:13px;color:var(--ink-2);display:flex;align-items:center;justify-content:center;gap:7px}
+  .rf button[aria-pressed="true"]{background:color-mix(in srgb,var(--era-2) 14%,transparent);border-color:color-mix(in srgb,var(--era-2) 55%,transparent);color:var(--era-ink);font-weight:600}
+  .rf .x{flex:0 0 44px;color:var(--ink-3);font-size:17px}
+
+  .cl{position:relative;display:flex;flex-direction:column;gap:6px}
+  .cl__f{position:relative;width:100%;aspect-ratio:3/4}
+  .cl__f .art{position:absolute;inset:0}
+  .cl__f .art > span{font-size:14px}
+  .cl__b{position:absolute;inset:0;border-radius:var(--r-s)}
+  .cl__h{position:absolute;left:5px;right:5px;bottom:5px;display:flex;gap:3px;padding:5px;background:rgba(20,17,12,.76);border-radius:var(--r-s);opacity:0;pointer-events:none;transition:opacity .12s}
+  .cl:hover .cl__h,.cl:focus-within .cl__h{opacity:1;pointer-events:auto}
+  .cl__h button{flex:1;min-height:28px;border-radius:3px;font-size:10.5px;color:#F2EFE9;background:rgba(255,255,255,.1);display:grid;place-items:center}
+  .cl__h button[aria-pressed="true"]{background:var(--era-2);color:#1A1815}
+  .cl__m{display:flex;gap:6px;align-items:flex-start}
+  .cl__m div{flex:1;min-width:0}
+  .cl__m b{display:block;font-size:12.5px;font-weight:500;line-height:1.3}
+  .cl__m span{font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .cl.out .cl__f,.cl.out .cl__m{opacity:.4}
+
+  /* Formes signifiantes : rond = vécu, carré = objet possédé,
+     losange = ce qui a compté. L'affect étend le système, il ne s'y superpose pas. */
+  .mk{display:inline-block;flex:none;color:var(--era-ink)}
+  .mk-p{width:9px;height:9px;border-radius:50%;background:currentColor}
+  .mk-d{width:11px;height:11px;border-radius:50%;border:2.5px solid currentColor}
+  .mk-o{width:9px;height:9px;border-radius:1.5px;background:currentColor}
+  .mk-n{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-3)}
+  .mk-h{width:11px;height:11px;border-radius:50%;border:2.5px solid currentColor;
+        background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
+  .mk-x{width:11px;height:11px;border-radius:50%;border:2px dashed currentColor}
+  .mk-ob{width:9px;height:9px;border-radius:1.5px;border:2px solid currentColor}
+  .mk-l{width:9px;height:9px;border:2px solid currentColor;transform:rotate(45deg)}
+  .mk-f{width:10px;height:10px;background:currentColor;transform:rotate(45deg)}
+  .mk-b{width:10px;height:2px;background:var(--ink-3);border-radius:1px}
+  .rf .mk,.cl__h .mk{color:currentColor}
+  .rf .mk-d{border-color:currentColor;background:none}
+
+  /* affect : une seule question, trois réponses, jamais une note */
+  .aff{display:flex;flex-direction:column;gap:7px}
+  .aff__q{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .aff__r{display:flex;gap:7px}
+  .aff__r button{
+    flex:1;min-height:44px;border:1px solid var(--line-strong);border-radius:var(--r-s);
+    font-size:13px;color:var(--ink-2);display:flex;align-items:center;justify-content:center;gap:7px;
+    transition:border-color .12s,background .12s,color .12s;
+  }
+  .aff__r button:hover{border-color:var(--ink-3)}
+  .aff__r button[aria-pressed="true"]{
+    background:color-mix(in srgb,var(--era-2) 15%,transparent);
+    border-color:color-mix(in srgb,var(--era-2) 58%,transparent);
+    color:var(--era-ink);font-weight:600;
+  }
+  .aff__r button[aria-pressed="true"] .mk{color:currentColor}
+  .rf2{display:none;gap:7px;padding:0 16px 11px 61px}
+  .rw2.open .rf2{display:flex}
+  .rf2 button{
+    flex:1;min-height:40px;border:1px solid var(--line-strong);border-radius:var(--r-s);
+    font-size:12.5px;color:var(--ink-3);display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .rf2 button[aria-pressed="true"]{
+    background:color-mix(in srgb,var(--era-2) 15%,transparent);
+    border-color:color-mix(in srgb,var(--era-2) 58%,transparent);
+    color:var(--era-ink);font-weight:600;
+  }
+
+  /* un préféré se lit dans la typographie, pas dans un badge */
+  .sh.fav em{font-family:"Fraunces",Georgia,serif;font-style:italic;color:var(--ink);font-size:11px}
+  .sh .art{position:relative}
+  .sh .favmk{position:absolute;right:4px;bottom:4px;z-index:2;width:9px;height:9px;background:#FFF8EA;transform:rotate(45deg);box-shadow:0 1px 2px rgba(0,0,0,.4)}
+
+  .ft{flex:none;border-top:1px solid var(--line);background:var(--surface);padding:11px 16px;display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+  .ft__l{flex:1;min-width:160px;display:flex;flex-direction:column;gap:6px}
+  .band{display:flex;gap:2px;height:9px}
+  .band i{border-radius:2px;transition:flex-grow .4s cubic-bezier(.2,.8,.2,1)}
+  .band .e{flex:1;background:var(--line);border-radius:2px;min-width:14px}
+  .ft__s{font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .ft__s b{font-family:"Fraunces",Georgia,serif;font-size:16px;color:var(--ink);font-weight:600}
+  .ft__b{display:flex;gap:8px;flex:none}
+  .b2{min-height:42px;padding:0 15px;border-radius:var(--r-s);border:1px solid var(--line-strong);font-size:13px;font-weight:500;display:flex;align-items:center}
+  .b2:hover{border-color:var(--ink-3)}
+  .b1{min-height:42px;padding:0 17px;border-radius:var(--r-s);background:var(--ink);color:var(--surface-2);font-size:13.5px;font-weight:600;display:flex;align-items:center}
+  .b1:hover{opacity:.87}
+
+  /* ── E03 : fils parallèles ── */
+  .st{flex:1;overflow-y:auto}
+  .syn{padding:22px 20px 18px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:16px 34px;align-items:flex-end}
+  .syn p{font-family:"Fraunces",Georgia,serif;font-size:clamp(19px,2.6vw,25px);line-height:1.26;letter-spacing:-.018em;margin:0;flex:1;min-width:220px;max-width:24ch}
+  .syn p b{font-weight:600}
+  .favline{
+    display:block;margin-top:12px;font-family:"IBM Plex Sans",sans-serif;
+    font-size:13.5px;line-height:1.5;color:var(--ink-2);
+  }
+  .favline i{font-family:"Fraunces",Georgia,serif;font-style:italic;color:var(--ink)}
+  .syn p i{font-style:normal;color:var(--ink-3)}
+  .syn__st{display:flex;gap:24px}
+  .syn__st b{font-family:"Fraunces",Georgia,serif;font-size:22px;font-weight:600;display:block;line-height:1;font-variant-numeric:tabular-nums}
+  .syn__st span{font-size:11px;color:var(--ink-3)}
+  .thr{padding:9px 20px;border-bottom:1px solid var(--line);display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;align-items:center}
+  .thr::-webkit-scrollbar{display:none}
+  .thr small{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600;flex:none}
+  .thr span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-2);white-space:nowrap;flex:none}
+  .thr i{width:9px;height:9px;border-radius:2px;flex:none}
+
+  .rows{padding:8px 20px 20px}
+  .r{display:flex;min-height:32px}
+  .r__y{flex:none;width:var(--yearw);padding:8px 9px 0 0;text-align:right;font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .r__g{flex:none;display:flex;position:relative}
+  .ln{width:var(--lane);position:relative;flex:none}
+  .ln::before{content:"";position:absolute;left:50%;transform:translateX(-50%);width:3px;border-radius:2px;background:var(--c);opacity:.5}
+  .ln.f::before{top:0;bottom:0}
+  .ln.s::before{top:14px;bottom:0}
+  .ln.e::before{top:0;height:14px}
+  .nd{position:absolute;left:50%;top:14px;transform:translate(-50%,-50%);z-index:2}
+  .nd.o{width:11px;height:11px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px var(--surface-2)}
+  .nd.c{width:11px;height:3px;border-radius:2px;background:var(--c);box-shadow:0 0 0 3px var(--surface-2)}
+  .nd.g{width:11px;height:22px;border-radius:6px;background:var(--c);box-shadow:0 0 0 3px var(--surface-2)}
+  .r__g::after{content:"";position:absolute;left:var(--cx);top:14px;width:var(--cw);height:2px;background:var(--c);opacity:.35}
+  .r__b{flex:1;min-width:0;padding:5px 0 12px 10px}
+  .r--s .r__b b{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;letter-spacing:-.01em;display:block}
+  .r--e .r__b{font-size:12.5px;color:var(--ink-3)}
+  .r__b .sub{font-size:12px;color:var(--ink-3);margin-top:1px}
+  .shelf{display:flex;flex-wrap:wrap;gap:11px 9px;margin-top:9px}
+  .sh{width:62px;display:flex;flex-direction:column;gap:5px}
+  .sh .art{width:100%;aspect-ratio:3/4;box-shadow:0 1px 2px rgba(0,0,0,.16)}
+  .sh .art > span{font-size:8px}
+  .sh em{font-style:normal;font-size:10.5px;line-height:1.2;color:var(--ink-3)}
+  .sh i{position:absolute;right:3px;bottom:3px;z-index:2}
+
+  /* commutateur de présentation : les fils par défaut, le chronologique pour
+     qui préfère une lecture linéaire */
+  .vbar{
+    flex:none;border-top:1px solid var(--line);background:var(--surface);
+    padding:9px 16px;display:flex;align-items:center;gap:12px;
+  }
+  .vbar>span{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .seg{display:flex;gap:2px;padding:2px;background:var(--surface-3);border:1px solid var(--line);border-radius:8px;margin-left:auto}
+  .seg button{padding:6px 13px;border-radius:6px;font-size:12.5px;font-weight:500;color:var(--ink-2);transition:background .12s,color .12s}
+  .seg button[aria-pressed="true"]{background:var(--surface-2);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+  /* vue chronologique : un seul axe, les plateformes deviennent des épisodes */
+  .r--band .r__b b{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;letter-spacing:-.01em;display:block}
+  .ln.solo::before{top:0;bottom:0}
+  .nd.band{width:9px;top:12px;bottom:12px;transform:translateX(-50%);border-radius:5px;height:auto;background:var(--c);box-shadow:0 0 0 3px var(--surface-2)}
+
+  /* verdict */
+  .vd{
+    margin:0 20px 20px;padding:17px 18px;border-radius:var(--r-m);
+    background:color-mix(in srgb,var(--ok) 11%,transparent);
+    border:1px solid color-mix(in srgb,var(--ok) 34%,transparent);
+    display:flex;flex-direction:column;gap:9px;
+  }
+  .vd h3{font-family:"Fraunces",Georgia,serif;font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
+  .vd__g{display:flex;flex-wrap:wrap;gap:9px 26px}
+  .vd__g div{display:flex;flex-direction:column}
+  .vd__g b{font-family:"Fraunces",Georgia,serif;font-size:21px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+  .vd__g span{font-size:11px;color:var(--ink-3)}
+  .vd p{margin:0;font-size:13px;color:var(--ink-2)}
+  .vd.miss{background:color-mix(in srgb,#8A5A2B 11%,transparent);border-color:color-mix(in srgb,#8A5A2B 34%,transparent)}
+
+  @media (max-width:720px){
+    :root{--lane:15px;--yearw:40px}
+    .hud__m{margin-left:0;width:100%;order:2;justify-content:space-between;gap:8px}
+    .hud__r{order:1;margin-left:auto}
+    .w{padding:22px 16px;gap:18px}
+    .syn{padding:18px 15px 14px;flex-direction:column;align-items:stretch}
+    .syn__st{gap:0;justify-content:space-between}
+    .rows{padding:8px 12px 18px}
+    .thr{padding:8px 14px}
+    .vd{margin:0 12px 16px}
+    .ft{padding:10px 13px}
+    .ft__b{width:100%}
+    .ft__b button{flex:1;justify-content:center}
+  }
+  @media (max-width:430px){
+    :root{--lane:13px;--yearw:36px}
+    .shell{padding:12px 10px 30px}
+    .sh{width:54px}
+    .cards{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
+</style>
+
+<div class="shell">
+  <div class="hud">
+    <div class="hud__id">Première session <span>· E01 → E02 → E03</span></div>
+    <div class="hud__m">
+      <span class="m is-live"><b id="mT">0:00</b> écoulé</span>
+      <span class="m"><b id="mG">0</b> gestes</span>
+      <span class="m"><b id="mJ">0</b> jeux</span>
+    </div>
+    <button class="hud__r" id="reset">recommencer</button>
+    <div class="steps"><i id="s1"></i><i id="s2"></i><i id="s3"></i></div>
+  </div>
+
+  <div class="app" id="app" data-s="w1">
+
+    <!-- ── E01 · 1 ── -->
+    <section class="sc" id="w1"><div class="w">
+      <h2>Quelle est la première console à laquelle vous avez joué&nbsp;?</h2>
+      <div class="cards" id="platCards"></div>
+      <button class="alt">Une autre · Je ne sais plus</button>
+    </div></section>
+
+    <!-- ── E01 · 2 : la fourche porte sur le TYPE de souvenir ── -->
+    <section class="sc" id="w2"><div class="w">
+      <h2 id="w2h"></h2>
+      <div class="ctx" id="w2ctx"></div>
+      <div class="fork">
+        <button class="fk" data-k="year"><div><b>Je situe l'année</b><span>Même approximativement</span></div>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="fk" data-k="age"><div><b>Je sais quel âge j'avais</b><span>Souvent le souvenir le plus sûr</span></div>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="fk" data-k="band"><div><b>Vaguement</b><span>Au début, en plein dedans, sur le tard…</span></div>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="fk" data-k="unknown"><div><b>Pas du tout</b><span id="w2unk"></span></div>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+      </div>
+    </div></section>
+
+    <!-- ── année précise ── -->
+    <section class="sc" id="w2y"><div class="w">
+      <h2>Quelle année&nbsp;?</h2>
+      <div class="ctx" id="w2yctx"></div>
+      <div class="years" id="years"></div>
+      <div class="lg">
+        <span><i class="n"></i> vendue neuve</span>
+        <span><i class="u"></i> d'occasion</span>
+      </div>
+      <button class="alt" data-back="w2">← Finalement, je ne situe pas si bien</button>
+    </div></section>
+
+    <!-- ── par l'âge ── -->
+    <section class="sc" id="w2a"><div class="w">
+      <h2>Quel âge aviez-vous&nbsp;?</h2>
+      <div class="agebox">
+        <div class="fld"><label for="fAge">J'avais</label><input id="fAge" type="text" inputmode="numeric" value="12"></div>
+        <div class="fld"><label for="fBirth">Né en</label><input id="fBirth" type="text" inputmode="numeric" placeholder="1982"></div>
+        <span class="arrow">→</span>
+        <span class="out" id="ageOut">—</span>
+      </div>
+      <p class="why">L'année de naissance ne sert qu'à situer vos souvenirs sur la timeline. Elle reste facultative, et n'apparaît jamais sur un profil public.</p>
+      <button class="go" id="ageGo">Continuer →</button>
+      <button class="alt" data-back="w2">← Autre chose</button>
+    </div></section>
+
+    <!-- ── bandes dérivées de la fenêtre commerciale ── -->
+    <section class="sc" id="w2b"><div class="w">
+      <h2>Plutôt quand&nbsp;?</h2>
+      <div class="ctx" id="w2bctx"></div>
+      <div class="bands" id="bands"></div>
+      <button class="alt" data-back="w2">← Autre chose</button>
+    </div></section>
+
+    <!-- ── E01 · 3 : la récompense, avant toute inscription ── -->
+    <section class="sc" id="w3"><div class="w">
+      <div class="rw">
+        <h2 id="rwTitle"></h2>
+        <span class="rec" id="rwRec"></span>
+        <div class="hubopts">
+          <button class="hb hb--go" id="goAdd">
+            <div><b id="hubGoT"></b><span id="hubGoS"></span></div>
+            <div class="hb__pv" id="rwPv"></div>
+          </button>
+          <button class="hb" id="hubMore">
+            <div><b>Ajouter une autre console</b><span>Vous en avez sûrement eu plusieurs</span></div>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+        <button class="alt" id="hubStory" hidden>Voir mon histoire →</button>
+      </div>
+    </div></section>
+
+    <!-- ── choix d'une autre console ── -->
+    <section class="sc" id="pick"><div class="w">
+      <h2>Quelle autre console avez-vous eue&nbsp;?</h2>
+      <div class="cards" id="pickCards"></div>
+      <button class="alt" id="pickBack">Revenir à mon histoire</button>
+    </div></section>
+
+    <!-- ── E02 ── -->
+    <section class="sc" id="add">
+      <div class="hd">
+        <div class="hd__t">
+          <button class="ic" id="addBack" aria-label="Retour">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <span class="hd__n" id="addName"></span>
+          <span class="hd__c" id="addCount"></span>
+        </div>
+        <div class="pills" id="addPills"><small>J'y jouais</small></div>
+      </div>
+      <!-- mode cartes : le défaut -->
+      <div class="dw" id="addDeck">
+        <div class="dstage">
+          <span class="dprog" id="dProg"></span>
+          <div class="deck" id="deck"></div>
+          <div class="dend" id="dend">
+            <h3 id="dendT"></h3>
+            <p id="dendP"></p>
+            <button class="b2" id="dendList">Revoir dans la liste</button>
+          </div>
+          <div class="dscrim" id="dScrim"></div>
+          <div class="dsheet" id="dSheet">
+            <span class="dgrip"></span>
+            <b id="dsT"></b>
+            <div class="aff">
+              <span class="aff__q">Quand y avez-vous joué&nbsp;?</span>
+              <div class="aff__r" id="dsWhen"></div>
+            </div>
+            <div class="aff">
+              <span class="aff__q">Vous l'avez fini&nbsp;?</span>
+              <div class="aff__r" id="dsComp">
+                <button data-c="done"><i class="mk mk-d"></i> fini</button>
+                <button data-c="prog"><i class="mk mk-h"></i> toujours en cours</button>
+                <button data-c="quit"><i class="mk mk-x"></i> abandonné</button>
+              </div>
+            </div>
+            <div class="aff">
+              <span class="aff__q">Ça vous a marqué&nbsp;?</span>
+              <div class="aff__r" id="dsAff">
+                <button data-a="meh"><i class="mk mk-b"></i> sans plus</button>
+                <button data-a="love"><i class="mk mk-l"></i> j'ai adoré</button>
+                <button data-a="fav"><i class="mk mk-f"></i> mon préféré</button>
+              </div>
+            </div>
+            <div class="aff">
+              <span class="aff__q">Comment y avez-vous joué&nbsp;?</span>
+              <div class="aff__r" id="dsHow">
+                <button data-h="own"><i class="mk mk-o"></i> je l'avais</button>
+                <button data-h="at">chez quelqu'un</button>
+                <button data-h="borrow"><i class="mk mk-ob"></i> emprunté</button>
+              </div>
+            </div>
+            <button class="dsGo" id="dsGo">Suivant →</button>
+          </div>
+        </div>
+        <div class="dpad">
+          <button class="dsm" id="dUndo" aria-label="Revenir" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg></button>
+          <button class="dbig no" id="dNo" aria-label="Jamais joué">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          <button class="dbig yes" id="dYes" aria-label="J'y ai joué">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+          <button class="dsm" id="dSkip" aria-label="Passer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 4 10 8-10 8z"/><path d="M20 5v14"/></svg></button>
+        </div>
+        <p class="dhint"><kbd>←</kbd> jamais · <kbd>→</kbd> joué · <kbd>↓</kbd> passer · <kbd>Z</kbd> revenir</p>
+      </div>
+
+      <div class="list" id="addList"></div>
+      <div class="grid" id="addGrid"></div>
+      <div class="ft">
+        <div class="ft__l">
+          <div class="band" id="addBand"></div>
+          <div class="ft__s" id="addStats"></div>
+        </div>
+        <div class="seg" id="modeSeg">
+          <button id="mCards" aria-pressed="true">Cartes</button>
+          <button id="mList" aria-pressed="false">Liste</button>
+        </div>
+        <div class="ft__b">
+          <button class="b2" id="addMore">Autre console</button>
+          <button class="b1" id="addDone">Mon histoire →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── E03 ── -->
+    <section class="sc" id="story"><div class="st">
+      <div class="syn">
+        <p id="syP"></p>
+        <div class="syn__st" id="syS"></div>
+      </div>
+      <div class="thr" id="syT"></div>
+      <div class="rows" id="syR"></div>
+      <div class="vd" id="vd"></div>
+    </div>
+    <div class="vbar">
+      <span>Présentation</span>
+      <div class="seg">
+        <button id="vThreads" aria-pressed="true">Fils parallèles</button>
+        <button id="vChrono" aria-pressed="false">Chronologique</button>
+      </div>
+    </div></section>
+
+  </div>
+</div>
+
+<script>
+/* ───────── référentiel ───────── */
+const PLATS={
+  nes:{n:"NES",y:1987,from:1987,to:1993},
+  gb:{n:"Game Boy",y:1990,from:1990,to:1996},
+  md:{n:"Mega Drive",y:1990,from:1990,to:1996},
+  snes:{n:"Super Nintendo",y:1992,from:1992,to:1998},
+  ps1:{n:"PlayStation",y:1995,from:1995,to:2001},
+  n64:{n:"Nintendo 64",y:1997,from:1997,to:2003}
+};
+const LIB={
+  nes:[["Super Mario Bros. 3",1991],["The Legend of Zelda",1987],["Metroid",1988],["Castlevania",1988],["Mega Man 2",1991],["Punch-Out!!",1987],["Double Dragon",1988],["Kid Icarus",1987],["Bubble Bobble",1987],["Excitebike",1987],["Zelda II",1988],["Ninja Gaiden",1991],["Battletoads",1991],["Duck Hunt",1987],["Tetris",1989],["Probotector",1990]],
+  gb:[["Tetris",1990],["Super Mario Land",1990],["Zelda: Link's Awakening",1993],["Pokémon Rouge",1999],["Kirby's Dream Land",1992],["Wario Land",1994],["Donkey Kong",1994],["Metroid II",1992],["Super Mario Land 2",1993],["F-1 Race",1990],["Castlevania: The Adventure",1990],["Mario & Yoshi",1992],["Alleyway",1990],["Golf",1990],["Tennis",1990],["Pokémon Bleu",1999]],
+  md:[["Sonic the Hedgehog",1991],["Sonic 2",1992],["Streets of Rage 2",1992],["Golden Axe",1990],["Gunstar Heroes",1993],["Aladdin",1993],["Ecco the Dolphin",1992],["Shinobi III",1993],["Comix Zone",1995],["Road Rash II",1992],["Micro Machines 2",1994],["Mortal Kombat",1993],["Toejam & Earl",1991],["Castle of Illusion",1990],["Altered Beast",1990],["Columns",1990]],
+  snes:[["Super Mario World",1992],["Zelda: A Link to the Past",1992],["Donkey Kong Country",1994],["Super Metroid",1994],["Super Mario Kart",1993],["Street Fighter II Turbo",1993],["Yoshi's Island",1995],["Secret of Mana",1994],["Star Wing",1993],["Mega Man X",1994],["F-Zero",1992],["Super Probotector",1994],["Terranigma",1996],["Killer Instinct",1995],["Aladdin",1993],["Super Punch-Out!!",1994]],
+  ps1:[["Final Fantasy VII",1997],["Metal Gear Solid",1998],["Resident Evil 2",1998],["Gran Turismo",1998],["Tomb Raider",1996],["Crash Bandicoot",1996],["Tekken 3",1998],["Silent Hill",1999],["Wipeout",1995],["Castlevania SOTN",1997],["Spyro the Dragon",1998],["Rayman",1995],["Abe's Oddysee",1997],["Driver",1999],["Croc",1997],["Colin McRae Rally",1998]],
+  n64:[["Super Mario 64",1997],["Zelda: Ocarina of Time",1998],["GoldenEye 007",1997],["Mario Kart 64",1997],["Banjo-Kazooie",1998],["Perfect Dark",2000],["Lylat Wars",1997],["Diddy Kong Racing",1997],["F-Zero X",1998],["Zelda: Majora's Mask",2000],["Super Smash Bros.",1999],["1080° Snowboarding",1998],["Pokémon Snap",2000],["Wave Race 64",1997],["Donkey Kong 64",1999],["Mario Party",1999]]
+};
+/* Combien d'années une console reste couramment trouvable d'occasion après
+   l'arrêt de sa commercialisation. Sert à borner la grille sans l'interdire. */
+const USED_AFTER=8;
+
+const ERAS=[[1990,"--era-1"],[1995,"--era-2"],[2000,"--era-3"],[2006,"--era-4"],[2013,"--era-5"],[9999,"--era-6"]];
+const eraVar=y=>ERAS.find(e=>y<=e[0])[1];
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return Math.abs(h);}
+function hexToHsl(x){const r=parseInt(x.slice(1,3),16)/255,g=parseInt(x.slice(3,5),16)/255,b=parseInt(x.slice(5,7),16)/255;
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let h=0,s=0;
+  if(d){s=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d+(g<b?6:0)):mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;}return [h,s*100,l*100];}
+const PAT=[
+  d=>`repeating-linear-gradient(${45+d%20}deg, rgba(255,255,255,.5) 0 6%, transparent 6% 26%)`,
+  d=>`radial-gradient(circle at center, rgba(255,255,255,.5) 6%, transparent 7%) 0 0/${18+d%10}% ${14+d%8}%`,
+  d=>`repeating-linear-gradient(90deg, rgba(0,0,0,.26) 0 5%, transparent 5% ${22+d%10}%)`,
+  d=>`repeating-linear-gradient(0deg, rgba(255,255,255,.38) 0 3%, transparent 3% 21%), repeating-linear-gradient(90deg, rgba(255,255,255,.38) 0 3%, transparent 3% 21%)`,
+  d=>`repeating-conic-gradient(from ${d%90}deg at 50% 50%, rgba(255,255,255,.28) 0 11deg, transparent 11deg 29deg)`,
+  d=>`repeating-radial-gradient(circle at 22% 14%, transparent 0 14%, rgba(0,0,0,.2) 14% 17%)`];
+const hx={};
+function eh(v){ if(!hx[v]){const c=getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  hx[v]=/^#[0-9a-f]{6}$/i.test(c)?c:"#B0842B";} return hx[v]; }
+function art(t,y){const n=hash(t),[h,s,l]=hexToHsl(eh(eraVar(y)));
+  const hu=(h+(n%21)-10+360)%360, lu=Math.max(24,Math.min(58,l+((n>>5)%13)-6));
+  return `background-color:hsl(${hu.toFixed(0)} ${s.toFixed(0)}% ${lu.toFixed(0)}%);--art-pattern:${PAT[n%PAT.length](n)};`;}
+
+/* ───────── état ───────── */
+const $=i=>document.getElementById(i);
+const app=$("app");
+let S={plat:null,decl:{},periods:{},order:[],cur:null,open:-1,mode:"cards",pos:0,view:"threads"};
+let t0=null,tick=null,gest=0,kpi=null;
+
+const key=(p,i)=>p+":"+i;
+const declaredOf=p=>Object.keys(S.decl).filter(k=>k.startsWith(p+":")&&!S.decl[k].n);
+const allDeclared=()=>Object.keys(S.decl).filter(k=>!S.decl[k].n);
+
+function startClock(){ if(t0) return; t0=Date.now(); tick=setInterval(paintHud,250); }
+function paintHud(){
+  if(t0 && !kpi){ const s=Math.floor((Date.now()-t0)/1000);
+    $("mT").textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`; }
+  $("mG").textContent=gest;
+  $("mJ").textContent=allDeclared().length;
+}
+function bump(){ gest++; paintHud(); }
+function step(n){ [1,2,3].forEach(i=>$("s"+i).classList.toggle("on",i<=n)); }
+function go(s){ app.dataset.s=s; step(s==="w1"||s==="w2"||s==="w3"?1:s==="story"?3:2); }
+
+/* ───────── E01 ───────── */
+function platCard(id){
+  const p=PLATS[id];
+  return `<button class="card" data-plat="${id}">
+    <span class="art" style="${art(p.n,p.y)}"><span>${p.n}</span></span>
+    <em>${p.n}</em></button>`;
+}
+$("platCards").innerHTML=Object.keys(PLATS).map(platCard).join("");
+
+const CLK='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+
+$("platCards").addEventListener("click",e=>{
+  const b=e.target.closest("[data-plat]"); if(!b) return;
+  startClock(); bump(); S.plat=b.dataset.plat; openWhen();
+});
+
+/* La fenêtre commerciale de la console encadre la question — et l'amorce.
+   Rappeler « sortie en 1992 » aide bien plus à se situer qu'une décennie. */
+function openWhen(){
+  const p=PLATS[S.plat];
+  $("w2h").textContent=`Quand avez-vous eu votre ${p.n} ?`;
+  $("w2ctx").innerHTML=CLK+`<span>La <b>${p.n}</b> est sortie en <b>${p.from}</b> et s'est vendue neuve jusqu'en <b>${p.to}</b>. Beaucoup l'ont eue plus tard, d'occasion.</span>`;
+  $("w2unk").textContent=`On retiendra « entre ${p.from} et ${p.to} »`;
+  go("w2");
+}
+$("w2").addEventListener("click",e=>{
+  const b=e.target.closest("[data-k]"); if(!b) return;
+  bump();
+  const p=PLATS[S.plat];
+  switch(b.dataset.k){
+    case "year": openYears(); break;
+    case "age":  syncAge(); go("w2a"); break;
+    case "band": openBands(); break;
+    default: S.when={kind:"unknown",a:p.from,b:p.to}; showReward();
+  }
+});
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-back]"); if(b) go(b.dataset.back);
+});
+
+/* grille d'années : teintée dans la fenêtre, en pointillé au-delà.
+   L'occasion n'est pas un cas limite — c'est un cas fréquent. */
+function openYears(){
+  const p=PLATS[S.plat];
+  let h="";
+  for(let y=p.from;y<=p.to+USED_AFTER;y++)
+    h+=`<button class="yr ${y<=p.to?"new":"used"}" data-y="${y}">${y}</button>`;
+  $("years").innerHTML=h;
+  $("w2yctx").innerHTML=CLK+`<span>Vendue neuve de <b>${p.from}</b> à <b>${p.to}</b>. Au-delà, c'était forcément d'occasion — fréquent, et parfaitement enregistrable.</span>`;
+  go("w2y");
+}
+$("years").addEventListener("click",e=>{
+  const b=e.target.closest("[data-y]"); if(!b) return;
+  bump(); S.when={kind:"year",y:+b.dataset.y}; showReward();
+});
+
+/* par l'âge : souvent le souvenir le plus fiable, mais il exige l'année de
+   naissance — demandée ici, justifiée, et jamais publiée (§7.6). */
+function syncAge(){
+  const a=parseInt($("fAge").value,10), by=parseInt($("fBirth").value,10);
+  const o=$("ageOut"), ok=!isNaN(a)&&a>0&&a<99&&!isNaN(by)&&by>1930&&by<2020;
+  o.className=ok?"out":"out warn";
+  o.textContent=ok?`vers ${by+a}`:"Renseignez votre année de naissance pour situer ce souvenir.";
+  $("ageGo").style.opacity=ok?"1":".45";
+  return ok;
+}
+["fAge","fBirth"].forEach(i=>$(i).addEventListener("input",syncAge));
+$("ageGo").addEventListener("click",()=>{
+  if(!syncAge()) return;
+  const a=parseInt($("fAge").value,10), by=parseInt($("fBirth").value,10);
+  bump(); S.birth=by; S.when={kind:"age",age:a,y:by+a}; showReward();
+});
+
+/* bandes dérivées de la fenêtre, pas de décennies génériques */
+function bandsFor(p){
+  const q=Math.max(1,Math.round((p.to-p.from)/3));
+  const m1=p.from+q, m2=Math.max(m1+1,p.to-q);
+  return [
+    ["À sa sortie","les toutes premières années",p.from,m1],
+    ["En plein dedans","au cœur de sa vie",m1,m2],
+    ["Sur le tard","en fin de commercialisation",m2,p.to],
+    ["Bien après, d'occasion","une fois qu'elle n'était plus vendue",p.to+1,p.to+USED_AFTER]
+  ];
+}
+function openBands(){
+  const p=PLATS[S.plat];
+  $("w2bctx").innerHTML=CLK+`<span>Repères tirés de la vie de la <b>${p.n}</b> : <b>${p.from}</b> à <b>${p.to}</b>.</span>`;
+  $("bands").innerHTML=bandsFor(p).map(([t,s,a,b],i)=>
+    `<button class="bd" data-b="${i}"><div><b>${t}</b><small>${s}</small></div><em>${a}–${b}</em></button>`).join("");
+  go("w2b");
+}
+$("bands").addEventListener("click",e=>{
+  const b=e.target.closest("[data-b]"); if(!b) return;
+  const [,,a,bb]=bandsFor(PLATS[S.plat])[+b.dataset.b];
+  bump(); S.when={kind:"band",a,b:bb}; showReward();
+});
+
+/* la récompense dit exactement ce qui sera enregistré — jamais plus précis
+   que ce que l'utilisateur a déclaré (§7.4) */
+function showReward(){
+  const p=PLATS[S.plat], w=S.when;
+  let phrase,label,per;
+  if(w.kind==="year"){
+    phrase=`Vous l'avez eue en ${w.y}.`;
+    label=w.y>p.to?`${w.y} · d'occasion`:`${w.y}`;
+    per=[w.y,Math.min(w.y+5,p.to+USED_AFTER)];
+  }else if(w.kind==="age"){
+    phrase=`Vous l'avez eue vers vos ${w.age} ans.`;
+    label=`vers ${w.y}, vos ${w.age} ans`;
+    per=[w.y,Math.min(w.y+5,p.to+USED_AFTER)];
+  }else if(w.kind==="band"){
+    phrase=`Vous l'avez eue entre ${w.a} et ${w.b}.`;
+    label=`${w.a}–${w.b}`;
+    per=[w.a,w.b];
+  }else{
+    phrase=`Quelque part entre ${p.from} et ${p.to}.`;
+    label=`${p.from}–${p.to} · à préciser plus tard`;
+    per=[p.from,p.to];
+  }
+  S.periods[S.plat]=per;
+  if(!S.order.includes(S.plat)) S.order.push(S.plat);
+
+  /* Un carrefour, pas un écran de félicitations : avec une console et une date,
+     il n'y a rien à célébrer. Ce qui compte est de proposer les deux suites —
+     et de rendre « une autre console » aussi visible que « mes jeux », sans quoi
+     personne n'aura de fils parallèles à l'arrivée. */
+  const first=S.order.length===1;
+  $("rwTitle").innerHTML=`<b>${p.n}</b> ajoutée.<br><span style="font-weight:400">${phrase}</span>`;
+  $("rwRec").innerHTML=`Enregistré : <b>${label}</b>`;
+  $("hubGoT").textContent = first ? "Choisir mes jeux" : `Choisir mes jeux ${p.n}`;
+  $("hubGoS").textContent = `${LIB[S.plat].length} titres, du plus connu au plus obscur`;
+  $("rwPv").innerHTML=LIB[S.plat].slice(0,4).map(([t,y])=>
+    `<span class="art" style="${art(t,y)}"><span>${t.split(":")[0]}</span></span>`).join("");
+  $("hubStory").hidden = !allDeclared().length;
+  go("w3");
+}
+$("goAdd").addEventListener("click",()=>openAdd(S.plat));
+
+/* ───────── E02 ───────── */
+function periodsFor(id){
+  const p=PLATS[id], mid=Math.round((p.from+p.to)/2);
+  return [[p.from,mid],[mid,p.to],[p.from,p.to]];
+}
+function openAdd(id){
+  S.cur=id; S.open=-1;
+  if(!S.order.includes(id)) S.order.push(id);
+  if(!S.periods[id]) S.periods[id]=periodsFor(id)[2];
+  const p=PLATS[id], cur=S.periods[id];
+  /* la période issue de la datation figure toujours dans les pastilles,
+     sélectionnée : on ne perd pas ce que l'utilisateur vient de dire */
+  S.pills=periodsFor(id).slice();
+  if(!S.pills.some(r=>r[0]===cur[0]&&r[1]===cur[1])) S.pills.unshift(cur);
+  $("addName").textContent=p.n;
+  $("addPills").innerHTML='<small>J\'y jouais</small>'+S.pills.map((r,i)=>
+    `<button class="pl" data-per="${i}" aria-pressed="${cur[0]===r[0]&&cur[1]===r[1]}">${r[0]}–${r[1]}</button>`).join("");
+  S.pos=0; go("add"); setMode(S.mode||"cards");
+}
+const isDone=s=>s&&s.c==="done";
+const isOwn =s=>s&&s.h==="own";
+function marks(s){
+  if(!s) return "";
+  if(s.n) return '<i class="mk mk-n"></i>';
+  const c = s.c==="done"?'<i class="mk mk-d"></i>' : s.c==="prog"?'<i class="mk mk-h"></i>'
+          : s.c==="quit"?'<i class="mk mk-x"></i>' : s.p?'<i class="mk mk-p"></i>':'';
+  const h = s.h==="own"?'<i class="mk mk-o"></i>' : s.h==="borrow"?'<i class="mk mk-ob"></i>':'';
+  const a = s.aff==="fav"?'<i class="mk mk-f"></i>' : s.aff==="love"?'<i class="mk mk-l"></i>'
+          : s.aff==="meh"?'<i class="mk mk-b"></i>' : '';
+  return c+h+a;
+}
+
+/* Quand a-t-il joué ? Question relative à la sortie du jeu, pas absolue :
+   le référentiel connaît la date, et « à sa sortie » est un souvenir bien
+   plus fiable qu'une année. Une seule ligne, trois réponses, facultative. */
+function whenOpts(p,i){
+  const R=LIB[p][i][1], per=S.periods[p]||[R,R+6];
+  const late=Math.max(per[1],R+12);
+  return [["rel","à sa sortie",`${R}`],["soon","peu après",`${R+1}–${R+3}`],["late","bien plus tard",`${R+4}–${late}`]];
+}
+function whenLabel(p,i,w){
+  const o=whenOpts(p,i).find(x=>x[0]===w);
+  return o?o[2]:"";
+}
+/* « Mon préféré » est unique par console : en marquer un second rétrograde
+   le précédent en « j'ai adoré ». Sans cette règle, la distinction se dilue. */
+function setAff(p,i,a){
+  const k=key(p,i), s=S.decl[k]||(S.decl[k]={});
+  s.n=false; s.p=true;
+  s.aff = s.aff===a ? undefined : a;
+  if(s.aff==="fav") Object.keys(S.decl).forEach(o=>{
+    if(o!==k && o.startsWith(p+":") && S.decl[o].aff==="fav") S.decl[o].aff="love";
+  });
+}
+function renderAdd(){
+  const id=S.cur, lib=LIB[id];
+  $("addList").innerHTML=lib.map(([t,y],i)=>{
+    const s=S.decl[key(id,i)]||{}, o=S.open===i;
+    return `<div class="rw2 ${s.n?"out":""} ${o?"open":""}">
+      <button class="rw2__m" data-act="p" data-i="${i}">
+        <span class="art rw2__a" style="${art(t,y)}"><span>${t.split(":")[0]}</span></span>
+        <span class="rw2__t"><b>${t}</b><span>${y}</span></span>
+        <span class="rw2__s" data-act="o" data-i="${i}">${marks(s)}</span>
+      </button>
+      <div class="rf2">${whenOpts(id,i).map(([k,l,y])=>
+        `<button data-act="when:${k}" data-i="${i}" aria-pressed="${s.w===k}">${l} <small style="opacity:.6">${y}</small></button>`).join("")}</div>
+      <div class="rf">
+        <button data-act="c:done" data-i="${i}" aria-pressed="${s.c==="done"}"><i class="mk mk-d"></i> fini</button>
+        <button data-act="c:prog" data-i="${i}" aria-pressed="${s.c==="prog"}"><i class="mk mk-h"></i> en cours</button>
+        <button data-act="c:quit" data-i="${i}" aria-pressed="${s.c==="quit"}"><i class="mk mk-x"></i> abandonné</button>
+        <button class="x" data-act="n" data-i="${i}" aria-label="Jamais joué">×</button>
+      </div>
+      <div class="rf2">
+        <button data-act="aff:meh" data-i="${i}" aria-pressed="${s.aff==="meh"}"><i class="mk mk-b"></i> sans plus</button>
+        <button data-act="aff:love" data-i="${i}" aria-pressed="${s.aff==="love"}"><i class="mk mk-l"></i> j'ai adoré</button>
+        <button data-act="aff:fav" data-i="${i}" aria-pressed="${s.aff==="fav"}"><i class="mk mk-f"></i> mon préféré</button>
+      </div>
+      <div class="rf2">
+        <button data-act="h:own" data-i="${i}" aria-pressed="${s.h==="own"}"><i class="mk mk-o"></i> je l'avais</button>
+        <button data-act="h:at" data-i="${i}" aria-pressed="${s.h==="at"}">chez quelqu'un</button>
+        <button data-act="h:borrow" data-i="${i}" aria-pressed="${s.h==="borrow"}"><i class="mk mk-ob"></i> emprunté</button>
+      </div></div>`;
+  }).join("");
+  $("addGrid").innerHTML=lib.map(([t,y],i)=>{
+    const s=S.decl[key(id,i)]||{};
+    return `<div class="cl ${s.n?"out":""}">
+      <div class="cl__f">
+        <span class="art" style="${art(t,y)}"><span>${t.split(":")[0]}</span></span>
+        <button class="cl__b" data-act="p" data-i="${i}" aria-label="${t} — j'y ai joué"></button>
+        <div class="cl__h">
+          <button data-act="p" data-i="${i}" aria-pressed="${!!s.p}">joué</button>
+          <button data-act="t" data-i="${i}" aria-pressed="${isDone(s)}">fini</button>
+          <button data-act="w" data-i="${i}" aria-pressed="${isOwn(s)}">je l'avais</button>
+          <button data-act="n" data-i="${i}" aria-pressed="${!!s.n}" aria-label="Jamais joué">×</button>
+        </div>
+      </div>
+      <div class="cl__m"><div><b>${t}</b><span>${y}</span></div><div style="flex:none;display:flex;gap:4px;padding-top:2px">${marks(s)}</div></div>
+    </div>`;
+  }).join("");
+  paintAddFoot();
+}
+function paintAddFoot(){
+  const dn=declaredOf(S.cur).length, lib=LIB[S.cur].length;
+  $("addCount").textContent=`${dn} / ${lib}`;
+  const byEra={};
+  allDeclared().forEach(k=>{ const [p,i]=k.split(":");
+    const v=eraVar(LIB[p][+i][1]); byEra[v]=(byEra[v]||0)+1; });
+  const tot=Object.values(byEra).reduce((a,b)=>a+b,0);
+  $("addBand").innerHTML = tot
+    ? Object.entries(byEra).map(([v,n])=>`<i style="flex:${n} 1 0;background:var(${v})"></i>`).join("")
+      + (tot<28?`<i class="e" style="flex:${(28-tot)*.5} 1 0"></i>`:"")
+    : '<i class="e"></i>';
+  const all=allDeclared(), done=all.filter(k=>isDone(S.decl[k])).length;
+  $("addStats").innerHTML=`<b>${all.length}</b> jeu${all.length>1?"x":""} · ${done} terminé${done>1?"s":""} · ${S.order.length} console${S.order.length>1?"s":""}`;
+}
+function act(a,i){
+  const k=key(S.cur,i), s=S.decl[k]||(S.decl[k]={});
+  if(a==="o"){ S.open=S.open===i?-1:i; renderAdd(); return; }
+  if(a.startsWith("aff:")){ setAff(S.cur,i,a.slice(4)); bump(); renderAdd(); return; }
+  if(a.startsWith("when:")){ const w=a.slice(5); s.w = s.w===w ? undefined : w;
+    s.n=false; s.p=true; bump(); renderAdd(); return; }
+  if(a.startsWith("c:")){ const v=a.slice(2); s.c = s.c===v ? undefined : v;
+    s.n=false; s.p=true; bump(); renderAdd(); return; }
+  if(a.startsWith("h:")){ const v=a.slice(2); s.h = s.h===v ? undefined : v;
+    s.n=false; s.p=true; bump(); renderAdd(); return; }
+  bump(); s.n=false;
+  if(a==="p"){ if(s.c||s.h||s.aff||s.w){ s.p=true; } else s.p=!s.p; }
+  if(a==="t"){ s.c = s.c==="done" ? undefined : "done"; s.p=true; }
+  if(a==="w"){ s.h = s.h==="own" ? undefined : "own"; s.p=true; }
+  if(a==="n"){ s.n=true; s.p=false; s.c=s.h=s.aff=s.w=undefined; S.open=-1; }
+  if(!s.p&&!s.n) delete S.decl[k];
+  renderAdd();
+}
+["addList","addGrid"].forEach(id=>$(id).addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  e.stopPropagation(); act(b.dataset.act,+b.dataset.i);
+}));
+$("addPills").addEventListener("click",e=>{
+  const b=e.target.closest("[data-per]"); if(!b) return;
+  S.periods[S.cur]=S.pills[+b.dataset.per];
+  [...$("addPills").querySelectorAll(".pl")].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+});
+/* ── mode cartes : une jaquette à la fois ──
+   Défaut de la saisie. La liste reste à un clic pour qui veut balayer vite —
+   les deux gestes ne servent pas le même besoin. */
+let drag=null;
+function setMode(m){
+  S.mode=m; app.dataset.m=m;
+  $("mCards").setAttribute("aria-pressed",String(m==="cards"));
+  $("mList").setAttribute("aria-pressed",String(m==="list"));
+  m==="cards"?renderDeck():renderAdd();
+}
+$("mCards").addEventListener("click",()=>setMode("cards"));
+$("mList").addEventListener("click",()=>setMode("list"));
+$("dendList").addEventListener("click",()=>setMode("list"));
+
+function renderDeck(){
+  const lib=LIB[S.cur];
+  closeSheet();
+  $("dUndo").disabled=!S.pos;
+  if(S.pos>=lib.length){
+    $("deck").innerHTML=""; $("dend").style.display="flex";
+    const n=declaredOf(S.cur).length;
+    $("dendT").textContent=n?"Console parcourue.":"Rien de familier ici ?";
+    $("dendP").textContent=n
+      ? `${n} jeu${n>1?"x":""} ajouté${n>1?"s":""} à votre histoire, sur ${lib.length} titres proposés.`
+      : "Essayez une autre console, ou parcourez la liste complète.";
+    $("dProg").textContent=`${lib.length} / ${lib.length}`;
+    paintAddFoot(); return;
+  }
+  $("dend").style.display="none";
+  let h="";
+  for(let k=Math.min(S.pos+2,lib.length-1);k>=S.pos;k--){
+    const [t,y]=lib[k], d=k-S.pos;
+    h+=`<div class="dcard${d?" behind":""}" style="transform:translateY(${d*9}px) scale(${1-d*.045});opacity:${d===2?.55:1};z-index:${10-d}">
+      <div class="dart" style="${art(t,y)}"><div class="dtitle">${t.split(":")[0]}</div></div>
+      <div class="dstamp yes">joué</div><div class="dstamp no">jamais</div>
+      <div class="dfoot"><b>${t}</b><span>${y}</span></div></div>`;
+  }
+  $("deck").innerHTML=h;
+  $("dProg").textContent=`${S.pos+1} / ${lib.length}`;
+  bindDeck(); paintAddFoot();
+}
+function bindDeck(){
+  const top=$("deck").querySelector(".dcard:not(.behind)"); if(!top) return;
+  top.addEventListener("pointerdown",e=>{
+    if(app.classList.contains("dsheet-on")) return;
+    drag={x:e.clientX,y:e.clientY,el:top,dx:0};
+    top.setPointerCapture(e.pointerId); top.style.transition="none";
+  });
+  top.addEventListener("pointermove",e=>{
+    if(!drag) return;
+    const dx=e.clientX-drag.x, dy=e.clientY-drag.y; drag.dx=dx;
+    top.style.transform=`translate(${dx}px,${dy*.28}px) rotate(${dx*.045}deg)`;
+    top.querySelector(".dstamp.yes").style.opacity=Math.max(0,Math.min(1,dx/90));
+    top.querySelector(".dstamp.no").style.opacity=Math.max(0,Math.min(1,-dx/90));
+  });
+  const end=()=>{
+    if(!drag) return;
+    const dx=drag.dx, el=drag.el; drag=null;
+    el.style.transition="transform .28s cubic-bezier(.2,.8,.2,1),opacity .28s ease";
+    if(dx>88) dCommit(true);
+    else if(dx<-88) dCommit(false);
+    else{ el.style.transform=""; el.querySelectorAll(".dstamp").forEach(s=>s.style.opacity=0); }
+  };
+  top.addEventListener("pointerup",end);
+  top.addEventListener("pointercancel",end);
+}
+function fly(dir){
+  const top=$("deck").querySelector(".dcard:not(.behind)"); if(!top) return;
+  top.style.transition="transform .3s cubic-bezier(.3,.1,.3,1),opacity .3s ease";
+  top.style.transform=`translate(${dir*440}px,36px) rotate(${dir*20}deg)`;
+  top.style.opacity="0";
+}
+function dCommit(yes){
+  const k=key(S.cur,S.pos), s=S.decl[k]||(S.decl[k]={});
+  bump();
+  if(yes){ s.n=false; s.p=true; dOpenSheet(); }
+  else{ s.p=false; s.c=s.h=s.aff=s.w=undefined; s.n=true; fly(-1); setTimeout(dAdvance,190); }
+  paintAddFoot();
+}
+function paintSheet(){
+  const s=S.decl[key(S.cur,S.pos)]||{};
+  [...$("dsComp").children].forEach(b=>b.setAttribute("aria-pressed",String(s.c===b.dataset.c)));
+  [...$("dsHow").children].forEach(b=>b.setAttribute("aria-pressed",String(s.h===b.dataset.h)));
+  $("dsWhen").innerHTML=whenOpts(S.cur,S.pos).map(([k,l,y])=>
+    `<button data-w="${k}" aria-pressed="${s.w===k}">${l}<small style="opacity:.6;font-variant-numeric:tabular-nums">${y}</small></button>`).join("");
+  [...$("dsAff").children].forEach(b=>b.setAttribute("aria-pressed",String(s.aff===b.dataset.a)));
+}
+function dOpenSheet(){
+  const [t]=LIB[S.cur][S.pos];
+  $("dsT").textContent=t;
+  paintSheet();
+  app.classList.add("dsheet-on");
+  const top=$("deck").querySelector(".dcard:not(.behind)");
+  if(top){ top.style.transition="transform .28s cubic-bezier(.2,.8,.2,1)";
+    top.style.transform="translateY(-84px) scale(.78)";
+    const st=top.querySelector(".dstamp.yes"); if(st) st.style.opacity=1; }
+}
+function closeSheet(){ app.classList.remove("dsheet-on"); }
+function dAdvance(){ closeSheet(); S.pos++; renderDeck(); }
+function dSkipOne(){ fly(1); setTimeout(dAdvance,190); }
+function dUndoOne(){
+  if(!S.pos) return;
+  S.pos--; delete S.decl[key(S.cur,S.pos)];
+  closeSheet(); renderDeck();
+}
+$("dYes").addEventListener("click",()=>{ if(!app.classList.contains("dsheet-on")){ fly(1); dCommit(true);} });
+$("dNo").addEventListener("click",()=>{ if(!app.classList.contains("dsheet-on")) dCommit(false); });
+$("dSkip").addEventListener("click",()=>{ if(!app.classList.contains("dsheet-on")) dSkipOne(); });
+$("dUndo").addEventListener("click",dUndoOne);
+$("dsGo").addEventListener("click",()=>{ fly(1); setTimeout(dAdvance,150); });
+$("dsComp").addEventListener("click",e=>{
+  const b=e.target.closest("[data-c]"); if(!b) return;
+  const s=S.decl[key(S.cur,S.pos)]; s.c = s.c===b.dataset.c ? undefined : b.dataset.c;
+  s.p=true; bump(); paintSheet(); paintAddFoot();
+});
+$("dsHow").addEventListener("click",e=>{
+  const b=e.target.closest("[data-h]"); if(!b) return;
+  const s=S.decl[key(S.cur,S.pos)]; s.h = s.h===b.dataset.h ? undefined : b.dataset.h;
+  s.p=true; bump(); paintSheet(); paintAddFoot();
+});
+$("dsWhen").addEventListener("click",e=>{
+  const b=e.target.closest("[data-w]"); if(!b) return;
+  const s=S.decl[key(S.cur,S.pos)]; s.w = s.w===b.dataset.w ? undefined : b.dataset.w;
+  bump(); paintSheet();
+});
+$("dsAff").addEventListener("click",e=>{
+  const b=e.target.closest("[data-a]"); if(!b) return;
+  setAff(S.cur,S.pos,b.dataset.a); bump(); paintSheet(); paintAddFoot();
+});
+document.addEventListener("keydown",e=>{
+  if(app.dataset.s!=="add"||S.mode!=="cards") return;
+  if(e.target.matches("input,textarea")) return;
+  const sh=app.classList.contains("dsheet-on");
+  if(e.key==="ArrowRight"&&!sh){ e.preventDefault(); fly(1); dCommit(true); }
+  if(e.key==="ArrowLeft"&&!sh){ e.preventDefault(); dCommit(false); }
+  if(e.key==="ArrowDown"&&!sh){ e.preventDefault(); dSkipOne(); }
+  if(e.key==="Enter"&&sh){ e.preventDefault(); fly(1); setTimeout(dAdvance,150); }
+  if(e.key.toLowerCase()==="z"){ e.preventDefault(); dUndoOne(); }
+});
+
+$("addMore").addEventListener("click",()=>{
+  $("pickCards").innerHTML=Object.keys(PLATS).filter(x=>!S.order.includes(x)).map(platCard).join("");
+  go("pick");
+});
+$("pickCards").addEventListener("click",e=>{
+  const b=e.target.closest("[data-plat]"); if(!b) return;
+  bump(); S.plat=b.dataset.plat; openWhen();
+});
+$("hubMore").addEventListener("click",()=>{
+  $("pickCards").innerHTML=Object.keys(PLATS).filter(x=>!S.order.includes(x)).map(platCard).join("");
+  go("pick");
+});
+$("hubStory").addEventListener("click",renderStory);
+$("pickBack").addEventListener("click",()=>allDeclared().length?renderStory():go("w3"));
+$("addBack").addEventListener("click",()=>go("w3"));
+$("addDone").addEventListener("click",renderStory);
+
+/* ───────── E03 : la timeline est construite depuis les déclarations ───────── */
+function renderStory(){
+  if(t0&&!kpi){ kpi={s:Math.round((Date.now()-t0)/1000),g:gest,j:allDeclared().length,c:S.order.length};
+    clearInterval(tick); }
+  const plats=S.order.filter(p=>declaredOf(p).length);
+  if(!plats.length){ go("add"); return; }
+
+  /* lignes : ouverture, grappe, fermeture — par plateforme */
+  const rows=[];
+  plats.forEach(p=>{
+    const [a,b]=S.periods[p];
+    rows.push({y:a,p,k:"s"});
+    rows.push({y:a,p,k:"g"});
+    rows.push({y:b,p,k:"e"});
+  });
+  const ord={s:0,g:1,e:2};
+  rows.sort((x,y)=>x.y-y.y || ord[x.k]-ord[y.k]);
+
+  /* voies : première libre à l'ouverture, rendue à la fermeture */
+  const segs=[],end=[];
+  rows.forEach((r,i)=>{
+    if(r.k==="s"){ let l=end.findIndex(v=>v===undefined||v<i); if(l<0) l=end.length;
+      end[l]=Infinity; segs.push({p:r.p,l,f:i,t:Infinity}); }
+    if(r.k==="e"){ const s=[...segs].reverse().find(s=>s.p===r.p&&s.t===Infinity); if(s){s.t=i;end[s.l]=i;} }
+  });
+  const ml=Math.max(1,...segs.map(s=>s.l+1));
+
+  /* la première console est la plus ancienne, pas la première saisie */
+  const earliest=plats.slice().sort((a,b)=>S.periods[a][0]-S.periods[b][0])[0];
+  const first=S.periods[earliest][0];
+  const nAll=allDeclared().length, nDone=allDeclared().filter(k=>isDone(S.decl[k])).length;
+  $("syP").innerHTML=`Vous jouez depuis <b>≈ ${new Date().getFullYear()-first} ans</b>.<br>`+
+    `Tout a commencé avec une <b>${PLATS[earliest].n}</b>, <i>vers ${first}</i>.`;
+  const favs=allDeclared().filter(k=>S.decl[k].aff==="fav");
+  const loved=allDeclared().filter(k=>S.decl[k].aff==="love"||S.decl[k].aff==="fav").length;
+  if(favs.length) $("syP").innerHTML+=`<span class="favline">Vos préférés : `+
+    favs.map(k=>{const [p2,i]=k.split(":");
+      return `<i>${LIB[p2][+i][0]}</i> <span style="color:var(--ink-3)">(${PLATS[p2].n})</span>`;}).join(", ")+`.</span>`;
+  const st=[[nAll,"jeux"],[nDone,"terminés"],[plats.length,"consoles"]];
+  if(loved) st.push([loved,"coups de cœur"]);
+  $("syS").innerHTML=st.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("");
+  $("syT").innerHTML='<small>Fils</small>'+plats.map(p=>
+    `<span><i style="background:var(${eraVar(PLATS[p].y)})"></i>${PLATS[p].n}</span>`).join("");
+
+  S.plats=plats; S.rows=rows; S.segs=segs; S.ml=ml;
+  paintView();
+
+  /* verdict mesuré */
+  const k=kpi, ok=k.s<=120;
+  const per=k.j?(k.s/k.j).toFixed(1):"—";
+  $("vd").className="vd"+(ok?"":" miss");
+  $("vd").innerHTML=`<h3>${ok?"Budget tenu.":"Budget dépassé."}</h3>
+    <div class="vd__g">
+      <div><b>${Math.floor(k.s/60)} min ${String(k.s%60).padStart(2,"0")}</b><span>jusqu'à cette page</span></div>
+      <div><b>${k.g}</b><span>gestes</span></div>
+      <div><b>${k.j}</b><span>jeux</span></div>
+      <div><b>${per} s</b><span>par jeu déclaré</span></div>
+    </div>
+    <p>La spécification fixe <b>moins de deux minutes</b> jusqu'à une histoire lisible (§22.1), et
+    <b>un geste par jeu</b> en sélection massive. Ici : ${(k.g/Math.max(1,k.j)).toFixed(2)} geste par jeu.</p>
+    <p style="color:var(--ink-3)">Le chronomètre démarre au premier clic, pas au chargement : le temps de lecture de l'accueil n'est pas imputé à la saisie.</p>`;
+  go("story");
+}
+
+/* étagère commune aux deux présentations */
+function shelfOf(p){
+  const ks=declaredOf(p);
+  return `<div class="sub">${ks.length} jeu${ks.length>1?"x":""} déclaré${ks.length>1?"s":""}</div>
+    <div class="shelf">${ks.map(k=>{
+      const i=+k.split(":")[1],[t,y]=LIB[p][i],s=S.decl[k];
+      const wl=s.w?whenLabel(p,i,s.w):"";
+      const tag = s.c==="done"?" ◉":s.c==="prog"?" ◐":s.c==="quit"?" ◌":isOwn(s)?" ■":"";
+      const at  = s.h==="at"?" · chez quelqu'un":s.h==="borrow"?" · emprunté":"";
+      return `<span class="sh${s.aff==="fav"?" fav":""}">
+        <span class="art" style="${art(t,y)}"><span>${t.split(":")[0]}</span>${s.aff==="fav"?'<i class="favmk"></i>':""}</span>
+        <em>${t}${tag}${wl||at?`<br><span style="opacity:.7">${wl}${at}</span>`:""}</em></span>`;
+    }).join("")}</div>`;
+}
+
+/* ── présentation A : fils parallèles (défaut) ── */
+function renderThreads(){
+  const {rows,segs,ml}=S;
+  $("syR").innerHTML=rows.map((r,i)=>{
+    const seg=segs.find(s=>s.p===r.p&&s.f<=i&&i<=s.t), ln=seg?seg.l:0;
+    const lanes=[];
+    for(let L=0;L<ml;L++){
+      const s=segs.find(s=>s.l===L&&s.f<=i&&i<=s.t);
+      if(!s){ lanes.push('<span class="ln"></span>'); continue; }
+      const cls=s.f===i?"s":s.t===i?"e":"f";
+      const nd=L===ln?`<span class="nd ${r.k==="s"?"o":r.k==="e"?"c":"g"}"></span>`:"";
+      lanes.push(`<span class="ln ${cls}" style="--c:var(${eraVar(PLATS[s.p].y)})">${nd}</span>`);
+    }
+    const body = r.k==="s" ? `<b>${PLATS[r.p].n}</b>`
+               : r.k==="e" ? `${PLATS[r.p].n} — fin de cette période`
+               : shelfOf(r.p);
+    return `<div class="r r--${r.k}" style="--c:var(${eraVar(PLATS[r.p].y)});--cx:calc(${ln} * var(--lane) + var(--lane)/2);--cw:calc(${ml-ln} * var(--lane) - var(--lane)/2 + 10px)">
+      <div class="r__y">${r.y}</div><div class="r__g">${lanes.join("")}</div>
+      <div class="r__b">${body}</div></div>`;
+  }).join("");
+}
+
+/* ── présentation B : chronologique, un seul axe ──
+   Chaque plateforme devient un épisode daté. On perd la simultanéité,
+   on gagne une lecture linéaire — d'où le choix laissé à l'utilisateur. */
+function renderChrono(){
+  const eps=S.plats.slice().sort((a,b)=>S.periods[a][0]-S.periods[b][0]);
+  $("syR").innerHTML=eps.map((p,i)=>{
+    const [a,b]=S.periods[p], c=eraVar(PLATS[p].y), last=i===eps.length-1;
+    return `<div class="r r--band" style="--c:var(${c});--cx:calc(var(--lane)/2);--cw:calc(var(--lane)/2 + 10px)">
+      <div class="r__y">${a}<br><span style="font-size:11px">${b}</span></div>
+      <div class="r__g"><span class="ln ${last?"e":"solo"}" style="--c:var(${c})"><span class="nd band"></span></span></div>
+      <div class="r__b"><b>${PLATS[p].n}</b>${shelfOf(p)}</div></div>`;
+  }).join("");
+}
+
+function paintView(){
+  const th=S.view!=="chrono";
+  $("vThreads").setAttribute("aria-pressed",String(th));
+  $("vChrono").setAttribute("aria-pressed",String(!th));
+  $("syT").style.display=th?"":"none";
+  th?renderThreads():renderChrono();
+}
+$("vThreads").addEventListener("click",()=>{S.view="threads";paintView();});
+$("vChrono").addEventListener("click",()=>{S.view="chrono";paintView();});
+
+$("reset").addEventListener("click",()=>{
+  clearInterval(tick); S={plat:null,decl:{},periods:{},order:[],cur:null,open:-1,mode:"cards",pos:0,view:"threads"};
+  t0=null;gest=0;kpi=null; $("mT").textContent="0:00"; paintHud(); go("w1");
+});
+
+const mq=matchMedia("(prefers-color-scheme: dark)");
+const onTheme=()=>{Object.keys(hx).forEach(k=>delete hx[k]);
+  $("platCards").innerHTML=Object.keys(PLATS).map(platCard).join("");
+  if(app.dataset.s==="add") renderAdd();};
+if(mq.addEventListener) mq.addEventListener("change",onTheme);
+
+step(1); paintHud();
+</script>

@@ -53,6 +53,8 @@ La phrase seule ne suffit pas à produire l'effet recherché, et une prose gén�
 
 **E — Goûts.** Genres, studios, franchises suivies avec taux de complétion.
 
+**E bis ⑴ — Vos préférés.** Un titre par plateforme, nommé (§4.7). C'est la ligne la plus personnelle que le système sache produire sans que l'utilisateur ait écrit une phrase — et le meilleur retour sur l'affect déclaré pendant la saisie. Sans cette restitution, l'affect ne serait que de la collecte.
+
 **F — Un souvenir mis en avant.** Rotation à chaque visite. Le contenu écrit par l'utilisateur est ce qui différencie son profil de celui de n'importe quel joueur de sa génération.
 
 ## Mobile et desktop

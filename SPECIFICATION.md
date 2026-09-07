@@ -117,11 +117,8 @@ Chaque utilisateur peut déclarer différents états pour chaque jeu :
 - Possédé autrefois
 - Vendu/donné/perdu
 - Joué
-- Commencé
-- Abandonné
-- Terminé
-- Terminé à 100 %
-- Jeu favori
+- Commencé / Abandonné / Terminé / Terminé à 100 % *(quatre positions d'une même échelle, §4.6)*
+- Jeu favori *(devient une valeur d'affect, §4.7)*
 - Souhaité / wishlist
 - Éventuellement prêté ou échangé
 
@@ -144,6 +141,84 @@ Le matériel est donc un objet possédable de plein droit :
 
 ### 4.4 🆕 Prêt et échange
 Les états « prêté » et « emprunté » de §4.1 sont modélisés comme des événements de possession temporaire (`LentItem`, `BorrowedItem`, avec retour éventuel). Le tiers concerné est du texte libre par défaut ; le rattachement à un autre compte de la plateforme relève de la phase sociale et n'est pas requis avant.
+
+### 4.5 🆕 Provenance : comment il y a joué
+
+**Poser « possédé ? » en case à cocher, à côté d'un geste qui dit déjà « joué », est ambigu.** L'utilisateur ne sait pas si on lui demande une confirmation ou une information nouvelle. La bonne question n'est pas *si* mais **comment**.
+
+| Réponse | Ce que le modèle enregistre |
+|---|---|
+| « je l'avais » | `UserGameExperience` **et** `UserOwnedItem` |
+| « chez quelqu'un » | `UserGameExperience` seule |
+| « emprunté ou loué » | `UserGameExperience` seule, possession temporaire (§4.4) |
+
+Trois raisons de préférer cette formulation :
+
+1. **Elle rend visible la séparation possession / expérience** (§4.2) au lieu de la laisser à l'état de concept. L'utilisateur ne lit pas une règle de modèle : il répond à une question naturelle, et le modèle en découle.
+2. **Elle couvre le cas le plus fréquent de la période rétro.** Jouer sans posséder était la norme avant la dématérialisation : chez un cousin, chez le copain qui avait l'autre console, en location, sur la console d'un aîné.
+3. **« Chez quelqu'un » est un déclencheur de mémoire**, pas seulement une donnée. C'est exactement le genre de détail qui rend un profil reconnaissable, et qui appelle naturellement un souvenir écrit (§9).
+
+Le défaut reste « je l'avais » : c'est le cas majoritaire, et l'utilisateur qui ne répond pas n'est pas pénalisé.
+
+> Extensions possibles, non retenues en Phase 1 : émulation, abonnement, démo ou borne d'essai. Elles se justifieront quand le périmètre s'étendra au-delà des consoles (question ouverte n°5, §25).
+
+### 4.6 🆕 Où en est la partie : trois positions, pas quatre états
+
+La v1 listait « Commencé », « Abandonné », « Terminé » et « Terminé à 100 % » comme quatre états indépendants (§4.1). Ce sont en réalité des positions sur un même axe — **où en est la partie** — et les traiter séparément multiplie les contrôles sans rien ajouter.
+
+| Position | Sens |
+|---|---|
+| *(rien)* | il y a joué, sans plus de précision |
+| « fini » | mené à son terme |
+| « toujours en cours » | commencé, jamais refermé — il pourrait y revenir |
+| « abandonné » | commencé, laissé en route |
+
+**« Toujours en cours » comble un manque de la v1.** « Commencé » y figurait sans jamais dire si la partie était encore vivante. Or c'est un état fréquent et durable : le jeu posé depuis six mois auquel on compte revenir n'est ni fini ni abandonné. Il alimente directement le backlog (§10).
+
+**« Abandonné » n'est pas un échec** et l'interface ne doit jamais le présenter comme tel : c'est une information de goût aussi utile que « fini ».
+
+> ⚠️ **« Terminé à 100 % » quitte cet axe.** C'est une *profondeur de complétion*, pas une position dans le déroulement — et la notion est vide pour une grande partie du catalogue : 100 % de Tetris, de F-Zero ou d'un jeu de sport ne veut rien dire. Elle réapparaîtra le cas échéant comme raffinement de « fini », sur les seuls titres où elle a un sens, et jamais comme un quatrième choix imposé à chaque jeu.
+
+### 4.7 🆕 Affect : ce que le jeu a représenté
+
+La v1 réduisait cette dimension à un état « Jeu favori » parmi douze autres. C'est trop pauvre pour ce que le produit prétend faire.
+
+**Le problème.** Une liste de jeux joués est factuellement exacte et émotionnellement muette : elle est statistiquement presque identique à celle de milliers de joueurs de la même génération. Or le critère de sortie de la Phase 2 est « oui, ça me ressemble ». Le journal personnel (§9) répond à ce besoin mais coûte de la frappe ; **l'affect en est la version à un geste**.
+
+Trois valeurs, exclusives entre elles, toutes facultatives :
+
+| Valeur | Ce que dit l'utilisateur |
+|---|---|
+| `Indifferent` | « sans plus » — j'y ai joué, ça ne m'a rien laissé |
+| `Loved` | « j'ai adoré » — ça a compté |
+| `Favourite` | « mon préféré » — le titre marquant de cette plateforme |
+
+**Ce n'est pas une note, et cela ne doit jamais en devenir une.** Une note juge l'œuvre ; l'affect enregistre une **relation**. Un jeu médiocre fini à deux un dimanche peut être un souvenir précieux ; un chef-d'œuvre joué seul peut n'avoir rien laissé. Introduire une échelle sur cinq ou dix ferait glisser le produit vers le site de critiques — un autre produit, envisagé au mieux en §21.1 — et contredirait le parti pris visuel, qui exclut badges et scores.
+
+**« Sans plus » est une déclaration positive**, au même titre que « jamais joué » (§24.3) : elle distingue l'indifférence constatée de l'absence d'avis, ce qui conditionne directement la qualité des recommandations (§14.2).
+
+**`Favourite` est unique par plateforme.** En désigner un second rétrograde le précédent en `Loved`. Sans cette contrainte, la distinction se dilue en quelques minutes ; avec elle, le choix devient signifiant et alimente la valorisation du profil (§11.2 : « jeu préféré », « console préférée »).
+
+### 4.8 🆕 Le moment de jeu, relatif à la sortie
+
+Demander une date par jeu multiplierait le coût de saisie — c'est pourquoi la période reste un contexte de lot (§24.3). Mais il existe une question bien moins coûteuse et bien mieux mémorisée : **la position par rapport à la sortie du jeu**.
+
+| Réponse | Valeur enregistrée |
+|---|---|
+| « à sa sortie » | `Year(R)` |
+| « peu après » | `Range(R+1, R+3)` |
+| « bien plus tard » | `Range(R+4, …)` |
+| non renseigné | la période de la plateforme s'applique |
+
+où `R` est l'année de sortie que le référentiel connaît pour la sortie concernée.
+
+Trois raisons de préférer le relatif à l'absolu :
+
+1. **C'est un meilleur souvenir.** « J'y ai joué quand c'est sorti » se retrouve sans effort ; « 1993 » se reconstitue péniblement.
+2. **Le référentiel travaille pour l'utilisateur** au lieu de lui poser une question nue — même principe que la fenêtre commerciale de la console (§3.4, §7.5).
+3. **La distinction est signifiante.** Avoir joué à Ocarina of Time en 1998 ou en 2012 par émulation ne raconte pas la même histoire — exactement le genre de nuance que la dimension temporelle existe pour porter.
+
+⚠️ **Le relatif est un mode de saisie, pas un huitième type temporel.** La valeur enregistrée reste une `TemporalValue` ordinaire de §7.3. N'ajoutez pas de variante `RelativeToRelease` au modèle : la résolution se fait à la saisie, et seule son issue est conservée.
 
 ## 5. Architecture Événementielle
 
@@ -269,6 +344,8 @@ Types de TemporalValue :
 - Age : Âge approximatif (ex: vers mes 12 ans)
 - Unknown : Événement sans date précise
 
+> 🆕 **Modes de saisie dérivés.** Deux questions produisent une `TemporalValue` sans que l'utilisateur manipule ces types : la fenêtre commerciale d'une console (§3.4) et la position par rapport à la sortie d'un jeu (§4.8). Dans les deux cas le référentiel fournit le repère et l'utilisateur répond en langage courant. Ces modes n'ajoutent aucune variante au type — ils l'alimentent.
+
 ### 7.4 Importance de la Précision Historique
 Il est crucial de préserver l'incertitude historique au lieu d'inventer une précision qui n'existe pas. Cette approche permet de :
 - Respecter l'authenticité des souvenirs
@@ -341,6 +418,8 @@ Le vocabulaire marketing pourra venir plus tard, mais le concept technique reste
 Le journal personnel est annoncé en §1.3 de la v1 puis jamais spécifié, alors qu'il porte directement le critère de validation du projet : faire dire à l'utilisateur « **oui, ça me ressemble** » ([PHASING.md](./PHASING.md) §5).
 
 Or une liste de jeux cochés, aussi complète soit-elle, ne ressemble à personne : elle est statistiquement identique à celle de milliers d'autres joueurs de la même génération. Ce qui rend un profil personnel, c'est la phrase « on l'a fini à deux avec mon frère pendant les vacances de 1997 ».
+
+> 🆕 **L'affect (§4.7) en est le complément à un geste.** Le journal produit l'irremplaçable mais coûte de la frappe ; l'affect coûte un tap et capte déjà ce qui a compté. Les deux se cumulent : un préféré assorti d'une phrase est le contenu le plus fort du produit.
 
 ### 9.2 Périmètre minimal
 - Une **note libre** attachée à un événement, à un jeu, ou à une période de la timeline ;
@@ -458,6 +537,8 @@ La recommandation exploite la biographie complète :
 
 ### 14.2 🆕 Absence de preuve ≠ preuve d'absence
 Ces formulations reposent sur une inférence dangereuse : « tu n'as jamais joué à X » signifie en réalité « tu n'as pas déclaré avoir joué à X ». Sur un profil reconstruit de mémoire, l'écart est énorme.
+
+L'affect (§4.7) réduit ce risque : un jeu marqué « sans plus » est écarté des suggestions en connaissance de cause, et les jeux marqués « j'ai adoré » ou « mon préféré » constituent le meilleur signal de goût dont dispose le système — bien meilleur qu'un simple comptage de titres joués.
 
 Les recommandations doivent donc être formulées de manière non assertive (« tu ne l'as pas encore ajouté ») et exclure les jeux que l'utilisateur a explicitement marqués comme non joués (§24.3), sous peine de produire l'effet inverse de celui recherché : au lieu de « cette plateforme me connaît », « cette plateforme se trompe sur moi ».
 

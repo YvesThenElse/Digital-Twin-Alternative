@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquettes — Plateforme vidéoludique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --surface:#FAF8F5; --surface-2:#FFFFFF; --surface-3:#F2EEE8;
+    --line:#E5E0D8; --line-strong:#D2CABE;
+    --ink:#1A1815; --ink-2:#57524B; --ink-3:#8A8279;
+    --shadow:0 1px 2px rgba(26,24,21,.06), 0 8px 24px -12px rgba(26,24,21,.18);
+    --era-1:#A6572F; --era-2:#B0842B; --era-3:#6E7F4A;
+    --era-4:#3F7A80; --era-5:#4A6BA8; --era-6:#6B5EA8;
+    --focus:#3F7A80; --r-s:4px; --r-m:10px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --surface:#16140F; --surface-2:#1E1B16; --surface-3:#24201A;
+      --line:#2E2A26; --line-strong:#3D3832;
+      --ink:#F2EFE9; --ink-2:#A8A199; --ink-3:#6E6862;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+      --era-1:#C9713F; --era-2:#D8A63C; --era-3:#8CA061;
+      --era-4:#57A0A8; --era-5:#6D8FD0; --era-6:#8F81D0;
+      --focus:#7FB3B8;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--surface);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,"Segoe UI",sans-serif;
+    font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:3px}
+
+  .wrap{max-width:920px;margin:0 auto;padding:44px 20px 64px;display:flex;flex-direction:column;gap:30px}
+
+  header h1{
+    font-family:"Fraunces",Georgia,serif;font-size:clamp(28px,4vw,40px);font-weight:600;
+    letter-spacing:-.022em;margin:0 0 10px;text-wrap:balance;
+  }
+  header p{margin:0;color:var(--ink-2);max-width:64ch}
+  header p+p{margin-top:8px;color:var(--ink-3);font-size:13.5px}
+
+  .grad{display:flex;height:5px;border-radius:3px;overflow:hidden}
+  .grad i{flex:1}
+
+  .sec{display:flex;flex-direction:column;gap:13px}
+  .sec>h2{
+    font-family:"Fraunces",Georgia,serif;font-size:15px;font-weight:600;margin:0;
+    color:var(--ink-3);letter-spacing:.02em;text-transform:uppercase;font-size:11.5px;letter-spacing:.1em;
+  }
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:14px}
+
+  .c{
+    display:flex;flex-direction:column;gap:8px;padding:18px 19px;text-decoration:none;
+    background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-m);
+    transition:transform .14s,border-color .14s,box-shadow .14s;position:relative;overflow:hidden;
+  }
+  .c::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--a)}
+  .c:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:var(--shadow)}
+  .c b{font-family:"Fraunces",Georgia,serif;font-size:19px;font-weight:600;letter-spacing:-.012em;line-height:1.2}
+  .c .k{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .c p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  .c .q{margin:0;font-size:12.5px;color:var(--ink-3);font-style:italic}
+  .c.off{opacity:.62}
+  .c.off b::after{
+    content:"écartée";font-family:"IBM Plex Sans",sans-serif;font-size:10px;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+    border:1px solid var(--line-strong);border-radius:999px;padding:2px 7px;margin-left:9px;
+    vertical-align:middle;white-space:nowrap;
+  }
+
+  .note{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-m);
+    padding:17px 19px;display:flex;flex-direction:column;gap:8px;
+  }
+  .note h3{font-family:"Fraunces",Georgia,serif;font-size:16px;font-weight:600;margin:0}
+  .note p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  .note code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
+    background:var(--surface-3);padding:1px 6px;border-radius:3px;
+  }
+  .note ul{margin:2px 0 0;padding-left:19px;display:flex;flex-direction:column;gap:5px;font-size:13.5px;color:var(--ink-2)}
+
+  footer{font-size:12.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:16px}
+  footer a{color:var(--focus)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Maquettes</h1>
+    <div class="grad" style="margin:16px 0 18px">
+      <i style="background:var(--era-1)"></i><i style="background:var(--era-2)"></i>
+      <i style="background:var(--era-3)"></i><i style="background:var(--era-4)"></i>
+      <i style="background:var(--era-5)"></i><i style="background:var(--era-6)"></i>
+    </div>
+    <p>
+      Prototypes des écrans décrits dans <code>ecrans/</code>. Chaque fichier est autonome —
+      une page, aucune dépendance, aucune construction — et applique le langage visuel du projet.
+    </p>
+    <p>
+      Ce sont des instruments de décision, pas une base de code : données en dur, aucune persistance.
+    </p>
+  </header>
+
+  <section class="sec">
+    <h2>À commencer par là</h2>
+    <div class="cards">
+      <a class="c" href="./parcours-premiere-session.html" style="--a:var(--era-2)">
+        <span class="k">Parcours complet · chronométré</span>
+        <b>Première session</b>
+        <p>Accueil, sélection massive et timeline enchaînés. La timeline finale est construite depuis vos déclarations réelles.</p>
+        <p class="q">Reconstruit-on une part significative de son histoire en moins de deux minutes ?</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Saisie</h2>
+    <div class="cards">
+      <a class="c" href="./E02-selection-massive.html" style="--a:var(--era-2)">
+        <span class="k">E02</span>
+        <b>Sélection massive</b>
+        <p>Liste dense sur mobile, grille visuelle sur desktop. Commutateur des deux points de rupture.</p>
+        <p class="q">Le geste tient-il en un tap, sans tronquer le titre ?</p>
+      </a>
+      <a class="c" href="./E02b-mode-cartes.html" style="--a:var(--era-3)">
+        <span class="k">E02, variante</span>
+        <b>Mode cartes</b>
+        <p>Une jaquette à la fois, glissement gauche ou droite, précisions en feuille.</p>
+        <p class="q">Accélérateur d'amorçage, ou impasse sur un catalogue entier ?</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Restitution</h2>
+    <div class="cards">
+      <a class="c" href="./E03b-fils-paralleles.html" style="--a:var(--era-4)">
+        <span class="k">E03 + E04 · seconde piste</span>
+        <b>Fils parallèles</b>
+        <p>Les plateformes coexistent, s'interrompent et reprennent. Une même œuvre traverse plusieurs fils.</p>
+        <p class="q">Un profil naissant ressemble-t-il déjà à une vie ?</p>
+      </a>
+      <a class="c off" href="./E03-mon-histoire.html" style="--a:var(--era-5)">
+        <span class="k">E03 + E04 · première piste</span>
+        <b>Mon histoire</b>
+        <p>Axe unique, épisodes groupés par plateforme. Conservée pour comparaison.</p>
+        <p class="q">Pourquoi l'axe unique échoue : la console devient l'unité du récit.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>Décision de Phase 0</h2>
+    <div class="cards">
+      <a class="c" href="./vignettes-generees.html" style="--a:var(--era-6)">
+        <span class="k">Référentiel</span>
+        <b>Vignettes générées</b>
+        <p>Soixante titres, six générations, trois échelles commutables. Trame et variation de teinte isolables.</p>
+        <p class="q">Le repli sans jaquette permet-il la reconnaissance ?</p>
+      </a>
+    </div>
+  </section>
+
+  <div class="note">
+    <h3>Ouvrir ces fichiers</h3>
+    <p>
+      Double-cliquez n'importe lequel, ou ouvrez cette page — les liens sont relatifs et fonctionnent
+      depuis le disque. Les polices sont chargées depuis Google Fonts : sans réseau, un repli système
+      s'applique et la mise en page reste correcte.
+    </p>
+    <ul>
+      <li><b>Cette page ne se publie pas</b> comme les autres : ses liens relatifs n'auraient plus de cible.</li>
+      <li>Chaque maquette porte un <code>&lt;meta viewport&gt;</code> — sans lui, un navigateur mobile rend la page
+        dans un viewport virtuel de ~980 px et les media queries ne sont jamais évaluées à la bonne largeur.</li>
+      <li>Thème clair et sombre suivent le réglage du système.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Spécification : <a href="../SPECIFICATION.md">SPECIFICATION.md</a> ·
+    phasage : <a href="../PHASING.md">PHASING.md</a> ·
+    écrans : <a href="../ecrans/README.md">ecrans/</a>
+  </footer>
+
+</div>
+</body>
+</html>

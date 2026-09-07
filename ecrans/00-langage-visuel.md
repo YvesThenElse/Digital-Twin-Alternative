@@ -24,6 +24,7 @@ Cette liste vaut définition : elle écarte l'esthétique par défaut du domaine
 
 - Pas de néon, pas de dégradés RGB, pas de fond noir « gamer », pas de polices anguleuses ou pixellisées.
 - Pas de badges, de niveaux, de succès maison, de barres de progression : le produit **enregistre une histoire, il ne note pas un joueur**. Une barre « collection complétée à 34 % » transformerait un loisir en devoir.
+- Pas de note sur cinq ni sur dix. L'affect (§4.5 de la spec) tient en deux crans et une indifférence ; une échelle ferait glisser le produit vers le site de critiques, qui est un autre produit.
 - Pas de confettis ni de célébration automatique. La récompense est de voir son histoire apparaître, pas d'être félicité.
 - Pas de skeuomorphisme : pas de fausse cartouche, pas de faux boîtier, pas de faux écran cathodique.
 - Pas de pastiche rétro généralisé. L'époque est signalée par la couleur (§3), pas en imitant les interfaces de 1994.
@@ -74,18 +75,41 @@ Il n'y a **pas de couleur de succès ni d'erreur** dans le vocabulaire courant :
 
 ---
 
-## 3. Formes : rond = vécu, carré = possédé
+## 3. Formes : rond = vécu, carré = possédé, losange = ce qui a compté
 
-L'information n'est jamais portée par la seule couleur (principe 10). Les trois états ont donc chacun **une forme distincte**, et cette forme est signifiante :
+L'information n'est jamais portée par la seule couleur (principe 10). Chaque déclaration a donc **une forme distincte**, et cette forme est signifiante :
 
-| État | Forme | Logique |
+**Le rond dit l'expérience**, et son remplissage dit jusqu'où elle est allée (§4.6) :
+
+| Où en est la partie | Forme | Logique |
 |---|---|---|
-| Joué | ● disque plein | une expérience : ronde, continue |
-| Terminé | ◉ disque cerclé | la même expérience, close |
-| Possédé | ■ carré | un **objet** : une boîte, une cartouche |
+| Joué | ● disque plein | l'expérience, sans précision |
+| Fini | ◉ anneau | la boucle est refermée |
+| Toujours en cours | ◐ demi-disque | à moitié parcouru, encore vivant |
+| Abandonné | ◌ cercle pointillé | la boucle a été interrompue |
 | Jamais joué | ○ cercle vide, ligne estompée | une déclaration, pas une absence |
 
-Rond pour le vécu, carré pour l'objet : la distinction possession / expérience (§4.2 de la spec) devient visible sans légende après une seule exposition. C'est la traduction graphique de la décision de modèle la plus structurante du produit.
+**Le carré dit l'objet**, et son remplissage dit s'il vous appartenait (§4.5) :
+
+| Provenance | Forme |
+|---|---|
+| Je l'avais | ■ carré plein — un objet à vous |
+| Emprunté ou loué | □ carré creux — un objet de passage |
+| Chez quelqu'un | *(aucune marque)* — l'expérience sans objet |
+
+**Le losange dit ce qui a compté** (§4.7) :
+
+| Affect | Forme |
+|---|---|
+| J'ai adoré | ◇ losange creux |
+| Mon préféré | ◆ losange plein — un seul par plateforme |
+| Sans plus | – tiret court, gris — l'indifférence **déclarée** |
+
+Trois familles, trois sens : **rond pour le vécu, carré pour l'objet, losange pour l'affect**. La distinction possession / expérience — la décision de modèle la plus structurante du produit — devient visible sans légende après une seule exposition, et les deux dimensions ajoutées s'y greffent sans introduire de quatrième registre.
+
+L'absence de carré est signifiante : jouer sans posséder était la norme avant la dématérialisation, et le rendu doit le montrer comme un cas normal, pas comme une donnée manquante.
+
+Le losange n'est **jamais** une étoile et ne se décline **jamais** en échelle : deux crans, pas cinq. Une note jugerait l'œuvre ; la forme enregistre une relation.
 
 Rayons : `4px` pour les tuiles et les champs, `10px` pour les cartes et panneaux, plein pour les pastilles. Petits rayons — une archive, pas une application de messagerie.
 

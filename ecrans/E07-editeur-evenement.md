@@ -72,6 +72,8 @@ Mois et date exacte sont rarissimes pour un souvenir de trente ans : ils n'ont r
 
 L'option « vers mes … ans » n'apparaît **que** si l'année de naissance est renseignée. Sinon, le repli propose d'abord de la renseigner en expliquant à quoi elle sert (§7.6) — jamais un champ de plus sans justification.
 
+**B bis — Achèvement, provenance, affect.** Quand le panneau s'ouvre sur un moment lié à un jeu, il porte aussi les trois lignes de chips de E02 (§4.5 à §4.7). C'est le second endroit où elles se règlent : E02 pendant la saisie en masse, E07 plus tard, en relisant sa timeline. Les deux écrans partagent le même composant — une divergence entre eux serait un défaut.
+
 **C — Le souvenir.** Facultatif, sans contrainte de longueur ni mise en forme, affiché en `body` italique (langage visuel §4). C'est le contenu qui fait la valeur du profil (§9) : le champ est invitant et visible sans défiler, pas relégué en bas.
 
 **D — L'avertissement doux.** Signale l'incohérence, ne bloque pas, et dit explicitement que la situation reste possible (§5.4). Le bouton d'enregistrement reste actif.

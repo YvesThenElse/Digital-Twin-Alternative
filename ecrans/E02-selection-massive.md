@@ -21,13 +21,34 @@ L'écran fonctionne donc en deux passes :
 | Passe | Geste | Ce qu'on obtient |
 |---|---|---|
 | **1 — parcourir** | tap sur **la ligne entière** = « j'y ai joué » | la timeline se remplit, un tap, aucune légende |
-| **2 — affiner** *(optionnelle)* | repasser sur les lignes déjà cochées pour marquer terminé et possédé | la granularité, sans la payer au premier passage |
+| **2 — affiner** *(optionnelle)* | repasser sur les lignes déjà cochées pour préciser achèvement, provenance, moment et affect | la richesse, sans la payer au premier passage |
 
 « Joué » est la déclaration dominante et la seule qui construise la timeline. Exiger trois décisions par jeu dès le premier passage triple la charge cognitive pour une précision que la plupart des utilisateurs n'atteindront pas de toute façon. **Le budget d'un tap par jeu n'existe que dans ce modèle.**
 
 La passe 2 n'est jamais imposée : un utilisateur qui ne fait que la passe 1 a déjà un profil valable.
 
 ---
+
+## Ce que porte la seconde passe
+
+Quatre questions, une ligne de chips chacune, toutes facultatives. Elles ne coûtent rien à qui les ignore et changent la nature du profil pour qui y répond.
+
+| Ordre | Question | Réponses | Spec |
+|---|---|---|---|
+| 1 | **Quand y avez-vous joué ?** | à sa sortie · peu après · bien plus tard | §4.8 |
+| 2 | **Vous l'avez fini ?** | fini · toujours en cours · abandonné | §4.6 |
+| 3 | **Ça vous a marqué ?** | sans plus · j'ai adoré · mon préféré | §4.7 |
+| 4 | **Comment y avez-vous joué ?** | je l'avais · chez quelqu'un · emprunté | §4.5 |
+
+**L'ordre n'est pas arbitraire.** « Quand » vient en premier parce que situer un souvenir dans le temps amorce le rappel de tout le reste — c'est ainsi que la mémoire fonctionne. Viennent ensuite le factuel, puis l'émotionnel, et enfin la provenance, la plus accessoire : un utilisateur qui s'arrête après trois questions n'a rien perdu d'essentiel.
+
+Deux points de conception y sont enfouis et méritent d'être explicités.
+
+**« Comment » remplace une case « possédé ».** Poser « possédé ? » à côté d'un geste qui dit déjà « joué » est ambigu : l'utilisateur ne sait pas si on lui demande une confirmation ou une information neuve. Et jouer sans posséder était la norme avant la dématérialisation — chez un cousin, chez le copain qui avait l'autre console, en location. La question du *comment* couvre le cas fréquent, rend visible la séparation possession / expérience, et fournit un déclencheur de mémoire que « possédé » n'offrait pas.
+
+**« Quand » est relatif à la sortie du jeu, jamais absolu.** Chaque réponse affiche les années réelles calculées depuis la date connue du référentiel. « J'y ai joué quand c'est sorti » se retrouve sans effort ; « 1993 » se reconstitue péniblement.
+
+Les chips affichent leur marque (§3 du [langage visuel](./00-langage-visuel.md)), ce qui apprend le vocabulaire de formes sans légende.
 
 ## Mobile — la liste
 

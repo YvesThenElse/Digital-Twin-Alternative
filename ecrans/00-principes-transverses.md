@@ -81,6 +81,16 @@ Une saisie approximative acceptée vaut mieux qu'une saisie exacte abandonnée (
 - Les combinaisons inhabituelles mais légitimes (joué après avoir vendu : emprunt, émulation, réachat) ne produisent **rien du tout**.
 - Aucun champ de date n'est obligatoire. `Unknown` est une réponse valide partout.
 
+## 6 bis. Le silence et le refus ne sont pas la même chose
+
+Trois déclarations existent uniquement pour distinguer un avis d'une absence d'avis :
+
+- **« jamais joué »** — il ne l'a pas joué, contre « il ne s'est pas prononcé » (§24.3) ;
+- **« sans plus »** — ça ne lui a rien laissé, contre « il n'a rien dit » (§4.5) ;
+- **`Unknown`** — il ne sait pas, contre « on ne lui a pas demandé » (§7.3).
+
+Dans les trois cas, la déclaration négative est **positive dans le modèle** : elle vaut information, améliore la qualité du profil et conditionne la pertinence des recommandations (§14.2). L'interface ne doit donc jamais présenter ces choix comme un abandon ou un échec.
+
 ## 7. Le jeu absent est un cas nominal
 
 Avec un référentiel de 100 à 300 titres en Phase 1, ne pas trouver un jeu est fréquent, pas exceptionnel (§3.5). Chaque écran de recherche ou de sélection propose donc une issue : saisir un titre libre, qui devient une déclaration non résolue, rattachable plus tard sans perte d'historique.
@@ -125,6 +135,9 @@ Termes techniques à ne jamais afficher : `PlayerEvent`, `TemporalValue`, `UserO
 | UserGameExperience | joué / terminé |
 | UserOwnedItem | possédé / j'ai eu |
 | Déclaration non résolue | « jeu non répertorié » |
+| Affect `Loved` / `Favourite` | « j'ai adoré » / « mon préféré » |
+| Affect `Indifferent` | « sans plus » |
+| Moment relatif à la sortie | « à sa sortie », « peu après », « bien plus tard » |
 
 ## 10. Accessibilité et internationalisation
 

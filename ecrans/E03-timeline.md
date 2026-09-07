@@ -36,6 +36,8 @@ Restituer le parcours **comme une histoire**, avec son incertitude assumée. C'e
 
 **B — L'axe.** Rendu strictement conforme au principe 2 : point plein pour une date exacte, point creux pour une année, **bande** pour une période, halo pour un « vers ». Une déclaration en masse depuis E02 apparaît comme **une bande agrégée**, pas comme 12 points identiques — sans quoi la timeline devient illisible dès la première session.
 
+**B bis — Les préférés.** Un jeu marqué « mon préféré » (§4.7) porte un losange plein sur sa vignette et son titre passe en serif italique. La typographie fait le travail, pas un badge : le préféré se remarque sans crier.
+
 **C — Les souvenirs.** Une note attachée à un moment (§9) s'affiche en ligne, en typographie distincte. C'est le seul contenu de la timeline qui ne soit pas généré : il doit dominer visuellement les éléments automatiques.
 
 **D — Les sans-date.** `Unknown` n'est jamais projeté sur l'axe. Ces moments vivent dans un tiroir en pied de page, avec une invitation à les dater — une tâche facile et gratifiante à proposer aux sessions de retour.
