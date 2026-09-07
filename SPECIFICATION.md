@@ -579,7 +579,20 @@ Trois régimes distincts, souvent confondus :
 **Conséquence pratique** : privilégier les sources dont la licence autorise explicitement la réutilisation et la redistribution (les jeux de données sous CC0 ou licences ouvertes équivalentes sont les seuls confortables), et vérifier les CGU **avant** tout import, pas après. La licence de chaque source doit être un champ du référentiel, pas une note.
 
 ### 19.2 Visuels
-Jaquettes, captures, logos et marques sont protégés et ne relèvent pas du régime des données factuelles. Le référentiel doit fonctionner **sans visuels** par défaut, l'ajout d'illustrations étant une décision distincte et documentée (source licenciée, contribution utilisateur avec garantie, ou absence assumée).
+Jaquettes, captures, logos et marques sont protégés et ne relèvent pas du régime des données factuelles. Le référentiel doit pouvoir fonctionner **sans visuels sous licence**, l'ajout d'illustrations étant une décision distincte et documentée (source licenciée, contribution utilisateur avec garantie, ou absence assumée).
+
+> 🆕 **Ce n'est pas seulement une question juridique : c'est une dépendance de la fonctionnalité centrale.**
+>
+> La sélection massive (§24.3) fonctionne par **reconnaissance** — l'utilisateur balaye une liste et retrouve ses jeux. Reconnaître un titre à sa jaquette est incomparablement plus rapide que de le lire dans une ligne de texte. Une grille sans visuels dégrade donc directement la performance du geste qui porte le produit, et pas seulement son esthétique.
+>
+> La décision sur les visuels appartient par conséquent à la **Phase 0**, au même titre que le modèle de données. Quatre voies, non exclusives :
+>
+> 1. **Sources ouvertes** (Wikidata / Wikimedia et équivalents) : licences propres, couverture partielle. Point de départ le plus sain.
+> 2. **Source licenciée** : à vérifier contractuellement avant tout usage.
+> 3. **Contribution utilisateur avec garantie** : déplace le risque, exige de la modération.
+> 4. **Identité visuelle générée** : à défaut de jaquette, produire une **tuile systématique** à partir du titre, de la plateforme et de l'époque (typographie + palette de la génération). Bien exécutée, elle paraît intentionnelle et signée, pas manquante — et elle ne doit jamais imiter une vraie jaquette.
+>
+> La voie 4 reste nécessaire même si la 1 ou la 2 aboutit, puisqu'aucune source n'offrira une couverture complète : jaquette réelle quand elle existe, tuile générée sinon, dans un format constant pour que la grille ne paraisse jamais rapiécée. Spécification détaillée dans [ecrans/00-langage-visuel.md](./ecrans/00-langage-visuel.md) §5.
 
 ### 19.3 RGPD — le produit est une archive personnelle
 Le produit collecte, par conception : un historique de vie sur plusieurs décennies, des goûts, des habitudes, éventuellement une année de naissance (§7.6) et des identifiants de comptes tiers (§18.4). Ce n'est pas un cas marginal de conformité, c'est le cœur du produit.
@@ -630,6 +643,12 @@ Le jeu de caractères doit gérer sans réserve les écritures non latines, y co
 - Expérience mobile optimisée
 
 > 🆕 **Réserve sur le mobile.** Il est listé ici comme une amélioration ultérieure, alors que la saisie massive (§24.3) — le geste central du produit — est une interaction de type « cocher rapidement une longue liste », particulièrement adaptée au tactile, et que la consultation d'un profil partagé arrivera majoritairement depuis un mobile. Le responsive doit être une contrainte de conception dès la Phase 1, pas une amélioration de Phase 7.
+>
+> 🆕 **Et « responsive » est un mot trop faible.** Mobile et desktop ne sont pas la même disposition étirée mais **deux stratégies de lecture** : on balaye une liste dense à une colonne sur téléphone, une grille visuelle sur écran large. Ce qui ne varie jamais : le modèle, la séquence des écrans, le geste primaire. Ce qui varie : la disposition et la richesse des affordances secondaires, le survol et le clavier rendant sur desktop des contrôles qui coûteraient trop cher au doigt. Détail dans [ecrans/00-langage-visuel.md](./ecrans/00-langage-visuel.md) §6.
+>
+> 🆕 **Le hors-ligne n'est pas listé du tout, et il devrait l'être.** Se remémorer ses jeux d'enfance se fait dans un canapé ou un train. Une saisie qui persiste à chaque geste et dépend du réseau casse exactement là où on l'utilise : écriture locale d'abord et file de synchronisation sont des exigences de Phase 1, pas des raffinements d'industrialisation.
+>
+> 🆕 **Manque également une identité visuelle.** Aucune section de ce cahier des charges ne dit à quoi le produit ressemble. Le parti pris retenu — **l'époque comme système visuel**, chaque génération de consoles portant son accent chromatique — sert simultanément le repérage temporel, la distinction concurrentielle et la lisibilité des listes sans jaquettes. Il est spécifié dans [ecrans/00-langage-visuel.md](./ecrans/00-langage-visuel.md).
 
 ## 22. Critères de Succès
 
@@ -752,5 +771,6 @@ Ces points ne peuvent pas être tranchés depuis les documents existants et appe
 | 4 | **Marché visé : francophone ou international ?** | Conditionne l'i18n (§20), le référentiel régional (§3.4) et le benchmark concurrentiel (§2) |
 | 5 | **Périmètre des plateformes** : consoles uniquement, ou PC, arcade, mobile ? | Le PC et le mobile font exploser le volume du référentiel et affaiblissent la notion d'édition |
 | 6 | **Position sur le temps de jeu** (§11.3) | Affiché, facultatif, ou absent — impacte le modèle et la page publique |
-| 7 | **Visuels : avec ou sans jaquettes au lancement ?** (§19.2) | Impacte fortement l'attrait visuel du produit et le risque juridique |
-| 8 | **Hébergement et localisation des données** | Découle de §19.3 |
+| 7 | **Hébergement et localisation des données** | Découle de §19.3 |
+
+> 🆕 **La question des visuels a quitté cette liste** pour devenir un livrable de Phase 0 (§19.2). Elle n'est pas au même rang que les autres : elle conditionne la performance de la sélection massive, donc la validité même du test utilisateur de Phase 2. Ce qui reste à trancher, c'est la voie retenue — sources ouvertes, licence, contribution, tuiles générées — pas l'opportunité d'y répondre.

@@ -4,14 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository status
 
-This repository currently contains **no code** — only two design documents. There is no build, no test suite, no package manifest, and it is not a git repository. Do not invent build/test commands; when the first code lands, replace this section with the real ones.
+This repository currently contains **no code** — only design documents. There is no build, no test suite and no package manifest. Do not invent build/test commands; when the first code lands, replace this section with the real ones.
 
 - `SPECIFICATION.md` (v2) — functional/product spec (cahier des charges), written in French. Sections numbered §1–§25, continuous.
 - `PHASING.md` (v2) — implementation plan derived from the spec: 8 sequential phases (0–7) with explicit exit gates. It supersedes the spec wherever the two disagree (e.g. .NET version).
+- `ecrans/` — screen-by-screen UX and visual specification. Start with its `README.md`; `00-principes-transverses.md` (behaviour rules) and `00-langage-visuel.md` (colour, type, shapes, density per breakpoint) override the individual `E01`…`E17` fiches. `PLAN-DU-SITE.md` holds routes, `PARCOURS-ET-LIENS.md` the navigation graph.
 
-Both documents are French. New documentation should follow suit; code identifiers stay English.
+All documents are French. New documentation should follow suit; code identifiers stay English.
 
-Both were revised in v2: the spec's duplicated sections were merged and its numbering made continuous, missing topics were added, and `PHASING.md`'s cross-references were updated to match. Passages added in v2 are flagged 🆕. `PHASING.md` §13 maps phases to spec sections. Originals are not in version control — **this repo is not a git repository**; consider `git init` before further edits.
+The spec and phasing were revised in v2 (duplicated sections merged, numbering made continuous, missing topics added, cross-references realigned); passages added then are flagged 🆕. `PHASING.md` §13 maps phases to spec sections.
 
 ## Product in one line
 
@@ -65,6 +66,15 @@ These are small but load-bearing; the headline feature does not work without the
 - **`UnresolvedGameClaim`** — with a 100–300 game dataset, missing titles are constant; free-text entries must be recordable and canonicalisable later (§3.5).
 - **A note attached to an event** — a ticked list looks like everyone else's; the anecdote is what makes a profile feel personal, which is exactly the Phase 2 gate (§9).
 - **Playtime is not available** for retro history. It is optional and typed by origin; never aggregate imported, declared and estimated hours into one number (§11.3).
+- **Cover art is a UX dependency, not a legal footnote** (§19.2). Bulk selection works by *recognition*; a list of text rows is measurably slower to scan than one with thumbnails. The Phase 0 decision must produce a visual for every entry — licensed image where available, generated tile (era palette + title typography) everywhere else, same 3:4 frame so the grid never looks patchy.
+
+## UI rules that are easy to get wrong
+
+Three come from measured constraints, not taste — see `ecrans/`:
+
+- **One tap = "joué".** Three toggles plus an exclusion per row costs ~200px of targets, leaving ~143px of title on a 375px screen — it truncates the very thing the user is scanning for. Mobile declares in one pass (whole row is the target) and refines in an optional second pass; desktop shows the three toggles on hover, where they are free.
+- **The UI shows three temporal choices, not seven.** A year (default), "plutôt une période", "je ne sais plus"; month/exact date/±/age live behind a "préciser" disclosure. `Confidence` is **derived** from the chosen granularity, never asked.
+- **Mobile and desktop are different layouts, not one stretched.** Dense single-column list vs. visual grid or two panes. Model, screen sequence and primary gesture stay identical.
 
 ## The one product risk that shapes everything
 

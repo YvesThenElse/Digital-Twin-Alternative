@@ -55,7 +55,9 @@ Quatre principes guident le découpage :
 - **Stratégie d'effacement** (§19.4) : purge physique par utilisateur ou crypto-shredding. À trancher ici, car le choix engage le stockage et coûte une migration s'il est différé ;
 - **Benchmark concurrentiel** (§2) : vérifier ce que couvrent réellement les produits existants et confirmer que le différenciateur temporel tient ;
 - **Vérification juridique des sources envisagées** (§19.1) : licences, CGU, droit sui generis des bases de données — avant tout import, pas après ;
-- **Estimation du coût de curation du référentiel** au-delà du POC (§18.6).
+- **Estimation du coût de curation du référentiel** au-delà du POC (§18.6) ;
+- **Décision sur les visuels** (§19.2) : sources ouvertes, licence, contribution utilisateur, tuiles générées — ou combinaison. Ce n'est pas une question d'esthétique : la sélection massive fonctionne par reconnaissance, et une liste sans vignettes dégrade la performance du geste central. Trancher ici conditionne la validité du test de Phase 2 ;
+- **Langage visuel** ([ecrans/00-langage-visuel.md](./ecrans/00-langage-visuel.md)) : palette, système d'époques, typographie, formes d'état, densité par point de rupture. Livrable de cadrage au même titre que le modèle de domaine, parce qu'il détermine ce qui est constructible en Phase 1 sans reprise.
 
 ### Périmètre volontairement restreint
 
@@ -100,9 +102,17 @@ Quatre éléments sont remontés en Phase 1 parce que la fonctionnalité central
 | **Jeu absent du référentiel** (§3.5) | Avec 100 à 300 jeux, le cas est permanent. Sans issue, le testeur est bloqué au premier titre manquant et le test ne mesure plus l'UX |
 | **Souvenir minimal** : note libre sur un événement (§9) | C'est ce qui produit « oui, ça me ressemble » — exactement le critère de sortie de la Phase 2. Coût très faible, effet direct sur la porte suivante |
 
-Le **responsive** est une contrainte de conception dès cette phase, pas une amélioration ultérieure (§21.2) : cocher rapidement une longue liste est un geste tactile, et un profil partagé se consulte majoritairement sur mobile.
+Le **responsive** est une contrainte de conception dès cette phase, pas une amélioration ultérieure (§21.2) : cocher rapidement une longue liste est un geste tactile, et un profil partagé se consulte majoritairement sur mobile. Plus précisément, deux dispositions sont à livrer et non une seule étirée — **liste dense sur mobile, grille visuelle sur desktop** ([ecrans/00-langage-visuel.md](./ecrans/00-langage-visuel.md) §6).
 
 La **restitution doit être immédiate** pendant la saisie (§24.4) : la timeline se remplit à mesure que l'on coche. Un POC qui ne montre le résultat qu'à la fin ne teste pas la bonne chose.
+
+Trois exigences complémentaires issues de la révision de conception :
+
+| Exigence | Pourquoi en Phase 1 |
+|---|---|
+| **Saisie en deux passes** ([E02](./ecrans/E02-selection-massive.md)) : un tap = « joué », affinage terminé / possédé optionnel | Trois bascules par ligne ne tiennent pas sur un écran de téléphone sans tronquer le titre — or la reconnaissance du titre est la mécanique même de l'écran |
+| **Écriture locale et file de synchronisation** | On reconstitue ses souvenirs dans un canapé ou un train ; une saisie qui dépend du réseau casse là où elle sert |
+| **Vignettes** (jaquette ou tuile générée) | Sans elles, la grille desktop devient une mosaïque grise moins lisible qu'une liste, et l'écran perd son avantage |
 
 ### Architecture du POC
 
