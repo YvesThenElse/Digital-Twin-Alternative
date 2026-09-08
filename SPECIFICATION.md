@@ -725,6 +725,25 @@ Jaquettes, captures, logos et marques sont protégés et ne relèvent pas du ré
 >
 > La voie 4 reste nécessaire même si la 1 ou la 2 aboutit, puisqu'aucune source n'offrira une couverture complète : jaquette réelle quand elle existe, tuile générée sinon, dans un format constant pour que la grille ne paraisse jamais rapiécée. Spécification détaillée dans [ecrans/00-langage-visuel.md](./ecrans/00-langage-visuel.md) §5.
 
+> ## ✅ Décision de Phase 0 — tranchée
+>
+> **Observation.** La [planche de vignettes](./maquettes/vignettes-generees.html) a été examinée aux échelles réelles, sur soixante titres et six générations.
+>
+> Ce qui fonctionne : à 148 px les titres sont **parfaitement lisibles** et la composition paraît intentionnelle, pas manquante. Les trames différencient réellement — arcs concentriques, grille, pointillés, rayons se distinguent au premier coup d'œil. La variation de teinte à l'intérieur d'une génération se voit. Et le **gradient d'époque fonctionne** : du terre cuite au violet, la progression se lit sans consulter les libellés.
+>
+> Ce qui ne fonctionne pas, et c'est décisif : **une tuile générée est du texte sur un fond coloré.** La reconnaître exige de la *lire*. Or la grille desktop n'existait que pour permettre la reconnaissance **sans lecture** ([ecrans/00-principes-transverses.md](./ecrans/00-principes-transverses.md) §8). Une tuile de 148 px qui affiche un titre coûte environ cinq fois la surface d'une ligne de liste pour transmettre exactement la même chose.
+>
+> **Trois décisions en découlent.**
+>
+> **1. Les tuiles générées sont retenues définitivement — comme socle, pas comme cible.** Aucune source ne couvrira jamais l'intégralité du référentiel ; la traîne en aura toujours besoin. Elles tiennent visuellement, portent le système d'époques, et évitent la mosaïque grise. Le repli est validé.
+>
+> **2. Pour les 100 à 300 titres du dataset POC, il faut de vraies jaquettes.** Sans elles, le test de Phase 2 mesurerait une **vitesse de lecture** là où il prétend mesurer une **vitesse de reconnaissance** — et validerait ou invaliderait la mauvaise chose. À cette échelle l'acquisition est traitable ; à trente mille titres elle ne le serait pas, ce qui confirme le point 1.
+>
+> ⚠️ La difficulté est réelle et ne doit pas être minorée : **une jaquette est une œuvre protégée**, rarement disponible sous licence libre. Les encyclopédies s'appuient sur des exceptions qui ne se transmettent pas. Les voies praticables sont donc : une source sous licence explicite dont les conditions ont été vérifiées, la contribution utilisateur avec garantie, ou une analyse juridique documentée. C'est un travail de Phase 0 à part entière, pas une formalité.
+>
+> **3. La grille desktop est conditionnée au point 2.** Sans jaquettes réelles, elle est **abandonnée** au profit de la liste dense à tous les points de rupture : une grille de tuiles textuelles est strictement moins bonne qu'une liste de lignes textuelles, pour cinq fois la surface.
+
+
 ### 19.3 RGPD — le produit est une archive personnelle
 Le produit collecte, par conception : un historique de vie sur plusieurs décennies, des goûts, des habitudes, éventuellement une année de naissance (§7.6) et des identifiants de comptes tiers (§18.4). Ce n'est pas un cas marginal de conformité, c'est le cœur du produit.
 

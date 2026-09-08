@@ -56,7 +56,7 @@ Quatre principes guident le découpage :
 - **Benchmark concurrentiel** (§2) : vérifier ce que couvrent réellement les produits existants et confirmer que le différenciateur temporel tient ;
 - **Vérification juridique des sources envisagées** (§19.1) : licences, CGU, droit sui generis des bases de données — avant tout import, pas après ;
 - **Estimation du coût de curation du référentiel** au-delà du POC (§18.6) ;
-- **Décision sur les visuels** (§19.2) : sources ouvertes, licence, contribution utilisateur, tuiles générées — ou combinaison. Ce n'est pas une question d'esthétique : la sélection massive fonctionne par reconnaissance, et une liste sans vignettes dégrade la performance du geste central. Trancher ici conditionne la validité du test de Phase 2 ;
+- **Décision sur les visuels** (§19.2) — **✔ tranchée** : tuiles générées retenues comme socle permanent ; **vraies jaquettes requises pour les 100 à 300 titres du POC**, faute de quoi le test de Phase 2 mesurerait une vitesse de lecture au lieu d'une vitesse de reconnaissance ; grille desktop conditionnée à leur obtention. Reste à faire : **l'acquisition elle-même**, qui est un travail de Phase 0 à part entière — une jaquette est une œuvre protégée, rarement sous licence libre ;
 - **Langage visuel** ([ecrans/00-langage-visuel.md](./ecrans/00-langage-visuel.md)) : palette, système d'époques, typographie, formes d'état, densité par point de rupture. Livrable de cadrage au même titre que le modèle de domaine, parce qu'il détermine ce qui est constructible en Phase 1 sans reprise.
 
 ### Périmètre volontairement restreint

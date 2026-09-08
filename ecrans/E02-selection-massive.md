@@ -202,4 +202,4 @@ Cette boucle **E02 → E03 → E02** est le cycle central du produit : déclarer
 - Trier alphabétiquement par défaut : l'utilisateur ne reconnaît plus rien, la notoriété est le seul tri utile ici.
 - Ignorer la région : proposer la ludothèque NTSC-J à un joueur PAL (§3.4) casse l'effet de reconnaissance.
 - Masquer les jeux déjà déclarés : l'utilisateur perd ses repères et ne peut plus corriger.
-- Livrer la grille desktop **sans vignettes** : sans jaquette ni tuile générée, la grille devient une mosaïque grise moins lisible que la liste. Les vignettes ne sont pas décoratives, elles sont le support de la reconnaissance.
+- Livrer la grille desktop **sans jaquettes réelles**. Décision de Phase 0 (§19.2) : une tuile générée est du texte sur un fond coloré, donc on la lit au lieu de la reconnaître — et la grille n'existe que pour permettre la reconnaissance sans lecture. Une tuile de 148 px qui affiche un titre coûte cinq fois la surface d'une ligne de liste pour la même information. **Sans jaquettes, la grille est abandonnée** au profit de la liste dense à tous les points de rupture.

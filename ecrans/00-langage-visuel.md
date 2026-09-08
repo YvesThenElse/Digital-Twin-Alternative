@@ -171,6 +171,8 @@ avec jaquette              sans jaquette (tuile générée)
 
 Bien exécutée, la tuile générée paraît **intentionnelle et signée**, pas manquante. C'est la réponse de conception à une contrainte juridique — et elle reste valable même si des jaquettes sous licence sont obtenues plus tard, puisque la couverture ne sera jamais complète.
 
+> **Vérifié sur pièces.** La [planche](../maquettes/vignettes-generees.html) montre qu'à 148 px les titres sont lisibles, que les trames différencient réellement, et que le gradient d'époque se lit sans libellés. Elle montre aussi la limite : **une tuile générée est du texte sur un fond coloré**, donc on la lit au lieu de la reconnaître. La tuile est un **point d'ancrage**, pas un substitut de jaquette — et la grille desktop, qui repose sur la reconnaissance sans lecture, n'est justifiée que là où de vraies jaquettes existent (§19.2 de la spec).
+
 ---
 
 ## 6. Grille, espacement, points de rupture

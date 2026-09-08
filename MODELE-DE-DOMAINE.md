@@ -256,7 +256,7 @@ La Phase 1 tourne **sans compte** : les déclarations vivent localement jusqu'à
 |---|---|
 | **Stratégie d'effacement** — purge physique par utilisateur ou crypto-shredding | Engage le schéma ; différer coûte une migration (§19.4) |
 | **Format des identifiants canoniques** | Conditionne les fusions et scissions (§15.3) |
-| **Décision sur les visuels** | La curation du dataset doit savoir si elle collecte des références d'images (§19.2) |
+| ~~Décision sur les visuels~~ | **Tranchée** (§19.2) : tuiles générées en socle, vraies jaquettes pour les 100–300 titres du POC. La curation collecte donc des références d'images. Reste l'acquisition |
 | **Cibles chiffrées des KPI** | Sans elles, la porte de Phase 2 sera interprétée après coup (§22.2) |
 
 ---
