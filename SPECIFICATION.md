@@ -764,6 +764,8 @@ Deux stratégies acceptables, à trancher en Phase 0 car elles engagent le stock
 
 Choisir après coup coûte une migration de stockage. Choisir maintenant coûte une décision.
 
+> ✅ **Tranché** ([MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §10.1) : **purge physique partitionnée par utilisateur**. Le crypto-shredding répond au cas où l'on ne *peut pas* supprimer — journal immuable, index tiers, entrepôt hors de portée. Rien de tel ici : PostgreSQL supprime, aucune projection n'est stockée comme vérité, et tout enregistrement personnel est joignable par `UserId` seul. La limite connue reste les sauvegardes, qui se traitent par la politique de rétention et non par l'architecture.
+
 ### 19.5 Contenu utilisateur public
 Le journal (§9) et les profils publics (§12) introduisent du contenu librement rédigé et visible par des tiers : un mécanisme minimal de signalement et de retrait est nécessaire dès l'ouverture du partage (Phase 5), sans construire pour autant une chaîne de modération lourde.
 

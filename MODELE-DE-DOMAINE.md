@@ -220,7 +220,7 @@ Ce qui doit tenir, quoi qu'il arrive.
 8. `NeverPlayed` exclut toute autre déclaration sur la même œuvre.
 9. Un `CanonicalId` n'est jamais réattribué.
 10. Une incohérence produit un avertissement, **jamais un refus** (§5.4).
-11. Tout `PlayerEvent` est joignable par `UserId` seul — condition de la purge.
+11. Tout enregistrement de USER DATA est joignable par `UserId` seul — **condition de la purge** (§10.1).
 
 ---
 
@@ -250,18 +250,76 @@ La Phase 1 tourne **sans compte** : les déclarations vivent localement jusqu'à
 
 ---
 
-## 10. Ce qu'il reste à trancher
+## 10. Deux décisions d'architecture, tranchées
 
-| Point | Pourquoi c'est bloquant |
-|---|---|
-| **Stratégie d'effacement** — purge physique par utilisateur ou crypto-shredding | Engage le schéma ; différer coûte une migration (§19.4) |
-| **Format des identifiants canoniques** | Conditionne les fusions et scissions (§15.3) |
-| ~~Décision sur les visuels~~ | **Tranchée** (§19.2) : tuiles générées en socle, vraies jaquettes pour les 100–300 titres du POC. La curation collecte donc des références d'images. Reste l'acquisition |
-| **Cibles chiffrées des KPI** | Sans elles, la porte de Phase 2 sera interprétée après coup (§22.2) |
+Ces deux points engagent le schéma : les différer coûterait une migration.
+
+### 10.1 Effacement — purge physique partitionnée par utilisateur
+
+**Décision : purge physique. Pas de crypto-shredding.**
+
+Le crypto-shredding — chiffrer les données personnelles avec une clé par utilisateur, détruire la clé — existe pour un cas précis : **quand on ne peut pas supprimer**. Journal immuable, stockage WORM, index tiers, entrepôt analytique hors de portée. Rien de tel ici :
+
+- le stockage est **PostgreSQL**, pas un event store dédié (§2) — il supprime ;
+- **aucune projection n'est stockée comme vérité** : collection, statuts, goûts sont recalculés. Il n'y a donc pas de données dérivées à traquer ;
+- **aucune clé étrangère de REFERENCE vers USER** (§1) ;
+- **tout enregistrement personnel est joignable par `UserId` seul** — c'est l'invariant 11, posé exactement pour cela.
+
+Dans ces conditions, chiffrer pour pouvoir détruire une clé reviendrait à construire une serrure sur une porte ouverte, en payant la complexité de la gestion de clés et l'impossibilité d'interroger les données chiffrées.
+
+**Ce que la décision implique concrètement :**
+
+1. Toute table de USER DATA porte `UserId`, indexé, et est **partitionnée par lui**.
+2. Une opération `DeleteUser(userId)` unique, transactionnelle, suffit à tout effacer.
+3. **Aucun compteur agrégé survivant à la suppression ne peut être stocké.** « 312 joueurs ont déclaré ce titre » (§3.6) se calcule. Si la mesure impose un jour de le matérialiser, la vue doit être reconstructible et reconstruite après chaque suppression.
+4. Les **souvenirs publics** cités sur une fiche de jeu disparaissent avec leur auteur — ils portent son `UserId`, la suppression les emporte.
+5. Les **journaux applicatifs** ne contiennent aucun contenu personnel : ni titre déclaré, ni souvenir. Leur rétention est courte et documentée.
+6. Les **sauvegardes** ne sont pas atteintes par la purge. C'est la limite connue de cette approche, et elle se traite par la politique, pas par l'architecture : durée de rétention documentée, et garantie qu'une restauration ne réinjecte pas des données effacées.
+7. **L'export de portabilité emprunte la même partition** — un seul chemin de code sert les deux droits.
+
+> **Ce qui ferait revenir sur cette décision.** L'adoption d'un magasin dont on ne peut pas supprimer : entrepôt analytique tiers, index de recherche externe, journal en ajout seul hors PostgreSQL. Le crypto-shredding devient alors nécessaire, et la décision doit être **reprise avant** d'adopter un tel magasin, jamais après.
+
+### 10.2 Identifiants canoniques — opaques, typés, ordonnés dans le temps
+
+**Décision : trois couches distinctes.** La confusion entre identité, adresse et index de stockage est la source d'erreur habituelle ; les séparer coûte peu et règle le problème.
+
+| Couche | Forme | Mutable | Rôle |
+|---|---|---|---|
+| **`CanonicalId`** | `wrk_01J8Z3QK7FVXH2M9NB4RCTAEDS` | **jamais** | l'identité. Référencée par les événements utilisateur, les exports, les correspondances externes |
+| **`slug`** | `final-fantasy-vii` | oui, avec redirection | l'adresse lisible, dans les URL |
+| **index compact** | entier, par `DatasetVersion` | à chaque version | le stockage compact de la Phase 7. Ne sort jamais de la construction du dataset |
+
+**Format du `CanonicalId`** : un préfixe de type de trois lettres, puis un ULID — 26 caractères en base32 Crockford, ordonné dans le temps.
+
+`wrk` œuvre · `gvr` version · `rel` sortie · `edt` édition · `plt` plateforme · `gen` génération · `std` studio · `pub` éditeur · `gnr` genre · `acc` accessoire · `mfr` constructeur
+
+**Pourquoi opaque plutôt qu'un slug dérivé du titre.** C'est le point qui décide. Un identifiant dérivé d'un nom invite à être *corrigé* quand le nom change — et le nom change : titres régionaux, translittérations, corrections de canonicalisation. C'est exactement le risque nommé en §23.1. Or l'invariant 9 exige qu'un `CanonicalId` ne soit **jamais** réattribué ni modifié. Tenir cette discipline sur un identifiant qui *ressemble* à un titre échoue à l'échelle. Un identifiant qui ne ressemble à rien ne tente personne.
+
+**Pourquoi préfixé.** Le type est visible dans un journal, une URL, un message d'erreur, un fichier de dataset — et il empêche la bévue classique consistant à passer un identifiant de `Release` là où une `Work` est attendue. Coût nul, bénéfice permanent.
+
+**Pourquoi ordonné dans le temps plutôt qu'aléatoire.** Localité d'index, tri naturel, et l'ordre de curation reste visible dans un dataset écrit à la main.
+
+**Pourquoi pas un entier auto-incrémenté.** Le dataset POC est **écrit sous forme de fichiers avant qu'aucune base n'existe** (§18.5). Les identifiants doivent donc être frappables hors base, et deux sources fusionnées ne doivent pas entrer en collision.
+
+#### Fusions et scissions
+
+Une table de redirection, **permanente**, jamais purgée : un export utilisateur vieux de trois ans doit encore se résoudre.
+
+- **Fusion** — le `CanonicalId` **le plus ancien survit**, l'autre entre en redirection. Une règle déterministe évite l'arbitrage au cas par cas, et l'antériorité se lit directement dans le ULID.
+- **Scission** — le `CanonicalId` d'origine reste sur l'entité qui conserve **la majorité des correspondances externes** ; l'autre en reçoit un nouveau. Les événements utilisateur pointant vers l'origine sont redirigés avec un `Confidence` réduit, ou soumis à l'arbitrage de l'utilisateur quand l'ambiguïté est forte (§15.3).
+- Un `CanonicalId` retiré n'est **jamais réutilisé**, y compris pour une entité sans rapport.
 
 ---
 
-## 11. Cas de validation
+## 11. Ce qu'il reste à trancher
+
+| Point | Pourquoi c'est bloquant |
+|---|---|
+| **Cibles chiffrées des KPI** | Sans elles, la porte de Phase 2 sera interprétée après coup (§22.2) |
+| **Acquisition des jaquettes** pour les 100 à 300 titres du POC | Décidée dans son principe (§19.2), reste à réaliser — une jaquette est une œuvre protégée |
+| **Effectif du projet** | Question ouverte n°2 (§25) : sans elle, aucun calendrier n'a de sens |
+
+## 12. Cas de validation
 
 Le modèle est validé quand ces parcours se rejouent en produisant l'état attendu. Ils servent de tests de non-régression permanents (§17.4).
 

@@ -46,13 +46,13 @@ Quatre principes guident le découpage :
 - **Distinction Work / GameVersion / Release / Edition** (affinement du modèle Game / Release / Edition de §6.2) ;
 - **Modèle PlayerEvent / Experience / OwnedItem** (§5 architecture événementielle, §6.2 UserGameExperience / UserOwnedItem) ;
 - **TemporalValue et gestion de l'incertitude temporelle** (§7.3 : ExactDate, Month, Year, Range, ApproximateYear, Age, Unknown) ;
-- **Format des identifiants canoniques** (préparation du risque de canonicalisation, §23.1) ;
+- **Format des identifiants canoniques** — **✔ tranché** ([MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §10.2) : `CanonicalId` opaque, typé et ordonné dans le temps ; slug mutable séparé pour les URL ; index compact interne réservé à la Phase 7 ;
 - **Stratégie minimale de sourcing des données** (§18.5 : connaissances internes d'abord) ;
 - **Définition des KPI du POC** (sous-ensemble opérationnel de §22.1), **avec valeurs cibles chiffrées engagées avant les tests** et décision associée en cas d'échec (§22.2) ;
 - **Ordonnancement des `TemporalValue`** (§7.5) : normalisation en intervalle, point représentatif, algèbre de comparaison, traitement de `Unknown`. C'est le point le plus sous-spécifié du modèle et il conditionne toute la timeline ;
 - **Décision « modèle événementiel » vs « infrastructure d'event sourcing »** (§5.5) : position par défaut = table en ajout seul dans PostgreSQL + projections calculées, sans event store dédié ;
 - **Stratégie de correction et de rétraction des événements** (§5.3) : les souvenirs sont faillibles, la correction est une fonctionnalité de premier plan ;
-- **Stratégie d'effacement** (§19.4) : purge physique par utilisateur ou crypto-shredding. À trancher ici, car le choix engage le stockage et coûte une migration s'il est différé ;
+- **Stratégie d'effacement** — **✔ tranchée** ([MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §10.1) : purge physique partitionnée par utilisateur. Le crypto-shredding sert quand on ne *peut pas* supprimer ; ce n'est pas notre cas, et il faudrait y revenir avant d'adopter un magasin qui l'imposerait ;
 - **Benchmark concurrentiel** (§2) : vérifier ce que couvrent réellement les produits existants et confirmer que le différenciateur temporel tient ;
 - **Vérification juridique des sources envisagées** (§19.1) : licences, CGU, droit sui generis des bases de données — avant tout import, pas après ;
 - **Estimation du coût de curation du référentiel** au-delà du POC (§18.6) ;
