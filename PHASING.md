@@ -48,7 +48,7 @@ Quatre principes guident le découpage :
 - **TemporalValue et gestion de l'incertitude temporelle** (§7.3 : ExactDate, Month, Year, Range, ApproximateYear, Age, Unknown) ;
 - **Format des identifiants canoniques** — **✔ tranché** ([MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §10.2) : `CanonicalId` opaque, typé et ordonné dans le temps ; slug mutable séparé pour les URL ; index compact interne réservé à la Phase 7 ;
 - **Stratégie minimale de sourcing des données** (§18.5 : connaissances internes d'abord) ;
-- **Définition des KPI du POC** (sous-ensemble opérationnel de §22.1), **avec valeurs cibles chiffrées engagées avant les tests** et décision associée en cas d'échec (§22.2) ;
+- **Définition des KPI du POC** — **proposition chiffrée complète en §22.3**, avec définition opérationnelle et décision associée pour chacun. **En attente de validation** : tant qu'elles ne sont pas engagées, la porte de Phase 2 reste interprétable après coup ;
 - **Ordonnancement des `TemporalValue`** (§7.5) : normalisation en intervalle, point représentatif, algèbre de comparaison, traitement de `Unknown`. C'est le point le plus sous-spécifié du modèle et il conditionne toute la timeline ;
 - **Décision « modèle événementiel » vs « infrastructure d'event sourcing »** (§5.5) : position par défaut = table en ajout seul dans PostgreSQL + projections calculées, sans event store dédié ;
 - **Stratégie de correction et de rétraction des événements** (§5.3) : les souvenirs sont faillibles, la correction est une fonctionnalité de premier plan ;
@@ -172,7 +172,7 @@ Si les deux signaux sont mélangés, un échec de couverture sera lu comme un é
 
 > La majorité des testeurs répond oui à la question qualitative, et les métriques montrent que la reconstruction est jugée rapide par rapport à l'effort perçu. Sinon → retour Phase 1 (simplification), pas Phase 3.
 
-> ⚠️ **« La majorité » doit être remplacé par un seuil chiffré, fixé en Phase 0 et avant le premier test** (§22.2). Un critère qualitatif défini après coup sera toujours interprété favorablement. Pour un produit dont la thèse tient en « ce profil me ressemble », 51 % est un signal faible : le seuil devrait être nettement plus exigeant et assumé comme tel, avec la décision associée (itérer / pivoter / arrêter) écrite à l'avance.
+> ⚠️ **« La majorité » est remplacé par le jeu chiffré de §22.3**, en attente de validation : **≥ 75 % de oui francs sur l'ensemble des testeurs recrutés** — pas sur les seuls finisseurs, sans quoi le biais de sélection flatterait le résultat. La question se pose en aveugle, et un « oui, c'est pas mal » compte comme un non. Décision si manqué : **retour Phase 1**, jamais passage en Phase 3.
 
 ## 6. Phase 3 — MVP exploitable
 

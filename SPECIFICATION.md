@@ -835,7 +835,71 @@ Chaque KPI retenu pour le POC doit donc porter, dès la Phase 0 :
 
 Pour un produit dont la thèse est « ce profil me ressemble », une majorité à 51 % est un signal faible ; le seuil devrait être nettement plus exigeant, et assumé comme tel.
 
-### 22.3 Objectifs de Développement
+### 22.3 🆕 Jeu de KPI chiffrés du POC — **proposition, à valider**
+
+> ⚠️ **Ces cibles doivent être validées et engagées avant le premier test**, faute de quoi elles seront réinterprétées une fois les résultats connus — précisément le défaut que §22.2 dénonce.
+
+#### A. La mécanique fonctionne — mesuré, objectif
+
+| Indicateur | Définition opérationnelle | Cible | Si manqué |
+|---|---|---|---|
+| **T1 · première histoire lisible** | du premier clic à un écran d'histoire portant ≥ 10 jeux déclarés | **médiane ≤ 3 min** | retour Phase 1 sur l'accueil et l'enchaînement |
+| **T2 · reconstruction significative** | du premier clic à ≥ 25 jeux **et** ≥ 2 plateformes | **médiane ≤ 12 min**, **90ᵉ centile ≤ 20 min** | retour Phase 1 sur la saisie |
+| **Gestes par jeu déclaré** | gestes de déclaration ÷ jeux déclarés | **≤ 1,35** en moyenne | la feuille de précisions est lue comme un formulaire : la replier derrière « préciser » |
+| **Achèvement du parcours** | testeurs atteignant l'écran d'histoire ÷ testeurs recrutés | **≥ 85 %** | identifier le point de sortie avant toute autre analyse |
+
+Le chronomètre démarre **au premier clic**, pas au chargement : le temps de lecture de l'accueil n'est pas imputé à la saisie.
+
+> **Deux mesures distinctes, deux usages.** Le budget de conception reste **2 minutes** ([ecrans/00-principes-transverses.md](./ecrans/00-principes-transverses.md) §4) : c'est la cible contre laquelle on construit. La **porte** est à 3 minutes, parce qu'un budget de conception mesuré sur une ludothèque de démonstration ne survit pas tel quel à 147 titres réels et à l'hésitation. Confondre les deux ferait échouer le test pour des raisons étrangères au produit.
+
+#### B. Le volume déclaré
+
+| Indicateur | Cible | Si manqué |
+|---|---|---|
+| Testeurs ayant déclaré **≥ 25 jeux** | **≥ 80 %** | la sélection massive ne tient pas sa promesse |
+| Testeurs ayant déclaré sur **≥ 2 plateformes** | **≥ 75 %** | sans seconde console, les fils parallèles ne se voient jamais : revoir la place du carrefour |
+| Testeurs ayant déclaré sur **≥ 3 plateformes** | **≥ 50 %** | indicateur de diagnostic, pas une porte |
+| Moments datés par profil | **≥ 15** en médiane | la datation est esquivée : simplifier la fourche |
+
+Deux seuils sur les plateformes plutôt qu'un seul : atteindre trois consoles suppose de repasser deux fois par le carrefour, ce qui teste le **parcours** autant que l'envie. Le seuil à deux teste le concept, celui à trois teste la fluidité.
+
+#### C. La porte dure — « oui, ça me ressemble »
+
+| Indicateur | Cible | Si manqué |
+|---|---|---|
+| **Oui francs** à la question qualitative | **≥ 75 %** des testeurs **recrutés** | **retour Phase 1**, jamais passage en Phase 3 |
+
+Trois exigences de méthode, sans lesquelles le chiffre ne vaut rien :
+
+1. **La question est posée en aveugle.** Pas « est-ce que ça te ressemble ? », qui appelle l'acquiescement, mais « qu'est-ce que cet écran vous dit de vous ? », dont la réponse est ensuite codée.
+2. **Seul un oui franc compte.** Un « oui, c'est pas mal » est un non.
+3. **Le dénominateur est l'ensemble des recrutés**, pas les seuls finisseurs. Mesurer la reconnaissance sur les survivants flatterait le résultat d'un biais de sélection.
+
+Pourquoi 75 % et non « la majorité » : ce produit repose entièrement sur une reconnaissance émotionnelle. À 60 %, quatre utilisateurs sur dix ne reçoivent rien de ce que le produit promet — ce n'est pas un produit viable, c'est un produit qui fonctionne pour certains.
+
+#### D. Le retour — mesuré, mais **pas une porte**
+
+| Indicateur | Cible indicative |
+|---|---|
+| Testeurs revenus consulter leur histoire sous 7 jours | ≥ 40 % |
+
+Une fenêtre de test de deux à quatre semaines ne mesure pas la rétention de façon fiable. Cet indicateur est suivi et rapporté, mais **la Phase 3 ne s'y adosse pas** : la porte reste qualitative et mécanique. Le prétendre mesurable ici serait se mentir.
+
+#### E. Variable de contrôle — la couverture du référentiel
+
+| Indicateur | Seuil | Conséquence |
+|---|---|---|
+| Tentatives de déclaration sans résultat trouvé | **≤ 15 %** | au-delà, le test mesure la **couverture du dataset** et non l'UX |
+
+Ce chiffre est rapporté **séparément** des indicateurs d'expérience. Sans lui, un échec de couverture se lirait comme un échec produit, ou l'inverse ([PHASING.md](./PHASING.md) §5).
+
+#### Réserve statistique, à énoncer maintenant
+
+Avec 10 à 30 testeurs, une cible à 75 % porte un intervalle de confiance d'une quinzaine de points. **Ces seuils sont des règles de décision, pas des affirmations statistiques.**
+
+Si un résultat tombe à quelques points d'un seuil, la réponse honnête est **d'élargir l'échantillon**, jamais de déclarer la porte franchie. C'est exactement la dérive que §22.2 cherche à empêcher, et elle survient précisément dans ces cas limites.
+
+### 22.4 Objectifs de Développement
 - Version de base avec fonctionnalités essentielles
 - Améliorations continues basées sur les retours utilisateurs
 - Évolution vers une communauté active
