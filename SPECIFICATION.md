@@ -835,9 +835,11 @@ Chaque KPI retenu pour le POC doit donc porter, dès la Phase 0 :
 
 Pour un produit dont la thèse est « ce profil me ressemble », une majorité à 51 % est un signal faible ; le seuil devrait être nettement plus exigeant, et assumé comme tel.
 
-### 22.3 🆕 Jeu de KPI chiffrés du POC — **proposition, à valider**
+### 22.3 🆕 Jeu de KPI chiffrés du POC — **engagé**
 
-> ⚠️ **Ces cibles doivent être validées et engagées avant le premier test**, faute de quoi elles seront réinterprétées une fois les résultats connus — précisément le défaut que §22.2 dénonce.
+> ✅ **Cibles validées et engagées le 8 septembre 2026**, avant tout test utilisateur. C'est cet engagement préalable, et lui seul, qui les rend opposables : une cible fixée après coup se plie toujours au résultat obtenu (§22.2).
+>
+> **Règle de révision.** Ces seuils peuvent être ajustés **tant qu'aucun testeur n'a été reçu**. Après le premier test, toute modification doit être consignée avec sa date et son motif, et rend la porte **non franchie par défaut** : on ne descend pas une barre parce qu'on est passé dessous.
 
 #### A. La mécanique fonctionne — mesuré, objectif
 

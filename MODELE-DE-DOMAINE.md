@@ -315,7 +315,7 @@ Une table de redirection, **permanente**, jamais purgée : un export utilisateur
 
 | Point | Pourquoi c'est bloquant |
 |---|---|
-| **Cibles chiffrées des KPI** | Proposition complète en §22.3 — **reste à valider et engager**. Sans engagement préalable, la porte de Phase 2 sera interprétée après coup (§22.2) |
+| ~~Cibles chiffrées des KPI~~ | **Engagées** le 8 septembre 2026 (§22.3), avant tout test — condition pour qu'elles soient opposables |
 | **Acquisition des jaquettes** pour les 100 à 300 titres du POC | Décidée dans son principe (§19.2), reste à réaliser — une jaquette est une œuvre protégée |
 | **Effectif du projet** | Question ouverte n°2 (§25) : sans elle, aucun calendrier n'a de sens |
 
