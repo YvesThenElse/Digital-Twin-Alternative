@@ -75,41 +75,45 @@ Il n'y a **pas de couleur de succès ni d'erreur** dans le vocabulaire courant :
 
 ---
 
-## 3. Formes : rond = vécu, carré = possédé, losange = ce qui a compté
+## 3. Icônes : trois familles, aucune légende à apprendre
 
-L'information n'est jamais portée par la seule couleur (principe 10). Chaque déclaration a donc **une forme distincte**, et cette forme est signifiante :
+L'information n'est jamais portée par la seule couleur (principe 10). Chaque déclaration porte donc une **icône dessinée**.
 
-**Le rond dit l'expérience**, et son remplissage dit jusqu'où elle est allée (§4.6) :
+> **Ce point a été révisé.** Une première version reposait sur un système géométrique — rond pour le vécu, carré pour l'objet, losange pour l'affect. Il était élégant sur le papier et illisible à l'écran : un demi-disque, un cercle pointillé et un losange creux ne se distinguent pas à 12 px, et surtout ils **obligeaient à apprendre une correspondance** — exactement ce que le principe « aucune légende » interdit. Les icônes se reconnaissent au lieu de se déchiffrer.
 
-| Où en est la partie | Forme | Logique |
+Les trois familles se distinguent désormais par leur **sujet** plutôt que par leur géométrie, ce qui est plus robuste : on n'a pas besoin de comparer des formes entre elles pour savoir de quoi on parle.
+
+### Ce qu'on a fait du jeu
+
+| Déclaration | Icône | Pourquoi elle |
 |---|---|---|
-| Joué | ● disque plein | l'expérience, sans précision |
-| Fini | ◉ anneau | la boucle est refermée |
-| Toujours en cours | ◐ demi-disque | à moitié parcouru, encore vivant |
-| Abandonné | ◌ cercle pointillé | la boucle a été interrompue |
-| Jamais joué | ○ cercle vide, ligne estompée | une déclaration, pas une absence |
+| Joué | manette | le geste même |
+| Fini | drapeau | on a atteint l'arrivée |
+| Toujours en cours | triangle de lecture | ça tourne encore |
+| Abandonné | flèche demi-tour | on a fait demi-tour, ce n'est pas un échec |
+| Jamais joué | cercle barré | une déclaration, pas une absence |
 
-**Le carré dit l'objet**, et son remplissage dit s'il vous appartenait (§4.5) :
+### Où l'objet se trouvait
 
-| Provenance | Forme |
-|---|---|
-| Je l'avais | ■ carré plein — un objet à vous |
-| Emprunté ou loué | □ carré creux — un objet de passage |
-| Chez quelqu'un | *(aucune marque)* — l'expérience sans objet |
+| Déclaration | Icône | Pourquoi elle |
+|---|---|---|
+| Je l'avais | boîte | l'objet vous appartenait |
+| Chez quelqu'un | maison | littéral, et c'est le cas le plus fréquent de la période rétro |
+| Emprunté ou loué | flèches aller-retour | il est venu, il est reparti |
 
-**Le losange dit ce qui a compté** (§4.7) :
+### Ce qu'il a laissé
 
-| Affect | Forme |
-|---|---|
-| J'ai adoré | ◇ losange creux |
-| Mon préféré | ◆ losange plein — un seul par plateforme |
-| Sans plus | – tiret court, gris — l'indifférence **déclarée** |
+| Déclaration | Icône | Pourquoi elle |
+|---|---|---|
+| Sans plus | trait horizontal | plat, neutre — et déclaré |
+| J'ai adoré | cœur au trait | l'attachement |
+| Mon préféré | cœur plein | le même attachement, à son maximum |
 
-Trois familles, trois sens : **rond pour le vécu, carré pour l'objet, losange pour l'affect**. La distinction possession / expérience — la décision de modèle la plus structurante du produit — devient visible sans légende après une seule exposition, et les deux dimensions ajoutées s'y greffent sans introduire de quatrième registre.
+**Un cœur, jamais une étoile.** Une étoile évoque une note sur cinq, précisément ce que §1 écarte. Le cœur dit l'attachement sans échelle — et « mon préféré » étant unique par plateforme (§4.7 de la spec), il ne peut pas dériver en système de notation.
 
-L'absence de carré est signifiante : jouer sans posséder était la norme avant la dématérialisation, et le rendu doit le montrer comme un cas normal, pas comme une donnée manquante.
+### Facture graphique
 
-Le losange n'est **jamais** une étoile et ne se décline **jamais** en échelle : deux crans, pas cinq. Une note jugerait l'œuvre ; la forme enregistre une relation.
+Trait de `1.9`, extrémités et jonctions arrondies, grille de 24, aucune surface pleine sauf le cœur du préféré et les deux boutons de la manette. Taille courante **15 px**, réduite à 12–14 px dans les listes denses, portée à 19 px dans les synthèses. Elles héritent de `currentColor`, donc prennent l'accent d'époque là où le contexte en porte un.
 
 Rayons : `4px` pour les tuiles et les champs, `10px` pour les cartes et panneaux, plein pour les pastilles. Petits rayons — une archive, pas une application de messagerie.
 

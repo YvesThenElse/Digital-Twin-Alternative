@@ -141,7 +141,7 @@ Termes techniques à ne jamais afficher : `PlayerEvent`, `TemporalValue`, `UserO
 
 ## 10. Accessibilité et internationalisation
 
-- Contraste AA minimum ; l'information n'est jamais portée par la seule couleur. Les états ont chacun une **forme** distincte et signifiante — ● joué, ◉ terminé, ■ possédé, ○ jamais joué : rond pour le vécu, carré pour l'objet possédé ([langage visuel](./00-langage-visuel.md) §3).
+- Contraste AA minimum ; l'information n'est jamais portée par la seule couleur. Chaque déclaration porte une **icône dessinée**, réunie en trois familles — ce qu'on a fait du jeu, où l'objet se trouvait, ce qu'il a laissé ([langage visuel](./00-langage-visuel.md) §3). Les icônes se reconnaissent ; des formes géométriques abstraites obligeaient à apprendre une correspondance, ce que le principe « aucune légende » interdit.
 - La sélection massive est intégralement pilotable au clavier — c'est le mode le plus rapide sur ordinateur, et le budget d'un clic par jeu en dépend.
 - Aucun libellé codé en dur dès la Phase 1, même si une seule langue est livrée (§20).
 - Recherche insensible aux diacritiques et tolérante à la translittération : `Pokemon`, `Pokémon` et `ポケモン` doivent converger.

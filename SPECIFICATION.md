@@ -109,6 +109,55 @@ Le système doit accepter une **déclaration non résolue** (`UnresolvedGameClai
 
 Elles constituent en outre le meilleur signal de priorisation pour l'extension du référentiel : ce que les utilisateurs cherchent et ne trouvent pas.
 
+### 3.6 🆕 Identifier n'est pas décrire
+
+La plateforme **n'écrit pas de synopsis**. Trois raisons, dans cet ordre d'importance :
+
+1. **Décrire n'est pas son métier.** Le catalogue est la fondation, la valeur est la couche personnelle (§16.2). Des synopsis feraient dériver le produit vers la base de données de jeux — précisément la partie banalisée du marché (§2.2).
+2. **Recopier une base tierce est illicite.** Le droit sui generis protège l'investissement du producteur, indépendamment du droit d'auteur sur chaque phrase (§19.1).
+3. **Le coût de curation est déjà le poste le plus lourd du projet** (§18.6). Des dizaines de milliers de descriptions, multilingues, à maintenir, l'aggraveraient sans rien apporter au différenciateur.
+
+Il faut cependant distinguer trois besoins que l'on confond aisément.
+
+#### Identifier — requis, quasi gratuit, dès la Phase 1
+
+Une fiche doit permettre de savoir **de quel jeu on parle**. Ce n'est pas une description : c'est de la désambiguïsation, et c'est de la donnée que la canonicalisation exige déjà (`Alias`, `Locale`, §18.4).
+
+- les **noms régionaux** : un joueur PAL devant « Super Probotector » ou « Star Wing » a besoin de savoir qu'il s'agit de Contra III et de Star Fox ;
+- les **titres non latins**, qui sont le cœur du risque de §23.1 ;
+- **un fait qui situe** l'œuvre — série, rang dans la série, absence de sortie dans une région. Positionnel, jamais narratif.
+
+⚠️ La frontière est nette et doit le rester : *« septième épisode, premier sur PlayStation »* identifie ; *« Cloud, ancien SOLDAT, rejoint un groupe d'éco-terroristes… »* décrit. La seconde forme n'a pas sa place.
+
+#### Renvoyer — Phase 3
+
+L'ouverture vers l'extérieur se fait **sur la fiche elle-même**, en position secondaire, et non sur une page séparée : scinder l'entité en deux casserait la navigation relationnelle (§3.2) et produirait une page que personne ne visiterait.
+
+Trois précautions :
+
+- **stocker l'identifiant, pas l'URL.** `ExternalId` par `Source` existe déjà (§18.4) ; une URL devinée finit par casser ;
+- **lier est licite, recopier ne l'est pas** — ce qui conforte le choix de ne pas décrire ;
+- **un lien sortant est un lecteur qui part.** Position basse, nouvelle fenêtre, aspect de référence et non de navigation.
+
+#### Ce que d'autres en ont fait — Phase 5
+
+C'est la seule matière descriptive que la plateforme puisse **posséder plutôt qu'emprunter** : combien de joueurs ont déclaré ce titre, combien en ont fait leur préféré (§4.7), et quelques souvenirs publics (§9).
+
+*« 47 joueurs l'ont marqué comme leur préféré »* sert mieux le propos de ce produit qu'un résumé d'intrigue. Aucune encyclopédie ne l'a, cela ne coûte aucune curation, et cela rend la fiche utile à quelqu'un qui **ne connaît pas** le jeu.
+
+#### Pourquoi ce besoin existe malgré tout
+
+On objecte volontiers qu'un joueur qui déclare un titre sait de quoi il s'agit. C'est vrai — pour le propriétaire du profil, au moment où il déclare. Mais la fiche se rejoint par au moins quatre chemins, et trois d'entre eux amènent quelqu'un qui **ne connaît pas** le jeu :
+
+| Qui arrive sur la fiche | Connaît le jeu |
+|---|---|
+| Le joueur qui déclare | oui |
+| Un visiteur d'un profil partagé (§13) | non |
+| Le même joueur des mois plus tard | souvent non |
+| Le joueur suivant une recommandation (§14) | **non par construction** |
+
+Le dernier cas est décisif : une recommandation existe précisément pour parler d'un jeu qu'on ne connaît pas. La faire aboutir sur une fiche muette la rendrait inutile.
+
 ## 4. Profil Vidéoludique Utilisateur
 
 ### 4.1 États des Jeux

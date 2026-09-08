@@ -327,22 +327,11 @@
   .cl__m span{font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
   .cl.out .cl__f,.cl.out .cl__m{opacity:.4}
 
-  /* Formes signifiantes : rond = vécu, carré = objet possédé,
-     losange = ce qui a compté. L'affect étend le système, il ne s'y superpose pas. */
-  .mk{display:inline-block;flex:none;color:var(--era-ink)}
-  .mk-p{width:9px;height:9px;border-radius:50%;background:currentColor}
-  .mk-d{width:11px;height:11px;border-radius:50%;border:2.5px solid currentColor}
-  .mk-o{width:9px;height:9px;border-radius:1.5px;background:currentColor}
-  .mk-n{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-3)}
-  .mk-h{width:11px;height:11px;border-radius:50%;border:2.5px solid currentColor;
-        background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
-  .mk-x{width:11px;height:11px;border-radius:50%;border:2px dashed currentColor}
-  .mk-ob{width:9px;height:9px;border-radius:1.5px;border:2px solid currentColor}
-  .mk-l{width:9px;height:9px;border:2px solid currentColor;transform:rotate(45deg)}
-  .mk-f{width:10px;height:10px;background:currentColor;transform:rotate(45deg)}
-  .mk-b{width:10px;height:2px;background:var(--ink-3);border-radius:1px}
-  .rf .mk,.cl__h .mk{color:currentColor}
-  .rf .mk-d{border-color:currentColor;background:none}
+  /* Icônes dessinées : ce qu'on a fait du jeu, où l'objet se trouvait,
+     ce qu'il a laissé. Une forme abstraite oblige à apprendre une
+     correspondance ; une icône se reconnaît. */
+  .mk{flex:none;vertical-align:-3px;color:var(--era-ink)}
+  .rf .mk,.rf2 .mk,.cl__h .mk,.aff__r .mk{color:currentColor}
 
   /* affect : une seule question, trois réponses, jamais une note */
   .aff{display:flex;flex-direction:column;gap:7px}
@@ -618,27 +607,15 @@
             </div>
             <div class="aff">
               <span class="aff__q">Vous l'avez fini&nbsp;?</span>
-              <div class="aff__r" id="dsComp">
-                <button data-c="done"><i class="mk mk-d"></i> fini</button>
-                <button data-c="prog"><i class="mk mk-h"></i> toujours en cours</button>
-                <button data-c="quit"><i class="mk mk-x"></i> abandonné</button>
-              </div>
+              <div class="aff__r" id="dsComp"></div>
             </div>
             <div class="aff">
               <span class="aff__q">Ça vous a marqué&nbsp;?</span>
-              <div class="aff__r" id="dsAff">
-                <button data-a="meh"><i class="mk mk-b"></i> sans plus</button>
-                <button data-a="love"><i class="mk mk-l"></i> j'ai adoré</button>
-                <button data-a="fav"><i class="mk mk-f"></i> mon préféré</button>
-              </div>
+              <div class="aff__r" id="dsAff"></div>
             </div>
             <div class="aff">
               <span class="aff__q">Comment y avez-vous joué&nbsp;?</span>
-              <div class="aff__r" id="dsHow">
-                <button data-h="own"><i class="mk mk-o"></i> je l'avais</button>
-                <button data-h="at">chez quelqu'un</button>
-                <button data-h="borrow"><i class="mk mk-ob"></i> emprunté</button>
-              </div>
+              <div class="aff__r" id="dsHow"></div>
             </div>
             <button class="dsGo" id="dsGo">Suivant →</button>
           </div>
@@ -716,6 +693,31 @@ const LIB={
 /* Combien d'années une console reste couramment trouvable d'occasion après
    l'arrêt de sa commercialisation. Sert à borner la grille sans l'interdire. */
 const USED_AFTER=8;
+
+/* Un seul jeu d'icônes, trois familles lisibles sans légende : ce qu'on a fait
+   du jeu, où l'objet se trouvait, ce qu'il a laissé. Des formes abstraites
+   obligeaient à apprendre une correspondance ; des icônes se reconnaissent. */
+const ICO={
+  played:'<rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="18.4" cy="13.4" r="1.1" fill="currentColor" stroke="none"/>',
+  done:'<path d="M5 22V3"/><path d="M5 4h13l-2.6 4.5L18 13H5"/>',
+  prog:'<path d="M7 4.5v15l12-7.5z"/>',
+  quit:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+  never:'<circle cx="12" cy="12" r="9"/><path d="m5.7 5.7 12.6 12.6"/>',
+  box:'<path d="M21 8.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"/><rect x="2" y="3" width="20" height="5.5" rx="1"/><path d="M10 12.5h4"/>',
+  home:'<path d="M3 10.6 12 3.2l9 7.4"/><path d="M5.5 9.4V20.8h13V9.4"/>',
+  swap:'<path d="m16.5 3 4.5 4.5-4.5 4.5"/><path d="M21 7.5H8"/><path d="M7.5 21 3 16.5 7.5 12"/><path d="M3 16.5h13"/>',
+  meh:'<path d="M5 12h14"/>',
+  love:'<path d="M20.6 5.9a5.4 5.4 0 0 0-7.7 0L12 6.9l-1-1a5.4 5.4 0 0 0-7.7 7.7l8.7 8.6 8.6-8.6a5.4 5.4 0 0 0 0-7.7z"/>',
+  fav:'<path d="M20.6 5.9a5.4 5.4 0 0 0-7.7 0L12 6.9l-1-1a5.4 5.4 0 0 0-7.7 7.7l8.7 8.6 8.6-8.6a5.4 5.4 0 0 0 0-7.7z" fill="currentColor"/>',
+};
+const ic=(n,sz)=>n?`<svg class="mk" width="${sz||15}" height="${sz||15}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICO[n]}</svg>`:"";
+const OPTS={
+  c:[["done","fini"],["prog","toujours en cours"],["quit","abandonné"]],
+  aff:[["meh","sans plus"],["love","j'ai adoré"],["fav","mon préféré"]],
+  h:[["box","je l'avais"],["home","chez quelqu'un"],["swap","emprunté"]]
+};
+const HKEY={box:"own",home:"at",swap:"borrow"};
+const HICO={own:"box",at:"home",borrow:"swap"};
 
 const ERAS=[[1990,"--era-1"],[1995,"--era-2"],[2000,"--era-3"],[2006,"--era-4"],[2013,"--era-5"],[9999,"--era-6"]];
 const eraVar=y=>ERAS.find(e=>y<=e[0])[1];
@@ -919,12 +921,10 @@ const isDone=s=>s&&s.c==="done";
 const isOwn =s=>s&&s.h==="own";
 function marks(s){
   if(!s) return "";
-  if(s.n) return '<i class="mk mk-n"></i>';
-  const c = s.c==="done"?'<i class="mk mk-d"></i>' : s.c==="prog"?'<i class="mk mk-h"></i>'
-          : s.c==="quit"?'<i class="mk mk-x"></i>' : s.p?'<i class="mk mk-p"></i>':'';
-  const h = s.h==="own"?'<i class="mk mk-o"></i>' : s.h==="borrow"?'<i class="mk mk-ob"></i>':'';
-  const a = s.aff==="fav"?'<i class="mk mk-f"></i>' : s.aff==="love"?'<i class="mk mk-l"></i>'
-          : s.aff==="meh"?'<i class="mk mk-b"></i>' : '';
+  if(s.n) return ic("never",14);
+  const c = ic(s.c||(s.p?"played":null),14);
+  const h = ic(s.h?HICO[s.h]:null,14);
+  const a = ic(s.aff,14);
   return c+h+a;
 }
 
@@ -963,20 +963,20 @@ function renderAdd(){
       <div class="rf2">${whenOpts(id,i).map(([k,l,y])=>
         `<button data-act="when:${k}" data-i="${i}" aria-pressed="${s.w===k}">${l} <small style="opacity:.6">${y}</small></button>`).join("")}</div>
       <div class="rf">
-        <button data-act="c:done" data-i="${i}" aria-pressed="${s.c==="done"}"><i class="mk mk-d"></i> fini</button>
-        <button data-act="c:prog" data-i="${i}" aria-pressed="${s.c==="prog"}"><i class="mk mk-h"></i> en cours</button>
-        <button data-act="c:quit" data-i="${i}" aria-pressed="${s.c==="quit"}"><i class="mk mk-x"></i> abandonné</button>
+        <button data-act="c:done" data-i="${i}" aria-pressed="${s.c==="done"}">${ic("done")} fini</button>
+        <button data-act="c:prog" data-i="${i}" aria-pressed="${s.c==="prog"}">${ic("prog")} en cours</button>
+        <button data-act="c:quit" data-i="${i}" aria-pressed="${s.c==="quit"}">${ic("quit")} abandonné</button>
         <button class="x" data-act="n" data-i="${i}" aria-label="Jamais joué">×</button>
       </div>
       <div class="rf2">
-        <button data-act="aff:meh" data-i="${i}" aria-pressed="${s.aff==="meh"}"><i class="mk mk-b"></i> sans plus</button>
-        <button data-act="aff:love" data-i="${i}" aria-pressed="${s.aff==="love"}"><i class="mk mk-l"></i> j'ai adoré</button>
-        <button data-act="aff:fav" data-i="${i}" aria-pressed="${s.aff==="fav"}"><i class="mk mk-f"></i> mon préféré</button>
+        <button data-act="aff:meh" data-i="${i}" aria-pressed="${s.aff==="meh"}">${ic("meh")} sans plus</button>
+        <button data-act="aff:love" data-i="${i}" aria-pressed="${s.aff==="love"}">${ic("love")} j'ai adoré</button>
+        <button data-act="aff:fav" data-i="${i}" aria-pressed="${s.aff==="fav"}">${ic("fav")} mon préféré</button>
       </div>
       <div class="rf2">
-        <button data-act="h:own" data-i="${i}" aria-pressed="${s.h==="own"}"><i class="mk mk-o"></i> je l'avais</button>
-        <button data-act="h:at" data-i="${i}" aria-pressed="${s.h==="at"}">chez quelqu'un</button>
-        <button data-act="h:borrow" data-i="${i}" aria-pressed="${s.h==="borrow"}"><i class="mk mk-ob"></i> emprunté</button>
+        <button data-act="h:own" data-i="${i}" aria-pressed="${s.h==="own"}">${ic("box")} je l'avais</button>
+        <button data-act="h:at" data-i="${i}" aria-pressed="${s.h==="at"}">${ic("home")} chez quelqu'un</button>
+        <button data-act="h:borrow" data-i="${i}" aria-pressed="${s.h==="borrow"}">${ic("swap")} emprunté</button>
       </div></div>`;
   }).join("");
   $("addGrid").innerHTML=lib.map(([t,y],i)=>{
@@ -1119,11 +1119,14 @@ function dCommit(yes){
 }
 function paintSheet(){
   const s=S.decl[key(S.cur,S.pos)]||{};
-  [...$("dsComp").children].forEach(b=>b.setAttribute("aria-pressed",String(s.c===b.dataset.c)));
-  [...$("dsHow").children].forEach(b=>b.setAttribute("aria-pressed",String(s.h===b.dataset.h)));
+  $("dsComp").innerHTML=OPTS.c.map(([v,l])=>
+    `<button data-c="${v}" aria-pressed="${s.c===v}">${ic(v)} ${l}</button>`).join("");
+  $("dsHow").innerHTML=OPTS.h.map(([i,l])=>
+    `<button data-h="${HKEY[i]}" aria-pressed="${s.h===HKEY[i]}">${ic(i)} ${l}</button>`).join("");
+  $("dsAff").innerHTML=OPTS.aff.map(([v,l])=>
+    `<button data-a="${v}" aria-pressed="${s.aff===v}">${ic(v)} ${l}</button>`).join("");
   $("dsWhen").innerHTML=whenOpts(S.cur,S.pos).map(([k,l,y])=>
     `<button data-w="${k}" aria-pressed="${s.w===k}">${l}<small style="opacity:.6;font-variant-numeric:tabular-nums">${y}</small></button>`).join("");
-  [...$("dsAff").children].forEach(b=>b.setAttribute("aria-pressed",String(s.aff===b.dataset.a)));
 }
 function dOpenSheet(){
   const [t]=LIB[S.cur][S.pos];
@@ -1266,11 +1269,11 @@ function shelfOf(p){
     <div class="shelf">${ks.map(k=>{
       const i=+k.split(":")[1],[t,y]=LIB[p][i],s=S.decl[k];
       const wl=s.w?whenLabel(p,i,s.w):"";
-      const tag = s.c==="done"?" ◉":s.c==="prog"?" ◐":s.c==="quit"?" ◌":isOwn(s)?" ■":"";
+      const tag = ic(s.c||(isOwn(s)?"box":null),12);
       const at  = s.h==="at"?" · chez quelqu'un":s.h==="borrow"?" · emprunté":"";
       return `<span class="sh${s.aff==="fav"?" fav":""}">
         <span class="art" style="${art(t,y)}"><span>${t.split(":")[0]}</span>${s.aff==="fav"?'<i class="favmk"></i>':""}</span>
-        <em>${t}${tag}${wl||at?`<br><span style="opacity:.7">${wl}${at}</span>`:""}</em></span>`;
+        <em>${t} ${tag}${wl||at?`<br><span style="opacity:.7">${wl}${at}</span>`:""}</em></span>`;
     }).join("")}</div>`;
 }
 

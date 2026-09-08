@@ -127,9 +127,7 @@
   .gm:hover{background:var(--surface-3)}
   .gm__n{font-size:14.5px;font-weight:500;flex:1;min-width:0}
   .gm__m{display:flex;gap:4px;flex:none;align-self:center}
-  .mk{display:inline-block;flex:none;color:var(--c)}
-  .mk-done{width:10px;height:10px;border-radius:50%;border:2.5px solid currentColor}
-  .mk-own{width:8px;height:8px;border-radius:1.5px;background:currentColor}
+  .mk{flex:none;vertical-align:-3px;color:var(--c)}
   .gm__x{font-size:11px;color:var(--focus);flex:none;align-self:center;white-space:nowrap}
 
   /* ── miniatures : un jeu se reconnaît à son image, pas à une pastille de texte ──
@@ -324,6 +322,24 @@
 </div>
 
 <script>
+/* Un seul jeu d'icônes, trois familles lisibles sans légende : ce qu'on a fait
+   du jeu, où l'objet se trouvait, ce qu'il a laissé. Des formes abstraites
+   obligeaient à apprendre une correspondance ; des icônes se reconnaissent. */
+const ICO={
+  played:'<rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="18.4" cy="13.4" r="1.1" fill="currentColor" stroke="none"/>',
+  done:'<path d="M5 22V3"/><path d="M5 4h13l-2.6 4.5L18 13H5"/>',
+  prog:'<path d="M7 4.5v15l12-7.5z"/>',
+  quit:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+  never:'<circle cx="12" cy="12" r="9"/><path d="m5.7 5.7 12.6 12.6"/>',
+  box:'<path d="M21 8.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"/><rect x="2" y="3" width="20" height="5.5" rx="1"/><path d="M10 12.5h4"/>',
+  home:'<path d="M3 10.6 12 3.2l9 7.4"/><path d="M5.5 9.4V20.8h13V9.4"/>',
+  swap:'<path d="m16.5 3 4.5 4.5-4.5 4.5"/><path d="M21 7.5H8"/><path d="M7.5 21 3 16.5 7.5 12"/><path d="M3 16.5h13"/>',
+  meh:'<path d="M5 12h14"/>',
+  love:'<path d="M20.6 5.9a5.4 5.4 0 0 0-7.7 0L12 6.9l-1-1a5.4 5.4 0 0 0-7.7 7.7l8.7 8.6 8.6-8.6a5.4 5.4 0 0 0 0-7.7z"/>',
+  fav:'<path d="M20.6 5.9a5.4 5.4 0 0 0-7.7 0L12 6.9l-1-1a5.4 5.4 0 0 0-7.7 7.7l8.7 8.6 8.6-8.6a5.4 5.4 0 0 0 0-7.7z" fill="currentColor"/>',
+};
+const ic=(n,sz)=>n?`<svg class="mk" width="${sz||15}" height="${sz||15}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICO[n]}</svg>`:"";
+
 const ERAS=[[1990,"--era-1"],[1995,"--era-2"],[2000,"--era-3"],[2006,"--era-4"],[2013,"--era-5"],[9999,"--era-6"]];
 const eraVar=y=>ERAS.find(e=>y<=e[0])[1];
 
@@ -524,7 +540,7 @@ function render(){
           <span class="art gm__art" style="${art(r.ttl,r.y)}"><span>${r.ttl.split(":")[0]}</span></span>
           <span class="gm__n">${r.ttl}</span>
           ${r.work?`<span class="gm__x">3 fois dans votre histoire ↗</span>`:""}
-          <span class="gm__m">${r.st==="done"?'<i class="mk mk-done"></i>':""}${r.st==="own"?'<i class="mk mk-own"></i>':""}</span>
+          <span class="gm__m">${r.st==="done"?ic("done",14):""}${r.st==="own"?ic("box",14):""}</span>
         </button>${r.wsub?`<div class="sub">${r.wsub}</div>`:""}`;
 
     html.push(`<div class="r r--${r.k} ${openIdx===i?"is-open":""} ${lit&&r.work===lit?"lit":""}"

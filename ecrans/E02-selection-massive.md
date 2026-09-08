@@ -60,10 +60,10 @@ Les chips affichent leur marque (§3 du [langage visuel](./00-langage-visuel.md)
 │ 147 jeux · 12 déclarés        🔍   │  B
 ├────────────────────────────────────┤
 │ ┌──┐                               │
-│ │▨ │ Super Mario World          ●  │  C  déclaré : disque plein
+│ │▨ │ Super Mario World          ▸  │  C  déclaré : icône « joué »
 │ └──┘ 1990                          │
 │ ┌──┐                               │
-│ │▨ │ Zelda: A Link to the Past  ◉■ │     terminé + possédé
+│ │▨ │ Zelda: A Link to the Past  ⚑▣ │     fini + je l'avais
 │ └──┘ 1991                          │
 │ ┌──┐                               │
 │ │▨ │ Street Fighter II             │     non déclaré : rien
@@ -82,7 +82,7 @@ Les chips affichent leur marque (§3 du [langage visuel](./00-langage-visuel.md)
 
 **B — Barre de contrôle.** Compteur, filtre de recherche dans la liste. Le tri par notoriété (§3.3) est le défaut et n'a pas besoin d'être exposé en Phase 1.
 
-**C — La ligne.** Hauteur 56 px, **la ligne entière est la cible**. Elle contient une vignette (jaquette ou tuile générée, cf. [langage visuel](./00-langage-visuel.md) §5), le titre non tronqué, l'année, et l'état sous forme de **pastilles** en fin de ligne — ● joué, ◉ terminé, ■ possédé. Les pastilles affichent, elles ne commandent pas : elles n'ont pas à être des cibles.
+**C — La ligne.** Hauteur 56 px, **la ligne entière est la cible**. Elle contient une vignette (jaquette ou tuile générée, cf. [langage visuel](./00-langage-visuel.md) §5), le titre non tronqué, l'année, et l'état sous forme d'**icônes** en fin de ligne — manette, drapeau, boîte, cœur selon ce qui est déclaré (§3). Ces icônes affichent, elles ne commandent pas : elles n'ont pas à être des cibles.
 
 **D — La récompense permanente.** Pas un compteur qui s'incrémente : une **bande d'époque qui grandit** à chaque déclaration, colorée selon la génération. L'utilisateur voit son histoire pousser pendant qu'il coche (principe 1, et langage visuel §7).
 
@@ -92,7 +92,7 @@ Un appui **long** sur une ligne déclarée, ou un tap sur ses pastilles, déplie
 
 ```
 │ ┌──┐                               │
-│ │▨ │ Super Mario World          ●  │
+│ │▨ │ Super Mario World          ▸  │
 │ └──┘ 1990                          │
 │      ┌──────────┐ ┌──────────┐    │
 │      │ terminé  │ │ possédé  │    │   deux cibles pleines,
@@ -115,7 +115,7 @@ Au-delà de 1024 px, la liste en colonne unique gaspillerait 60 % du viewport et
 │  │        │ │        │ │▨▨▨▨▨▨▨▨│ │        │ │        │ │        │  │
 │  │ [img]  │ │ [img]  │ │ STREET │ │ [img]  │ │ [img]  │ │ [img]  │  │
 │  │        │ │        │ │FIGHTER2│ │        │ │        │ │        │  │
-│  │      ● │ │    ◉ ■ │ │        │ │        │ │      ● │ │        │  │
+│  │      ▸ │ │    ⚑ ▣ │ │        │ │        │ │      ▸ │ │        │  │
 │  └────────┘ └────────┘ └────────┘ └────────┘ └────────┘ └────────┘  │
 │  Mario World Zelda ALTTP Street F.  Donkey K. Chrono T. Secret of…   │
 │  1990        1991       1992        1994      1995       1993        │

@@ -209,12 +209,8 @@
 
   /* ══ marques d'état : rond = vécu, carré = objet possédé ══ */
   .mk{display:inline-block;flex:none}
-  .mk-played{width:9px;height:9px;border-radius:50%;background:var(--era-2-ink)}
-  .mk-done{width:11px;height:11px;border-radius:50%;border:2.5px solid var(--era-2-ink)}
-  .mk-owned{width:9px;height:9px;border-radius:1.5px;background:var(--era-2-ink)}
-  .mk-never{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-3)}
-  .refine .mk-done,.refine .mk-owned{background:currentColor;border-color:currentColor}
-  .refine .mk-done{background:none;border:2.5px solid currentColor}
+  .mk{flex:none;vertical-align:-3px;color:var(--era-2-ink)}
+  .refine .mk,.hover .mk{color:currentColor}
 
   /* ══ DESKTOP — grille visuelle ══ */
   .grid{display:none;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;padding:20px}
@@ -345,10 +341,10 @@
   </div>
 
   <div class="key">
-    <span><i class="mk mk-played"></i> joué — un vécu, donc rond</span>
-    <span><i class="mk mk-done"></i> terminé</span>
-    <span><i class="mk mk-owned"></i> possédé — un objet, donc carré</span>
-    <span><i class="mk mk-never"></i> jamais joué</span>
+    <span><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="18.4" cy="13.4" r="1.1" fill="currentColor" stroke="none"/></svg> joué</span>
+    <span><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22V3"/><path d="M5 4h13l-2.6 4.5L18 13H5"/></svg> terminé</span>
+    <span><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"/><rect x="2" y="3" width="20" height="5.5" rx="1"/><path d="M10 12.5h4"/></svg> possédé</span>
+    <span><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.7 5.7 12.6 12.6"/></svg> jamais joué</span>
   </div>
 </div>
 
@@ -357,6 +353,24 @@
    Star Wing, Super Probotector et Illusion of Time sont les noms PAL
    de Star Fox, Contra III et Illusion of Gaia — la région change les
    titres autant que les dates. Terranigma n'est jamais sorti aux USA. */
+/* Un seul jeu d'icônes, trois familles lisibles sans légende : ce qu'on a fait
+   du jeu, où l'objet se trouvait, ce qu'il a laissé. Des formes abstraites
+   obligeaient à apprendre une correspondance ; des icônes se reconnaissent. */
+const ICO={
+  played:'<rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="18.4" cy="13.4" r="1.1" fill="currentColor" stroke="none"/>',
+  done:'<path d="M5 22V3"/><path d="M5 4h13l-2.6 4.5L18 13H5"/>',
+  prog:'<path d="M7 4.5v15l12-7.5z"/>',
+  quit:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+  never:'<circle cx="12" cy="12" r="9"/><path d="m5.7 5.7 12.6 12.6"/>',
+  box:'<path d="M21 8.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"/><rect x="2" y="3" width="20" height="5.5" rx="1"/><path d="M10 12.5h4"/>',
+  home:'<path d="M3 10.6 12 3.2l9 7.4"/><path d="M5.5 9.4V20.8h13V9.4"/>',
+  swap:'<path d="m16.5 3 4.5 4.5-4.5 4.5"/><path d="M21 7.5H8"/><path d="M7.5 21 3 16.5 7.5 12"/><path d="M3 16.5h13"/>',
+  meh:'<path d="M5 12h14"/>',
+  love:'<path d="M20.6 5.9a5.4 5.4 0 0 0-7.7 0L12 6.9l-1-1a5.4 5.4 0 0 0-7.7 7.7l8.7 8.6 8.6-8.6a5.4 5.4 0 0 0 0-7.7z"/>',
+  fav:'<path d="M20.6 5.9a5.4 5.4 0 0 0-7.7 0L12 6.9l-1-1a5.4 5.4 0 0 0-7.7 7.7l8.7 8.6 8.6-8.6a5.4 5.4 0 0 0 0-7.7z" fill="currentColor"/>',
+};
+const ic=(n,sz)=>n?`<svg class="mk" width="${sz||15}" height="${sz||15}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICO[n]}</svg>`:"";
+
 const GAMES = [
   ["Super Mario World", 1992], ["The Legend of Zelda: A Link to the Past", 1992],
   ["Donkey Kong Country", 1994], ["Super Metroid", 1994],
@@ -431,9 +445,8 @@ const grid = document.getElementById("grid");
 const q = document.getElementById("q");
 let openRow = -1;
 
-const marks = s => (s.n ? '<i class="mk mk-never"></i>'
-  : (s.t ? '<i class="mk mk-done"></i>' : s.p ? '<i class="mk mk-played"></i>' : '')
-  + (s.o ? '<i class="mk mk-owned"></i>' : ''));
+const marks = s => (s.n ? ic("never")
+  : (s.t ? ic("done") : s.p ? ic("played") : "") + (s.o ? ic("box") : ""));
 
 function visible(){
   const term = q.value.trim().toLowerCase();
@@ -460,8 +473,8 @@ function render(){
           <span class="row__state" data-act="open" data-i="${i}">${marks(s)}</span>
         </button>
         <div class="refine">
-          <button data-act="done" data-i="${i}" aria-pressed="${s.t}"><i class="mk mk-done"></i> terminé</button>
-          <button data-act="own"  data-i="${i}" aria-pressed="${s.o}"><i class="mk mk-owned"></i> possédé</button>
+          <button data-act="done" data-i="${i}" aria-pressed="${s.t}">${ic("done")} terminé</button>
+          <button data-act="own"  data-i="${i}" aria-pressed="${s.o}">${ic("box")} possédé</button>
           <button class="drop" data-act="never" data-i="${i}" aria-label="Jamais joué">×</button>
         </div>
       </div>`;

@@ -50,6 +50,18 @@ Cet ordre est délibéré : le produit est une biographie, pas une encyclopédie
 
 **4 — Œuvres liées.** Remake, remaster, suites, série. Un remake est une œuvre **liée, pas identique** (§6.3) — le lien doit être nommé, pas implicite.
 
+### Ce que la fiche ne contient pas, et ce qu'elle contient à la place
+
+**Aucun synopsis.** Décrire n'est pas le métier de la plateforme, recopier une base tierce est illicite (§19.1), et le coût de curation est déjà le poste le plus lourd du projet (§18.6). La fiche fait trois choses distinctes à la place (§3.6) :
+
+**5 — Identifier**, juste sous l'en-tête. Noms régionaux, titres non latins, et **un fait qui situe** l'œuvre. La frontière est nette : « septième épisode, premier sur PlayStation » identifie, « Cloud, ancien SOLDAT… » décrit. Cette donnée n'est pas un ajout : la canonicalisation l'exige déjà (`Alias`, `Locale`, §18.4).
+
+**6 — Renvoyer** *(Phase 3)*, en bas de fiche. Deux ou trois sources spécialisées, avec l'**identifiant stocké** et non une URL devinée. Position basse et aspect de référence : un lien sortant est un lecteur qui part. Et surtout : ces liens vivent **sur la fiche**, pas sur une page séparée — scinder l'entité casserait la navigation relationnelle de §3.2 et produirait une page que personne ne visiterait.
+
+**7 — Ce que d'autres en ont fait** *(Phase 5)*. Combien de joueurs ont déclaré ce titre, combien en ont fait leur préféré, quelques souvenirs publics. C'est la seule matière descriptive que la plateforme puisse **posséder plutôt qu'emprunter**, et la seule qui rende la fiche utile à quelqu'un qui ne connaît pas le jeu.
+
+> **Pourquoi ce besoin existe.** On objecte qu'un joueur qui déclare un titre sait de quoi il s'agit. C'est vrai de lui, au moment où il déclare. Mais un visiteur de profil partagé, le même joueur six mois plus tard, et surtout **le joueur qui suit une recommandation** arrivent sans connaître le jeu — et le dernier cas est décisif, puisqu'une recommandation existe par construction pour parler d'un titre inconnu.
+
 ## Variante B — Fiche plateforme
 
 Structure identique, contenu adapté :

@@ -269,9 +269,7 @@
 
   /* marques d'état */
   .mk{display:inline-block;flex:none}
-  .mk-played{width:9px;height:9px;border-radius:50%;background:currentColor}
-  .mk-done{width:12px;height:12px;border-radius:50%;border:2.5px solid currentColor}
-  .mk-owned{width:9px;height:9px;border-radius:1.5px;background:currentColor}
+  .mk{flex:none;vertical-align:-3px;color:currentColor}
 
   /* fin de pile */
   .done{
@@ -351,8 +349,8 @@
       <div>
         <div class="sheet__lab" style="margin-bottom:8px">Vous êtes allé plus loin ?</div>
         <div class="opts">
-          <button class="opt" id="oDone" aria-pressed="false"><i class="mk mk-done"></i> terminé</button>
-          <button class="opt" id="oOwn" aria-pressed="false"><i class="mk mk-owned"></i> possédé</button>
+          <button class="opt" id="oDone" aria-pressed="false"><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22V3"/><path d="M5 4h13l-2.6 4.5L18 13H5"/></svg> terminé</button>
+          <button class="opt" id="oOwn" aria-pressed="false"><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"/><rect x="2" y="3" width="20" height="5.5" rx="1"/><path d="M10 12.5h4"/></svg> possédé</button>
         </div>
       </div>
       <div class="when" id="when">
@@ -412,9 +410,9 @@
   </div>
 
   <div class="key">
-    <span><i class="mk mk-played" style="color:var(--era-2-ink)"></i> joué</span>
-    <span><i class="mk mk-done" style="color:var(--era-2-ink)"></i> terminé</span>
-    <span><i class="mk mk-owned" style="color:var(--era-2-ink)"></i> possédé — un objet, donc carré</span>
+    <span><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="color:var(--era-2-ink)"><rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 12h3M8.5 10.5v3"/><circle cx="16" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="18.4" cy="13.4" r="1.1" fill="currentColor" stroke="none"/></svg> joué</span>
+    <span><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="color:var(--era-2-ink)"><path d="M5 22V3"/><path d="M5 4h13l-2.6 4.5L18 13H5"/></svg> terminé</span>
+    <span><svg class="mk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="color:var(--era-2-ink)"><path d="M21 8.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"/><rect x="2" y="3" width="20" height="5.5" rx="1"/><path d="M10 12.5h4"/></svg> possédé</span>
   </div>
 </div>
 
