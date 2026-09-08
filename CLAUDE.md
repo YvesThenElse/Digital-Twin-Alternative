@@ -8,6 +8,7 @@ This repository currently contains **no code** — only design documents. There 
 
 - `SPECIFICATION.md` (v2) — functional/product spec (cahier des charges), written in French. Sections numbered §1–§25, continuous.
 - `PHASING.md` (v2) — implementation plan derived from the spec: 8 sequential phases (0–7) with explicit exit gates. It supersedes the spec wherever the two disagree (e.g. .NET version).
+- `MODELE-DE-DOMAINE.md` — the consolidated domain model: entities, fields, event types, invariants, and what is deliberately *not* modelled. **It is authoritative on the model**; the spec's §4–§7 remain the prose rationale.
 - `ecrans/` — screen-by-screen UX and visual specification. Start with its `README.md`; `00-principes-transverses.md` (behaviour rules) and `00-langage-visuel.md` (colour, type, shapes, density per breakpoint) override the individual `E01`…`E17` fiches. `PLAN-DU-SITE.md` holds routes, `PARCOURS-ET-LIENS.md` the navigation graph.
 
 All documents are French. New documentation should follow suit; code identifiers stay English.

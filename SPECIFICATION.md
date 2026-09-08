@@ -2,6 +2,7 @@
 
 > **Version 2** — révision structurelle. Les sections dupliquées de la v1 (§2 et §4 apparaissaient deux fois, deux §16 distincts) ont été fusionnées, la numérotation a été rendue continue (§8, §11 et §14 manquaient), et les points laissés ouverts ont été explicités. Les passages **ajoutés** en v2 sont signalés par 🆕.
 > Plan d'implémentation associé : [PHASING.md](./PHASING.md).
+> Modèle de domaine consolidé : [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) — il fait foi sur les entités, leurs champs et les invariants.
 
 ## 1. Vision et Concept
 

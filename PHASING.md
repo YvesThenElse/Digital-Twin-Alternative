@@ -42,7 +42,7 @@ Quatre principes guident le découpage :
 
 ### Livrables
 
-- **Modèle de domaine initial** ;
+- **Modèle de domaine initial** → [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) ✔ ;
 - **Distinction Work / GameVersion / Release / Edition** (affinement du modèle Game / Release / Edition de §6.2) ;
 - **Modèle PlayerEvent / Experience / OwnedItem** (§5 architecture événementielle, §6.2 UserGameExperience / UserOwnedItem) ;
 - **TemporalValue et gestion de l'incertitude temporelle** (§7.3 : ExactDate, Month, Year, Range, ApproximateYear, Age, Unknown) ;
