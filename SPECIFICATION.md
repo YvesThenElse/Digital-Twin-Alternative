@@ -984,7 +984,7 @@ Ces points ne peuvent pas être tranchés depuis les documents existants et appe
 | # | Question | Pourquoi elle bloque |
 |---|---|---|
 | 1 | **Quelle est la nature du projet ?** exercice de R&D, projet personnel, produit commercial ? | Détermine si le modèle économique, la conformité et le coût de curation sont des sujets réels ou hors périmètre |
-| 2 | **Quelle est la taille et la disponibilité de l'équipe ?** | Les durées de [PHASING.md](./PHASING.md) (26 à 45 semaines) n'ont aucune signification sans cette donnée : elles varient d'un facteur 3 ou 4 entre un développeur à temps partiel et une équipe de trois |
+| 2 | **Quelle capacité humaine pour la curation, le juridique et les tests utilisateurs ?** *(reformulée)* | L'implémentation et les tests étant **automatisés**, le développement ne gouverne plus le calendrier. Le chemin critique devient la curation du dataset, l'acquisition des jaquettes et le recrutement des testeurs — trois postes que l'automatisation ne comprime pas ([PHASING.md](./PHASING.md) §2) |
 | 3 | **Modèle économique** | Le référentiel est un coût récurrent (§18.6) ; l'hébergement et la conformité aussi |
 | 4 | **Marché visé : francophone ou international ?** | Conditionne l'i18n (§20), le référentiel régional (§3.4) et le benchmark concurrentiel (§2) |
 | 5 | **Périmètre des plateformes** : consoles uniquement, ou PC, arcade, mobile ? | Le PC et le mobile font exploser le volume du référentiel et affaiblissent la notion d'édition |

@@ -31,9 +31,38 @@ Quatre principes guident le découpage :
 
 **Horizon Phase 0 → 6 : environ 26 à 45 semaines (6 à 11 mois)** en séquentiel, selon les résultats des validations. La Phase 7 est continue et démarre dès que la charge le justifie.
 
-> ⚠️ **Ces durées n'ont pas de sens sans hypothèse de charge.** Aucun effectif n'est indiqué : la même liste de livrables représente environ 6 mois pour deux à trois développeurs à temps plein, et facilement deux à trois fois plus pour une personne seule à temps partiel. **L'estimation ci-dessus suppose l'équivalent d'un à deux développeurs à temps plein**, hypothèse à confirmer ou corriger (question ouverte n°2 de [SPECIFICATION.md](./SPECIFICATION.md) §25) — sans quoi les durées ne sont pas exploitables pour planifier quoi que ce soit.
+> ⚠️ **Ces durées supposaient une équipe humaine. Ce n'est pas le cas ici : l'implémentation et les tests sont automatisés.** Le tableau ci-dessus est donc conservé pour mémoire, mais il ne décrit plus la réalité — et surtout, il désigne le mauvais chemin critique.
 >
-> Elles n'incluent pas non plus la **constitution du référentiel** au-delà du dataset POC, qui est un poste de charge distinct et durable ([SPECIFICATION.md](./SPECIFICATION.md) §18.6).
+> ### Ce que l'automatisation comprime, et ce qu'elle ne comprime pas
+>
+> | Nature du travail | Compressible | Pourquoi |
+> |---|---|---|
+> | Écrire le code, les tests, les migrations | **fortement** | c'est là que l'automatisation est la plus efficace |
+> | Déboguer, refactorer, documenter | fortement | idem |
+> | **Curation du dataset** | **non** | rédiger va vite ; *vérifier* est le coût réel, et c'est précisément là que la génération automatique est peu fiable — dates de sortie, titres régionaux, disponibilité par région |
+> | **Acquisition des jaquettes** | **non** | travail juridique et contractuel |
+> | **Vérification juridique des sources** | **non** | jugement humain, éventuellement conseil |
+> | **Tests utilisateurs (Phase 2)** | **non** | dix à trente personnes à recruter, recevoir, observer. C'est du **temps calendaire**, pas de la charge |
+> | **Décisions de porte** | **non** | « est-ce que ce profil me ressemble » n'est pas automatisable |
+> | **Amorçage social (Phase 5), masse de données (Phase 6)** | **non** | conditionnés à des utilisateurs réels |
+>
+> ### Le chemin critique se déplace
+>
+> Dans le plan initial, le développement dominait. Il ne domine plus. Le chemin critique devient : **curation du dataset → jaquettes → recrutement et tests utilisateurs**, c'est-à-dire exactement les trois postes que personne n'a commencés.
+>
+> Conséquence directe et contre-intuitive : **la Phase 0 s'allonge au lieu de raccourcir.** Ses une à deux semaines supposaient que le cadrage était léger devant le développement. Le développement ayant fondu, la curation et le juridique deviennent le poste principal du projet, et ils étaient sous-estimés.
+>
+> ### Deux conséquences stratégiques
+>
+> **On peut se permettre d'échouer à la porte de Phase 2.** Quand construire coûte peu, un retour en Phase 1 cesse d'être un désastre calendaire. La porte devient réellement utilisable — on peut la manquer deux fois et itérer, ce qu'une équipe humaine ne pouvait pas se permettre. C'est un avantage stratégique, pas une excuse pour l'assouplir.
+>
+> **Il faut construire *moins* avant de tester, pas plus.** La tentation inverse est forte : puisque c'est rapide, autant tout bâtir. Ce serait produire vite un MVP que les tests condamneront. Les portes de phase deviennent la principale défense contre la construction en avance de phase, et non une formalité.
+>
+> ### Ce qu'il faut estimer désormais
+>
+> La question n'est plus « combien de développeurs » mais **quelle capacité humaine pour la curation, le juridique et les tests utilisateurs** — les seuls postes qui gouvernent encore le calendrier.
+>
+> Elles n'incluaient pas non plus la **constitution du référentiel** au-delà du dataset POC, qui reste un poste distinct et durable ([SPECIFICATION.md](./SPECIFICATION.md) §18.6) — et qui devient, dans ce contexte, le poste dominant.
 
 ## 3. Phase 0 — Cadrage technique et produit
 
