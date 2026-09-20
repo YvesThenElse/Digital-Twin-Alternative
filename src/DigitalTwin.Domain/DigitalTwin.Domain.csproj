@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+
+  <ItemGroup>
+    <!-- La clé de tri est `internal` pour qu'aucune interface ne puisse
+         l'afficher (ORDONNANCEMENT-TEMPOREL §2.2). Les tests du domaine
+         doivent pourtant vérifier sa valeur : c'est exactement l'usage
+         prévu de InternalsVisibleTo. La frontière reste au bord du
+         domaine, pas au bord de la solution. -->
+    <InternalsVisibleTo Include="DigitalTwin.Domain.Tests" />
+  </ItemGroup>
+
 </Project>

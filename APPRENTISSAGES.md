@@ -66,3 +66,23 @@ Le SDK .NET n'était pas installé, .NET 10 produit un `.slnx` et non un `.sln`,
 Rien de nouveau sur le fond : la vérification par mutation a confirmé ce que l'entrée « une vérification mal cadrée » prévoyait, en produisant exactement le nombre d'échecs attendu. C'est une application, pas une découverte.
 
 > **Utile quand même** — annoncer le nombre d'échecs attendu *avant* d'injecter les mutations. Trois mutations donnaient quatre échecs, parce que deux cas d'un `[Theory]` tombaient ensemble ; ne pas l'avoir prévu aurait laissé un doute sur la cause du quatrième.
+
+### 02 — Un invariant attrape ce qu'un test ciblé laisse passer
+
+Prévision annoncée avant d'injecter trois mutations : trois échecs, un par
+mutation. Résultat : **quatre**. Le quatrième venait de
+`Tout_intervalle_contient_son_point_representatif` sur `ExactDate` — un
+intervalle d'un seul jour a une largeur nulle, et le décalage du milieu
+poussait le point hors de son propre intervalle.
+
+J'avais prédit ce test insensible à cette mutation. Je raisonnais sur les
+valeurs « normales » et j'oubliais le cas dégénéré.
+
+> **Règle** — écrire au moins un invariant par item, et y faire figurer le cas
+> dégénéré : largeur nulle, collection vide, borne unique. Un test ciblé
+> vérifie ce qu'on a pensé ; un invariant vérifie ce qu'on n'a pas pensé, et
+> c'est là qu'on se trompe.
+
+> **Règle** — la prévision garde sa valeur même fausse : sans elle, le
+> quatrième échec aurait été compté comme une confirmation au lieu d'être
+> cherché. C'est l'écart qui instruit, pas le compte.
