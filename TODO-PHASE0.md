@@ -36,7 +36,7 @@
 
 - [x] **09 — Requêtes strict / permissif.** §7.1, et l'obligation d'exposer les exclusions de §7.2. *Acceptation : vecteur **T9** — un décompte strict rend aussi le nombre d'écartés et de non datés. Le total silencieux est impossible par construction (pas de surcharge qui le permette).*
 
-- [ ] **10 — Projections à trois valeurs.** §7.3 : certain / possible / non. *Acceptation : vecteur **T10** — acquisition `Range(1993–1997)`, cession `Year(1999)`, requête 1997 → **possible**.*
+- [x] **10 — Projections à trois valeurs.** §7.3 : certain / possible / non. *Acceptation : vecteur **T10** — acquisition `Range(1993–1997)`, cession `Year(1999)`, requête 1997 → **possible**.*
 
 - [ ] **11 — `PlayerEvent` et `PlayDeclaration`.** `OccurredAt` + `RecordedAt` sur tout événement, `Confidence` dérivé et jamais saisi, `SupersededBy` pour la correction. *Acceptation : invariants 1, 3, 4 de [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §7 testés ; `Confidence` n'a pas de setter public.*
 
@@ -64,3 +64,4 @@
 - **07** — `Age` résolu à la lecture : deux années civiles avec la seule année de naissance, douze mois avec la date complète, rien sans. T6 vérifié dans les deux sens — renseigner fait quitter le tiroir, corriger retrie l'ensemble. Deux cas dégénérés dans l'avenir. 205 tests. Un trou comblé puis **vérifié par mutation** : le repli `BirthDate` tue désormais 1 test là où il en tuait 0.
 - **08** — `TimelineEntry` expose la vue groupée ; `OnAxis` reste la séquence plate, les membres d'un épisode y étant adjacents. Le regroupement exige **un lot ET un intervalle identiques** — la règle 4 est tenue par construction, les moments sans intervalle ayant été écartés avant. 219 tests, cinq prévisions de mutation exactes. **Union prouvée sans effet** : la règle 1 garantit des intervalles identiques.
 - **09** — `TemporalQueryResult` porte les trois catégories ensemble ; aucune méthode de l'API ne rend un entier, vérifié par réflexion. Deux distinctions que la spec n'énonce pas : hors-période n'est pas « écarté pour imprécision », et interroger sur `Unknown` rend une requête muette plutôt que des moments fautifs. Le résumé nomme les trois catégories même à zéro. 238 tests, cinq prévisions exactes, un trou comblé puis vérifié.
+- **10** — `OwnedDuring` rend certain / possible / non ; les deux listes restent séparées quel que soit le mode, qui filtre ce qu'on retient sans changer ce qu'on sait. **Interprétation fixée et documentée** : `Certain` = possédé pendant TOUTE la période, la spec traitant `D` comme un point là où les requêtes portent sur des périodes. 260 tests. Un vrai bug attrapé par un test avant mutation, une assertion fausse corrigée, un invariant faible durci.

@@ -280,3 +280,44 @@ l'avance qu'on prend sur l'aval.
 > **Règle** — tester tout champ ajouté pour un consommateur absent, au moment
 > où on l'ajoute. Le repérer est mécanique : c'est un membre public que
 > **aucun test n'assert** et **aucun code du domaine ne lit**.
+
+### 10 — Ne jamais réutiliser le `null` d'une normalisation comme un `null` métier
+
+`Normalize` rend `null` pour « pas d'intervalle ». Le paramètre `disposed`
+vaut `null` pour « pas de cession ». J'ai testé le premier en croyant tester
+le second, et les deux significations se sont fondues : un joueur déclarant
+« je l'ai vendu, je ne sais plus quand » était affiché comme possédant
+**certainement** encore le jeu.
+
+Le compilateur ne pouvait rien voir — deux `null` du même type. C'est la
+version typée de l'erreur qui hante ce dépôt : une absence qui se lit comme
+un fait, sauf qu'ici l'absence était **fabriquée par ma propre
+normalisation** plutôt que présente dans les données.
+
+> **Règle** — nommer une variable booléenne pour chaque question métier avant
+> de tester un `null` issu d'une conversion : `cessionDeclaree` à côté de
+> `d is null`. Deux `null` de sens différents dans une même fonction doivent
+> porter deux noms différents.
+
+### 10 bis — Compter les tests, pas les assertions
+
+Prévision de mutation : 3 échecs, obtenus en comptant trois **assertions**.
+Résultat : 1 — elles vivaient dans la même méthode, et xUnit compte des
+tests.
+
+C'est le pendant exact de l'erreur de l'item 07, où je comptais des méthodes
+là où il fallait compter des cas de `[Theory]`. Je me trompe deux fois sur la
+même chose : l'unité que le rapporteur compte.
+
+> **Règle** — compter les **cas exécutés** : un `[Fact]` vaut 1 quel que soit
+> son nombre d'assertions, un `[Theory]` vaut son nombre de jeux de données.
+
+### 10 ter — Un invariant ensembliste peut être satisfait par dégénérescence
+
+« Les deux listes sont disjointes » passait alors qu'une mutation les
+fusionnait — parce que la liste receveuse devenait vide, et qu'une
+intersection avec le vide est vide. L'invariant était vrai, et sans valeur.
+
+> **Règle** — exiger que les ensembles soient **non vides** avant de vérifier
+> une propriété ensembliste. Sans cette garde, l'invariant se satisfait du cas
+> dégénéré qu'il devrait justement interdire.
