@@ -239,3 +239,24 @@ cessé de résoudre `Age`, sans qu'aucun test ne le dise.
 > **Règle** — choisir la mutation survivante en regardant les **helpers de
 > test**, pas le code de production : muter ce qu'un helper remplit toujours
 > de la même façon. C'est un angle mort structurel, pas une inattention.
+
+### 08 — Distinguer le code mort du code en attente
+
+Troisième bout de code prouvé sans effet par mutation : après le critère 3 de
+la cascade et la garde anti-cycle du tri topologique, voici l'union des
+intervalles d'un épisode. La règle 1 impose que les membres portent le même
+intervalle ; leur union leur est donc nécessairement égale.
+
+Ce n'est pas un défaut de la spécification, et le motif est constant : **elle
+énonce plus large que ce que ses propres contraintes autorisent**. Le critère
+3 départage sur une largeur que rien ne peut rendre différente. La règle 2
+unit ce que la règle 1 force à être identique. Les deux énoncés restent
+justes, et redeviendraient opérants si la contrainte amont s'assouplissait.
+
+Le risque est qu'un lecteur pressé supprime ce code comme mort. Il ne l'est
+pas : il est **en attente**.
+
+> **Règle** — accompagner tout code prouvé sans effet d'un test qui
+> **constate** la contrainte amont le rendant inutile, et le dire dans le
+> commentaire. Le test échouera le jour où la contrainte changera, ce qui est
+> exactement le moment où ce code redeviendra nécessaire.

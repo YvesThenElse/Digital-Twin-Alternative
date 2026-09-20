@@ -32,7 +32,7 @@
 
 - [x] **07 — `Age` et sa résolution.** Stocké brut, résolu à la lecture ; sans année de naissance il se comporte comme `Unknown`. *Acceptation : vecteur **T6** — renseigner l'année de naissance fait quitter le tiroir au moment et retrie l'ensemble. Aucune conversion à l'écriture.*
 
-- [ ] **08 — Agrégation en épisodes.** §4.4 : même intervalle et même lot de saisie ; l'union recalcule le point représentatif ; le regroupement ne franchit jamais la frontière du datable. *Acceptation : vecteur **T8**.*
+- [x] **08 — Agrégation en épisodes.** §4.4 : même intervalle et même lot de saisie ; l'union recalcule le point représentatif ; le regroupement ne franchit jamais la frontière du datable. *Acceptation : vecteur **T8**.*
 
 - [ ] **09 — Requêtes strict / permissif.** §7.1, et l'obligation d'exposer les exclusions de §7.2. *Acceptation : vecteur **T9** — un décompte strict rend aussi le nombre d'écartés et de non datés. Le total silencieux est impossible par construction (pas de surcharge qui le permette).*
 
@@ -62,3 +62,4 @@
 - **05** — `TimelineSorter` sépare l'axe du tiroir puis applique la cascade ; le critère 4 n'est pas implémenté mais sa place est réservée et commentée à la position exacte que §4.1 lui donne. Contrat `ISortableMoment` minimal, que `PlayerEvent` implémentera à l'item 11. 166 tests. Deux trous révélés par mutation, dont un prédit. **Constat de domaine** : le critère 3 est inatteignable avec les sept variantes — démontré, vérifié sur 88 000 paires, et consigné en §11 de la spec.
 - **06** — `CausalSequence` porte les deux chaînes de §4.3 et rien d'autre : les chaînes restent indépendantes, `Completed`/`Abandoned` ne sont pas ordonnés, un type inconnu n'ordonne rien. Le critère 4 s'applique dans les groupes à intervalle identique, par tri topologique — il ne peut pas être une clé. Avertissement doux sur inversion stricte seulement ; jamais de réordonnancement silencieux. 188 tests, six mutations, six prévisions exactes.
 - **07** — `Age` résolu à la lecture : deux années civiles avec la seule année de naissance, douze mois avec la date complète, rien sans. T6 vérifié dans les deux sens — renseigner fait quitter le tiroir, corriger retrie l'ensemble. Deux cas dégénérés dans l'avenir. 205 tests. Un trou comblé puis **vérifié par mutation** : le repli `BirthDate` tue désormais 1 test là où il en tuait 0.
+- **08** — `TimelineEntry` expose la vue groupée ; `OnAxis` reste la séquence plate, les membres d'un épisode y étant adjacents. Le regroupement exige **un lot ET un intervalle identiques** — la règle 4 est tenue par construction, les moments sans intervalle ayant été écartés avant. 219 tests, cinq prévisions de mutation exactes. **Union prouvée sans effet** : la règle 1 garantit des intervalles identiques.

@@ -30,6 +30,31 @@ public interface ISortableMoment
     /// <c>null</c> ou inconnu : aucune contrainte causale.
     /// </summary>
     string? Kind => null;
+
+    /// <summary>
+    /// La session de saisie dont le moment est issu — un passage en sélection
+    /// massive, par exemple. <c>null</c> pour une saisie unitaire.
+    ///
+    /// Sert à l'agrégation (§4.4) : douze titres cochés d'un coup forment
+    /// <b>un épisode</b>, pas douze points identiques. Regrouper sur la seule
+    /// égalité d'intervalle inventerait une session qui n'a pas eu lieu.
+    /// </summary>
+    string? BatchId => null;
+}
+
+/// <summary>
+/// Une entrée de la timeline : un moment isolé, ou l'épisode que forment
+/// plusieurs moments d'un même lot déclarés sur la même période (§4.4).
+/// </summary>
+public sealed record TimelineEntry<T>(
+    IReadOnlyList<T> Moments,
+    TemporalInterval Interval) where T : ISortableMoment
+{
+    /// <summary>
+    /// Plusieurs moments regroupés — l'axe doit alors montrer une bande, pas
+    /// une pile de points identiques (E03 repère B).
+    /// </summary>
+    public bool IsEpisode => Moments.Count > 1;
 }
 
 /// <summary>
@@ -39,7 +64,8 @@ public interface ISortableMoment
 public sealed record TimelineOrder<T>(
     IReadOnlyList<T> OnAxis,
     IReadOnlyList<T> Undated,
-    IReadOnlyList<CoherenceWarning> Warnings);
+    IReadOnlyList<CoherenceWarning> Warnings,
+    IReadOnlyList<TimelineEntry<T>> Entries) where T : ISortableMoment;
 
 /// <summary>
 /// Produit une séquence affichable à partir d'un ordre qui n'est que partiel
@@ -104,7 +130,9 @@ public static class TimelineSorter
             .ThenBy(m => m.Id, StringComparer.Ordinal)
             .ToArray();
 
-        return new TimelineOrder<T>(ordonne, tiroir, avertissements);
+        var entrees = Regrouper(ordonne, horizon);
+
+        return new TimelineOrder<T>(ordonne, tiroir, avertissements, entrees);
     }
 
     /// <summary>
@@ -146,6 +174,83 @@ public static class TimelineSorter
 
         return resultat;
     }
+
+    /// <summary>
+    /// Regroupe en épisodes les moments adjacents issus du même lot et portant
+    /// le même intervalle (§4.4, règles 1 à 3).
+    ///
+    /// <para>Le parcours est <b>séquentiel sur la liste déjà ordonnée</b>, ce
+    /// qui garantit deux choses à la fois : les membres d'un épisode restent
+    /// adjacents — sans quoi « déplier la bande » n'aurait pas de sens — et
+    /// l'épisode occupe la place que la cascade lui a donnée.</para>
+    ///
+    /// <para>La règle 4 est tenue par construction : les moments sans
+    /// intervalle ont été écartés vers le tiroir avant d'arriver ici, donc
+    /// aucun épisode ne peut en absorber un.</para>
+    /// </summary>
+    private static IReadOnlyList<TimelineEntry<T>> Regrouper<T>(
+        IReadOnlyList<T> ordonne, TemporalHorizon horizon) where T : ISortableMoment
+    {
+        var entrees = new List<TimelineEntry<T>>();
+        var i = 0;
+
+        while (i < ordonne.Count)
+        {
+            var intervalle = TemporalNormalizer.Normalize(ordonne[i].OccurredAt, horizon)!;
+            var lot = ordonne[i].BatchId;
+
+            var j = i + 1;
+            if (lot is not null)
+            {
+                while (j < ordonne.Count
+                       && ordonne[j].BatchId == lot
+                       && MemeIntervalle(
+                           TemporalNormalizer.Normalize(ordonne[j].OccurredAt, horizon)!,
+                           intervalle))
+                {
+                    j++;
+                }
+            }
+
+            var membres = new List<T>(j - i);
+            for (var k = i; k < j; k++)
+            {
+                membres.Add(ordonne[k]);
+            }
+
+            // Règle 2 — l'intervalle de l'épisode est l'union de ses membres.
+            // La règle 1 exigeant qu'ils soient identiques, cette union leur
+            // est nécessairement égale : le calcul est donc SANS EFFET
+            // aujourd'hui, et il est écrit ainsi parce que la spécification le
+            // dit. Il reprendrait un sens le jour où la règle 1 s'assouplirait.
+            entrees.Add(new TimelineEntry<T>(membres, Union(membres, intervalle, horizon)));
+            i = j;
+        }
+
+        return entrees;
+    }
+
+    private static TemporalInterval Union<T>(
+        List<T> membres, TemporalInterval premier, TemporalHorizon horizon)
+        where T : ISortableMoment
+    {
+        var debut = premier.Start;
+        var fin = premier.End;
+
+        foreach (var membre in membres)
+        {
+            var i = TemporalNormalizer.Normalize(membre.OccurredAt, horizon)!;
+            if (i.Start < debut) { debut = i.Start; }
+            if (i.End > fin) { fin = i.End; }
+        }
+
+        return debut == premier.Start && fin == premier.End
+            ? premier
+            : new TemporalInterval(premier.Source, debut, fin);
+    }
+
+    private static bool MemeIntervalle(TemporalInterval a, TemporalInterval b) =>
+        a.Start == b.Start && a.End == b.End;
 
     private static bool MemeRang(TemporalInterval a, TemporalInterval b) =>
         a.SortKey == b.SortKey && a.Start == b.Start && a.WidthInDays == b.WidthInDays;
