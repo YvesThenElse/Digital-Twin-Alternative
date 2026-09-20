@@ -50,7 +50,9 @@
 
 ## Journal
 
-> Une ligne par itération, ajoutée par la boucle. Ce qui a été fait, ce qui a résisté.
+> Une ligne par itération, ajoutée par la boucle. **Ce qui a été fait** — le factuel.
+>
+> Ce que l'itération a **appris** va dans [APPRENTISSAGES.md](./APPRENTISSAGES.md), qui est relu au début de chaque itération. Les deux ne se confondent pas : ici on consigne un travail, là-bas on change un comportement.
 
 - **00** — Échafaudage hors boucle. SDK .NET 10 absent de la machine : exécuté en conteneur via `./dotnet.sh` (10.0.401), cohérent avec « Docker Compose pour le dev local ». Deux surprises : .NET 10 génère un `.slnx` et non un `.sln`, et le conteneur écrit en `root` sans `--user`, ce qui rendait l'arbre non modifiable.
 - **01** — Sept variantes en `record` scellés, hiérarchie fermée par constructeur `private protected` : une huitième variante est impossible depuis l'extérieur, ce qui rend tenable dans le temps le refus de `RelativeToRelease`. Trois écarts assumés et commentés dans le code : `Range` devient `YearRange` (collision avec `System.Range`), une marge nulle est refusée sur `ApproximateYear` (elle dirait ce que dit `Year`), et `Age` n'expose aucune propriété d'année — vérifié par réflexion, sans quoi la règle « stocké brut » serait violable en silence. 22 tests. **Vérifiés par mutation** : trois altérations du code de validation produisent exactement quatre échecs.

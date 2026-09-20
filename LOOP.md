@@ -12,6 +12,8 @@ Tu poursuis la porte de sortie de Phase 0 du projet Digital-Twin-Alternative.
 
 ## À chaque itération
 
+0. **Lis `APPRENTISSAGES.md`.** Ce que les itérations précédentes ont appris
+   s'applique à celle-ci. C'est la seule raison d'écrire ce fichier.
 1. **Lis `TODO-PHASE0.md`.** Prends le **premier item non coché**. Un seul.
 2. **Lis les sections de spécification qu'il cite** avant d'écrire une ligne.
    Les attendus sont déjà écrits ; ton travail est de les faire tenir, pas de
@@ -21,10 +23,21 @@ Tu poursuis la porte de sortie de Phase 0 du projet Digital-Twin-Alternative.
 4. **`./test.sh`** — la suite complète doit passer, pas seulement le nouveau
    test. Le SDK n'est pas installé sur la machine : il tourne en conteneur,
    `./dotnet.sh` l'enveloppe, et .NET 10 utilise le format `.slnx`.
-5. **Commite** le code, les tests, et la case cochée dans `TODO-PHASE0.md`,
-   dans le **même** commit. Ajoute une ligne au journal en fin de fichier :
-   ce qui a été fait, et ce qui a résisté.
-6. **Ne pousse pas.** `git push` est une décision humaine.
+5. **Écris ce que l'itération t'a appris** dans `APPRENTISSAGES.md`, en
+   suivant ses propres règles de tri. Trois choses seulement y ont leur
+   place : un piège d'outillage, une façon de se tromper, une méthode qui a
+   marché. Un fait sur le **domaine** va dans la spécification, pas là. Une
+   **contradiction** de la spécification arrête la boucle.
+
+   **N'écris rien si tu n'as rien appris.** Une itération sans surprise est
+   l'issue normale, et une entrée creuse — « fait, tout s'est bien passé » —
+   dilue les quelques-unes qui comptent. Chaque entrée dit ce qui s'est
+   passé, **puis la règle que ça suggère** : sans la règle, c'est une
+   anecdote.
+6. **Commite** le code, les tests, la case cochée dans `TODO-PHASE0.md`, sa
+   ligne de journal, et l'entrée d'apprentissage s'il y en a une — dans le
+   **même** commit.
+7. **Ne pousse pas.** `git push` est une décision humaine.
 
 ## Interdits
 
@@ -50,6 +63,9 @@ Arrête la boucle, en expliquant pourquoi, dès que l'une est vraie :
 - une décision te manque et aucune interprétation raisonnable ne la remplace.
 
 ## Ce que l'expérience de ce dépôt a montré
+
+> Ce qui suit est le socle. `APPRENTISSAGES.md` le prolonge, et c'est lui
+> qu'il faut relire — il contient ce que les itérations ont ajouté depuis.
 
 Les erreurs qui ont coûté le plus cher ici **n'ont jamais levé d'exception**.
 Une table de correspondance incomplète, des identifiants instables, des
