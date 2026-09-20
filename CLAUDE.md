@@ -9,6 +9,7 @@ This repository currently contains **no code** — only design documents. There 
 - `SPECIFICATION.md` (v2) — functional/product spec (cahier des charges), written in French. Sections numbered §1–§25, continuous.
 - `PHASING.md` (v2) — implementation plan derived from the spec: 8 sequential phases (0–7) with explicit exit gates. It supersedes the spec wherever the two disagree (e.g. .NET version).
 - `MODELE-DE-DOMAINE.md` — the consolidated domain model: entities, fields, event types, invariants, and what is deliberately *not* modelled. **It is authoritative on the model**; the spec's §4–§7 remain the prose rationale.
+- `ORDONNANCEMENT-TEMPOREL.md` — **authoritative on comparing, sorting, grouping and querying `TemporalValue`s**. Interval normal form, the seven retained relations, the deterministic tie-break cascade, the no-date drawer, strict/permissive queries and three-valued dated projections. Eleven test vectors. `MODELE-DE-DOMAINE.md` §3 stays normative on the type itself.
 - `ecrans/` — screen-by-screen UX and visual specification. Start with its `README.md`; `00-principes-transverses.md` (behaviour rules) and `00-langage-visuel.md` (colour, type, shapes, density per breakpoint) override the individual `E01`…`E17` fiches. `PLAN-DU-SITE.md` holds routes, `PARCOURS-ET-LIENS.md` the navigation graph.
 
 All documents are French. New documentation should follow suit; code identifiers stay English.
@@ -41,7 +42,7 @@ Five modelling decisions carry the whole product. Get these right before writing
 
 **2. `TemporalValue` — uncertainty is data.** Memory is imprecise and the model must preserve that rather than fabricate precision. A single explicit type covers: `ExactDate`, `Month`, `Year`, `Range` (1993–1997), `ApproximateYear` (1994±2), `Age` ("around when I was 12"), `Unknown`. Every event dates via this type — no bare `DateTime` on player history.
 
-Declaring the variants is easy; **ordering them is the hard part** and it is what the timeline does constantly (spec §7.5). Normalise every value to an interval plus a representative point, compare with interval algebra rather than `<`, keep `Unknown` off the axis entirely, and render uncertainty as a band. `Age` is unresolvable without a birth year — store it raw, never pre-converted.
+Declaring the variants is easy; **ordering them is the hard part** and it is what the timeline does constantly (spec §7.5). This is now settled in `ORDONNANCEMENT-TEMPOREL.md` — read it before touching anything that sorts, groups or queries dates. Two rules from it are easy to violate: **normalisation adds, it never replaces** (`Year(1994)` and `Range(1994,1994)` share an interval and render differently, so the variant must survive), and **the representative point is a sort key only** — never displayed, exported, or counted. `Age` is unresolvable without a birth year; store it raw, never pre-converted.
 
 **3. Work / GameVersion / Release / Edition.** A title is not one row. Final Fantasy VII → PlayStation PAL → Platinum → PS3 digital → PS5 remake is one *work* with several releases and editions, potentially owned several times over decades. Phase 0 refines the spec's Game/Release/Edition triple into a four-level chain.
 

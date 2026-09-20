@@ -61,7 +61,7 @@ Toute valeur se normalise en **un intervalle fermé `[début, fin]` plus un poin
 
 ### Règles impératives
 
-1. **L'ordre est partiel.** `Range(1993–1997)` et `Year(1995)` se chevauchent et ne sont pas comparables strictement. Toute comparaison passe par une algèbre d'intervalles explicite — avant, chevauche, contient, égal — jamais par un `<` sur des dates.
+1. **L'ordre est partiel.** `Range(1993–1997)` et `Year(1995)` se chevauchent et ne sont pas comparables strictement. Toute comparaison passe par une algèbre d'intervalles explicite — avant, chevauche, contient, égal — jamais par un `<` sur des dates. Les sept relations retenues, la cascade de départage et les règles de regroupement sont spécifiées dans [ORDONNANCEMENT-TEMPOREL.md](./ORDONNANCEMENT-TEMPOREL.md).
 2. **`Unknown` n'a pas de place sur l'axe.** Ces moments sont regroupés à part, jamais projetés à une position arbitraire.
 3. **`Age` se stocke brut.** Jamais converti à l'écriture : une correction de l'année de naissance doit recalculer tous les moments concernés. Sans année de naissance connue, `Age` se comporte comme `Unknown`.
 4. **`Confidence` est dérivé, jamais demandé** : date exacte ou mois → haute, année → moyenne, période ou approximation → basse, inconnu → nulle.

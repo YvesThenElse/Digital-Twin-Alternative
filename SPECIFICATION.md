@@ -403,6 +403,8 @@ Il est crucial de préserver l'incertitude historique au lieu d'inventer une pr�
 - Créer une expérience utilisateur cohérente avec la nature subjective de la mémoire
 
 ### 7.5 🆕 Ordonnancement : le point non résolu de la v1
+
+> ✅ **Résolu en Phase 0** — [ORDONNANCEMENT-TEMPOREL.md](./ORDONNANCEMENT-TEMPOREL.md). Les quatre règles ci-dessous restent la formulation de l'exigence ; le document de décision y ajoute l'algèbre effective, l'ordre de présentation, les bornes ouvertes, la résolution de `Age` et les vecteurs de test.
 Déclarer sept variantes de `TemporalValue` est simple ; **les trier ne l'est pas**, et c'est pourtant l'opération que la timeline effectue en permanence. Comment ordonner `Year(1994)`, `Range(1993–1997)`, `Age(~12 ans)` et `Unknown` sur un même axe ?
 
 Règles à figer en Phase 0 :
