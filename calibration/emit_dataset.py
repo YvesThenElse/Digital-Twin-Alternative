@@ -50,9 +50,54 @@ def first_year(dates):
     return years[0] if years else None
 
 
-def build(entry, raw, platform_ids, platform_qid, seq):
+def _wikipedia_fill(releases, work_id, platform_cid, wp, qid, seen):
+    """Complète les régions que Wikidata ne donne pas.
+
+    Wikidata reste PRIORITAIRE là où elle existe : elle est en CC0, et le
+    noyau du référentiel doit rester identifiable comme tel. Wikipédia ne fait
+    que combler — mais dès qu'elle comble, le partage à l'identique s'applique
+    à l'ensemble (voir wp_dates.py).
+    """
+    have = {r["region"] for r in releases if r["region"]}
+    added = []
+    for region, v in sorted((wp or {}).get("regions", {}).items()):
+        if region in have or region == "UNKNOWN":
+            continue
+        key = (region, v["date"])
+        if key in seen:
+            continue
+        seen.add(key)
+        added.append({
+            "canonical_id": cid("rel", "wp|%s|%s|%s" % (qid, region, v["date"]),
+                                _seq_of(work_id)),
+            "work": work_id,
+            "platform": platform_cid,
+            "region": region,
+            "date": v["date"],
+            "precision": v["precision"],
+            # Une date d'infobox est vérifiée par des contributeurs mais pas
+            # sourcée machine : confiance moyenne, jamais haute.
+            "confidence": "medium",
+            "provenance": {"source": "wikipedia", "licence": "CC BY-SA 4.0",
+                           "article": (wp or {}).get("article"),
+                           "basis": "infobox_released"},
+        })
+    return added
+
+
+def _seq_of(work_id):
+    """Le rang de curation est encodé dans le ULID de l'œuvre ; on le relit
+    pour que les sorties ajoutées partagent son horodatage et restent stables."""
+    return _WORK_SEQ.get(work_id, 0)
+
+
+_WORK_SEQ = {}
+
+
+def build(entry, raw, platform_ids, platform_qid, seq, wp=None):
     """Un Work et ses Releases, tels que le modèle les définit."""
     work_id = cid("wrk", raw["qid"], seq)
+    _WORK_SEQ[work_id] = seq
 
     # Ne retenir que les dates qui concernent LA plateforme curée. Une date
     # portant « Wii » ou « Nintendo 3DS » est une réédition : elle décrit une
@@ -92,6 +137,9 @@ def build(entry, raw, platform_ids, platform_qid, seq):
                            "raw_date": d["date"]},
         })
 
+    releases += _wikipedia_fill(releases, work_id, platform_ids[entry["platform"]],
+                                wp, raw["qid"], seen)
+    releases.sort(key=lambda r: (r["date"], r["region"] or ""))
     regions = [r for r in releases if r["region"]]
 
     return {
@@ -161,12 +209,26 @@ def main():
                                  "license": "CC0"}}
                  for k, (q, name) in PLATFORMS.items()]
 
+    try:
+        wpd = json.load(open("wp_dates.json"))
+    except Exception:
+        wpd = {}
     works = [build(e, raw[e["qid"]], platform_ids, PLATFORMS[e["platform"]][0],
-                   _WORK_BASE + i)
+                   _WORK_BASE + i, wpd.get(e["qid"]))
              for i, e in enumerate(resolved) if e["qid"] in raw]
 
     dataset = {"dataset_version": DATASET_VERSION,
-               "license": "CC0 (Wikidata) — voir VERIFICATION-JURIDIQUE.md",
+               # Le partage à l'identique de Wikipédia se propage à l'ensemble
+               # dès lors qu'une seule de ses dates est incorporée.
+               "license": "CC BY-SA 4.0 — Wikidata (CC0) + Wikipédia (CC BY-SA 4.0). "
+                          "Voir VERIFICATION-JURIDIQUE.md",
+               "sources": [
+                   {"name": "Wikidata", "licence": "CC0",
+                    "url": "https://www.wikidata.org"},
+                   {"name": "Wikipédia", "licence": "CC BY-SA 4.0",
+                    "url": "https://en.wikipedia.org",
+                    "usage": "dates de sortie régionales absentes de Wikidata"},
+               ],
                "platforms": platforms,
                "works": works}
 
@@ -188,6 +250,12 @@ def main():
     print("  dates rattachées à la plateforme %3d (%.0f%%)" % (qual, 100.0 * qual / n))
     day = sum(1 for w in works for r in w["releases"] if r["precision"] == "day")
     print("  sorties au jour près      %3d / %d" % (day, rel))
+    wpc = sum(1 for w in works for r in w["releases"]
+              if r["provenance"].get("source") == "wikipedia")
+    print("  sorties venues de Wikipédia %3d" % wpc)
+    for reg in ("PAL", "NTSC-U", "NTSC-J"):
+        c = sum(1 for w in works if any(r["region"] == reg for r in w["releases"]))
+        print("  région %-7s attestée   %3d (%.0f%%)" % (reg, c, 100.0 * c / n))
 
 
 if __name__ == "__main__":

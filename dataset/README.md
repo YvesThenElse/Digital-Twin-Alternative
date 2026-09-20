@@ -6,7 +6,16 @@
 
 ## Licence et provenance
 
-Toutes les données viennent de **Wikidata**, sous **CC0** — la seule source que [VERIFICATION-JURIDIQUE.md](../VERIFICATION-JURIDIQUE.md) autorise à alimenter le référentiel. Chaque œuvre et chaque sortie porte sa provenance : `source`, `external_id`, `imported_at`, `dataset_version`.
+Deux sources, toutes deux sous licence explicitement réutilisable ([VERIFICATION-JURIDIQUE.md](../VERIFICATION-JURIDIQUE.md) §2) :
+
+| Source | Licence | Usage |
+|---|---|---|
+| **Wikidata** | CC0 | identité, titres, alias, studio, éditeur, genres — le noyau |
+| **Wikipédia** | CC BY-SA 4.0 | dates de sortie régionales absentes de Wikidata |
+
+> ⚠️ **Le dataset est donc en CC BY-SA 4.0**, pas en CC0 : le partage à l'identique se propage dès qu'une seule donnée CC BY-SA est incorporée. Attribution requise, et toute réutilisation reste sous la même licence.
+
+Chaque œuvre et chaque sortie porte sa provenance : `source`, `external_id`, `imported_at`, `dataset_version`.
 
 Aucune autre source n'a été interrogée par script, conformément à la règle de l'article 7(5).
 
@@ -53,7 +62,7 @@ Le référentiel porte son incertitude, comme les souvenirs portent la leur. Cha
 |---|---|--:|
 | `resolution` | comment l'identité a été établie | 97 % automatique, 3 % arbitrée |
 | `date_basis` | les dates sont-elles rattachées à la plateforme | **47 %** |
-| `region` | la région vient-elle de la source | **56 %** |
+| `region` | au moins une région attestée | **92 %** |
 | `cover` | une jaquette existe-t-elle **dans Wikidata** | 11 % |
 | jaquette acquise | voir [covers/](./covers/) | **98 %** |
 | `title_from` | le titre vient de la source ou de la curation | 11 % de la curation |

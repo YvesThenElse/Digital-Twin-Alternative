@@ -1,0 +1,3384 @@
+{
+ "Q12395": {
+  "platform": "nes",
+  "title": "The Legend of Zelda",
+  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1986-02-21",
+    "precision": "day"
+   }
+  }
+ },
+ "Q639619": {
+  "platform": "nes",
+  "title": "Super Mario Bros. 3",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Bros._3",
+  "regions": {
+   "NTSC-J": {
+    "date": "1988-10-23",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-02-12",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1991-08-29",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2530723": {
+  "platform": "nes",
+  "title": "Metroid",
+  "article": "https://en.wikipedia.org/wiki/Metroid_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1986-08-06",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2014882": {
+  "platform": "nes",
+  "title": "Mega Man 2",
+  "article": "https://en.wikipedia.org/wiki/Mega_Man_2",
+  "regions": {
+   "NTSC-J": {
+    "date": "1988-12-24",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1989-06",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1991-01",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1043375": {
+  "platform": "nes",
+  "title": "Castlevania",
+  "article": "https://en.wikipedia.org/wiki/Castlevania_(1986_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1986-09-26",
+    "precision": "day"
+   }
+  }
+ },
+ "Q849328": {
+  "platform": "nes",
+  "title": "Contra",
+  "article": "https://en.wikipedia.org/wiki/Contra_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1988-02-09",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1988-02-12",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1990-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1154059": {
+  "platform": "nes",
+  "title": "Kirby's Adventure",
+  "article": "https://en.wikipedia.org/wiki/Kirby's_Adventure",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-03-23",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1993-05",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1993-09-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2658381": {
+  "platform": "nes",
+  "title": "Ninja Gaiden",
+  "article": "https://en.wikipedia.org/wiki/Ninja_Gaiden_(NES_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1988-12-09",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1989-03",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1991-08-15",
+    "precision": "day"
+   }
+  }
+ },
+ "Q187339": {
+  "platform": "nes",
+  "title": "Zelda II: The Adventure of Link",
+  "article": "https://en.wikipedia.org/wiki/Zelda_II:_The_Adventure_of_Link",
+  "regions": {
+   "NTSC-J": {
+    "date": "1987-01-14",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2014874": {
+  "platform": "nes",
+  "title": "Mega Man 3",
+  "article": "https://en.wikipedia.org/wiki/Mega_Man_3",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-09-28",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1992-06-23",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2321818": {
+  "platform": "nes",
+  "title": "Castlevania III: Dracula's Curse",
+  "article": "https://en.wikipedia.org/wiki/Castlevania_III:_Dracula's_Curse",
+  "regions": {
+   "NTSC-J": {
+    "date": "1989-12-22",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-09-19",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992-05",
+    "precision": "month"
+   }
+  }
+ },
+ "Q146124": {
+  "platform": "nes",
+  "title": "Excitebike",
+  "article": "https://en.wikipedia.org/wiki/Excitebike",
+  "regions": {
+   "NTSC-J": {
+    "date": "1984-11-30",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1985-10-18",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1986-09-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1142493": {
+  "platform": "nes",
+  "title": "Kid Icarus",
+  "article": "https://en.wikipedia.org/wiki/Kid_Icarus",
+  "regions": {
+   "NTSC-J": {
+    "date": "1986-12-19",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1324646": {
+  "platform": "nes",
+  "title": "Gradius",
+  "article": "https://en.wikipedia.org/wiki/Gradius_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1986-04-25",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1986-12",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1988-11-30",
+    "precision": "day"
+   }
+  }
+ },
+ "Q698705": {
+  "platform": "nes",
+  "title": "Double Dragon",
+  "article": "https://en.wikipedia.org/wiki/Double_Dragon_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1988-04-08",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1988-06",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1990",
+    "precision": "year"
+   }
+  }
+ },
+ "Q933328": {
+  "platform": "nes",
+  "title": "DuckTales",
+  "article": "https://en.wikipedia.org/wiki/DuckTales_(video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1989-10",
+    "precision": "month"
+   },
+   "NTSC-J": {
+    "date": "1990-01-26",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1990-12-14",
+    "precision": "day"
+   }
+  }
+ },
+ "Q597781": {
+  "platform": "nes",
+  "title": "Battletoads",
+  "article": "https://en.wikipedia.org/wiki/Battletoads_(1991_video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1991-06",
+    "precision": "month"
+   },
+   "NTSC-J": {
+    "date": "1991-12",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1993-02",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2364724": {
+  "platform": "nes",
+  "title": "Blaster Master",
+  "article": "https://en.wikipedia.org/wiki/Blaster_Master_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1988-06-17",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1988-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1991-04-25",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1194412": {
+  "platform": "nes",
+  "title": "River City Ransom",
+  "article": "https://en.wikipedia.org/wiki/River_City_Ransom",
+  "regions": {
+   "NTSC-J": {
+    "date": "1989-04-25",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-01",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1991",
+    "precision": "year"
+   }
+  }
+ },
+ "Q568489": {
+  "platform": "nes",
+  "title": "Adventure Island",
+  "article": "https://en.wikipedia.org/wiki/Adventure_Island_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1986-09-12",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1988-09",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1992",
+    "precision": "year"
+   }
+  }
+ },
+ "Q1398972": {
+  "platform": "nes",
+  "title": "Faxanadu",
+  "article": "https://en.wikipedia.org/wiki/Faxanadu",
+  "regions": {
+   "NTSC-J": {
+    "date": "1987-11-16",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1989-08",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1990-12-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2252902": {
+  "platform": "nes",
+  "title": "StarTropics",
+  "article": "https://en.wikipedia.org/wiki/StarTropics",
+  "regions": {
+   "NTSC-U": {
+    "date": "1990-12-26",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992-08-20",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2172154": {
+  "platform": "nes",
+  "title": "Teenage Mutant Ninja Turtles",
+  "article": "https://en.wikipedia.org/wiki/Teenage_Mutant_Ninja_Turtles_(NES_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1989-05-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q764069": {
+  "platform": "nes",
+  "title": "Duck Hunt",
+  "article": "https://en.wikipedia.org/wiki/Duck_Hunt",
+  "regions": {
+   "NTSC-J": {
+    "date": "1984-04-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1985-10-18",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1987-08-15",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1201014": {
+  "platform": "nes",
+  "title": "Balloon Fight",
+  "article": "https://en.wikipedia.org/wiki/Balloon_Fight",
+  "regions": {
+   "NTSC-J": {
+    "date": "1985-01-22",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1986-09",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1987-03-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1658492": {
+  "platform": "nes",
+  "title": "Ninja Gaiden II: The Dark Sword of Chaos",
+  "article": "https://en.wikipedia.org/wiki/Ninja_Gaiden_II:_The_Dark_Sword_of_Chaos",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-04-06",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-05",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1994-10-27",
+    "precision": "day"
+   }
+  }
+ },
+ "Q853143": {
+  "platform": "snes",
+  "title": "Super Mario World",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_World",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-11",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1991-08",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1992-04",
+    "precision": "month"
+   }
+  }
+ },
+ "Q370055": {
+  "platform": "snes",
+  "title": "The Legend of Zelda: A Link to the Past",
+  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_A_Link_to_the_Past",
+  "regions": {
+   "NTSC-J": {
+    "date": "1991-11-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1992-04-13",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992-09-24",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1194825": {
+  "platform": "snes",
+  "title": "Super Metroid",
+  "article": "https://en.wikipedia.org/wiki/Super_Metroid",
+  "regions": {
+   "NTSC-J": {
+    "date": "1994-03-19",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1994-04-18",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1994-07-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q761815": {
+  "platform": "snes",
+  "title": "Chrono Trigger",
+  "article": "https://en.wikipedia.org/wiki/Chrono_Trigger",
+  "regions": {
+   "NTSC-J": {
+    "date": "1995-03-11",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1995-08-22",
+    "precision": "day"
+   }
+  }
+ },
+ "Q535940": {
+  "platform": "snes",
+  "title": "Final Fantasy VI",
+  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_VI",
+  "regions": {
+   "NTSC-J": {
+    "date": "1994-04-02",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1994-10-11",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1061560": {
+  "platform": "snes",
+  "title": "Super Mario Kart",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Kart",
+  "regions": {
+   "NTSC-J": {
+    "date": "1992-08-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1992-09-01",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1993-01-21",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1800173": {
+  "platform": "snes",
+  "title": "Secret of Mana",
+  "article": "https://en.wikipedia.org/wiki/Secret_of_Mana",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-08-06",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1993-10",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1994-11-25",
+    "precision": "day"
+   }
+  }
+ },
+ "Q389254": {
+  "platform": "snes",
+  "title": "Super Castlevania IV",
+  "article": "https://en.wikipedia.org/wiki/Super_Castlevania_IV",
+  "regions": {
+   "NTSC-J": {
+    "date": "1991-10-31",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-12",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1992-11-23",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1198491": {
+  "platform": "snes",
+  "title": "F-Zero",
+  "article": "https://en.wikipedia.org/wiki/F-Zero_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-11-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-08-23",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992",
+    "precision": "year"
+   }
+  }
+ },
+ "Q2002093": {
+  "platform": "snes",
+  "title": "Super Punch-Out!!",
+  "article": "https://en.wikipedia.org/wiki/Super_Punch-Out!!",
+  "regions": {
+   "NTSC-U": {
+    "date": "1994-10-24",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1995-02-10",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "1998-03-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1072051": {
+  "platform": "snes",
+  "title": "Donkey Kong Country 2: Diddy's Kong Quest",
+  "article": "https://en.wikipedia.org/wiki/Donkey_Kong_Country_2",
+  "regions": {
+   "NTSC-J": {
+    "date": "1995-11",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1995-12",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1995-12",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1368099": {
+  "platform": "snes",
+  "title": "Contra III: The Alien Wars",
+  "article": "https://en.wikipedia.org/wiki/Contra_III:_The_Alien_Wars",
+  "regions": {
+   "NTSC-J": {
+    "date": "1992-02-28",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1992-03-26",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992-09-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1197149": {
+  "platform": "snes",
+  "title": "Terranigma",
+  "article": "https://en.wikipedia.org/wiki/Terranigma",
+  "regions": {
+   "NTSC-J": {
+    "date": "1995-10-20",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1996-12-19",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1658920": {
+  "platform": "snes",
+  "title": "Illusion of Gaia",
+  "article": "https://en.wikipedia.org/wiki/Illusion_of_Gaia",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-11-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1994-09-26",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1995-06-21",
+    "precision": "day"
+   }
+  }
+ },
+ "Q343033": {
+  "platform": "snes",
+  "title": "ActRaiser",
+  "article": "https://en.wikipedia.org/wiki/ActRaiser",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-12-16",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1993-03-18",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1871848": {
+  "platform": "snes",
+  "title": "Kirby Super Star",
+  "article": "https://en.wikipedia.org/wiki/Kirby_Super_Star",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-03-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1996-09-20",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1997-01-23",
+    "precision": "day"
+   }
+  }
+ },
+ "Q911226": {
+  "platform": "snes",
+  "title": "Final Fantasy IV",
+  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_IV",
+  "regions": {
+   "NTSC-J": {
+    "date": "1991-07-19",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-11-23",
+    "precision": "day"
+   }
+  }
+ },
+ "Q275122": {
+  "platform": "snes",
+  "title": "Super Ghouls 'n Ghosts",
+  "article": "https://en.wikipedia.org/wiki/Super_Ghouls_'n_Ghosts",
+  "regions": {
+   "NTSC-J": {
+    "date": "1991-10-04",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-11-28",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992-12-10",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2316943": {
+  "platform": "snes",
+  "title": "Tetris Attack",
+  "article": "https://en.wikipedia.org/wiki/Tetris_Attack",
+  "regions": {
+   "NTSC-J": {
+    "date": "1995-10-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1996-08",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1996-11-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q219804": {
+  "platform": "snes",
+  "title": "Zombies Ate My Neighbors",
+  "article": "https://en.wikipedia.org/wiki/Zombies_Ate_My_Neighbors",
+  "regions": {
+   "NTSC-U": {
+    "date": "1993-09",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1993",
+    "precision": "year"
+   }
+  }
+ },
+ "Q1305295": {
+  "platform": "snes",
+  "title": "Pilotwings",
+  "article": "https://en.wikipedia.org/wiki/Pilotwings_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-12-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-08-23",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992",
+    "precision": "year"
+   }
+  }
+ },
+ "Q2756952": {
+  "platform": "snes",
+  "title": "Super Tennis",
+  "article": "https://en.wikipedia.org/wiki/Super_Tennis",
+  "regions": {
+   "NTSC-J": {
+    "date": "1991-08-30",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1992-04-11",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2829467": {
+  "platform": "snes",
+  "title": "Aladdin",
+  "article": "https://en.wikipedia.org/wiki/Disney's_Aladdin_(SNES_video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1993-11-15",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "1993-11-26",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1993-12-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q7146181": {
+  "platform": "snes",
+  "title": "Harvest Moon",
+  "article": "https://en.wikipedia.org/wiki/Harvest_Moon_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-08-09",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1997-06-17",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1998-01-29",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2637335": {
+  "platform": "snes",
+  "title": "Lufia & the Fortress of Doom",
+  "article": "https://en.wikipedia.org/wiki/Lufia_&_the_Fortress_of_Doom",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-06",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1993-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q3519191": {
+  "platform": "gb",
+  "title": "Tetris",
+  "article": "https://en.wikipedia.org/wiki/Tetris_(Game_Boy_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1989-06-14",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1989-07-31",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1990-09-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1060323": {
+  "platform": "gb",
+  "title": "The Legend of Zelda: Link's Awakening",
+  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Link's_Awakening",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-06-06",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1993-08-06",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1993-12-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q647249": {
+  "platform": "gb",
+  "title": "Super Mario Land",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Land",
+  "regions": {
+   "NTSC-J": {
+    "date": "1989-04-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1989-07-31",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1990",
+    "precision": "year"
+   }
+  }
+ },
+ "Q596392": {
+  "platform": "gb",
+  "title": "Super Mario Land 2: 6 Golden Coins",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Land_2:_6_Golden_Coins",
+  "regions": {
+   "NTSC-J": {
+    "date": "1992-10-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1992-11-02",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992-11-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1154044": {
+  "platform": "gb",
+  "title": "Kirby's Dream Land",
+  "article": "https://en.wikipedia.org/wiki/Kirby's_Dream_Land",
+  "regions": {
+   "NTSC-J": {
+    "date": "1992-04-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1992-08",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1992-12",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2471454": {
+  "platform": "gb",
+  "title": "Metroid II: Return of Samus",
+  "article": "https://en.wikipedia.org/wiki/Metroid_II:_Return_of_Samus",
+  "regions": {
+   "NTSC-U": {
+    "date": "1991-11",
+    "precision": "month"
+   },
+   "NTSC-J": {
+    "date": "1992-01-21",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992-05-21",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1634866": {
+  "platform": "gb",
+  "title": "Wario Land: Super Mario Land 3",
+  "article": "https://en.wikipedia.org/wiki/Wario_Land:_Super_Mario_Land_3",
+  "regions": {
+   "NTSC-J": {
+    "date": "1994-01-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1994-03-13",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1994-04-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2563041": {
+  "platform": "gb",
+  "title": "Castlevania: The Adventure",
+  "article": "https://en.wikipedia.org/wiki/Castlevania:_The_Adventure",
+  "regions": {
+   "NTSC-J": {
+    "date": "1989-10-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1989-12",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1991-08-08",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2333557": {
+  "platform": "gb",
+  "title": "Final Fantasy Adventure",
+  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_Adventure",
+  "regions": {
+   "NTSC-J": {
+    "date": "1991-06-28",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1993-06-17",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2987019": {
+  "platform": "gb",
+  "title": "Mega Man: Dr. Wily's Revenge",
+  "article": "https://en.wikipedia.org/wiki/Mega_Man:_Dr._Wily's_Revenge",
+  "regions": {
+   "NTSC-J": {
+    "date": "1991-07-26",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1991-12",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1992",
+    "precision": "year"
+   }
+  }
+ },
+ "Q971188": {
+  "platform": "gb",
+  "title": "Gargoyle's Quest",
+  "article": "https://en.wikipedia.org/wiki/Gargoyle's_Quest",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-05-02",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-07",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1991",
+    "precision": "year"
+   }
+  }
+ },
+ "Q2565757": {
+  "platform": "gb",
+  "title": "Kid Icarus: Of Myths and Monsters",
+  "article": "https://en.wikipedia.org/wiki/Kid_Icarus:_Of_Myths_and_Monsters",
+  "regions": {
+   "NTSC-U": {
+    "date": "1991-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1992-05-21",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1198580": {
+  "platform": "gb",
+  "title": "Dr. Mario",
+  "article": "https://en.wikipedia.org/wiki/Dr._Mario",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-07-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-10",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1991-04-30",
+    "precision": "day"
+   }
+  }
+ },
+ "Q11319329": {
+  "platform": "gb",
+  "title": "Tetris 2",
+  "article": "https://en.wikipedia.org/wiki/Tetris_2_(1993_video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1993-12",
+    "precision": "month"
+   },
+   "NTSC-J": {
+    "date": "1994-06-14",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1994-10-27",
+    "precision": "day"
+   }
+  }
+ },
+ "Q88759": {
+  "platform": "nes",
+  "title": "Bubble Bobble",
+  "article": "https://en.wikipedia.org/wiki/Bubble_Bobble_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1987-10-30",
+    "precision": "day"
+   }
+  }
+ },
+ "Q3489226": {
+  "platform": "gb",
+  "title": "Solar Striker",
+  "article": "https://en.wikipedia.org/wiki/Solar_Striker",
+  "regions": {
+   "NTSC-J": {
+    "date": "1990-01-26",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-02-02",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1990-09-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2273753": {
+  "platform": "gb",
+  "title": "Kirby's Dream Land 2",
+  "article": "https://en.wikipedia.org/wiki/Kirby's_Dream_Land_2",
+  "regions": {
+   "NTSC-J": {
+    "date": "1995-03-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1995-05-01",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1995-07-31",
+    "precision": "day"
+   }
+  }
+ },
+ "Q6141895": {
+  "platform": "gb",
+  "title": "Mole Mania",
+  "article": "https://en.wikipedia.org/wiki/Mole_Mania",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-07-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1997-02",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1997-05",
+    "precision": "month"
+   }
+  }
+ },
+ "Q721822": {
+  "platform": "gba",
+  "title": "Pokémon Ruby and Sapphire",
+  "article": "https://en.wikipedia.org/wiki/Pokémon_Ruby_and_Sapphire",
+  "regions": {
+   "NTSC-J": {
+    "date": "2002-11-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2003-03-19",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2003-04-03",
+    "precision": "day"
+   }
+  }
+ },
+ "Q474798": {
+  "platform": "gba",
+  "title": "The Legend of Zelda: The Minish Cap",
+  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_The_Minish_Cap",
+  "regions": {
+   "NTSC-J": {
+    "date": "2004-11-04",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2004-11-12",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2005-01-10",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2478949": {
+  "platform": "gba",
+  "title": "Metroid Fusion",
+  "article": "https://en.wikipedia.org/wiki/Metroid_Fusion",
+  "regions": {
+   "NTSC-U": {
+    "date": "2002-11-18",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2002-11-22",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2003-02-14",
+    "precision": "day"
+   }
+  }
+ },
+ "Q953229": {
+  "platform": "gba",
+  "title": "Advance Wars",
+  "article": "https://en.wikipedia.org/wiki/Advance_Wars",
+  "regions": {
+   "NTSC-U": {
+    "date": "2001-09-10",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001",
+    "precision": "year"
+   },
+   "NTSC-J": {
+    "date": "2004-11-25",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2068675": {
+  "platform": "gba",
+  "title": "Mario Kart: Super Circuit",
+  "article": "https://en.wikipedia.org/wiki/Mario_Kart:_Super_Circuit",
+  "regions": {
+   "NTSC-J": {
+    "date": "2001-07-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2001-08-27",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-09-14",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2291309": {
+  "platform": "gba",
+  "title": "Castlevania: Aria of Sorrow",
+  "article": "https://en.wikipedia.org/wiki/Castlevania:_Aria_of_Sorrow",
+  "regions": {
+   "NTSC-U": {
+    "date": "2003-05-06",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2003-05-08",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2003-05-09",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2012171": {
+  "platform": "gba",
+  "title": "Metroid: Zero Mission",
+  "article": "https://en.wikipedia.org/wiki/Metroid:_Zero_Mission",
+  "regions": {
+   "NTSC-U": {
+    "date": "2004-02-09",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2004-03-19",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2004-05-27",
+    "precision": "day"
+   }
+  }
+ },
+ "Q609063": {
+  "platform": "gba",
+  "title": "Pokémon FireRed and LeafGreen",
+  "article": "https://en.wikipedia.org/wiki/Pokémon_FireRed_and_LeafGreen",
+  "regions": {
+   "NTSC-J": {
+    "date": "2004-01",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "2004-09",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2004-09",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1797550": {
+  "platform": "gba",
+  "title": "Mario & Luigi: Superstar Saga",
+  "article": "https://en.wikipedia.org/wiki/Mario_&_Luigi:_Superstar_Saga",
+  "regions": {
+   "NTSC-U": {
+    "date": "2003-11-17",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2003-11-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1195267": {
+  "platform": "gba",
+  "title": "WarioWare, Inc.: Mega Microgames!",
+  "article": "https://en.wikipedia.org/wiki/WarioWare,_Inc.:_Mega_Microgames!",
+  "regions": {
+   "NTSC-J": {
+    "date": "2003-03-21",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2003-05-23",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2003-05-26",
+    "precision": "day"
+   }
+  }
+ },
+ "Q751268": {
+  "platform": "gba",
+  "title": "Astro Boy: Omega Factor",
+  "article": "https://en.wikipedia.org/wiki/Astro_Boy:_Omega_Factor",
+  "regions": {
+   "NTSC-J": {
+    "date": "2003-12-18",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2004-08-17",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2005-02-18",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1072868": {
+  "platform": "gba",
+  "title": "Final Fantasy Tactics Advance",
+  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_Tactics_Advance",
+  "regions": {
+   "NTSC-J": {
+    "date": "2003-02-14",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2003-09-08",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2003-09-19",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2045645": {
+  "platform": "gba",
+  "title": "Pokémon Emerald",
+  "article": "https://en.wikipedia.org/wiki/Pokémon_Emerald",
+  "regions": {
+   "NTSC-J": {
+    "date": "2004-09",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "2005-05",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2005-06",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2306443": {
+  "platform": "gba",
+  "title": "Kirby & the Amazing Mirror",
+  "article": "https://en.wikipedia.org/wiki/Kirby_&_the_Amazing_Mirror",
+  "regions": {
+   "NTSC-J": {
+    "date": "2004-04-15",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2004-07-02",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2004-10-18",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2562228": {
+  "platform": "gba",
+  "title": "Castlevania: Circle of the Moon",
+  "article": "https://en.wikipedia.org/wiki/Castlevania:_Circle_of_the_Moon",
+  "regions": {
+   "NTSC-J": {
+    "date": "2001-03-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2001-06-11",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-06-22",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2569478": {
+  "platform": "gba",
+  "title": "Advance Wars 2: Black Hole Rising",
+  "article": "https://en.wikipedia.org/wiki/Advance_Wars_2:_Black_Hole_Rising",
+  "regions": {
+   "NTSC-U": {
+    "date": "2003-06-23",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2003-07-10",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2004-11-25",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2342264": {
+  "platform": "gba",
+  "title": "Golden Sun: The Lost Age",
+  "article": "https://en.wikipedia.org/wiki/Golden_Sun:_The_Lost_Age",
+  "regions": {
+   "NTSC-J": {
+    "date": "2002-06-28",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2003-04-14",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2003-04-17",
+    "precision": "day"
+   }
+  }
+ },
+ "Q5307541": {
+  "platform": "gba",
+  "title": "Drill Dozer",
+  "article": "https://en.wikipedia.org/wiki/Drill_Dozer",
+  "regions": {
+   "NTSC-J": {
+    "date": "2005-09-22",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2006-02-06",
+    "precision": "day"
+   }
+  }
+ },
+ "Q3108764": {
+  "platform": "gba",
+  "title": "Rhythm Tengoku",
+  "article": "https://en.wikipedia.org/wiki/Rhythm_Tengoku",
+  "regions": {
+   "NTSC-J": {
+    "date": "2006-08-03",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2383167": {
+  "platform": "gba",
+  "title": "Mother 3",
+  "article": "https://en.wikipedia.org/wiki/Mother_3",
+  "regions": {
+   "NTSC-J": {
+    "date": "2006-04-20",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1358804": {
+  "platform": "gba",
+  "title": "The Legend of Zelda: A Link to the Past and Four Swords",
+  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_A_Link_to_the_Past_and_Four_Swords",
+  "regions": {
+   "NTSC-U": {
+    "date": "2002-12-02",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2003-03-14",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2003-03-28",
+    "precision": "day"
+   },
+   "WORLDWIDE": {
+    "date": "2011-09-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q216995": {
+  "platform": "n64",
+  "title": "Super Mario 64",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_64",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-06-23",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1996-09-29",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1997-03-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q213911": {
+  "platform": "n64",
+  "title": "The Legend of Zelda: Ocarina of Time",
+  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Ocarina_of_Time",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-11-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-11-23",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1998-12-11",
+    "precision": "day"
+   }
+  }
+ },
+ "Q369086": {
+  "platform": "n64",
+  "title": "GoldenEye 007",
+  "article": "https://en.wikipedia.org/wiki/GoldenEye_007",
+  "regions": {
+   "NTSC-J": {
+    "date": "1997-08",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1997-08",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1997-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1046604": {
+  "platform": "n64",
+  "title": "Mario Kart 64",
+  "article": "https://en.wikipedia.org/wiki/Mario_Kart_64",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-12-14",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1997-02-10",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1997-06-24",
+    "precision": "day"
+   }
+  }
+ },
+ "Q870981": {
+  "platform": "n64",
+  "title": "Super Smash Bros.",
+  "article": "https://en.wikipedia.org/wiki/Super_Smash_Bros._(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1999-01-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1999-04-26",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-11-19",
+    "precision": "day"
+   }
+  }
+ },
+ "Q732943": {
+  "platform": "n64",
+  "title": "The Legend of Zelda: Majora's Mask",
+  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Majora's_Mask",
+  "regions": {
+   "NTSC-J": {
+    "date": "2000-04-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2000-10-26",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2000-11-17",
+    "precision": "day"
+   }
+  }
+ },
+ "Q129000": {
+  "platform": "n64",
+  "title": "Banjo-Kazooie",
+  "article": "https://en.wikipedia.org/wiki/Banjo-Kazooie_(video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1998-06",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1998-07",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1141963": {
+  "platform": "n64",
+  "title": "Star Fox 64",
+  "article": "https://en.wikipedia.org/wiki/Star_Fox_64",
+  "regions": {
+   "NTSC-J": {
+    "date": "1997-04-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1997-06-23",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1997-10-20",
+    "precision": "day"
+   }
+  }
+ },
+ "Q774773": {
+  "platform": "n64",
+  "title": "Donkey Kong 64",
+  "article": "https://en.wikipedia.org/wiki/Donkey_Kong_64",
+  "regions": {
+   "NTSC-U": {
+    "date": "1999-11-22",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-12-06",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "1999-12-10",
+    "precision": "day"
+   }
+  }
+ },
+ "Q149998": {
+  "platform": "n64",
+  "title": "Paper Mario",
+  "article": "https://en.wikipedia.org/wiki/Paper_Mario_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "2000-08-11",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2001-02-05",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-10-05",
+    "precision": "day"
+   }
+  }
+ },
+ "Q841712": {
+  "platform": "n64",
+  "title": "Conker's Bad Fur Day",
+  "article": "https://en.wikipedia.org/wiki/Conker's_Bad_Fur_Day",
+  "regions": {
+   "NTSC-U": {
+    "date": "2001-03",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2001-04",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2609497": {
+  "platform": "n64",
+  "title": "F-Zero X",
+  "article": "https://en.wikipedia.org/wiki/F-Zero_X",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-07-14",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-10-27",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1998-11-06",
+    "precision": "day"
+   }
+  }
+ },
+ "Q545072": {
+  "platform": "n64",
+  "title": "Diddy Kong Racing",
+  "article": "https://en.wikipedia.org/wiki/Diddy_Kong_Racing",
+  "regions": {
+   "NTSC-J": {
+    "date": "1997-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1997-11",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1997-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q3142278": {
+  "platform": "n64",
+  "title": "Wave Race 64",
+  "article": "https://en.wikipedia.org/wiki/Wave_Race_64",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-09-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1996-11-04",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1997-04-29",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1705294": {
+  "platform": "n64",
+  "title": "Pokémon Snap",
+  "article": "https://en.wikipedia.org/wiki/Pokémon_Snap",
+  "regions": {
+   "NTSC-J": {
+    "date": "1999-03-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1999-07-26",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2000-03-23",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2034425": {
+  "platform": "n64",
+  "title": "Pokémon Stadium",
+  "article": "https://en.wikipedia.org/wiki/Pokémon_Stadium",
+  "regions": {
+   "NTSC-J": {
+    "date": "1999-04-30",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2000-03-06",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2000-03-23",
+    "precision": "day"
+   }
+  }
+ },
+ "Q806598": {
+  "platform": "n64",
+  "title": "Banjo-Tooie",
+  "article": "https://en.wikipedia.org/wiki/Banjo-Tooie",
+  "regions": {
+   "NTSC-U": {
+    "date": "2000-11",
+    "precision": "month"
+   },
+   "NTSC-J": {
+    "date": "2000-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2001-04",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2397985": {
+  "platform": "n64",
+  "title": "Mario Tennis",
+  "article": "https://en.wikipedia.org/wiki/Mario_Tennis",
+  "regions": {
+   "NTSC-J": {
+    "date": "2000-07-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2000-08-28",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2000-11-03",
+    "precision": "day"
+   }
+  }
+ },
+ "Q168615": {
+  "platform": "n64",
+  "title": "1080° Snowboarding",
+  "article": "https://en.wikipedia.org/wiki/1080°_Snowboarding",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-02",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1998-04",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1998-10",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2337280": {
+  "platform": "n64",
+  "title": "Yoshi's Story",
+  "article": "https://en.wikipedia.org/wiki/Yoshi's_Story",
+  "regions": {
+   "NTSC-J": {
+    "date": "1997-12-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-03-10",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1998-05-10",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2431467": {
+  "platform": "n64",
+  "title": "Turok: Dinosaur Hunter",
+  "article": "https://en.wikipedia.org/wiki/Turok:_Dinosaur_Hunter",
+  "regions": {
+   "PAL": {
+    "date": "1997-03-17",
+    "precision": "day"
+   }
+  }
+ },
+ "Q3099600": {
+  "platform": "n64",
+  "title": "Sin and Punishment",
+  "article": "https://en.wikipedia.org/wiki/Sin_and_Punishment",
+  "regions": {
+   "NTSC-J": {
+    "date": "2000-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2295559": {
+  "platform": "n64",
+  "title": "Ogre Battle 64: Person of Lordly Caliber",
+  "article": "https://en.wikipedia.org/wiki/Ogre_Battle_64",
+  "regions": {
+   "NTSC-J": {
+    "date": "1999-07-14",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2000-10-05",
+    "precision": "day"
+   }
+  }
+ },
+ "Q214232": {
+  "platform": "ps1",
+  "title": "Final Fantasy VII",
+  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_VII",
+  "regions": {
+   "NTSC-J": {
+    "date": "1997-01-31",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1997-09-07",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1997-11-17",
+    "precision": "day"
+   }
+  }
+ },
+ "Q6582527": {
+  "platform": "ps1",
+  "title": "Metal Gear Solid",
+  "article": "https://en.wikipedia.org/wiki/Metal_Gear_Solid_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-09-03",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-10-20",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-02-22",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1248594": {
+  "platform": "ps1",
+  "title": "Resident Evil",
+  "article": "https://en.wikipedia.org/wiki/Resident_Evil_(1996_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-03-22",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1996-04-01",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1996-08-16",
+    "precision": "day"
+   }
+  }
+ },
+ "Q944320": {
+  "platform": "ps1",
+  "title": "Gran Turismo",
+  "article": "https://en.wikipedia.org/wiki/Gran_Turismo_(1997_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1997-12-23",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1998-05-08",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-05-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1062106": {
+  "platform": "ps1",
+  "title": "Tekken 3",
+  "article": "https://en.wikipedia.org/wiki/Tekken_3",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-03-26",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-05-01",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1998-09-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q245006": {
+  "platform": "ps1",
+  "title": "Final Fantasy VIII",
+  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_VIII",
+  "regions": {
+   "NTSC-J": {
+    "date": "1999-02-11",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1999-09-09",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-10-27",
+    "precision": "day"
+   }
+  }
+ },
+ "Q753164": {
+  "platform": "ps1",
+  "title": "Silent Hill",
+  "article": "https://en.wikipedia.org/wiki/Silent_Hill_(video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1999-02-23",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "1999-03-04",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-07-16",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2007022": {
+  "platform": "ps1",
+  "title": "Castlevania: Symphony of the Night",
+  "article": "https://en.wikipedia.org/wiki/Castlevania:_Symphony_of_the_Night",
+  "regions": {
+   "NTSC-J": {
+    "date": "1997-03-20",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1997-10-03",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1997-11-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q733992": {
+  "platform": "ps1",
+  "title": "Resident Evil 2",
+  "article": "https://en.wikipedia.org/wiki/Resident_Evil_2",
+  "regions": {
+   "NTSC-U": {
+    "date": "1998-01-21",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "1998-01-29",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1998-04-29",
+    "precision": "day"
+   }
+  }
+ },
+ "Q474573": {
+  "platform": "ps1",
+  "title": "Final Fantasy IX",
+  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_IX",
+  "regions": {
+   "NTSC-J": {
+    "date": "2000-07-07",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2000-11-14",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-02-16",
+    "precision": "day"
+   }
+  }
+ },
+ "Q980535": {
+  "platform": "ps1",
+  "title": "Gran Turismo 2",
+  "article": "https://en.wikipedia.org/wiki/Gran_Turismo_2",
+  "regions": {
+   "NTSC-J": {
+    "date": "1999-12-11",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1999-12-16",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2000-01-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q569822": {
+  "platform": "ps1",
+  "title": "Crash Bandicoot 2: Cortex Strikes Back",
+  "article": "https://en.wikipedia.org/wiki/Crash_Bandicoot_2:_Cortex_Strikes_Back",
+  "regions": {
+   "NTSC-U": {
+    "date": "1997-11-06",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1997-12-05",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1088142": {
+  "platform": "ps1",
+  "title": "Chrono Cross",
+  "article": "https://en.wikipedia.org/wiki/Chrono_Cross",
+  "regions": {
+   "NTSC-J": {
+    "date": "1999-11-18",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2000-08-15",
+    "precision": "day"
+   }
+  }
+ },
+ "Q583360": {
+  "platform": "ps1",
+  "title": "Xenogears",
+  "article": "https://en.wikipedia.org/wiki/Xenogears",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-02-11",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-10-20",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1536626": {
+  "platform": "ps1",
+  "title": "Vagrant Story",
+  "article": "https://en.wikipedia.org/wiki/Vagrant_Story",
+  "regions": {
+   "NTSC-J": {
+    "date": "2000-02-10",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2000-05-16",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2000-06-21",
+    "precision": "day"
+   }
+  }
+ },
+ "Q3503174": {
+  "platform": "ps1",
+  "title": "Suikoden II",
+  "article": "https://en.wikipedia.org/wiki/Suikoden_II",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-12-17",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1999-09-29",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2000-07-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2293778": {
+  "platform": "ps1",
+  "title": "Driver",
+  "article": "https://en.wikipedia.org/wiki/Driver_(video_game)",
+  "regions": {
+   "PAL": {
+    "date": "1999-06",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1999-07",
+    "precision": "month"
+   }
+  }
+ },
+ "Q286205": {
+  "platform": "ps1",
+  "title": "Wipeout",
+  "article": "https://en.wikipedia.org/wiki/Wipeout_(video_game)",
+  "regions": {
+   "PAL": {
+    "date": "1995-09",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1995-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q15087581": {
+  "platform": "ps1",
+  "title": "Ridge Racer",
+  "article": "https://en.wikipedia.org/wiki/Ridge_Racer_(1993_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1994-12",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1995-09",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1995-09",
+    "precision": "month"
+   }
+  }
+ },
+ "Q589359": {
+  "platform": "ps1",
+  "title": "Tekken 2",
+  "article": "https://en.wikipedia.org/wiki/Tekken_2",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-03-29",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1996-08-27",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1996-10-02",
+    "precision": "day"
+   }
+  }
+ },
+ "Q960773": {
+  "platform": "ps1",
+  "title": "Ape Escape",
+  "article": "https://en.wikipedia.org/wiki/Ape_Escape_(video_game)",
+  "regions": {
+   "WORLDWIDE": {
+    "date": "1999-06-22",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "1999-06-24",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2164073": {
+  "platform": "ps1",
+  "title": "Um Jammer Lammy",
+  "article": "https://en.wikipedia.org/wiki/Um_Jammer_Lammy",
+  "regions": {
+   "NTSC-J": {
+    "date": "1999-03-18",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1999-08-17",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-09-10",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1340462": {
+  "platform": "ps1",
+  "title": "PaRappa the Rapper",
+  "article": "https://en.wikipedia.org/wiki/PaRappa_the_Rapper",
+  "regions": {
+   "NTSC-J": {
+    "date": "1996-12",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1997-09",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1997-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q83265": {
+  "platform": "ps2",
+  "title": "Grand Theft Auto: San Andreas",
+  "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_San_Andreas",
+  "regions": {
+   "NTSC-U": {
+    "date": "2004-10",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2004-10",
+    "precision": "month"
+   }
+  }
+ },
+ "Q846051": {
+  "platform": "ps2",
+  "title": "Shadow of the Colossus",
+  "article": "https://en.wikipedia.org/wiki/Shadow_of_the_Colossus",
+  "regions": {
+   "NTSC-U": {
+    "date": "2005-10-18",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2005-10-27",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2006-02-16",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1324448": {
+  "platform": "ps2",
+  "title": "Ico",
+  "article": "https://en.wikipedia.org/wiki/Ico",
+  "regions": {
+   "NTSC-U": {
+    "date": "2001-09-25",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2001-12-06",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2002-03-22",
+    "precision": "day"
+   }
+  }
+ },
+ "Q247935": {
+  "platform": "ps2",
+  "title": "Metal Gear Solid 3: Snake Eater",
+  "article": "https://en.wikipedia.org/wiki/Metal_Gear_Solid_3:_Snake_Eater",
+  "regions": {
+   "NTSC-U": {
+    "date": "2004-11-17",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2004-12-16",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2005-03-04",
+    "precision": "day"
+   }
+  }
+ },
+ "Q149106": {
+  "platform": "ps2",
+  "title": "Grand Theft Auto III",
+  "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto_III",
+  "regions": {
+   "NTSC-U": {
+    "date": "2001-10",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2001-10",
+    "precision": "month"
+   }
+  }
+ },
+ "Q94671": {
+  "platform": "ps2",
+  "title": "Grand Theft Auto: Vice City",
+  "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_Vice_City",
+  "regions": {
+   "NTSC-U": {
+    "date": "2002-10",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2002-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q817369": {
+  "platform": "ps2",
+  "title": "God of War",
+  "article": "https://en.wikipedia.org/wiki/God_of_War_(2005_video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "2005-03-22",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2005-07-08",
+    "precision": "day"
+   }
+  }
+ },
+ "Q975773": {
+  "platform": "ps2",
+  "title": "Gran Turismo 3: A-Spec",
+  "article": "https://en.wikipedia.org/wiki/Gran_Turismo_3:_A-Spec",
+  "regions": {
+   "NTSC-J": {
+    "date": "2001-04-28",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2001-07-10",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-07-20",
+    "precision": "day"
+   }
+  }
+ },
+ "Q907226": {
+  "platform": "ps2",
+  "title": "Metal Gear Solid 2: Sons of Liberty",
+  "article": "https://en.wikipedia.org/wiki/Metal_Gear_Solid_2:_Sons_of_Liberty",
+  "regions": {
+   "NTSC-U": {
+    "date": "2001-11-13",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2001-11-29",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2002-03-08",
+    "precision": "day"
+   }
+  }
+ },
+ "Q840889": {
+  "platform": "ps2",
+  "title": "Devil May Cry",
+  "article": "https://en.wikipedia.org/wiki/Devil_May_Cry_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "2001-08-23",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2001-10-17",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-12-07",
+    "precision": "day"
+   }
+  }
+ },
+ "Q385184": {
+  "platform": "ps2",
+  "title": "Ōkami",
+  "article": "https://en.wikipedia.org/wiki/Ōkami",
+  "regions": {
+   "NTSC-J": {
+    "date": "2006-04",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "2006-09",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2007-02",
+    "precision": "month"
+   }
+  }
+ },
+ "Q568609": {
+  "platform": "ps2",
+  "title": "Persona 4",
+  "article": "https://en.wikipedia.org/wiki/Persona_4",
+  "regions": {
+   "NTSC-J": {
+    "date": "2008-07-10",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2008-12-09",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2009-03-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q910889": {
+  "platform": "ps2",
+  "title": "Persona 3",
+  "article": "https://en.wikipedia.org/wiki/Persona_3",
+  "regions": {
+   "NTSC-J": {
+    "date": "2006-07-13",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2007-08-14",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2008-02-29",
+    "precision": "day"
+   }
+  }
+ },
+ "Q275950": {
+  "platform": "ps2",
+  "title": "Resident Evil 4",
+  "article": "https://en.wikipedia.org/wiki/Resident_Evil_4",
+  "regions": {
+   "NTSC-U": {
+    "date": "2005-10-25",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2005-11-04",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2005-12-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q752835": {
+  "platform": "ps2",
+  "title": "Silent Hill 2",
+  "article": "https://en.wikipedia.org/wiki/Silent_Hill_2",
+  "regions": {
+   "NTSC-U": {
+    "date": "2001-09-25",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2001-09-27",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-11-23",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1784103": {
+  "platform": "ps2",
+  "title": "Jak and Daxter: The Precursor Legacy",
+  "article": "https://en.wikipedia.org/wiki/Jak_and_Daxter:_The_Precursor_Legacy",
+  "regions": {
+   "NTSC-U": {
+    "date": "2001-12-04",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-12",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2079604": {
+  "platform": "ps2",
+  "title": "Burnout 3: Takedown",
+  "article": "https://en.wikipedia.org/wiki/Burnout_3:_Takedown",
+  "regions": {
+   "NTSC-U": {
+    "date": "2004-09",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2004-09",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1052488": {
+  "platform": "ps2",
+  "title": "Tekken 5",
+  "article": "https://en.wikipedia.org/wiki/Tekken_5",
+  "regions": {
+   "NTSC-U": {
+    "date": "2005-02-25",
+    "precision": "day"
+   },
+   "NTSC-J": {
+    "date": "2005-03-31",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2005-06-24",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2377020": {
+  "platform": "ps2",
+  "title": "SSX Tricky",
+  "article": "https://en.wikipedia.org/wiki/SSX_Tricky",
+  "regions": {
+   "NTSC-U": {
+    "date": "2001-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "2001-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1206519": {
+  "platform": "ps2",
+  "title": "Katamari Damacy",
+  "article": "https://en.wikipedia.org/wiki/Katamari_Damacy",
+  "regions": {
+   "NTSC-J": {
+    "date": "2004-03-18",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2004-09-21",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1948338": {
+  "platform": "ps2",
+  "title": "Dragon Quest VIII",
+  "article": "https://en.wikipedia.org/wiki/Dragon_Quest_VIII",
+  "regions": {
+   "NTSC-J": {
+    "date": "2004-11-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2005-11-15",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2006-04-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q28234671": {
+  "platform": "switch",
+  "title": "Super Mario Odyssey",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Odyssey",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2017-10-27",
+    "precision": "day"
+   }
+  }
+ },
+ "Q54093632": {
+  "platform": "switch",
+  "title": "Super Smash Bros. Ultimate",
+  "article": "https://en.wikipedia.org/wiki/Super_Smash_Bros._Ultimate",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2018-12-07",
+    "precision": "day"
+   }
+  }
+ },
+ "Q28129061": {
+  "platform": "switch",
+  "title": "Splatoon 2",
+  "article": "https://en.wikipedia.org/wiki/Splatoon_2",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2017-07-21",
+    "precision": "day"
+   }
+  }
+ },
+ "Q61831178": {
+  "platform": "switch",
+  "title": "Super Mario Maker 2",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Maker_2",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2019-06-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q61897498": {
+  "platform": "switch",
+  "title": "Pokémon Sword and Shield",
+  "article": "https://en.wikipedia.org/wiki/Pokémon_Sword_and_Shield",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2019-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q17006956": {
+  "platform": "switch",
+  "title": "Metroid Dread",
+  "article": "https://en.wikipedia.org/wiki/Metroid_Dread",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2021-10-08",
+    "precision": "day"
+   }
+  }
+ },
+ "Q54960673": {
+  "platform": "switch",
+  "title": "Fire Emblem: Three Houses",
+  "article": "https://en.wikipedia.org/wiki/Fire_Emblem:_Three_Houses",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2019-07-26",
+    "precision": "day"
+   }
+  }
+ },
+ "Q23013817": {
+  "platform": "switch",
+  "title": "Stardew Valley",
+  "article": "https://en.wikipedia.org/wiki/Stardew_Valley",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2017-10-05",
+    "precision": "day"
+   }
+  }
+ },
+ "Q28451532": {
+  "platform": "switch",
+  "title": "Celeste",
+  "article": "https://en.wikipedia.org/wiki/Celeste_(video_game)",
+  "regions": {
+   "WORLDWIDE": {
+    "date": "2018-01-25",
+    "precision": "day"
+   }
+  }
+ },
+ "Q56641109": {
+  "platform": "switch",
+  "title": "Luigi's Mansion 3",
+  "article": "https://en.wikipedia.org/wiki/Luigi's_Mansion_3",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2019-10-31",
+    "precision": "day"
+   }
+  }
+ },
+ "Q54936079": {
+  "platform": "switch",
+  "title": "Super Mario Party",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Party",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2018-10",
+    "precision": "month"
+   }
+  }
+ },
+ "Q105552720": {
+  "platform": "switch",
+  "title": "Splatoon 3",
+  "article": "https://en.wikipedia.org/wiki/Splatoon_3",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2022-09",
+    "precision": "month"
+   }
+  }
+ },
+ "Q105688771": {
+  "platform": "switch",
+  "title": "Pokémon Legends: Arceus",
+  "article": "https://en.wikipedia.org/wiki/Pokémon_Legends:_Arceus",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2022-01",
+    "precision": "month"
+   }
+  }
+ },
+ "Q69557147": {
+  "platform": "switch",
+  "title": "Ring Fit Adventure",
+  "article": "https://en.wikipedia.org/wiki/Ring_Fit_Adventure",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2019-10-18",
+    "precision": "day"
+   }
+  }
+ },
+ "Q44997696": {
+  "platform": "switch",
+  "title": "Bayonetta 3",
+  "article": "https://en.wikipedia.org/wiki/Bayonetta_3",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2022-10-28",
+    "precision": "day"
+   }
+  }
+ },
+ "Q61727129": {
+  "platform": "switch",
+  "title": "Astral Chain",
+  "article": "https://en.wikipedia.org/wiki/Astral_Chain",
+  "regions": {
+   "UNKNOWN": {
+    "date": "2019-08-30",
+    "precision": "day"
+   }
+  }
+ },
+ "Q11168": {
+  "platform": "nes",
+  "title": "Super Mario Bros.",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Bros.",
+  "regions": {
+   "NTSC-J": {
+    "date": "1985-09-13",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1985-10",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1987-05-15",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1415970": {
+  "platform": "nes",
+  "title": "Final Fantasy",
+  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1987-12-18",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1990-07",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2313869": {
+  "platform": "nes",
+  "title": "Dragon Quest",
+  "article": "https://en.wikipedia.org/wiki/Dragon_Quest_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1986-05-27",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1989-08",
+    "precision": "month"
+   }
+  }
+ },
+ "Q6586317": {
+  "platform": "nes",
+  "title": "Mega Man",
+  "article": "https://en.wikipedia.org/wiki/Mega_Man_(1987_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1987-12-17",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1987-12",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1989-12-13",
+    "precision": "day"
+   }
+  }
+ },
+ "Q518987": {
+  "platform": "snes",
+  "title": "Donkey Kong Country",
+  "article": "https://en.wikipedia.org/wiki/Donkey_Kong_Country",
+  "regions": {
+   "PAL": {
+    "date": "1994-11",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1994-11",
+    "precision": "month"
+   },
+   "NTSC-J": {
+    "date": "1994-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1133204": {
+  "platform": "snes",
+  "title": "Street Fighter II",
+  "article": "https://en.wikipedia.org/wiki/Street_Fighter_II",
+  "regions": {
+   "NTSC-J": {
+    "date": "1992-06-10",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1992-07-15",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1992-10",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1196400": {
+  "platform": "snes",
+  "title": "Mega Man X",
+  "article": "https://en.wikipedia.org/wiki/Mega_Man_X_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-12-17",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1994-01",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1994-05-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1326889": {
+  "platform": "snes",
+  "title": "Star Fox",
+  "article": "https://en.wikipedia.org/wiki/Star_Fox_(1993_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-02",
+    "precision": "month"
+   },
+   "NTSC-U": {
+    "date": "1993-03",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1993-06",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2702756": {
+  "platform": "snes",
+  "title": "Super Bomberman",
+  "article": "https://en.wikipedia.org/wiki/Super_Bomberman",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-04-28",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1993-09",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1993-11-20",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2532658": {
+  "platform": "snes",
+  "title": "Breath of Fire",
+  "article": "https://en.wikipedia.org/wiki/Breath_of_Fire_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1993-04-03",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1994-08-10",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2564684": {
+  "platform": "gb",
+  "title": "Donkey Kong",
+  "article": "https://en.wikipedia.org/wiki/Donkey_Kong_(1994_video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1994-06-14",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1994-06",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1994-09",
+    "precision": "month"
+   }
+  }
+ },
+ "Q1545555": {
+  "platform": "gba",
+  "title": "Golden Sun",
+  "article": "https://en.wikipedia.org/wiki/Golden_Sun_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "2001-08-01",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2001-11-12",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2002-02-22",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2081510": {
+  "platform": "gba",
+  "title": "Sonic Advance",
+  "article": "https://en.wikipedia.org/wiki/Sonic_Advance",
+  "regions": {
+   "NTSC-J": {
+    "date": "2001-12-20",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2002-02-03",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2002-03-08",
+    "precision": "day"
+   }
+  }
+ },
+ "Q6507722": {
+  "platform": "n64",
+  "title": "Mario Party",
+  "article": "https://en.wikipedia.org/wiki/Mario_Party_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-12-18",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1999-02-08",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-03-09",
+    "precision": "day"
+   }
+  }
+ },
+ "Q719176": {
+  "platform": "ps1",
+  "title": "Crash Bandicoot",
+  "article": "https://en.wikipedia.org/wiki/Crash_Bandicoot_(video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1996-09-09",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1996-11-08",
+    "precision": "day"
+   }
+  }
+ },
+ "Q858391": {
+  "platform": "ps1",
+  "title": "Spyro the Dragon",
+  "article": "https://en.wikipedia.org/wiki/Spyro_the_Dragon",
+  "regions": {
+   "NTSC-U": {
+    "date": "1998-09-09",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1998-10-23",
+    "precision": "day"
+   }
+  }
+ },
+ "Q317620": {
+  "platform": "ps1",
+  "title": "Tomb Raider",
+  "article": "https://en.wikipedia.org/wiki/Tomb_Raider_(1996_video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1996-11",
+    "precision": "month"
+   },
+   "PAL": {
+    "date": "1996-11",
+    "precision": "month"
+   }
+  }
+ },
+ "Q2165750": {
+  "platform": "ps1",
+  "title": "Parasite Eve",
+  "article": "https://en.wikipedia.org/wiki/Parasite_Eve_(video_game)",
+  "regions": {
+   "NTSC-J": {
+    "date": "1998-03-29",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-09-10",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2264782": {
+  "platform": "ps1",
+  "title": "Tony Hawk's Pro Skater",
+  "article": "https://en.wikipedia.org/wiki/Tony_Hawk's_Pro_Skater",
+  "regions": {
+   "NTSC-U": {
+    "date": "1999-09-29",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-10-18",
+    "precision": "day"
+   }
+  }
+ },
+ "Q170003": {
+  "platform": "ps2",
+  "title": "Ratchet & Clank",
+  "article": "https://en.wikipedia.org/wiki/Ratchet_&_Clank_(2002_video_game)",
+  "regions": {
+   "PAL": {
+    "date": "2002-11-08",
+    "precision": "day"
+   }
+  }
+ },
+ "Q116578": {
+  "platform": "ps2",
+  "title": "Guitar Hero",
+  "article": "https://en.wikipedia.org/wiki/Guitar_Hero_(video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "2005-11-08",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2006-04-07",
+    "precision": "day"
+   }
+  }
+ },
+ "Q28312052": {
+  "platform": "switch",
+  "title": "Xenoblade Chronicles 2",
+  "article": "https://en.wikipedia.org/wiki/Xenoblade_Chronicles_2",
+  "regions": {
+   "WORLDWIDE": {
+    "date": "2017-12-01",
+    "precision": "day"
+   }
+  }
+ },
+ "Q2758069": {
+  "platform": "gb",
+  "title": "Harvest Moon GB",
+  "article": "https://en.wikipedia.org/wiki/Harvest_Moon_GB",
+  "regions": {
+   "NTSC-J": {
+    "date": "1997-12-19",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "1998-08-12",
+    "precision": "day"
+   }
+  }
+ },
+ "Q150180": {
+  "platform": "gba",
+  "title": "Fire Emblem: The Blazing Blade",
+  "article": "https://en.wikipedia.org/wiki/Fire_Emblem:_The_Blazing_Blade",
+  "regions": {
+   "NTSC-J": {
+    "date": "2003-04-25",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2003-11-03",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2004-02-20",
+    "precision": "day"
+   }
+  }
+ },
+ "Q1069537": {
+  "platform": "ps1",
+  "title": "Medal of Honor",
+  "article": "https://en.wikipedia.org/wiki/Medal_of_Honor_(1999_video_game)",
+  "regions": {
+   "NTSC-U": {
+    "date": "1999-11-10",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "1999-12-10",
+    "precision": "day"
+   }
+  }
+ }
+}

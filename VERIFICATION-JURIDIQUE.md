@@ -34,7 +34,8 @@ Trois limites de méthode :
 
 | Source | Licence / conditions | Redistribution | Verdict |
 |---|---|---|---|
-| **Wikidata** | **CC0** sur les données structurées (espaces principal, propriétés, lexèmes) | **Libre**, sans attribution obligatoire | ✅ **Utilisable. Seule source confortable du panel** |
+| **Wikidata** | **CC0** sur les données structurées (espaces principal, propriétés, lexèmes) | **Libre**, sans attribution obligatoire | ✅ **Utilisable.** Noyau du référentiel |
+| **Wikipédia** | **CC BY-SA 4.0** | **Libre, avec attribution et partage à l'identique** | ✅ **Utilisable** — voir l'avertissement ci-dessous |
 | **IGDB** (Twitch / Amazon) | Gratuit **non commercial** sous Twitch Developer Services Agreement ; commercial = partenariat à négocier | Non | ⚠️ Consultation seulement — et le statut bascule le jour où le projet devient commercial |
 | **MobyGames** | Site en usage **personnel non commercial** ; API par paliers — *Hobbyist* 9,99 $/mois non commercial, *Bronze* 99,99 $/mois, *Silver* 499,99 $/mois | **Interdite** sauf autorisation écrite | ❌ Consultation manuelle uniquement. Interdit aussi pour l'entraînement de modèles |
 | **Giant Bomb** | Gratuit non commercial ; commercial sur autorisation. Ni publicité, ni abonnement, ni affiliation sans accord. Attribution + mention de non-affiliation | Non | ⚠️ C'est la source de **Grouvee** — utile à savoir, inutilisable pour nous |
@@ -44,6 +45,16 @@ Trois limites de méthode :
 | **ScreenScraper** | Base communautaire, accès par compte, orientée scraping de ROMs | À vérifier | ❌ Contexte d'usage adjacent à des pratiques dont le projet doit rester éloigné |
 | **Steam Web API** | Ne stocker que les données **demandées par l'utilisateur final** ; informer l'utilisateur du stockage et du pays ; diffusion à l'utilisateur pour son usage personnel ; 100 000 appels/jour | Non | ✅ **Compatible avec l'import par utilisateur** (Phase 4), incompatible avec la constitution d'un référentiel |
 | **RetroAchievements** | API tierce publique, clé de compte, limitation de débit « raisonnable », CGU générales | Non traitée | ✅ Pour l'import par utilisateur. Expose bien les déblocages entre deux dates — le proxy daté prévu en Phase 4 |
+
+> ### ⚠️ Wikipédia manquait à ce tableau, et c'était une erreur d'analyse
+>
+> La première version de ce document écartait toutes les sources sauf Wikidata. Le motif était juste — IGDB, MobyGames, Giant Bomb, RAWG et les autres **interdisent la redistribution** — mais il ne s'applique pas à Wikipédia, qui n'avait simplement pas été examinée. Son contenu est sous **CC BY-SA 4.0**, licence qui autorise explicitement la réutilisation et la redistribution : c'est exactement le critère que pose §19.1.
+>
+> **Le partage à l'identique se propage.** Un référentiel qui incorpore du contenu CC BY-SA ne peut plus être diffusé en CC0. Le dataset est donc passé en **CC BY-SA 4.0 avec attribution** le 20 septembre 2026. Ce n'est pas un détail de mention légale : cela contraint toute réutilisation future, y compris la nôtre si le projet change de nature.
+>
+> **Pourquoi l'infobox est meilleure que Wikidata sur ce champ précis.** Elle porte une consigne de contributeur — *« Do not list emulated releases in the infobox »* — qui exclut les rééditions à la main. C'est précisément la distinction que les déclarations Wikidata ne permettaient pas de faire, et elle a fait passer la couverture régionale de 56 % à 92 %.
+>
+> La confiance accordée à cette source a été **mesurée avant d'être accordée** : sur les 211 dates régionales que les deux sources donnaient, l'accord à l'année est de **96 %**, et les huit désaccords portent tous sur des sorties européennes à moins d'un an d'écart.
 
 ### 2.1 Ce que ça donne concrètement
 
@@ -134,7 +145,7 @@ Sans objet pour les sources : le RGPD porte sur les données utilisateur, pas su
 ## 5. Décisions proposées
 
 1. **Wikidata est la source d'amorçage du référentiel.** CC0, couverture suffisante, seule licence qui survit à une commercialisation. La licence devient un champ obligatoire du référentiel, comme l'exige §19.1.
-2. **Aucune autre source n'alimente le référentiel.** IGDB, MobyGames, Giant Bomb, RAWG, TheGamesDB, OpenVGDB, ScreenScraper sont utilisables **en consultation manuelle** pour vérifier une entrée curée, jamais en extraction.
+2. **Wikipédia complète Wikidata, et rien d'autre n'alimente le référentiel.** Les deux sont sous licence explicitement réutilisable ; Wikidata reste prioritaire là où elle existe, pour que le noyau CC0 demeure identifiable. IGDB, MobyGames, Giant Bomb, RAWG, TheGamesDB, OpenVGDB, ScreenScraper restent utilisables **en consultation manuelle** pour vérifier une entrée curée, jamais en extraction.
 3. **Aucun script ne parcourt une source tierce** — article 7(5). La curation du POC est manuelle par construction, ce qui rend la règle sans coût aujourd'hui et explicite pour plus tard.
 4. **Steam et RetroAchievements sont réservés à l'import par utilisateur** (Phase 4), ce qui correspond à leurs conditions. Conserver `Source` et `ImportedAt` sur chaque donnée importée sert aussi de preuve de conformité.
 5. **Les jaquettes du POC sont reprises sur le web**, sous les cinq conditions et les quatre déclencheurs de réexamen de §3.3 — le projet étant un exercice de R&D. La décision §19.2 devient applicable et la grille desktop est débloquée.
