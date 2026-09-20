@@ -52,6 +52,11 @@ public static class TemporalNormalizer
     /// </summary>
     public static TemporalInterval? Normalize(TemporalValue value, TemporalHorizon horizon)
     {
+        if (value is Age age)
+        {
+            return ResolveAge(age, horizon);
+        }
+
         if (value is not YearRange { EndYear: null } ouverte)
         {
             // Rien d'ouvert : l'horizon ne doit RIEN changer. Il est un
@@ -72,6 +77,57 @@ public static class TemporalNormalizer
         }
 
         return new TemporalInterval(ouverte, debut, horizon.Ceiling, sortKey: debut);
+    }
+
+    /// <summary>
+    /// Résout « j'avais x ans » à la lecture (§8).
+    ///
+    /// <para>Avec la seule année de naissance, la fenêtre couvre <b>deux
+    /// années civiles</b> : sans connaître le jour de l'anniversaire, on
+    /// ignore dans laquelle des deux le souvenir tombe. Cette largeur n'est
+    /// pas un défaut — c'est elle qui porte l'imprécision de « vers mes
+    /// 12 ans », et c'est pourquoi le type refuse une marge en plus.</para>
+    ///
+    /// <para>La résolution se fait <b>ici et jamais à l'écriture</b> : c'est
+    /// ce qui permet à une correction de l'année de naissance de recalculer
+    /// tous les moments concernés plutôt que de les réconcilier.</para>
+    /// </summary>
+    private static TemporalInterval? ResolveAge(Age age, TemporalHorizon horizon)
+    {
+        if (horizon.EffectiveBirthYear is not { } naissance)
+        {
+            // §7.6 : sans année de naissance, Age se comporte comme Unknown.
+            return null;
+        }
+
+        DateOnly debut, fin;
+        if (horizon.BirthDate is { } jour)
+        {
+            debut = jour.AddYears(age.Years);
+            fin = jour.AddYears(age.Years + 1).AddDays(-1);
+        }
+        else
+        {
+            debut = FirstDayOf(naissance + age.Years);
+            fin = LastDayOf(naissance + age.Years + 1);
+        }
+
+        if (debut > horizon.Ceiling)
+        {
+            // « Un souvenir ne se situe pas dans l'avenir » (§2.3). Non
+            // plaçable, mais jamais refusé (invariant 10) : le moment rejoint
+            // le tiroir, comme un Unknown.
+            return null;
+        }
+
+        // La fenêtre peut déborder sur l'avenir sans y commencer — on la
+        // ferme sur le plafond plutôt que de laisser dépasser.
+        if (fin > horizon.Ceiling)
+        {
+            fin = horizon.Ceiling;
+        }
+
+        return new TemporalInterval(age, debut, fin);
     }
 
     private static TemporalInterval Interval(TemporalValue source, DateOnly start, DateOnly end)

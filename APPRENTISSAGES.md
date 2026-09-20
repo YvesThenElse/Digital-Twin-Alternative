@@ -19,6 +19,8 @@
 
 Une entrée par chose apprise, pas une par itération. Chacune dit **ce qui s'est passé**, puis **la règle que ça suggère** — sans la règle, c'est une anecdote.
 
+> ⚠️ **La règle doit commencer par un verbe d'action.** « Compter les cas », « perturber plutôt que comparer », « inclure une mutation survivante ». Une règle qui dit ce qu'il faut *remarquer* — « ne pas oublier que… », « attention à… » — ne change aucun geste et n'a jamais protégé de rien ici. C'est vérifiable d'un coup d'œil, contrairement à « est-ce utile ? ».
+
 ---
 
 ## Acquis avant la boucle
@@ -198,3 +200,42 @@ strictement ordonnés », ce qui est exactement la définition d'un groupe à
 > l'insérer dans la chaîne de clés. Segmenter par les clés, puis l'appliquer
 > dans chaque segment. Et vérifier le déterminisme en permutant l'entrée : un
 > critère par couple est précisément ce qui rend un tri instable.
+
+### 07 — Compter les cas de `[Theory]`, jamais les méthodes
+
+Prévision de mutation : 6 échecs, obtenus en énumérant six **méthodes** de
+test. Résultat : 8. L'une d'elles était un `[Theory]` à trois jeux de données,
+et xUnit compte un échec **par cas**.
+
+Erreur déjà commise à l'itération 01, et reproduite à l'identique six
+itérations plus tard.
+
+> **Règle** — énumérer les cas, pas les méthodes : un `[Theory]` à *n* jeux
+> de données compte pour *n*.
+
+### 07 bis — Une règle qui ne commande aucun geste ne protège de rien
+
+L'entrée de l'itération 01 disait : « ne pas l'avoir prévu aurait laissé un
+doute sur la cause du quatrième ». C'est un constat. Six itérations plus tard
+j'ai refait la même erreur, en ayant relu ce texte à chaque ouverture.
+
+C'est la **troisième** fois qu'une règle du journal échoue, et les trois ont
+la même forme : elles décrivaient ce qu'il fallait *remarquer* au lieu de ce
+qu'il fallait *faire*. L'item 04 avait produit une vraie règle — « une
+mutation à la fois » — et celle-là a tenu.
+
+> **Règle** — exiger qu'une entrée se termine par un verbe d'action, et la
+> réécrire sinon. Le critère est mécanique, donc vérifiable : « remarquer
+> que » n'en est pas un, « compter » en est un.
+
+### 07 ter — Viser les cas que les utilitaires de test rendent inatteignables
+
+Troisième trou révélé par une mutation annoncée survivante, et troisième fois
+que c'est **le même genre** : un utilitaire de test qui renseigne toujours
+deux champs ensemble — ici l'année ET la date de naissance — masque la
+question de savoir lequel compte. Un profil ne portant que la date aurait
+cessé de résoudre `Age`, sans qu'aucun test ne le dise.
+
+> **Règle** — choisir la mutation survivante en regardant les **helpers de
+> test**, pas le code de production : muter ce qu'un helper remplit toujours
+> de la même façon. C'est un angle mort structurel, pas une inattention.

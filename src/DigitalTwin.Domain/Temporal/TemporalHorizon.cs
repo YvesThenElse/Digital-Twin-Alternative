@@ -26,7 +26,19 @@ public readonly record struct TemporalHorizon(DateOnly Ceiling, int? BirthYear)
     public const int DefaultFloorYear = 1972;
 
     /// <summary>
+    /// Date de naissance complète, si elle est connue. Facultative, comme
+    /// l'année : elle resserre la fenêtre de <c>Age</c> de vingt-quatre à
+    /// douze mois (§8), sans quoi rien ne change.
+    /// </summary>
+    public DateOnly? BirthDate { get; init; }
+
+    /// <summary>
     /// Plancher : l'année de naissance si elle est connue, 1972 sinon.
     /// </summary>
-    public int FloorYear => BirthYear ?? DefaultFloorYear;
+    public int FloorYear => EffectiveBirthYear ?? DefaultFloorYear;
+
+    /// <summary>
+    /// L'année de naissance, de la source la plus précise disponible.
+    /// </summary>
+    public int? EffectiveBirthYear => BirthDate?.Year ?? BirthYear;
 }
