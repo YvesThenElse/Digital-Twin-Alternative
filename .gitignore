@@ -8,3 +8,6 @@ __pycache__/
 dataset/covers/*
 !dataset/covers/MANIFEST.json
 !dataset/covers/README.md
+.dotnet-home/
+bin/
+obj/

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DigitalTwin.Domain.Tests/DigitalTwin.Domain.Tests.csproj" />
+  <Project Path="DigitalTwin.Domain/DigitalTwin.Domain.csproj" />
+</Solution>
