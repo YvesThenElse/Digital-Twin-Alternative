@@ -82,3 +82,14 @@ En conséquence, quand tu écris un test :
   si tu casses volontairement le code qu'il couvre.
 - **nomme l'entrée fautive** dans les messages d'échec. « L'assertion a
   échoué » ne sert à personne à la trentième entrée.
+
+Et quand tu contrôles par mutation :
+
+- **une mutation à la fois**, code restauré entre chaque. Injectées ensemble
+  elles se masquent et s'amplifient, et le compte obtenu ne correspond alors à
+  aucun défaut réel (voir l'entrée 04 de `APPRENTISSAGES.md`).
+- **annonce le nombre d'échecs attendu avant d'injecter**, et cherche la cause
+  de tout écart. C'est l'écart qui instruit, pas le compte.
+- **inclus une mutation que tu penses survivante.** Si elle survit, tu as
+  trouvé un trou ; ne tester que des mutations mortelles vérifie que les tests
+  existent, pas qu'ils couvrent.

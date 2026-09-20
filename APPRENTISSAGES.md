@@ -86,3 +86,59 @@ valeurs « normales » et j'oubliais le cas dégénéré.
 > **Règle** — la prévision garde sa valeur même fausse : sans elle, le
 > quatrième échec aurait été compté comme une confirmation au lieu d'être
 > cherché. C'est l'écart qui instruit, pas le compte.
+
+### 04 — Des mutations simultanées donnent un compte ininterprétable
+
+Trois mutations injectées ensemble dans la même chaîne de décision. Prévision
+obtenue en calculant chaque effet séparément puis en additionnant : **13**.
+Résultat : **4**. Rejouées une par une : 12, 2, et 1.
+
+L'interaction va dans les deux sens, et c'est ce qui rend le compte groupé
+inexploitable.
+
+**Masquage** — rendre l'inclusion stricte faisait retomber les intervalles
+identiques dans la branche `Égal`, ce qui **réparait** entièrement le
+déplacement de `Égal` après les inclusions. Douze échecs attendus, zéro
+observé.
+
+**Amplification** — j'attribuais à « `Before` avec `<=` » quatre échecs sur
+les intervalles de largeur nulle. Isolée, cette mutation n'en produit qu'un :
+les intervalles identiques sont interceptés par `Égal`, qui passe en premier,
+et n'atteignent jamais la branche `Before`. Ces quatre échecs n'existaient que
+parce qu'une *autre* mutation avait déplacé `Égal`.
+
+Les items 01 à 03 additionnaient juste — mais par accident de structure, leurs
+mutations touchant des fichiers distincts. Le raisonnement était faux depuis
+le début ; il n'avait simplement pas encore eu l'occasion de le montrer.
+
+> **Règle** — une mutation à la fois, restaurée entre chaque. Un compte
+> groupé ne correspond à aucun défaut réel. Si l'injection groupée est plus
+> commode, elle ne vaut que pour répondre « au moins un test mord », jamais
+> pour interpréter un nombre.
+
+### 04 bis — Prédire qu'une mutation survit est un outil, pas un aveu
+
+J'ai annoncé qu'une des trois ne casserait rien : rendre l'inclusion stricte,
+faute d'une contenance partageant une borne dans les données de test. Elle a
+survécu, et a révélé un trou réel — toutes mes contenances avaient de la marge
+des deux côtés. Janvier 1994 commence le même jour que l'année 1994 ; ce cas
+n'était nulle part.
+
+> **Règle** — inclure délibérément une mutation qu'on pense survivante. Ne
+> tester que des mutations qu'on sait mortelles vérifie que les tests
+> existent, pas qu'ils couvrent.
+
+### 04 ter — Un nom de test peut mentir, et c'est pire qu'un test absent
+
+`Deux_periodes_qui_se_touchent_par_un_jour_se_chevauchent` portait sur
+`Range(1993–1995)` et `Range(1995–1997)` : elles se recouvrent sur **toute
+l'année 1995**, soit 365 jours. Le nom décrivait mon intention, pas la donnée.
+
+Le coût n'est pas le test inutile — il était juste, seulement mal nommé. Le
+coût est que **je croyais le cas couvert**, donc je ne l'ai pas écrit. Un test
+absent laisse un vide qu'on peut voir ; un test mal nommé le remplit d'une
+fausse assurance.
+
+> **Règle** — relire le nom d'un test contre ses données, pas contre son
+> intention. Si le nom énonce une valeur — « un seul jour », « vide », « une
+> seule entrée » — vérifier que la donnée la porte vraiment.
