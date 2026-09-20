@@ -142,3 +142,36 @@ fausse assurance.
 > **Règle** — relire le nom d'un test contre ses données, pas contre son
 > intention. Si le nom énonce une valeur — « un seul jour », « vide », « une
 > seule entrée » — vérifier que la donnée la porte vraiment.
+
+### 05 — Une mutation qui doit rester silencieuse est une preuve
+
+J'ai démontré que le critère 3 de la cascade est inatteignable : le point
+représentatif vaut `début + largeur / 2`, donc à début et milieu égaux les
+largeurs ne peuvent différer que de 1, ce qu'aucune des sept variantes ne
+produit. Vérifié par énumération sur 88 000 paires.
+
+Plutôt que de m'en tenir là, j'ai **retiré le critère du code** et exigé que
+rien ne casse. Zéro échec attendu, zéro obtenu.
+
+> **Règle** — la mutation ne sert pas qu'à éprouver les tests ; elle éprouve
+> aussi les affirmations qu'on fait sur le code. « Cette branche ne sert
+> jamais », « ce paramètre n'a pas d'effet ici » : retire-la et exige le
+> silence. Une mutation qui doit rester muette prouve autant qu'une mutation
+> qui doit tuer.
+
+### 05 bis — La règle de l'item 04 ne m'a pas protégé, parce qu'elle arrivait trop tard
+
+Un test nommé `Critere_3_a_debut_egal_le_plus_precis_vient_d_abord` ne testait
+pas le critère 3 : les deux valeurs choisies ont des milieux différents, donc
+le critère 1 tranche bien avant. Exactement la faute de l'item 04 — un nom qui
+décrit l'intention et non la donnée — commise une itération plus tard, sans
+que je la reconnaisse.
+
+Relire le nom contre les données n'a pas suffi : le nom *et* les données
+semblaient cohérents. Ce qui manquait, c'est que rien ne reliait le test au
+critère qu'il prétend couvrir.
+
+> **Règle** — un test qui prétend éprouver un mécanisme précis doit être
+> validé par une mutation **de ce mécanisme-là**. Si muter le critère 3 ne
+> tue pas le test nommé « critère 3 », le nom ment — et cette vérification
+> est mécanique, là où la relecture dépend de l'attention.

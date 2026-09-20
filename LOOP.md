@@ -93,3 +93,9 @@ Et quand tu contrôles par mutation :
 - **inclus une mutation que tu penses survivante.** Si elle survit, tu as
   trouvé un trou ; ne tester que des mutations mortelles vérifie que les tests
   existent, pas qu'ils couvrent.
+- **un test qui prétend éprouver un mécanisme précis doit être tué par une
+  mutation de CE mécanisme.** Sinon son nom ment, et il t'a fait croire le cas
+  couvert. La vérification est mécanique, là où relire un nom dépend de
+  l'attention.
+- **une mutation peut aussi prouver une affirmation sur le code.** « Cette
+  branche ne sert jamais » : retire-la et exige zéro échec.
