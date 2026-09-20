@@ -10,6 +10,7 @@ This repository currently contains **no code** — only design documents. There 
 - `PHASING.md` (v2) — implementation plan derived from the spec: 8 sequential phases (0–7) with explicit exit gates. It supersedes the spec wherever the two disagree (e.g. .NET version).
 - `MODELE-DE-DOMAINE.md` — the consolidated domain model: entities, fields, event types, invariants, and what is deliberately *not* modelled. **It is authoritative on the model**; the spec's §4–§7 remain the prose rationale.
 - `ORDONNANCEMENT-TEMPOREL.md` — **authoritative on comparing, sorting, grouping and querying `TemporalValue`s**. Interval normal form, the seven retained relations, the deterministic tie-break cascade, the no-date drawer, strict/permissive queries and three-valued dated projections. Eleven test vectors. `MODELE-DE-DOMAINE.md` §3 stays normative on the type itself.
+- `BENCHMARK-CONCURRENTIEL.md` — competitive benchmark, verified 20 Sept 2026. Supersedes the spec's §2.3 claims.
 - `ecrans/` — screen-by-screen UX and visual specification. Start with its `README.md`; `00-principes-transverses.md` (behaviour rules) and `00-langage-visuel.md` (colour, type, shapes, density per breakpoint) override the individual `E01`…`E17` fiches. `PLAN-DU-SITE.md` holds routes, `PARCOURS-ET-LIENS.md` the navigation graph.
 
 All documents are French. New documentation should follow suit; code identifiers stay English.
@@ -77,6 +78,12 @@ Three come from measured constraints, not taste — see `ecrans/`:
 - **One tap = "joué".** Three toggles plus an exclusion per row costs ~200px of targets, leaving ~143px of title on a 375px screen — it truncates the very thing the user is scanning for. Mobile declares in one pass (whole row is the target) and refines in an optional second pass; desktop shows the three toggles on hover, where they are free.
 - **The UI shows three temporal choices, not seven.** A year (default), "plutôt une période", "je ne sais plus"; month/exact date/±/age live behind a "préciser" disclosure. `Confidence` is **derived** from the chosen granularity, never asked.
 - **Mobile and desktop are different layouts, not one stretched.** Dense single-column list vs. visual grid or two panes. Model, screen sequence and primary gesture stay identical.
+
+## What the benchmark changed
+
+`BENCHMARK-CONCURRENTIEL.md` (10 products, verified 20 Sept 2026) contradicts the spec's §2.3 in a way worth knowing before quoting it: of the five claimed differentiators, **only temporal uncertainty is genuinely vacant**. Edition granularity is occupied by better products (VGCollect, GameEye), retroactive logging by Backloggd, single-year narrative recap by Steam Replay. The bet holds on the *join*, not on any item.
+
+The widest real gap — **bulk selection by platform and period** — was not in that list at all. Two consequences: `TemporalValue` protects nothing on its own (it is a few weeks' work for anyone who already has a journal and an audience), and the market's cheap answer to "I don't remember when" is Letterboxd's — *log it with no date at all*. That is what the Phase 2 gate must beat, and the question to ask a tester is "would you rather have just ticked 'played', with no date?"
 
 ## The one product risk that shapes everything
 

@@ -52,9 +52,13 @@ La v1 ne contenait aucune analyse concurrentielle. C'est le principal angle mort
 | Rétrospective automatique | Steam Replay, rétrospectives constructeurs | Une année, générée sans effort |
 | Analogie hors domaine | Letterboxd (cinéma) | Le journal transformé en identité culturelle |
 
-> ⚠️ Cette liste doit être vérifiée et actualisée : les périmètres fonctionnels de ces produits évoluent vite et ne sont pas garantis exacts ici. Un benchmark réel est un livrable de la Phase 0.
+> ✅ **Fait** — [BENCHMARK-CONCURRENTIEL.md](./BENCHMARK-CONCURRENTIEL.md), 20 septembre 2026. Le tableau ci-dessus est confirmé dans ses catégories. Les périmètres évoluant vite, le document de benchmark porte la date de vérification et la liste de ce qui reste à contrôler.
 
 ### 2.3 Différenciateur revendiqué
+> ⚠️ **Cette formulation est à réviser** ([BENCHMARK-CONCURRENTIEL.md](./BENCHMARK-CONCURRENTIEL.md) §4.1). Elle est vraie de la **combinaison** et fausse **item par item** : seul le point 2 est réellement vacant. Le point 3 est occupé par des produits meilleurs que nous sur ce seul point (VGCollect, GameEye), le point 1 par Backloggd, le point 5 sur un an par les rétrospectives.
+>
+> Surtout, l'écart le plus large constaté ne figure pas dans la liste : **aucun produit ne propose de sélection massive par plateforme et par période** (§24.3). C'est un avantage de geste, pas de modèle, et il doit devenir le point 0 de cette liste.
+
 Aucun de ces produits ne traite correctement, à notre connaissance, la combinaison suivante — qui constitue le pari du projet :
 
 1. **Reconstruction rétroactive sur plusieurs décennies**, y compris la période pré-numérique où aucune donnée n'existe ;
