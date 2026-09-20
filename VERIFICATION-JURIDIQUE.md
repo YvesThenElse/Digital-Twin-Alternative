@@ -147,7 +147,7 @@ Sans objet pour les sources : le RGPD porte sur les données utilisateur, pas su
 |---|---|---|
 | Relire à la main les CGU **MobyGames** et la documentation **IGDB** | Inaccessibles à la vérification automatisée (403) | — |
 | ~~Trancher la question ouverte n°1~~ | ✅ **Tranchée le 20 septembre 2026 : R&D** (§3.3) | fait |
-| Acquérir les jaquettes des 100 à 300 titres, avec leur `Source` | La posture de §3.3 n'est tenable que si l'origine est conservée dès l'acquisition — la rattraper après coup est impossible | Phase 0 |
+| ~~Acquérir les jaquettes des 100 à 300 titres~~ | ✅ **Fait le 20 septembre 2026** — 217/222, origine conservée par visuel ([dataset/covers/](./dataset/covers/)). **216 sur 217 sont sous *fair use*** : le socle visuel est révocable à 99,5 %, ce qui confirme que les tuiles générées ne sont pas un pis-aller | fait |
 | Sonder deux ou trois éditeurs sur un accord de vignettes | Seule voie propre ; à 100–300 titres, c'est mesurable. **Devient nécessaire** si un déclencheur de réexamen survient | si commercialisation |
 | Revue par un avocat | Avant tout usage commercial ou tout import automatisé | Phase 3 |
 | Mesurer la complétude Wikidata sur `Region` et sur la chaîne d'éditions | Conditionne le coût de curation | Voir [COUT-DE-CURATION.md](./COUT-DE-CURATION.md) |

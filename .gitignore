@@ -1,2 +1,10 @@
 __pycache__/
 *.pyc
+
+# Jaquettes : emprunt révocable sous fair use (VERIFICATION-JURIDIQUE §3.3).
+# Le dépôt est PUBLIC : les publier serait de la redistribution, que la
+# posture R&D interdit explicitement. Seul le manifeste est versionné — il
+# suffit à tout régénérer via calibration/fetch_covers.py.
+dataset/covers/*
+!dataset/covers/MANIFEST.json
+!dataset/covers/README.md

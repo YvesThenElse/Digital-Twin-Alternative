@@ -54,7 +54,8 @@ Le référentiel porte son incertitude, comme les souvenirs portent la leur. Cha
 | `resolution` | comment l'identité a été établie | 97 % automatique, 3 % arbitrée |
 | `date_basis` | les dates sont-elles rattachées à la plateforme | **47 %** |
 | `region` | la région vient-elle de la source | **56 %** |
-| `cover` | une jaquette existe-t-elle dans la source | **11 %** |
+| `cover` | une jaquette existe-t-elle **dans Wikidata** | 11 % |
+| jaquette acquise | voir [covers/](./covers/) | **98 %** |
 | `title_from` | le titre vient de la source ou de la curation | 11 % de la curation |
 | `year_source_vs_curated` | l'année de la source concorde-t-elle | 5 % divergent |
 
