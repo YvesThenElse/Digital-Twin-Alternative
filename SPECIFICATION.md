@@ -702,6 +702,8 @@ Un dataset POC de 100 à 300 jeux est curable manuellement. Un référentiel cr�
 
 Ce coût doit être évalué explicitement en Phase 0, car il conditionne à la fois le calendrier et le modèle économique (§25). Trois voies, non exclusives : import d'une source ouverte compatible, contribution communautaire modérée, curation interne restreinte à un périmètre assumé.
 
+> ✅ **Estimé** — [COUT-DE-CURATION.md](./COUT-DE-CURATION.md). Acquérir ne coûte presque rien (Wikidata, CC0) ; **vérifier** coûte tout. ≈ 50 à 55 h pour le POC, 6 mois à 3,5 ans-personne pour 30 000 entrées — donc **l'exhaustivité n'est pas un objectif atteignable** et ne doit figurer dans aucun engagement. La sortie est un référentiel à trois niveaux de vérification, la `Confidence` portant ce qui n'a pas été payé, et `UnresolvedGameClaim` servant de file de demande. Des deux voies retenues, la contribution communautaire est écartée avant la Phase 5.
+
 ## 19. 🆕 Cadre Juridique et Conformité
 
 Cette section n'existait pas en v1, qui se limitait à « toutes les données doivent être accompagnées de leurs licences » (§18.2) et à quatre puces génériques sur la confidentialité (§17.3). Pour un projet qui agrège des données tierces **et** constitue par nature une archive de données personnelles, c'est insuffisant.

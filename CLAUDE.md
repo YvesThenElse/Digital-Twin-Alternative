@@ -12,6 +12,7 @@ This repository currently contains **no code** — only design documents. There 
 - `ORDONNANCEMENT-TEMPOREL.md` — **authoritative on comparing, sorting, grouping and querying `TemporalValue`s**. Interval normal form, the seven retained relations, the deterministic tie-break cascade, the no-date drawer, strict/permissive queries and three-valued dated projections. Eleven test vectors. `MODELE-DE-DOMAINE.md` §3 stays normative on the type itself.
 - `BENCHMARK-CONCURRENTIEL.md` — competitive benchmark, verified 20 Sept 2026. Supersedes the spec's §2.3 claims.
 - `VERIFICATION-JURIDIQUE.md` — source-by-source licence verification, 20 Sept 2026. Supersedes the spec's §19.2 route 1.
+- `COUT-DE-CURATION.md` — curation cost model and calibration protocol.
 - `ecrans/` — screen-by-screen UX and visual specification. Start with its `README.md`; `00-principes-transverses.md` (behaviour rules) and `00-langage-visuel.md` (colour, type, shapes, density per breakpoint) override the individual `E01`…`E17` fiches. `PLAN-DU-SITE.md` holds routes, `PARCOURS-ET-LIENS.md` the navigation graph.
 
 All documents are French. New documentation should follow suit; code identifiers stay English.
