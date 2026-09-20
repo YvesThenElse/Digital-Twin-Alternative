@@ -788,6 +788,10 @@ Le sujet est intrinsèquement multilingue : la spécification cite elle-même «
 1. **Les données** : titres localisés, alias, région — déjà traités par `Alias` et `Locale` (§18.4) et par §3.4. Cette partie est requise tôt.
 2. **L'interface** : la langue du produit. Non traitée en v1. La décision (français d'abord, anglais d'abord, ou bilingue) a des conséquences sur le marché visé (§25) et sur la structure du frontend, où le rattrapage tardif est coûteux. La recommandation minimale est de ne pas coder les libellés en dur dès la Phase 1, même si une seule langue est livrée.
 
+> ✅ **Le marché visé est international** (question ouverte n°4, tranchée le 20 septembre 2026). La « recommandation minimale » ci-dessus devient donc une **contrainte** : aucun libellé codé en dur dès la Phase 1. Livrer une seule langue reste acceptable ; la coder en dur ne l'est plus.
+>
+> Côté données, la conséquence est chiffrée : les trois régions se valent, donc aucune ne peut être traitée comme un repli de l'autre. Sur le dataset POC, 55 régions manquent parmi les œuvres correctement datées et 117 œuvres n'ont aucune date rattachée à leur plateforme — soit de l'ordre de **400 arbitrages** au lieu des 16 qu'aurait demandés un périmètre PAL.
+
 Le jeu de caractères doit gérer sans réserve les écritures non latines, y compris dans la recherche (translittération, recherche insensible aux diacritiques).
 
 ## 21. Évolution Future
@@ -998,7 +1002,7 @@ Ces points ne peuvent pas être tranchés depuis les documents existants et appe
 | ~~1~~ | ~~**Quelle est la nature du projet ?**~~ — ✅ **tranchée le 20 septembre 2026 : exercice de R&D** | Conséquence immédiate : la posture sur les jaquettes ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md) §3.3), qui débloque la grille desktop et la validité du test de Phase 2. Le modèle économique (n°3) sort du chemin critique ; **le RGPD n'en sort pas** — les testeurs de Phase 2 sont des personnes réelles |
 | 2 | **Quelle capacité humaine pour la curation, le juridique et les tests utilisateurs ?** *(reformulée)* | L'implémentation et les tests étant **automatisés**, le développement ne gouverne plus le calendrier. Le chemin critique devient la curation du dataset, l'acquisition des jaquettes et le recrutement des testeurs — trois postes que l'automatisation ne comprime pas ([PHASING.md](./PHASING.md) §2) |
 | 3 | **Modèle économique** | Le référentiel est un coût récurrent (§18.6) ; l'hébergement et la conformité aussi |
-| 4 | **Marché visé : francophone ou international ?** | Conditionne l'i18n (§20), le référentiel régional (§3.4) et le benchmark concurrentiel (§2) |
+| ~~4~~ | ~~**Marché visé : francophone ou international ?**~~ — ✅ **tranchée le 20 septembre 2026 : international dès le départ** | Les trois régions se valent. Conséquences mesurées : l'effort de curation régionale passe de 16 à **≈ 400 arbitrages** sur le dataset POC ([dataset/README.md](./dataset/README.md)), et §20 niveau 2 cesse d'être une recommandation — **aucun libellé en dur dès la Phase 1** |
 | 5 | **Périmètre des plateformes** : consoles uniquement, ou PC, arcade, mobile ? | Le PC et le mobile font exploser le volume du référentiel et affaiblissent la notion d'édition |
 | 6 | **Position sur le temps de jeu** (§11.3) | Affiché, facultatif, ou absent — impacte le modèle et la page publique |
 | 7 | **Hébergement et localisation des données** | Découle de §19.3 |

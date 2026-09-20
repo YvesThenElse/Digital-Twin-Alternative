@@ -74,7 +74,11 @@ La construction du [dataset](./dataset/) sur 225 titres a permis de reprendre la
 
 > **La conclusion de §2.2 tient malgré tout, et c'est le point.** Le résidu de 3 % n'est pas du bruit : ce sont des entrées qu'**aucune règle ne pouvait clore**. Deux titres de 1993 nommés « Disney's Aladdin » chez deux éditeurs différents ; un jeu dont la source ne liste que la plateforme de sa réédition ; un jeu dont la seule date est celle d'une réédition, quinze ans après. Ajouter des règles jusqu'à ce que le résidu disparaisse ne le ferait pas disparaître — cela le rendrait invisible.
 
-**Le vrai coût reste la région.** Sur le dataset livré, **41 % des œuvres n'en portent aucune** et sortent en `confidence: "low"`. C'est le poste manuel qui demeure, et §3.4 ne permet pas de s'en dispenser.
+**Le vrai coût reste la région.** Sur le dataset livré, **44 % des œuvres n'en portent aucune**, et **53 % n'ont aucune date rattachée à leur plateforme** — une date dont on ignore de quelle sortie elle parle. C'est le poste manuel qui demeure, et §3.4 ne permet pas de s'en dispenser.
+
+> ⚠️ **La décision « marché international » (question ouverte n°4) multiplie ce poste par vingt-cinq.** En périmètre PAL, 16 arbitrages suffisaient. Les trois régions se valant, il en faut de l'ordre de **400** : 55 sur les œuvres correctement datées, et jusqu'à trois par œuvre sur les 117 qui n'ont aucune date de plateforme.
+>
+> Et l'ordre des opérations change : **pour ces 117 œuvres, ce qui manque n'est pas la région mais la date.** Une région sans date ne situe rien et n'aide aucun souvenir. Curer la région d'abord serait payer le champ le plus cher pour un résultat inutilisable.
 
 ---
 
