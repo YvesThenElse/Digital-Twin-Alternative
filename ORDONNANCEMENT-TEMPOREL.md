@@ -116,6 +116,10 @@ Certains couples d'événements ont un ordre logique indépendant des dates déc
 
 `DiscoveredGame` → `StartedGame` → `CompletedGame` | `AbandonedGame` · `AcquiredGame` → `SoldGame` · `SoldGame` → `ReplayedGame`
 
+> ⚠️ **Question ouverte, signalée le 21 septembre 2026 — non tranchée ici.** Le dernier maillon, `SoldGame → ReplayedGame`, contredit [SPECIFICATION.md](./SPECIFICATION.md) §5.4, qui range « joué après avoir vendu » parmi les cas **inhabituels**. Si rejouer après vente est inhabituel, alors l'ordre causal normal est l'inverse — et la règle telle qu'écrite fait lever un avertissement sur un parcours banal : acquis 1997, rejoué 1999, vendu 2002. Voir [TODO-PHASE0.md](./TODO-PHASE0.md) pour les trois issues possibles.
+
+> ⚠️ **Noms à aligner.** Cette ligne écrit `AcquiredGame` / `SoldGame` ; [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §5, autoritaire sur le modèle, écrit `AcquiredItem` / `SoldItem`.
+
 Deux cas, et un seul est un problème :
 
 | Situation | Traitement |

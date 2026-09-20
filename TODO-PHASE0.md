@@ -38,6 +38,37 @@
 
 - [x] **10 — Projections à trois valeurs.** §7.3 : certain / possible / non. *Acceptation : vecteur **T10** — acquisition `Range(1993–1997)`, cession `Year(1999)`, requête 1997 → **possible**.*
 
+> ## ⛔ BOUCLE ARRÊTÉE — décision requise avant l'item 11
+>
+> Deux documents se contredisent sur la séquence causale, et l'implémentation
+> actuelle (item 06) suit celui qui produit de fausses alertes.
+>
+> **[ORDONNANCEMENT-TEMPOREL.md](./ORDONNANCEMENT-TEMPOREL.md) §4.3** pose
+> `SoldGame → ReplayedGame` comme ordre causal : le rejeu doit suivre la vente.
+>
+> **[SPECIFICATION.md](./SPECIFICATION.md) §5.4** dit que « joué après avoir
+> vendu » est **inhabituel** mais légitime — donc que jouer *avant* de vendre
+> est le cas normal.
+>
+> Les deux énoncés sont inverses. Conséquence concrète sur un parcours
+> ordinaire — acquis 1997, rejoué 1999, vendu 2002 : la règle de §4.3 fait
+> lever un avertissement d'incohérence sur une histoire parfaitement banale.
+>
+> **Trois issues possibles, et le choix appartient à Yves :**
+>
+> 1. **Retirer `SoldItem → ReplayedGame`** de la chaîne. Rejouer ne suppose
+>    aucune vente préalable, et le lien n'a alors plus lieu d'être.
+> 2. **Le conserver** en acceptant les avertissements sur les parcours où le
+>    rejeu précède la vente — ce qui contredit §5.4.
+> 3. **Redéfinir `ReplayedGame`** comme « rejoué après réacquisition », ce qui
+>    rendrait la chaîne juste mais changerait le sens du type.
+>
+> **Second point, mineur et lié.** §4.3 nomme les événements de possession
+> `AcquiredGame` / `SoldGame` ; [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md)
+> §5, autoritaire sur le modèle, les nomme `AcquiredItem` / `SoldItem`.
+> `CausalSequence` utilise aujourd'hui les premiers. À aligner sur le modèle,
+> dans le même geste que la décision ci-dessus.
+
 - [ ] **11 — `PlayerEvent` et `PlayDeclaration`.** `OccurredAt` + `RecordedAt` sur tout événement, `Confidence` dérivé et jamais saisi, `SupersededBy` pour la correction. *Acceptation : invariants 1, 3, 4 de [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §7 testés ; `Confidence` n'a pas de setter public.*
 
 - [ ] **12 — Projections d'état.** Collection à une date, statut d'achèvement, « toujours en cours » comme **absence** et non comme événement. *Acceptation : un `StartedGame` sans `CompletedGame` ni `AbandonedGame` projette « en cours » ; les trois positions sont exclusives (invariant 7).*
