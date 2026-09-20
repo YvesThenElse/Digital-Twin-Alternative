@@ -12,20 +12,26 @@ CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 DATASET_VERSION = "poc-2026-09-20"
 IMPORTED_AT = "2026-09-20"
 
-# Un compteur monotone sert d'horloge : les identifiants se trient dans
-# l'ordre de curation, ce que §10.2 demande explicitement.
+# Le rang de curation sert d'horloge : les identifiants se trient dans
+# l'ordre de curation, ce que §10.2 demande explicitement. Les plateformes
+# occupent les premiers rangs, les œuvres suivent.
 _BASE_MS = 1789_000_000_000
-_seq = [0]
+_PLATFORM_BASE = 1
+_WORK_BASE = 100
 
 
-def ulid(key):
-    """ULID stable : l'horodatage vient du rang de curation, la partie basse
-    est dérivée de `key`. Régénérer le dataset à partir de la même liste curée
-    reproduit donc les MÊMES identifiants — ce qui est indispensable tant que
-    l'invariant 9 interdit de les réattribuer. Une partie aléatoire rendrait
-    toute correction du pipeline destructrice."""
-    _seq[0] += 1
-    ts = _BASE_MS + _seq[0]
+def ulid(key, seq):
+    """ULID stable : l'horodatage vient du RANG DE CURATION fourni par
+    l'appelant, la partie basse est dérivée de `key`. L'identifiant ne dépend
+    donc que de (position dans la liste curée, clé) — jamais de l'historique
+    des appels.
+
+    Une première version incrémentait un compteur global à chaque appel. Les
+    identifiants paraissaient stables tant que le nombre de sorties par œuvre
+    ne bougeait pas ; dès qu'une œuvre en gagnait une, toutes les suivantes se
+    décalaient. C'est le genre de stabilité qui tient jusqu'au jour où elle
+    compte."""
+    ts = _BASE_MS + seq
     rand = int(hashlib.sha256(key.encode()).hexdigest(), 16) & ((1 << 80) - 1)
     n = (ts << 80) | rand
     out = []
@@ -35,8 +41,8 @@ def ulid(key):
     return "".join(reversed(out))
 
 
-def cid(prefix, key):
-    return "%s_%s" % (prefix, ulid(prefix + ":" + key))
+def cid(prefix, key, seq):
+    return "%s_%s" % (prefix, ulid(prefix + ":" + key, seq))
 
 
 def first_year(dates):
@@ -44,9 +50,9 @@ def first_year(dates):
     return years[0] if years else None
 
 
-def build(entry, raw, platform_ids, platform_qid):
+def build(entry, raw, platform_ids, platform_qid, seq):
     """Un Work et ses Releases, tels que le modèle les définit."""
-    work_id = cid("wrk", raw["qid"])
+    work_id = cid("wrk", raw["qid"], seq)
 
     # Ne retenir que les dates qui concernent LA plateforme curée. Une date
     # portant « Wii » ou « Nintendo 3DS » est une réédition : elle décrit une
@@ -66,18 +72,24 @@ def build(entry, raw, platform_ids, platform_qid):
         if key in seen:
             continue
         seen.add(key)
+        attested = basis == "platform_qualified" and bool(d["region"])
+        # Une date non rattachée à une sortie identifiée est précise AU SUJET
+        # D'AUTRE CHOSE. « Kirby's Dream Land, 27 avril 1992 » donne le jour,
+        # mais on ignore si c'est la sortie japonaise, américaine ou
+        # européenne — or c'est la sienne que le joueur cherche. Garder le
+        # jour affirmerait donc quelque chose de faux ; on retombe à l'année,
+        # et la valeur brute reste en provenance, jamais perdue.
         releases.append({
-            "canonical_id": cid("rel", "%s|%s|%s" % (raw["qid"], d["region"], d["date"])),
+            "canonical_id": cid("rel", "%s|%s|%s" % (raw["qid"], d["region"], d["date"]), seq),
             "work": work_id,
             "platform": platform_ids[entry["platform"]],
             "region": d["region"],
-            "date": d["date"],
-            # Confiance haute seulement si la plateforme ET la région sont
-            # attestées ; une date non qualifiée ne dit pas de quoi elle parle.
-            "confidence": "high" if (basis == "platform_qualified" and d["region"])
-                          else "low",
+            "date": d["date"] if attested else d["date"][:4],
+            "precision": "day" if attested else "year",
+            "confidence": "high" if attested else "low",
             "provenance": {"source": "wikidata", "external_id": raw["qid"],
-                           "place_qid": d["place_qid"], "basis": basis},
+                           "place_qid": d["place_qid"], "basis": basis,
+                           "raw_date": d["date"]},
         })
 
     regions = [r for r in releases if r["region"]]
@@ -124,19 +136,34 @@ def main():
     qids = [e["qid"] for e in resolved]
     print("récupération des champs pour %d œuvres..." % len(qids), flush=True)
 
-    raw = {}
-    for i in range(0, len(qids), 60):
-        raw.update(fields.fetch(qids[i:i + 60]))
-        print("  %d/%d" % (min(i + 60, len(qids)), len(qids)), flush=True)
+    # Cache des champs bruts : réémettre est une opération fréquente dès lors
+    # que les règles évoluent, et refaire quatre requêtes lourdes à chaque
+    # ajustement décourage de corriger. Supprimer raw_fields.json force le
+    # rechargement.
+    try:
+        raw = json.load(open("raw_fields.json"))
+        missing = [q for q in qids if q not in raw]
+    except Exception:
+        raw, missing = {}, list(qids)
 
-    platform_ids = {k: cid("plt", q) for k, (q, _) in PLATFORMS.items()}
+    if missing:
+        for i in range(0, len(missing), 60):
+            raw.update(fields.fetch(missing[i:i + 60]))
+            print("  %d/%d" % (min(i + 60, len(missing)), len(missing)), flush=True)
+        json.dump(raw, open("raw_fields.json", "w"), ensure_ascii=False)
+    else:
+        print("  (champs relus depuis le cache)")
+
+    platform_ids = {k: cid("plt", q, _PLATFORM_BASE + i)
+                    for i, (k, (q, _)) in enumerate(PLATFORMS.items())}
     platforms = [{"canonical_id": platform_ids[k], "key": k, "name": name,
                   "provenance": {"source": "wikidata", "external_id": q,
                                  "license": "CC0"}}
                  for k, (q, name) in PLATFORMS.items()]
 
-    works = [build(e, raw[e["qid"]], platform_ids, PLATFORMS[e["platform"]][0])
-             for e in resolved if e["qid"] in raw]
+    works = [build(e, raw[e["qid"]], platform_ids, PLATFORMS[e["platform"]][0],
+                   _WORK_BASE + i)
+             for i, e in enumerate(resolved) if e["qid"] in raw]
 
     dataset = {"dataset_version": DATASET_VERSION,
                "license": "CC0 (Wikidata) — voir VERIFICATION-JURIDIQUE.md",
@@ -159,6 +186,8 @@ def main():
     print("  année source ≠ curation   %3d (%.0f%%)" % (div, 100.0 * div / n))
     qual = sum(1 for w in works if w["verification"]["date_basis"] == "platform_qualified")
     print("  dates rattachées à la plateforme %3d (%.0f%%)" % (qual, 100.0 * qual / n))
+    day = sum(1 for w in works for r in w["releases"] if r["precision"] == "day")
+    print("  sorties au jour près      %3d / %d" % (day, rel))
 
 
 if __name__ == "__main__":

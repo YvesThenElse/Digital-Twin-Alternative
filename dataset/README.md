@@ -60,6 +60,17 @@ Le référentiel porte son incertitude, comme les souvenirs portent la leur. Cha
 
 **53 % des œuvres n'ont aucune date rattachée à leur plateforme** et portent une date non qualifiée en `confidence: "low"` — une date dont on ne sait pas de quelle sortie elle parle. C'est le chiffre le plus important du tableau, et le plus mauvais.
 
+### La précision suit ce qui est attesté
+
+Une sortie porte `precision`, et ce n'est pas cosmétique. « Kirby's Dream Land, 27 avril 1992 » donne le jour — mais on ignore si c'est la sortie japonaise, américaine ou européenne, **or c'est la sienne que le joueur cherche**. Le jour est donc une précision qui porte sur un autre objet que celui qu'on croit, et le garder affirmerait quelque chose de faux.
+
+| `precision` | Quand | Sorties |
+|---|---|--:|
+| `day` | plateforme **et** région attestées | **278** |
+| `year` | tout le reste — le jour est abandonné | 130 |
+
+La valeur brute reste dans `provenance.raw_date` : on abaisse la précision affichée, on ne perd jamais la donnée.
+
 **44 % des œuvres n'ont pas de région.** C'est le poste de curation manuelle qui reste, et §3.4 en fait une exigence de Phase 1.
 
 ## Les écarts d'année ne sont pas des erreurs
@@ -111,9 +122,15 @@ plt_01M24BB8G1CZ2415KQJPB6MK2A    plateforme
 
 Frappés hors base, puisque le dataset existe avant toute base (§18.5), et ordonnés dans le temps — l'ordre de curation reste donc lisible dans les identifiants.
 
-Les identifiants sont **stables** : l'horodatage vient du rang de curation, la partie basse est dérivée de l'identifiant source. Régénérer à partir de la même liste curée reproduit les mêmes identifiants.
+Les identifiants sont **stables** : l'horodatage vient du rang de curation, la partie basse est dérivée de l'identifiant source. Un identifiant ne dépend donc que de *(position dans la liste curée, identifiant source)* — jamais de l'historique des appels ni du nombre de sorties.
 
-> ⚠️ **Ça n'a pas toujours été le cas, et c'était une faute.** La première version tirait la partie basse au hasard. Comme l'invariant 9 interdit de réattribuer un `CanonicalId`, **corriger le pipeline devenait un acte destructeur** : la seule façon d'améliorer le référentiel était de le remplacer. Un identifiant instable dans un modèle qui exige la stabilité ne lève aucune erreur — il rend simplement toute correction impossible, plus tard.
+C'est vérifié, pas supposé : [calibration/test_id_stability.py](../calibration/test_id_stability.py) fait perdre une date à la première œuvre et exige que **rien** ne bouge derrière.
+
+> ⚠️ **Il a fallu deux corrections pour y arriver, et la première ne suffisait pas.** La version initiale tirait la partie basse au hasard : toute régénération frappait de nouveaux identifiants, et comme l'invariant 9 interdit de les réattribuer, **corriger le pipeline devenait un acte destructeur**.
+>
+> La dérivation par hachage a réglé ce cas — mais l'horodatage venait encore d'un compteur global d'appels. Les identifiants paraissaient stables tant que le nombre de sorties par œuvre ne changeait pas, c'est-à-dire **tant qu'on ne corrigeait rien d'intéressant**. Une comparaison avant/après l'avait d'ailleurs validée à tort, parce qu'elle portait sur le cas favorable.
+>
+> C'est pourquoi le test perturbe au lieu de comparer. Une stabilité qui tient jusqu'au jour où elle compte n'est pas une stabilité.
 >
 > Changer l'ordre de la liste curée déplace toujours les identifiants : c'est l'ordre de curation qui les ordonne (§10.2).
 
