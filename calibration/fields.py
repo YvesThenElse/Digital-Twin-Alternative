@@ -53,13 +53,18 @@ WORLDWIDE = {"Q13780930"}
 # inventerait une donnee ; les laisser vides la signale.
 
 QUERY = """
-SELECT ?g ?prop ?val ?valLabel ?qual ?qualLabel WHERE {
+SELECT ?g ?prop ?val ?valLabel ?qual ?qualLabel ?stplat WHERE {
   VALUES ?g { %s }
   {
     ?g p:P577 ?st .
     ?st ps:P577 ?val .
     BIND("date" AS ?prop)
     OPTIONAL { ?st pq:P291 ?qual }
+    # La déclaration de date porte AUSSI la plateforme concernée. Sans elle,
+    # « Super Mario Bros. · Europe · 2011 » (console virtuelle 3DS) se mélange
+    # à « Super Mario Bros. · Europe · 1987 » (la sortie NES) sans que rien ne
+    # les distingue. C'est ce qualificateur qui sépare l'original des rééditions.
+    OPTIONAL { ?st pq:P400 ?stplat }
   } UNION {
     VALUES (?p ?prop) { (wdt:P178 "developer") (wdt:P123 "publisher")
                         (wdt:P136 "genre") (wdt:P179 "series")
@@ -99,9 +104,12 @@ def fetch(qids):
         prop = b["prop"]["value"]
         if prop == "date":
             qual = b["qual"]["value"].rsplit("/", 1)[1] if "qual" in b else None
+            stplat = (b["stplat"]["value"].rsplit("/", 1)[1]
+                      if "stplat" in b else None)
             rec = {"date": b["val"]["value"][:10].lstrip("+"),
                    "place_qid": qual,
                    "place": b.get("qualLabel", {}).get("value"),
+                   "platform_qid": stplat,
                    "region": "WORLDWIDE" if qual in WORLDWIDE else REGION.get(qual)}
             if rec not in g["dates"]:
                 g["dates"].append(rec)

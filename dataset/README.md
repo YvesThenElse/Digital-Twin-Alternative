@@ -10,6 +10,41 @@ Toutes les données viennent de **Wikidata**, sous **CC0** — la seule source q
 
 Aucune autre source n'a été interrogée par script, conformément à la règle de l'article 7(5).
 
+## ⚠️ Correction du 20 septembre 2026 — les dates étaient fausses
+
+La première version de ce dataset prenait **toutes** les dates de publication d'une œuvre, sans regarder à quelle plateforme elles se rapportaient. Résultat : les rééditions se mélangeaient aux sorties d'origine sans que rien ne les distingue.
+
+| Œuvre | Publié d'abord | Correct |
+|---|--:|--:|
+| Super Mario Bros. · PAL | 2011 *(console virtuelle 3DS)* | **1987** |
+| Ocarina of Time · PAL | 2003 *(GameCube)* | **1998** |
+| Donkey Kong Country · PAL | 2014 *(Wii U)* | **1994** |
+
+La source portait pourtant l'information : **le qualificateur de plateforme est sur la déclaration de date**. L'émetteur ne retient désormais que les dates rattachées à la plateforme curée, et 706 « sorties » tombent à **408** — les 298 disparues étaient des rééditions sur d'autres machines.
+
+## ⚠️ Ce que ce dataset ne peut PAS dire
+
+**Il ne distingue pas « pas de sortie PAL » de « sortie PAL non renseignée ».**
+
+Seize œuvres n'ont aucune sortie PAL sur leur plateforme. Certaines sont de vraies absences — Mother 3, Final Fantasy sur NES, Chrono Trigger et Earthbound n'ont jamais eu de sortie européenne à l'époque. D'autres sont des lacunes de la source : **Tekken 3, Grand Theft Auto III et Super Mario Land sont évidemment sortis en Europe.**
+
+> Rien dans les données ne sépare les deux, et l'écart est produit :
+>
+> - dire « pas de sortie PAL » quand la donnée manque **retire de sa ludothèque** un jeu que le testeur a possédé ;
+> - dire l'inverse **lui propose** un jeu qu'il n'a jamais pu voir.
+>
+> Les deux cassent la reconnaissance, qui est la mécanique du produit (§24.3). Trancher demande une seconde source ou de la curation — et [VERIFICATION-JURIDIQUE.md](../VERIFICATION-JURIDIQUE.md) interdit de scripter une source tierce.
+
+### Le motif, qui vaut plus que les trois cas
+
+Trois fois dans la même journée, la même défaillance : **une donnée absente ou incomplète s'est lue comme un fait, sans jamais lever d'erreur.**
+
+1. Une table de correspondance incomplète — « Amérique du Nord » manquant — a fait passer la couverture régionale pour quatre fois plus faible qu'elle n'est.
+2. Des identifiants tirés au hasard rendaient toute régénération destructrice, sans que rien ne le signale.
+3. Des rééditions prises pour des sorties d'origine ont failli faire écrire que neuf titres majeurs n'étaient jamais sortis en Europe.
+
+Aucune des trois n'a produit de message d'erreur. Toutes trois ont produit des chiffres d'apparence normale. **Pour un référentiel, c'est le mode de défaillance qui coûte le plus cher**, parce qu'il se propage dans les décisions avant d'être vu. La parade n'est pas une règle de plus : c'est de regarder les lignes, pas seulement les agrégats — les trois ont été attrapées en lisant une liste, jamais en lisant une moyenne.
+
 ## Ce que le dataset sait de sa propre qualité
 
 Le référentiel porte son incertitude, comme les souvenirs portent la leur. Chaque œuvre expose un bloc `verification` :
@@ -17,12 +52,15 @@ Le référentiel porte son incertitude, comme les souvenirs portent la leur. Cha
 | Champ | Ce qu'il dit | État |
 |---|---|--:|
 | `resolution` | comment l'identité a été établie | 97 % automatique, 3 % arbitrée |
-| `region` | la région vient-elle de la source | **59 %** |
+| `date_basis` | les dates sont-elles rattachées à la plateforme | **47 %** |
+| `region` | la région vient-elle de la source | **56 %** |
 | `cover` | une jaquette existe-t-elle dans la source | **11 %** |
 | `title_from` | le titre vient de la source ou de la curation | 11 % de la curation |
 | `year_source_vs_curated` | l'année de la source concorde-t-elle | 5 % divergent |
 
-**41 % des œuvres n'ont pas de région** et portent une sortie unique en `confidence: "low"`. C'est le poste de curation manuelle qui reste, et §3.4 en fait une exigence de Phase 1.
+**53 % des œuvres n'ont aucune date rattachée à leur plateforme** et portent une date non qualifiée en `confidence: "low"` — une date dont on ne sait pas de quelle sortie elle parle. C'est le chiffre le plus important du tableau, et le plus mauvais.
+
+**44 % des œuvres n'ont pas de région.** C'est le poste de curation manuelle qui reste, et §3.4 en fait une exigence de Phase 1.
 
 ## Les écarts d'année ne sont pas des erreurs
 
@@ -73,7 +111,11 @@ plt_01M24BB8G1CZ2415KQJPB6MK2A    plateforme
 
 Frappés hors base, puisque le dataset existe avant toute base (§18.5), et ordonnés dans le temps — l'ordre de curation reste donc lisible dans les identifiants.
 
-⚠️ **Ces identifiants sont définitifs dès maintenant** (invariant 9 : jamais réattribués). Régénérer le dataset en frappe de nouveaux : la régénération produit un **nouveau** référentiel, pas une mise à jour de celui-ci. Toute reprise devra passer par la table de redirection de §10.2.
+Les identifiants sont **stables** : l'horodatage vient du rang de curation, la partie basse est dérivée de l'identifiant source. Régénérer à partir de la même liste curée reproduit les mêmes identifiants.
+
+> ⚠️ **Ça n'a pas toujours été le cas, et c'était une faute.** La première version tirait la partie basse au hasard. Comme l'invariant 9 interdit de réattribuer un `CanonicalId`, **corriger le pipeline devenait un acte destructeur** : la seule façon d'améliorer le référentiel était de le remplacer. Un identifiant instable dans un modèle qui exige la stabilité ne lève aucune erreur — il rend simplement toute correction impossible, plus tard.
+>
+> Changer l'ordre de la liste curée déplace toujours les identifiants : c'est l'ordre de curation qui les ordonne (§10.2).
 
 ## Régénérer
 
