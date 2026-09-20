@@ -316,8 +316,8 @@ Une table de redirection, **permanente**, jamais purgée : un export utilisateur
 | Point | Pourquoi c'est bloquant |
 |---|---|
 | ~~Cibles chiffrées des KPI~~ | **Engagées** le 8 septembre 2026 (§22.3), avant tout test — condition pour qu'elles soient opposables |
-| **Acquisition des jaquettes** pour les 100 à 300 titres du POC | Décidée dans son principe (§19.2), reste à réaliser — une jaquette est une œuvre protégée |
-| **Effectif du projet** | Question ouverte n°2 (§25) : sans elle, aucun calendrier n'a de sens |
+| **Acquisition des jaquettes** pour les 100 à 300 titres du POC | Voie tranchée le 20 septembre 2026 ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md) §3.3) : reprise sur le web pour la démonstration, le projet étant un exercice de R&D. **Reste l'acquisition elle-même**, avec la `Source` de chaque visuel — un visuel sans origine est un visuel qu'on ne peut pas retirer |
+| **Effectif du projet** | Question ouverte n°2 (§25) : sans elle, aucun calendrier n'a de sens. Reformulée en capacité humaine pour la curation, le juridique et les tests |
 
 ## 12. Cas de validation
 

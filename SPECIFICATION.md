@@ -724,7 +724,7 @@ Jaquettes, captures, logos et marques sont protégés et ne relèvent pas du ré
 >
 > La décision sur les visuels appartient par conséquent à la **Phase 0**, au même titre que le modèle de données. Quatre voies, non exclusives :
 >
-> 1. **Sources ouvertes** (Wikidata / Wikimedia et équivalents) : licences propres, couverture partielle. Point de départ le plus sain.
+> 1. ~~**Sources ouvertes** (Wikidata / Wikimedia et équivalents) : licences propres, couverture partielle. Point de départ le plus sain.~~ ⚠️ **Faux, vérifié le 20 septembre 2026** ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md) §3) : **Wikimedia Commons n'accepte pas le *fair use*** et n'héberge donc aucune jaquette. Celles que porte Wikipédia relèvent du *fair use* américain, attaché à l'usage encyclopédique et non transmissible. Cette voie est fermée. Wikidata reste la source des **métadonnées**, pas des visuels.
 > 2. **Source licenciée** : à vérifier contractuellement avant tout usage.
 > 3. **Contribution utilisateur avec garantie** : déplace le risque, exige de la modération.
 > 4. **Identité visuelle générée** : à défaut de jaquette, produire une **tuile systématique** à partir du titre, de la plateforme et de l'époque (typographie + palette de la génération). Bien exécutée, elle paraît intentionnelle et signée, pas manquante — et elle ne doit jamais imiter une vraie jaquette.
@@ -747,7 +747,11 @@ Jaquettes, captures, logos et marques sont protégés et ne relèvent pas du ré
 >
 > ⚠️ La difficulté est réelle et ne doit pas être minorée : **une jaquette est une œuvre protégée**, rarement disponible sous licence libre. Les encyclopédies s'appuient sur des exceptions qui ne se transmettent pas. Les voies praticables sont donc : une source sous licence explicite dont les conditions ont été vérifiées, la contribution utilisateur avec garantie, ou une analyse juridique documentée. C'est un travail de Phase 0 à part entière, pas une formalité.
 >
+> ✅ **Tranché le 20 septembre 2026** ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md) §3.3). La vérification a d'abord **fermé la voie « sources ouvertes »** — Wikimedia Commons n'héberge aucune jaquette. Le projet étant un exercice de R&D (question ouverte n°1), la voie retenue est la **reprise sur le web pour la démonstration**, sous cinq conditions écrites (basse résolution, origine conservée, retrait sur demande, diffusion bornée, aucune redistribution) et quatre déclencheurs de réexamen. C'est un arbitrage de risque borné, pas une autorisation — et une jaquette reprise reste un **emprunt révocable** : rien ne doit cesser de marcher le jour où elle disparaît.
+>
 > **3. La grille desktop est conditionnée au point 2.** Sans jaquettes réelles, elle est **abandonnée** au profit de la liste dense à tous les points de rupture : une grille de tuiles textuelles est strictement moins bonne qu'une liste de lignes textuelles, pour cinq fois la surface.
+>
+> ✅ **Condition levée pour le POC** — la voie d'acquisition est tranchée (voir l'encadré ci-dessus). La grille desktop est au périmètre de la Phase 1. Elle **redevient conditionnelle** si un déclencheur de réexamen survient.
 
 
 ### 19.3 RGPD — le produit est une archive personnelle
@@ -989,7 +993,7 @@ Ces points ne peuvent pas être tranchés depuis les documents existants et appe
 
 | # | Question | Pourquoi elle bloque |
 |---|---|---|
-| 1 | **Quelle est la nature du projet ?** exercice de R&D, projet personnel, produit commercial ? | Détermine si le modèle économique, la conformité et le coût de curation sont des sujets réels ou hors périmètre |
+| ~~1~~ | ~~**Quelle est la nature du projet ?**~~ — ✅ **tranchée le 20 septembre 2026 : exercice de R&D** | Conséquence immédiate : la posture sur les jaquettes ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md) §3.3), qui débloque la grille desktop et la validité du test de Phase 2. Le modèle économique (n°3) sort du chemin critique ; **le RGPD n'en sort pas** — les testeurs de Phase 2 sont des personnes réelles |
 | 2 | **Quelle capacité humaine pour la curation, le juridique et les tests utilisateurs ?** *(reformulée)* | L'implémentation et les tests étant **automatisés**, le développement ne gouverne plus le calendrier. Le chemin critique devient la curation du dataset, l'acquisition des jaquettes et le recrutement des testeurs — trois postes que l'automatisation ne comprime pas ([PHASING.md](./PHASING.md) §2) |
 | 3 | **Modèle économique** | Le référentiel est un coût récurrent (§18.6) ; l'hébergement et la conformité aussi |
 | 4 | **Marché visé : francophone ou international ?** | Conditionne l'i18n (§20), le référentiel régional (§3.4) et le benchmark concurrentiel (§2) |
