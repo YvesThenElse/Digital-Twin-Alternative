@@ -18,7 +18,7 @@
 
 - [x] **00 — Échafaudage.** Solution .NET 10, `DigitalTwin.Domain`, `DigitalTwin.Domain.Tests` (xUnit), `./dotnet.sh` opérationnel. *Acceptation : `./test.sh` s'exécute et rapporte 0 échec.* ✅ 1 test, 0 échec.
 
-- [ ] **01 — `TemporalValue`, les sept variantes.** Type valeur, jamais entité. `ExactDate`, `Month`, `Year`, `Range`, `ApproximateYear`, `Age`, `Unknown`. *Acceptation : chaque variante se construit, et une construction invalide (mois 13, année 0, `Range` inversé) est rejetée.*
+- [x] **01 — `TemporalValue`, les sept variantes.** Type valeur, jamais entité. `ExactDate`, `Month`, `Year`, `Range`, `ApproximateYear`, `Age`, `Unknown`. *Acceptation : chaque variante se construit, et une construction invalide (mois 13, année 0, `Range` inversé) est rejetée.*
 
 - [ ] **02 — Forme normale.** Intervalle fermé au jour + point représentatif, selon la table de [ORDONNANCEMENT-TEMPOREL.md](./ORDONNANCEMENT-TEMPOREL.md) §2.1. *Acceptation : la variante d'origine SURVIT à la normalisation — `Year(1994)` et `Range(1994,1994)` ont le même intervalle et restent distinguables. Le point représentatif n'est exposé par aucune API publique de rendu.*
 
@@ -53,3 +53,4 @@
 > Une ligne par itération, ajoutée par la boucle. Ce qui a été fait, ce qui a résisté.
 
 - **00** — Échafaudage hors boucle. SDK .NET 10 absent de la machine : exécuté en conteneur via `./dotnet.sh` (10.0.401), cohérent avec « Docker Compose pour le dev local ». Deux surprises : .NET 10 génère un `.slnx` et non un `.sln`, et le conteneur écrit en `root` sans `--user`, ce qui rendait l'arbre non modifiable.
+- **01** — Sept variantes en `record` scellés, hiérarchie fermée par constructeur `private protected` : une huitième variante est impossible depuis l'extérieur, ce qui rend tenable dans le temps le refus de `RelativeToRelease`. Trois écarts assumés et commentés dans le code : `Range` devient `YearRange` (collision avec `System.Range`), une marge nulle est refusée sur `ApproximateYear` (elle dirait ce que dit `Year`), et `Age` n'expose aucune propriété d'année — vérifié par réflexion, sans quoi la règle « stocké brut » serait violable en silence. 22 tests. **Vérifiés par mutation** : trois altérations du code de validation produisent exactement quatre échecs.
