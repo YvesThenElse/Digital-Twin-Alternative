@@ -42,6 +42,38 @@ public static class TemporalNormalizer
         _ => null,
     };
 
+    /// <summary>
+    /// Normalise en fermant les bornes manquantes sur l'horizon (§2.3).
+    ///
+    /// Une période ouverte s'étend jusqu'au plafond, mais <b>se trie sur sa
+    /// borne connue</b> : le plafond bouge chaque jour, et un élément qui
+    /// change de place entre deux visites détruit la confiance dans un écran
+    /// qu'on revient consulter.
+    /// </summary>
+    public static TemporalInterval? Normalize(TemporalValue value, TemporalHorizon horizon)
+    {
+        if (value is not YearRange { EndYear: null } ouverte)
+        {
+            // Rien d'ouvert : l'horizon ne doit RIEN changer. Il est un
+            // artefact de tri, pas une donnée.
+            return Normalize(value);
+        }
+
+        var debut = FirstDayOf(ouverte.StartYear);
+        if (debut > horizon.Ceiling)
+        {
+            // « Un souvenir ne se situe pas dans l'avenir. » Fermer sur le
+            // plafond donnerait un intervalle inversé.
+            //
+            // On ne refuse pas pour autant — invariant 10 : une incohérence
+            // produit un avertissement, jamais un refus. La valeur reste
+            // valide et rejoint les moments sans date, comme Unknown.
+            return null;
+        }
+
+        return new TemporalInterval(ouverte, debut, horizon.Ceiling, sortKey: debut);
+    }
+
     private static TemporalInterval Interval(TemporalValue source, DateOnly start, DateOnly end)
         => new(source, start, end);
 

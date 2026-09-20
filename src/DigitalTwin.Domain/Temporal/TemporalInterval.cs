@@ -21,7 +21,14 @@ namespace DigitalTwin.Domain.Temporal;
 /// </summary>
 public sealed record TemporalInterval
 {
-    internal TemporalInterval(TemporalValue source, DateOnly start, DateOnly end)
+    /// <param name="sortKey">
+    /// Clé de tri imposée. Laissée à <c>null</c>, elle vaut le milieu. Un
+    /// intervalle fermé sur l'horizon la fournit explicitement : il se trie
+    /// sur sa borne connue et non sur son milieu, faute de quoi il dériverait
+    /// chaque jour avec le plafond (§2.3).
+    /// </param>
+    internal TemporalInterval(
+        TemporalValue source, DateOnly start, DateOnly end, DateOnly? sortKey = null)
     {
         if (end < start)
         {
@@ -36,7 +43,7 @@ public sealed record TemporalInterval
         // Milieu en jours, arrondi vers le bas (§2.1). Le calcul passe par le
         // nombre de jours et non par les ticks : c'est ce qui rend la valeur
         // indépendante du fuseau et de l'heure d'exécution.
-        SortKey = start.AddDays((end.DayNumber - start.DayNumber) / 2);
+        SortKey = sortKey ?? start.AddDays((end.DayNumber - start.DayNumber) / 2);
     }
 
     /// <summary>La valeur d'origine, conservée telle quelle.</summary>
