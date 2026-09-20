@@ -1,0 +1,7844 @@
+[
+ {
+  "platform": "nes",
+  "title": "The Legend of Zelda",
+  "year": 1986,
+  "notability": 2,
+  "candidates": [
+   "Q861205",
+   "Q12393",
+   "Q12395",
+   "Q213911",
+   "Q123367920",
+   "Q17185964",
+   "Q735613",
+   "Q1060323",
+   "Q732943",
+   "Q126726085",
+   "Q370055",
+   "Q852563",
+   "Q474798",
+   "Q868545",
+   "Q642526",
+   "Q657710",
+   "Q11300470",
+   "Q14900378",
+   "Q23008476",
+   "Q105560569"
+  ],
+  "matches": [
+   {
+    "qid": "Q12395",
+    "label": null,
+    "years": [
+     1986,
+     1987
+    ]
+   }
+  ],
+  "qid": "Q12395",
+  "label": null
+ },
+ {
+  "platform": "nes",
+  "title": "Super Mario Bros. 3",
+  "year": 1988,
+  "notability": 3,
+  "candidates": [
+   "Q639619",
+   "Q101620473",
+   "Q98893727",
+   "Q98893729",
+   "Q4043721",
+   "Q99317162",
+   "Q2918288",
+   "Q1886919"
+  ],
+  "matches": [
+   {
+    "qid": "Q639619",
+    "label": "Super Mario Bros. 3",
+    "years": [
+     1988,
+     1990,
+     1991
+    ]
+   }
+  ],
+  "qid": "Q639619",
+  "label": "Super Mario Bros. 3"
+ },
+ {
+  "platform": "nes",
+  "title": "Metroid",
+  "year": 1986,
+  "notability": 4,
+  "candidates": [
+   "Q2530723",
+   "Q19643088",
+   "Q12397",
+   "Q17006956",
+   "Q2471454",
+   "Q1765733",
+   "Q1987193",
+   "Q1194825",
+   "Q2089035",
+   "Q30749509",
+   "Q2005910",
+   "Q2539933",
+   "Q2478949",
+   "Q2553128",
+   "Q2012171",
+   "Q1139244",
+   "Q30325600",
+   "Q20141401",
+   "Q48835056",
+   "Q6012061"
+  ],
+  "matches": [
+   {
+    "qid": "Q2530723",
+    "label": "Metroid",
+    "years": [
+     1986,
+     1987,
+     1988
+    ]
+   }
+  ],
+  "qid": "Q2530723",
+  "label": "Metroid"
+ },
+ {
+  "platform": "nes",
+  "title": "Mega Man 2",
+  "year": 1988,
+  "notability": 5,
+  "candidates": [
+   "Q2014882",
+   "Q731612",
+   "Q3047854",
+   "Q117865849"
+  ],
+  "matches": [
+   {
+    "qid": "Q2014882",
+    "label": "Mega Man 2",
+    "years": [
+     1988,
+     1989,
+     1990,
+     1991
+    ]
+   }
+  ],
+  "qid": "Q2014882",
+  "label": "Mega Man 2"
+ },
+ {
+  "platform": "nes",
+  "title": "Castlevania",
+  "year": 1986,
+  "notability": 6,
+  "candidates": [
+   "Q2453573",
+   "Q2562228",
+   "Q568115",
+   "Q2515184",
+   "Q1043375",
+   "Q30610085",
+   "Q2421908",
+   "Q2291309",
+   "Q940664",
+   "Q2421926",
+   "Q2690094",
+   "Q2452886",
+   "Q2941472",
+   "Q2735354",
+   "Q2761773",
+   "Q2287900",
+   "Q2287853",
+   "Q2562585",
+   "Q2698085",
+   "Q2454468"
+  ],
+  "matches": [
+   {
+    "qid": "Q1043375",
+    "label": null,
+    "years": [
+     1986,
+     1987,
+     1988
+    ]
+   }
+  ],
+  "qid": "Q1043375",
+  "label": null
+ },
+ {
+  "platform": "nes",
+  "title": "Contra",
+  "year": 1988,
+  "notability": 7,
+  "candidates": [
+   "Q42429948",
+   "Q100323656",
+   "Q122224",
+   "Q6849688",
+   "Q1848900",
+   "Q2995704",
+   "Q2995709",
+   "Q80019",
+   "Q37137",
+   "Q188966",
+   "Q2995706",
+   "Q93288",
+   "Q127006",
+   "Q849328",
+   "Q61515",
+   "Q817281",
+   "Q747339",
+   "Q500458",
+   "Q108058",
+   "Q18437198"
+  ],
+  "matches": [
+   {
+    "qid": "Q849328",
+    "label": null,
+    "years": [
+     1987,
+     1988,
+     1990
+    ]
+   }
+  ],
+  "qid": "Q849328",
+  "label": null
+ },
+ {
+  "platform": "nes",
+  "title": "Punch-Out!!",
+  "year": 1987,
+  "notability": 10,
+  "candidates": [
+   "Q2705496",
+   "Q3180421",
+   "Q2001209",
+   "Q3925581",
+   "Q1205800"
+  ],
+  "matches": [
+   {
+    "qid": "Q2705496",
+    "label": "Punch-Out!!",
+    "years": [
+     1987
+    ]
+   }
+  ],
+  "qid": "Q2705496",
+  "label": "Punch-Out!!"
+ },
+ {
+  "platform": "nes",
+  "title": "Kirby's Adventure",
+  "year": 1993,
+  "notability": 11,
+  "candidates": [
+   "Q1154059",
+   "Q1370609"
+  ],
+  "matches": [
+   {
+    "qid": "Q1154059",
+    "label": "Kirby's Adventure",
+    "years": [
+     1993
+    ]
+   }
+  ],
+  "qid": "Q1154059",
+  "label": "Kirby's Adventure"
+ },
+ {
+  "platform": "nes",
+  "title": "Ninja Gaiden",
+  "year": 1988,
+  "notability": 12,
+  "candidates": [
+   "Q590004",
+   "Q2658381",
+   "Q1114224",
+   "Q976995",
+   "Q3877121",
+   "Q9299613",
+   "Q56279028",
+   "Q730466",
+   "Q2944361",
+   "Q779699",
+   "Q2364816",
+   "Q674227",
+   "Q1658492",
+   "Q2634573",
+   "Q2557356",
+   "Q105825237",
+   "Q6043187",
+   "Q3958954",
+   "Q97933236",
+   "Q97570224"
+  ],
+  "matches": [
+   {
+    "qid": "Q2658381",
+    "label": "Ninja Gaiden",
+    "years": [
+     1988,
+     1989,
+     1991
+    ]
+   }
+  ],
+  "qid": "Q2658381",
+  "label": "Ninja Gaiden"
+ },
+ {
+  "platform": "nes",
+  "title": "Zelda II: The Adventure of Link",
+  "year": 1987,
+  "notability": 13,
+  "candidates": [
+   "Q187339"
+  ],
+  "matches": [
+   {
+    "qid": "Q187339",
+    "label": "Zelda II: The Adventure of Link",
+    "years": [
+     1987,
+     1988
+    ]
+   }
+  ],
+  "qid": "Q187339",
+  "label": "Zelda II: The Adventure of Link"
+ },
+ {
+  "platform": "nes",
+  "title": "Super Mario Bros. 2",
+  "year": 1988,
+  "notability": 14,
+  "candidates": [
+   "Q854479",
+   "Q631331",
+   "Q12603555"
+  ],
+  "matches": [
+   {
+    "qid": "Q854479",
+    "label": "Super Mario Bros. 2",
+    "years": [
+     1988,
+     1989,
+     1992,
+     2007,
+     2008,
+     2012,
+     2013,
+     2019
+    ]
+   }
+  ],
+  "qid": "Q854479",
+  "label": "Super Mario Bros. 2"
+ },
+ {
+  "platform": "nes",
+  "title": "Mega Man 3",
+  "year": 1990,
+  "notability": 15,
+  "candidates": [
+   "Q2014874",
+   "Q9031136",
+   "Q2110486",
+   "Q16296242"
+  ],
+  "matches": [
+   {
+    "qid": "Q2014874",
+    "label": "Mega Man 3",
+    "years": [
+     1990,
+     1991,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q2014874",
+  "label": "Mega Man 3"
+ },
+ {
+  "platform": "nes",
+  "title": "Castlevania III: Dracula's Curse",
+  "year": 1989,
+  "notability": 16,
+  "candidates": [
+   "Q2321818"
+  ],
+  "matches": [
+   {
+    "qid": "Q2321818",
+    "label": null,
+    "years": [
+     1989,
+     1990,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q2321818",
+  "label": null
+ },
+ {
+  "platform": "nes",
+  "title": "Excitebike",
+  "year": 1984,
+  "notability": 17,
+  "candidates": [
+   "Q146124",
+   "Q108370884",
+   "Q3046150",
+   "Q5419650",
+   "Q108716836"
+  ],
+  "matches": [
+   {
+    "qid": "Q146124",
+    "label": "Excitebike",
+    "years": [
+     1984,
+     1985,
+     1986,
+     2004,
+     2007,
+     2013,
+     2018
+    ]
+   }
+  ],
+  "qid": "Q146124",
+  "label": "Excitebike"
+ },
+ {
+  "platform": "nes",
+  "title": "Ice Climber",
+  "year": 1985,
+  "notability": 18,
+  "candidates": [
+   "Q1066657",
+   "Q368745",
+   "Q111017922",
+   "Q58492123"
+  ],
+  "matches": [
+   {
+    "qid": "Q1066657",
+    "label": "Ice Climber",
+    "years": [
+     1985,
+     1986
+    ]
+   }
+  ],
+  "qid": "Q1066657",
+  "label": "Ice Climber"
+ },
+ {
+  "platform": "nes",
+  "title": "Kid Icarus",
+  "year": 1986,
+  "notability": 19,
+  "candidates": [
+   "Q1142493",
+   "Q1740851",
+   "Q1506975",
+   "Q6404496",
+   "Q127521314",
+   "Q2565757"
+  ],
+  "matches": [
+   {
+    "qid": "Q1142493",
+    "label": "Kid Icarus",
+    "years": [
+     1986,
+     1987,
+     1988
+    ]
+   }
+  ],
+  "qid": "Q1142493",
+  "label": "Kid Icarus"
+ },
+ {
+  "platform": "nes",
+  "title": "Gradius",
+  "year": 1986,
+  "notability": 20,
+  "candidates": [
+   "Q1324646",
+   "Q6582709",
+   "Q1066035",
+   "Q1194133",
+   "Q3280317",
+   "Q909130",
+   "Q1143512",
+   "Q5591950",
+   "Q4390180",
+   "Q5591947",
+   "Q101067839",
+   "Q8375136",
+   "Q11300194",
+   "Q10566729",
+   "Q4387082",
+   "Q10855648",
+   "Q5591943",
+   "Q11300195",
+   "Q101072654",
+   "Q1142748"
+  ],
+  "matches": [
+   {
+    "qid": "Q1324646",
+    "label": "Gradius",
+    "years": [
+     1985,
+     1986,
+     1987,
+     1988,
+     1991
+    ]
+   }
+  ],
+  "qid": "Q1324646",
+  "label": "Gradius"
+ },
+ {
+  "platform": "nes",
+  "title": "Double Dragon",
+  "year": 1987,
+  "notability": 21,
+  "candidates": [
+   "Q698705",
+   "Q3037452",
+   "Q107813860",
+   "Q3142082",
+   "Q1937488",
+   "Q2721797",
+   "Q2532981",
+   "Q28126965",
+   "Q1612202",
+   "Q3037447",
+   "Q1900111",
+   "Q3714563",
+   "Q20874773",
+   "Q18907829",
+   "Q100713171",
+   "Q5299745",
+   "Q5299747",
+   "Q114924324",
+   "Q5299744",
+   "Q99739270"
+  ],
+  "matches": [
+   {
+    "qid": "Q698705",
+    "label": "Double Dragon",
+    "years": [
+     1987,
+     1988,
+     1990
+    ]
+   }
+  ],
+  "qid": "Q698705",
+  "label": "Double Dragon"
+ },
+ {
+  "platform": "nes",
+  "title": "DuckTales",
+  "year": 1989,
+  "notability": 23,
+  "candidates": [
+   "Q214107",
+   "Q933328",
+   "Q28739895",
+   "Q2630920",
+   "Q648302",
+   "Q15057877",
+   "Q113826313",
+   "Q108370842",
+   "Q113826480",
+   "Q60287518",
+   "Q1263501",
+   "Q75744387",
+   "Q60287521",
+   "Q15260509",
+   "Q60287519",
+   "Q60287522",
+   "Q60838488",
+   "Q113826291",
+   "Q12858146",
+   "Q97186924"
+  ],
+  "matches": [
+   {
+    "qid": "Q933328",
+    "label": "DuckTales",
+    "years": [
+     1989,
+     1990
+    ]
+   }
+  ],
+  "qid": "Q933328",
+  "label": "DuckTales"
+ },
+ {
+  "platform": "nes",
+  "title": "Battletoads",
+  "year": 1991,
+  "notability": 24,
+  "candidates": [
+   "Q597781",
+   "Q4034917",
+   "Q19598913",
+   "Q55210617",
+   "Q4873263",
+   "Q4873265",
+   "Q112066562",
+   "Q2016892",
+   "Q4873264",
+   "Q2532676",
+   "Q112066604",
+   "Q101210196",
+   "Q16256083"
+  ],
+  "matches": [
+   {
+    "qid": "Q597781",
+    "label": "Battletoads",
+    "years": [
+     1991,
+     1993
+    ]
+   }
+  ],
+  "qid": "Q597781",
+  "label": "Battletoads"
+ },
+ {
+  "platform": "nes",
+  "title": "Blaster Master",
+  "year": 1988,
+  "notability": 25,
+  "candidates": [
+   "Q11854380",
+   "Q5730147",
+   "Q2364724",
+   "Q97486346",
+   "Q28932301",
+   "Q2742792",
+   "Q111966956",
+   "Q4353810",
+   "Q4925413",
+   "Q723623",
+   "Q140369830",
+   "Q4925414"
+  ],
+  "matches": [
+   {
+    "qid": "Q2364724",
+    "label": null,
+    "years": [
+     1988,
+     1991
+    ]
+   }
+  ],
+  "qid": "Q2364724",
+  "label": null
+ },
+ {
+  "platform": "nes",
+  "title": "River City Ransom",
+  "year": 1989,
+  "notability": 26,
+  "candidates": [
+   "Q1194412",
+   "Q30050110",
+   "Q132522026",
+   "Q140456768"
+  ],
+  "matches": [
+   {
+    "qid": "Q1194412",
+    "label": "River City Ransom",
+    "years": [
+     1989,
+     1990,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q1194412",
+  "label": "River City Ransom"
+ },
+ {
+  "platform": "nes",
+  "title": "Adventure Island",
+  "year": 1986,
+  "notability": 27,
+  "candidates": [
+   "Q379952",
+   "Q169442",
+   "Q1584331",
+   "Q568489",
+   "Q2825391",
+   "Q2128100",
+   "Q4686511",
+   "Q2825390",
+   "Q4686509",
+   "Q22362450",
+   "Q49631392",
+   "Q15062533",
+   "Q634502",
+   "Q16143942",
+   "Q1180977"
+  ],
+  "matches": [
+   {
+    "qid": "Q568489",
+    "label": null,
+    "years": [
+     1986,
+     1988,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q568489",
+  "label": null
+ },
+ {
+  "platform": "nes",
+  "title": "Faxanadu",
+  "year": 1987,
+  "notability": 28,
+  "candidates": [
+   "Q1398972"
+  ],
+  "matches": [
+   {
+    "qid": "Q1398972",
+    "label": "Faxanadu",
+    "years": [
+     1987,
+     1989,
+     1990
+    ]
+   }
+  ],
+  "qid": "Q1398972",
+  "label": "Faxanadu"
+ },
+ {
+  "platform": "nes",
+  "title": "StarTropics",
+  "year": 1990,
+  "notability": 29,
+  "candidates": [
+   "Q2252902",
+   "Q104765627",
+   "Q2364135",
+   "Q124356810",
+   "Q124356803"
+  ],
+  "matches": [
+   {
+    "qid": "Q2252902",
+    "label": "StarTropics",
+    "years": [
+     1990,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q2252902",
+  "label": "StarTropics"
+ },
+ {
+  "platform": "nes",
+  "title": "Teenage Mutant Ninja Turtles",
+  "year": 1989,
+  "notability": 30,
+  "candidates": [
+   "Q2172154",
+   "Q1508297",
+   "Q2196889",
+   "Q98713259",
+   "Q2078911",
+   "Q24204141",
+   "Q2342463",
+   "Q20858416",
+   "Q102226765",
+   "Q97506201",
+   "Q158869",
+   "Q249056",
+   "Q108658119",
+   "Q39998410",
+   "Q501338",
+   "Q1381762",
+   "Q19842746",
+   "Q203108",
+   "Q2594023",
+   "Q58439"
+  ],
+  "matches": [
+   {
+    "qid": "Q2172154",
+    "label": "Teenage Mutant Ninja Turtles",
+    "years": [
+     1989,
+     1990
+    ]
+   }
+  ],
+  "qid": "Q2172154",
+  "label": "Teenage Mutant Ninja Turtles"
+ },
+ {
+  "platform": "nes",
+  "title": "Duck Hunt",
+  "year": 1984,
+  "notability": 31,
+  "candidates": [
+   "Q764069",
+   "Q56350537",
+   "Q115367826",
+   "Q138450090",
+   "Q114769809",
+   "Q141215190",
+   "Q124065153",
+   "Q122378573",
+   "Q64790952",
+   "Q114522646",
+   "Q77926794",
+   "Q28036494",
+   "Q28803285",
+   "Q23931994",
+   "Q28004380",
+   "Q29172908",
+   "Q4478840",
+   "Q24190115",
+   "Q29214433",
+   "Q112635660"
+  ],
+  "matches": [
+   {
+    "qid": "Q764069",
+    "label": null,
+    "years": [
+     1984,
+     1985,
+     1987
+    ]
+   }
+  ],
+  "qid": "Q764069",
+  "label": null
+ },
+ {
+  "platform": "nes",
+  "title": "Balloon Fight",
+  "year": 1984,
+  "notability": 32,
+  "candidates": [
+   "Q1201014",
+   "Q131498619",
+   "Q135451632",
+   "Q131498226",
+   "Q2881381"
+  ],
+  "matches": [
+   {
+    "qid": "Q1201014",
+    "label": "Balloon Fight",
+    "years": [
+     1984,
+     1985,
+     1986,
+     1987,
+     2007
+    ]
+   }
+  ],
+  "qid": "Q1201014",
+  "label": "Balloon Fight"
+ },
+ {
+  "platform": "nes",
+  "title": "Ninja Gaiden II: The Dark Sword of Chaos",
+  "year": 1990,
+  "notability": 34,
+  "candidates": [
+   "Q1658492"
+  ],
+  "matches": [
+   {
+    "qid": "Q1658492",
+    "label": "Ninja Gaiden II: The Dark Sword of Chaos",
+    "years": [
+     1990,
+     1994
+    ]
+   }
+  ],
+  "qid": "Q1658492",
+  "label": "Ninja Gaiden II: The Dark Sword of Chaos"
+ },
+ {
+  "platform": "snes",
+  "title": "Super Mario World",
+  "year": 1990,
+  "notability": 1,
+  "candidates": [
+   "Q9080572",
+   "Q853143",
+   "Q1045765",
+   "Q7642607",
+   "Q2515386",
+   "Q24899268",
+   "Q106443445",
+   "Q111802540",
+   "Q135676597",
+   "Q7642584"
+  ],
+  "matches": [
+   {
+    "qid": "Q853143",
+    "label": null,
+    "years": [
+     1990,
+     1991,
+     1992,
+     1993,
+     2006,
+     2007,
+     2008,
+     2013,
+     2016,
+     2019
+    ]
+   }
+  ],
+  "qid": "Q853143",
+  "label": null
+ },
+ {
+  "platform": "snes",
+  "title": "The Legend of Zelda: A Link to the Past",
+  "year": 1991,
+  "notability": 2,
+  "candidates": [
+   "Q370055",
+   "Q128815494",
+   "Q1358804",
+   "Q126870971",
+   "Q11300470"
+  ],
+  "matches": [
+   {
+    "qid": "Q370055",
+    "label": "The Legend of Zelda: A Link to the Past",
+    "years": [
+     1991,
+     1992,
+     2006,
+     2007,
+     2008,
+     2014,
+     2016,
+     2019
+    ]
+   }
+  ],
+  "qid": "Q370055",
+  "label": "The Legend of Zelda: A Link to the Past"
+ },
+ {
+  "platform": "snes",
+  "title": "Super Metroid",
+  "year": 1994,
+  "notability": 3,
+  "candidates": [
+   "Q1194825",
+   "Q14908142"
+  ],
+  "matches": [
+   {
+    "qid": "Q1194825",
+    "label": "Super Metroid",
+    "years": [
+     1994,
+     2007
+    ]
+   }
+  ],
+  "qid": "Q1194825",
+  "label": "Super Metroid"
+ },
+ {
+  "platform": "snes",
+  "title": "Chrono Trigger",
+  "year": 1995,
+  "notability": 4,
+  "candidates": [
+   "Q761815",
+   "Q507828",
+   "Q4036182",
+   "Q15063346",
+   "Q11680092",
+   "Q2668608"
+  ],
+  "matches": [
+   {
+    "qid": "Q761815",
+    "label": "Chrono Trigger",
+    "years": [
+     1995,
+     1999,
+     2001,
+     2008,
+     2009,
+     2011,
+     2012,
+     2018
+    ]
+   }
+  ],
+  "qid": "Q761815",
+  "label": "Chrono Trigger"
+ },
+ {
+  "platform": "snes",
+  "title": "Final Fantasy VI",
+  "year": 1994,
+  "notability": 6,
+  "candidates": [
+   "Q535940",
+   "Q110493189",
+   "Q214232",
+   "Q245006",
+   "Q20155152",
+   "Q76874839",
+   "Q112617712",
+   "Q2647594",
+   "Q115813551",
+   "Q105689376",
+   "Q96377920",
+   "Q109690723",
+   "Q112663549",
+   "Q67178568",
+   "Q2302850",
+   "Q387674",
+   "Q3269066",
+   "Q134913346",
+   "Q122208228",
+   "Q134912631"
+  ],
+  "matches": [
+   {
+    "qid": "Q535940",
+    "label": "Final Fantasy VI",
+    "years": [
+     1994
+    ]
+   }
+  ],
+  "qid": "Q535940",
+  "label": "Final Fantasy VI"
+ },
+ {
+  "platform": "snes",
+  "title": "Super Mario Kart",
+  "year": 1992,
+  "notability": 7,
+  "candidates": [
+   "Q1061560",
+   "Q1046604",
+   "Q2575214",
+   "Q122200551",
+   "Q122200391",
+   "Q858564"
+  ],
+  "matches": [
+   {
+    "qid": "Q1061560",
+    "label": "Super Mario Kart",
+    "years": [
+     1992,
+     1993
+    ]
+   }
+  ],
+  "qid": "Q1061560",
+  "label": "Super Mario Kart"
+ },
+ {
+  "platform": "snes",
+  "title": "Secret of Mana",
+  "year": 1993,
+  "notability": 9,
+  "candidates": [
+   "Q1800173",
+   "Q50384002",
+   "Q2588801"
+  ],
+  "matches": [
+   {
+    "qid": "Q1800173",
+    "label": "Secret of Mana",
+    "years": [
+     1993,
+     1994,
+     2008
+    ]
+   }
+  ],
+  "qid": "Q1800173",
+  "label": "Secret of Mana"
+ },
+ {
+  "platform": "snes",
+  "title": "Super Castlevania IV",
+  "year": 1991,
+  "notability": 10,
+  "candidates": [
+   "Q389254"
+  ],
+  "matches": [
+   {
+    "qid": "Q389254",
+    "label": null,
+    "years": [
+     1991,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q389254",
+  "label": null
+ },
+ {
+  "platform": "snes",
+  "title": "Earthbound",
+  "year": 1994,
+  "notability": 13,
+  "candidates": [
+   "Q960364",
+   "Q1780267",
+   "Q5327199",
+   "Q125225605",
+   "Q2529000",
+   "Q5327198",
+   "Q21450453",
+   "Q5327202",
+   "Q10478905",
+   "Q29819214",
+   "Q50818524",
+   "Q5327196",
+   "Q5327200",
+   "Q5327017",
+   "Q2323709",
+   "Q2383167",
+   "Q16250078",
+   "Q5926294",
+   "Q5327201",
+   "Q25218327"
+  ],
+  "matches": [
+   {
+    "qid": "Q2529000",
+    "label": null,
+    "years": [
+     1994,
+     1995,
+     2003,
+     2013,
+     2016,
+     2017,
+     2022
+    ]
+   }
+  ],
+  "qid": "Q2529000",
+  "label": null
+ },
+ {
+  "platform": "snes",
+  "title": "Super Mario World 2: Yoshi's Island",
+  "year": 1995,
+  "notability": 14,
+  "candidates": [
+   "Q1045765"
+  ],
+  "matches": [
+   {
+    "qid": "Q1045765",
+    "label": "Super Mario World 2: Yoshi's Island",
+    "years": [
+     1995,
+     1996,
+     2019
+    ]
+   }
+  ],
+  "qid": "Q1045765",
+  "label": "Super Mario World 2: Yoshi's Island"
+ },
+ {
+  "platform": "snes",
+  "title": "F-Zero",
+  "year": 1990,
+  "notability": 15,
+  "candidates": [
+   "Q1198491",
+   "Q6720878",
+   "Q1940315",
+   "Q953869",
+   "Q5219604",
+   "Q3062930",
+   "Q108721646",
+   "Q3062932",
+   "Q2609497",
+   "Q122545152",
+   "Q3736472",
+   "Q8133833",
+   "Q16040254",
+   "Q3101055",
+   "Q132561225",
+   "Q123482209",
+   "Q6570484",
+   "Q11198735",
+   "Q96193523"
+  ],
+  "matches": [
+   {
+    "qid": "Q1198491",
+    "label": "F-Zero",
+    "years": [
+     1990,
+     1991,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q1198491",
+  "label": "F-Zero"
+ },
+ {
+  "platform": "snes",
+  "title": "Super Punch-Out!!",
+  "year": 1994,
+  "notability": 16,
+  "candidates": [
+   "Q2002093",
+   "Q1986371",
+   "Q3977588"
+  ],
+  "matches": [
+   {
+    "qid": "Q2002093",
+    "label": "Super Punch-Out!!",
+    "years": [
+     1994,
+     1998
+    ]
+   }
+  ],
+  "qid": "Q2002093",
+  "label": "Super Punch-Out!!"
+ },
+ {
+  "platform": "snes",
+  "title": "Donkey Kong Country 2: Diddy's Kong Quest",
+  "year": 1995,
+  "notability": 17,
+  "candidates": [
+   "Q1072051"
+  ],
+  "matches": [
+   {
+    "qid": "Q1072051",
+    "label": "Donkey Kong Country 2: Diddy's Kong Quest",
+    "years": [
+     1995
+    ]
+   }
+  ],
+  "qid": "Q1072051",
+  "label": "Donkey Kong Country 2: Diddy's Kong Quest"
+ },
+ {
+  "platform": "snes",
+  "title": "Contra III: The Alien Wars",
+  "year": 1992,
+  "notability": 18,
+  "candidates": [
+   "Q1368099"
+  ],
+  "matches": [
+   {
+    "qid": "Q1368099",
+    "label": "Contra III: The Alien Wars",
+    "years": [
+     1992
+    ]
+   }
+  ],
+  "qid": "Q1368099",
+  "label": "Contra III: The Alien Wars"
+ },
+ {
+  "platform": "snes",
+  "title": "Terranigma",
+  "year": 1995,
+  "notability": 19,
+  "candidates": [
+   "Q1197149"
+  ],
+  "matches": [
+   {
+    "qid": "Q1197149",
+    "label": "Terranigma",
+    "years": [
+     1995,
+     1996
+    ]
+   }
+  ],
+  "qid": "Q1197149",
+  "label": "Terranigma"
+ },
+ {
+  "platform": "snes",
+  "title": "Illusion of Gaia",
+  "year": 1993,
+  "notability": 20,
+  "candidates": [
+   "Q1658920"
+  ],
+  "matches": [
+   {
+    "qid": "Q1658920",
+    "label": "Illusion of Gaia",
+    "years": [
+     1993,
+     1994,
+     1995
+    ]
+   }
+  ],
+  "qid": "Q1658920",
+  "label": "Illusion of Gaia"
+ },
+ {
+  "platform": "snes",
+  "title": "ActRaiser",
+  "year": 1990,
+  "notability": 21,
+  "candidates": [
+   "Q343033",
+   "Q108370499",
+   "Q2169654",
+   "Q108800081",
+   "Q20899105",
+   "Q108709563"
+  ],
+  "matches": [
+   {
+    "qid": "Q343033",
+    "label": "ActRaiser",
+    "years": [
+     1990,
+     1991,
+     2007
+    ]
+   }
+  ],
+  "qid": "Q343033",
+  "label": "ActRaiser"
+ },
+ {
+  "platform": "snes",
+  "title": "Kirby Super Star",
+  "year": 1996,
+  "notability": 23,
+  "candidates": [
+   "Q1871848",
+   "Q1132456"
+  ],
+  "matches": [
+   {
+    "qid": "Q1871848",
+    "label": "Kirby Super Star",
+    "years": [
+     1996,
+     1997
+    ]
+   }
+  ],
+  "qid": "Q1871848",
+  "label": "Kirby Super Star"
+ },
+ {
+  "platform": "snes",
+  "title": "Final Fantasy IV",
+  "year": 1991,
+  "notability": 24,
+  "candidates": [
+   "Q911226",
+   "Q3283705",
+   "Q110493007",
+   "Q2604090",
+   "Q5449389",
+   "Q2604206",
+   "Q3328638",
+   "Q10282416"
+  ],
+  "matches": [
+   {
+    "qid": "Q911226",
+    "label": "Final Fantasy IV",
+    "years": [
+     1991
+    ]
+   }
+  ],
+  "qid": "Q911226",
+  "label": "Final Fantasy IV"
+ },
+ {
+  "platform": "snes",
+  "title": "Super Ghouls 'n Ghosts",
+  "year": 1991,
+  "notability": 25,
+  "candidates": [
+   "Q275122"
+  ],
+  "matches": [
+   {
+    "qid": "Q275122",
+    "label": "Super Ghouls 'n Ghosts",
+    "years": [
+     1991,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q275122",
+  "label": "Super Ghouls 'n Ghosts"
+ },
+ {
+  "platform": "snes",
+  "title": "Tetris Attack",
+  "year": 1995,
+  "notability": 26,
+  "candidates": [
+   "Q2316943"
+  ],
+  "matches": [
+   {
+    "qid": "Q2316943",
+    "label": "Tetris Attack",
+    "years": [
+     1995,
+     1996
+    ]
+   }
+  ],
+  "qid": "Q2316943",
+  "label": "Tetris Attack"
+ },
+ {
+  "platform": "snes",
+  "title": "Zombies Ate My Neighbors",
+  "year": 1993,
+  "notability": 27,
+  "candidates": [
+   "Q219804",
+   "Q125886263"
+  ],
+  "matches": [
+   {
+    "qid": "Q219804",
+    "label": "Zombies Ate My Neighbors",
+    "years": [
+     1993,
+     1994
+    ]
+   }
+  ],
+  "qid": "Q219804",
+  "label": "Zombies Ate My Neighbors"
+ },
+ {
+  "platform": "snes",
+  "title": "Pilotwings",
+  "year": 1990,
+  "notability": 28,
+  "candidates": [
+   "Q1305295",
+   "Q2480306",
+   "Q933524",
+   "Q2530441"
+  ],
+  "matches": [
+   {
+    "qid": "Q1305295",
+    "label": "Pilotwings",
+    "years": [
+     1990,
+     1991,
+     1993
+    ]
+   }
+  ],
+  "qid": "Q1305295",
+  "label": "Pilotwings"
+ },
+ {
+  "platform": "snes",
+  "title": "Super Tennis",
+  "year": 1991,
+  "notability": 29,
+  "candidates": [
+   "Q25345962",
+   "Q2756952",
+   "Q114945364",
+   "Q135079485",
+   "Q126185935",
+   "Q126184886",
+   "Q126184888",
+   "Q26036650",
+   "Q3977536",
+   "Q42432747"
+  ],
+  "matches": [
+   {
+    "qid": "Q2756952",
+    "label": "Super Tennis",
+    "years": [
+     1991,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q2756952",
+  "label": "Super Tennis"
+ },
+ {
+  "platform": "snes",
+  "title": "The Lion King",
+  "year": 1994,
+  "notability": 30,
+  "candidates": [
+   "Q36479",
+   "Q1195106",
+   "Q27044293",
+   "Q2901452",
+   "Q134138",
+   "Q4742157",
+   "Q3226597",
+   "Q25426963",
+   "Q65428547",
+   "Q16654294",
+   "Q16639634",
+   "Q191803",
+   "Q223217",
+   "Q1154894",
+   "Q65508959",
+   "Q140188874",
+   "Q140189240",
+   "Q73544451",
+   "Q63225433",
+   "Q106511259"
+  ],
+  "matches": [
+   {
+    "qid": "Q134138",
+    "label": null,
+    "years": [
+     1994,
+     1995
+    ]
+   }
+  ],
+  "qid": "Q134138",
+  "label": null
+ },
+ {
+  "platform": "snes",
+  "title": "Aladdin",
+  "year": 1993,
+  "notability": 31,
+  "candidates": [
+   "Q27628670",
+   "Q111255353",
+   "Q16162455",
+   "Q215518",
+   "Q27120",
+   "Q209515",
+   "Q27188178",
+   "Q136718777",
+   "Q1358109",
+   "Q1342565",
+   "Q15731902",
+   "Q17494453",
+   "Q15605357",
+   "Q2829467",
+   "Q4705496",
+   "Q558969",
+   "Q2523412",
+   "Q2829469",
+   "Q15839051",
+   "Q558927"
+  ],
+  "matches": [
+   {
+    "qid": "Q2829467",
+    "label": null,
+    "years": [
+     1993,
+     1994
+    ]
+   }
+  ],
+  "qid": "Q2829467",
+  "label": null
+ },
+ {
+  "platform": "snes",
+  "title": "Harvest Moon",
+  "year": 1996,
+  "notability": 33,
+  "candidates": [
+   "Q7146181",
+   "Q785815",
+   "Q1195594",
+   "Q2700360",
+   "Q2297702",
+   "Q2702506",
+   "Q2291672",
+   "Q1313985",
+   "Q642062",
+   "Q3132020",
+   "Q2701206",
+   "Q2700027",
+   "Q2352959",
+   "Q11570393",
+   "Q2298157",
+   "Q2522442",
+   "Q2758082",
+   "Q2758074",
+   "Q2080010",
+   "Q114538461"
+  ],
+  "matches": [
+   {
+    "qid": "Q7146181",
+    "label": "Harvest Moon",
+    "years": [
+     1996,
+     1997,
+     1998
+    ]
+   }
+  ],
+  "qid": "Q7146181",
+  "label": "Harvest Moon"
+ },
+ {
+  "platform": "snes",
+  "title": "Lufia & the Fortress of Doom",
+  "year": 1993,
+  "notability": 35,
+  "candidates": [
+   "Q2637335"
+  ],
+  "matches": [
+   {
+    "qid": "Q2637335",
+    "label": "Lufia & the Fortress of Doom",
+    "years": [
+     1993
+    ]
+   }
+  ],
+  "qid": "Q2637335",
+  "label": "Lufia & the Fortress of Doom"
+ },
+ {
+  "platform": "gb",
+  "title": "Tetris",
+  "year": 1989,
+  "notability": 1,
+  "candidates": [
+   "Q3519191",
+   "Q4050885",
+   "Q67387683",
+   "Q7706791",
+   "Q67387713",
+   "Q88654473",
+   "Q107317078",
+   "Q71910",
+   "Q104044312",
+   "Q131386411",
+   "Q124559060",
+   "Q124453185",
+   "Q121599287",
+   "Q2353877",
+   "Q2316943",
+   "Q55381938",
+   "Q61721841",
+   "Q11319329",
+   "Q5244263",
+   "Q7706788"
+  ],
+  "matches": [
+   {
+    "qid": "Q3519191",
+    "label": "Tetris",
+    "years": [
+     1989,
+     1990
+    ]
+   }
+  ],
+  "qid": "Q3519191",
+  "label": "Tetris"
+ },
+ {
+  "platform": "gb",
+  "title": "The Legend of Zelda: Link's Awakening",
+  "year": 1993,
+  "notability": 3,
+  "candidates": [
+   "Q1060323",
+   "Q61745904",
+   "Q116969227",
+   "Q127612058"
+  ],
+  "matches": [
+   {
+    "qid": "Q1060323",
+    "label": "The Legend of Zelda: Link's Awakening",
+    "years": [
+     1993
+    ]
+   }
+  ],
+  "qid": "Q1060323",
+  "label": "The Legend of Zelda: Link's Awakening"
+ },
+ {
+  "platform": "gb",
+  "title": "Super Mario Land",
+  "year": 1989,
+  "notability": 4,
+  "candidates": [
+   "Q647249",
+   "Q596392",
+   "Q11341035",
+   "Q1634866",
+   "Q1050298"
+  ],
+  "matches": [
+   {
+    "qid": "Q647249",
+    "label": "Super Mario Land",
+    "years": [
+     1989
+    ]
+   }
+  ],
+  "qid": "Q647249",
+  "label": "Super Mario Land"
+ },
+ {
+  "platform": "gb",
+  "title": "Super Mario Land 2: 6 Golden Coins",
+  "year": 1992,
+  "notability": 5,
+  "candidates": [
+   "Q596392"
+  ],
+  "matches": [
+   {
+    "qid": "Q596392",
+    "label": "Super Mario Land 2: 6 Golden Coins",
+    "years": [
+     1992
+    ]
+   }
+  ],
+  "qid": "Q596392",
+  "label": "Super Mario Land 2: 6 Golden Coins"
+ },
+ {
+  "platform": "gb",
+  "title": "Kirby's Dream Land",
+  "year": 1992,
+  "notability": 6,
+  "candidates": [
+   "Q1154044",
+   "Q1202713",
+   "Q2273753"
+  ],
+  "matches": [
+   {
+    "qid": "Q1154044",
+    "label": "Kirby's Dream Land",
+    "years": [
+     1992
+    ]
+   }
+  ],
+  "qid": "Q1154044",
+  "label": "Kirby's Dream Land"
+ },
+ {
+  "platform": "gb",
+  "title": "Metroid II: Return of Samus",
+  "year": 1991,
+  "notability": 7,
+  "candidates": [
+   "Q2471454"
+  ],
+  "matches": [
+   {
+    "qid": "Q2471454",
+    "label": "Metroid II: Return of Samus",
+    "years": [
+     1991,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q2471454",
+  "label": "Metroid II: Return of Samus"
+ },
+ {
+  "platform": "gb",
+  "title": "Wario Land: Super Mario Land 3",
+  "year": 1994,
+  "notability": 8,
+  "candidates": [
+   "Q1634866"
+  ],
+  "matches": [
+   {
+    "qid": "Q1634866",
+    "label": "Wario Land: Super Mario Land 3",
+    "years": [
+     1994
+    ]
+   }
+  ],
+  "qid": "Q1634866",
+  "label": "Wario Land: Super Mario Land 3"
+ },
+ {
+  "platform": "gb",
+  "title": "Castlevania: The Adventure",
+  "year": 1989,
+  "notability": 11,
+  "candidates": [
+   "Q2563041",
+   "Q375281"
+  ],
+  "matches": [
+   {
+    "qid": "Q2563041",
+    "label": null,
+    "years": [
+     1989
+    ]
+   }
+  ],
+  "qid": "Q2563041",
+  "label": null
+ },
+ {
+  "platform": "gb",
+  "title": "Final Fantasy Adventure",
+  "year": 1991,
+  "notability": 12,
+  "candidates": [
+   "Q2333557"
+  ],
+  "matches": [
+   {
+    "qid": "Q2333557",
+    "label": "Final Fantasy Adventure",
+    "years": [
+     1991
+    ]
+   }
+  ],
+  "qid": "Q2333557",
+  "label": "Final Fantasy Adventure"
+ },
+ {
+  "platform": "gb",
+  "title": "Mega Man: Dr. Wily's Revenge",
+  "year": 1991,
+  "notability": 13,
+  "candidates": [
+   "Q2987019"
+  ],
+  "matches": [
+   {
+    "qid": "Q2987019",
+    "label": "Mega Man: Dr. Wily's Revenge",
+    "years": [
+     1991
+    ]
+   }
+  ],
+  "qid": "Q2987019",
+  "label": "Mega Man: Dr. Wily's Revenge"
+ },
+ {
+  "platform": "gb",
+  "title": "Gargoyle's Quest",
+  "year": 1990,
+  "notability": 14,
+  "candidates": [
+   "Q971188",
+   "Q3098364",
+   "Q108370936"
+  ],
+  "matches": [
+   {
+    "qid": "Q971188",
+    "label": "Gargoyle's Quest",
+    "years": [
+     1990,
+     1991
+    ]
+   }
+  ],
+  "qid": "Q971188",
+  "label": "Gargoyle's Quest"
+ },
+ {
+  "platform": "gb",
+  "title": "Kid Icarus: Of Myths and Monsters",
+  "year": 1991,
+  "notability": 15,
+  "candidates": [
+   "Q2565757"
+  ],
+  "matches": [
+   {
+    "qid": "Q2565757",
+    "label": null,
+    "years": [
+     1991
+    ]
+   }
+  ],
+  "qid": "Q2565757",
+  "label": null
+ },
+ {
+  "platform": "gb",
+  "title": "Dr. Mario",
+  "year": 1990,
+  "notability": 17,
+  "candidates": [
+   "Q1198580",
+   "Q23454671",
+   "Q2457285",
+   "Q19819839",
+   "Q1957354",
+   "Q20031702",
+   "Q64697911",
+   "Q2973804",
+   "Q3038423",
+   "Q61873478",
+   "Q87131700",
+   "Q75543083",
+   "Q112259159",
+   "Q76329028",
+   "Q75583488",
+   "Q111738351",
+   "Q75587115",
+   "Q11322619",
+   "Q99980392",
+   "Q120605610"
+  ],
+  "matches": [
+   {
+    "qid": "Q1198580",
+    "label": "Dr. Mario",
+    "years": [
+     1990,
+     1991
+    ]
+   }
+  ],
+  "qid": "Q1198580",
+  "label": "Dr. Mario"
+ },
+ {
+  "platform": "gb",
+  "title": "Tetris 2",
+  "year": 1993,
+  "notability": 18,
+  "candidates": [
+   "Q11319329",
+   "Q19897934",
+   "Q11338868",
+   "Q16282793",
+   "Q13410638"
+  ],
+  "matches": [
+   {
+    "qid": "Q11319329",
+    "label": "Tetris 2",
+    "years": [
+     1993
+    ]
+   }
+  ],
+  "qid": "Q11319329",
+  "label": "Tetris 2"
+ },
+ {
+  "platform": "gb",
+  "title": "Bubble Bobble",
+  "year": 1991,
+  "notability": 19,
+  "candidates": [
+   "Q88759",
+   "Q10437156",
+   "Q4982197",
+   "Q109383378",
+   "Q63125241",
+   "Q63159651",
+   "Q4982194",
+   "Q4982195",
+   "Q4982192",
+   "Q4982193",
+   "Q86738962",
+   "Q1804014",
+   "Q1108749",
+   "Q63159648",
+   "Q134968679",
+   "Q140471948",
+   "Q135114657",
+   "Q16767777"
+  ],
+  "matches": [
+   {
+    "qid": "Q88759",
+    "label": "Bubble Bobble",
+    "years": [
+     1986,
+     1987,
+     1988,
+     1990
+    ]
+   }
+  ],
+  "qid": "Q88759",
+  "label": "Bubble Bobble"
+ },
+ {
+  "platform": "gb",
+  "title": "Solar Striker",
+  "year": 1990,
+  "notability": 20,
+  "candidates": [
+   "Q3489226"
+  ],
+  "matches": [
+   {
+    "qid": "Q3489226",
+    "label": "Solar Striker",
+    "years": [
+     1990
+    ]
+   }
+  ],
+  "qid": "Q3489226",
+  "label": "Solar Striker"
+ },
+ {
+  "platform": "gb",
+  "title": "Balloon Kid",
+  "year": 1990,
+  "notability": 21,
+  "candidates": [
+   "Q2881381"
+  ],
+  "matches": [
+   {
+    "qid": "Q2881381",
+    "label": "Balloon Kid",
+    "years": [
+     1990,
+     1992
+    ]
+   }
+  ],
+  "qid": "Q2881381",
+  "label": "Balloon Kid"
+ },
+ {
+  "platform": "gb",
+  "title": "Kirby's Dream Land 2",
+  "year": 1995,
+  "notability": 22,
+  "candidates": [
+   "Q2273753"
+  ],
+  "matches": [
+   {
+    "qid": "Q2273753",
+    "label": "Kirby's Dream Land 2",
+    "years": [
+     1995
+    ]
+   }
+  ],
+  "qid": "Q2273753",
+  "label": "Kirby's Dream Land 2"
+ },
+ {
+  "platform": "gb",
+  "title": "Mole Mania",
+  "year": 1996,
+  "notability": 24,
+  "candidates": [
+   "Q6141895"
+  ],
+  "matches": [
+   {
+    "qid": "Q6141895",
+    "label": "Mole Mania",
+    "years": [
+     1996
+    ]
+   }
+  ],
+  "qid": "Q6141895",
+  "label": "Mole Mania"
+ },
+ {
+  "platform": "gba",
+  "title": "Pokémon Ruby and Sapphire",
+  "year": 2002,
+  "notability": 1,
+  "candidates": [
+   "Q721822",
+   "Q2975912"
+  ],
+  "matches": [
+   {
+    "qid": "Q721822",
+    "label": "Pokémon Ruby and Sapphire",
+    "years": [
+     2002,
+     2003
+    ]
+   }
+  ],
+  "qid": "Q721822",
+  "label": "Pokémon Ruby and Sapphire"
+ },
+ {
+  "platform": "gba",
+  "title": "The Legend of Zelda: The Minish Cap",
+  "year": 2004,
+  "notability": 2,
+  "candidates": [
+   "Q474798"
+  ],
+  "matches": [
+   {
+    "qid": "Q474798",
+    "label": "The Legend of Zelda: The Minish Cap",
+    "years": [
+     2004
+    ]
+   }
+  ],
+  "qid": "Q474798",
+  "label": "The Legend of Zelda: The Minish Cap"
+ },
+ {
+  "platform": "gba",
+  "title": "Metroid Fusion",
+  "year": 2002,
+  "notability": 3,
+  "candidates": [
+   "Q2478949"
+  ],
+  "matches": [
+   {
+    "qid": "Q2478949",
+    "label": "Metroid Fusion",
+    "years": [
+     2002,
+     2003,
+     2006
+    ]
+   }
+  ],
+  "qid": "Q2478949",
+  "label": "Metroid Fusion"
+ },
+ {
+  "platform": "gba",
+  "title": "Advance Wars",
+  "year": 2001,
+  "notability": 4,
+  "candidates": [
+   "Q953229",
+   "Q1828897",
+   "Q2569478",
+   "Q2340376",
+   "Q2734928",
+   "Q108744830",
+   "Q108744960"
+  ],
+  "matches": [
+   {
+    "qid": "Q953229",
+    "label": "Advance Wars",
+    "years": [
+     2001,
+     2002,
+     2014
+    ]
+   }
+  ],
+  "qid": "Q953229",
+  "label": "Advance Wars"
+ },
+ {
+  "platform": "gba",
+  "title": "Mario Kart: Super Circuit",
+  "year": 2001,
+  "notability": 7,
+  "candidates": [
+   "Q2068675"
+  ],
+  "matches": [
+   {
+    "qid": "Q2068675",
+    "label": "Mario Kart: Super Circuit",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q2068675",
+  "label": "Mario Kart: Super Circuit"
+ },
+ {
+  "platform": "gba",
+  "title": "Castlevania: Aria of Sorrow",
+  "year": 2003,
+  "notability": 8,
+  "candidates": [
+   "Q2291309"
+  ],
+  "matches": [
+   {
+    "qid": "Q2291309",
+    "label": "Castlevania: Aria of Sorrow",
+    "years": [
+     2003
+    ]
+   }
+  ],
+  "qid": "Q2291309",
+  "label": "Castlevania: Aria of Sorrow"
+ },
+ {
+  "platform": "gba",
+  "title": "Metroid: Zero Mission",
+  "year": 2004,
+  "notability": 9,
+  "candidates": [
+   "Q2012171"
+  ],
+  "matches": [
+   {
+    "qid": "Q2012171",
+    "label": "Metroid: Zero Mission",
+    "years": [
+     2004
+    ]
+   }
+  ],
+  "qid": "Q2012171",
+  "label": "Metroid: Zero Mission"
+ },
+ {
+  "platform": "gba",
+  "title": "Pokémon FireRed and LeafGreen",
+  "year": 2004,
+  "notability": 11,
+  "candidates": [
+   "Q609063"
+  ],
+  "matches": [
+   {
+    "qid": "Q609063",
+    "label": "Pokémon FireRed and LeafGreen",
+    "years": [
+     2004
+    ]
+   }
+  ],
+  "qid": "Q609063",
+  "label": "Pokémon FireRed and LeafGreen"
+ },
+ {
+  "platform": "gba",
+  "title": "Mario & Luigi: Superstar Saga",
+  "year": 2003,
+  "notability": 12,
+  "candidates": [
+   "Q1797550",
+   "Q11341029"
+  ],
+  "matches": [
+   {
+    "qid": "Q1797550",
+    "label": "Mario & Luigi: Superstar Saga",
+    "years": [
+     2003,
+     2014
+    ]
+   }
+  ],
+  "qid": "Q1797550",
+  "label": "Mario & Luigi: Superstar Saga"
+ },
+ {
+  "platform": "gba",
+  "title": "WarioWare, Inc.: Mega Microgames!",
+  "year": 2003,
+  "notability": 13,
+  "candidates": [
+   "Q1195267"
+  ],
+  "matches": [
+   {
+    "qid": "Q1195267",
+    "label": "WarioWare, Inc.: Mega Microgames!",
+    "years": [
+     2003,
+     2005,
+     2011,
+     2014,
+     2023
+    ]
+   }
+  ],
+  "qid": "Q1195267",
+  "label": "WarioWare, Inc.: Mega Microgames!"
+ },
+ {
+  "platform": "gba",
+  "title": "Astro Boy: Omega Factor",
+  "year": 2003,
+  "notability": 14,
+  "candidates": [
+   "Q751268"
+  ],
+  "matches": [
+   {
+    "qid": "Q751268",
+    "label": "Astro Boy: Omega Factor",
+    "years": [
+     2003
+    ]
+   }
+  ],
+  "qid": "Q751268",
+  "label": "Astro Boy: Omega Factor"
+ },
+ {
+  "platform": "gba",
+  "title": "Final Fantasy Tactics Advance",
+  "year": 2003,
+  "notability": 15,
+  "candidates": [
+   "Q1072868",
+   "Q134914301",
+   "Q123585250",
+   "Q2334671"
+  ],
+  "matches": [
+   {
+    "qid": "Q1072868",
+    "label": "Final Fantasy Tactics Advance",
+    "years": [
+     2003
+    ]
+   }
+  ],
+  "qid": "Q1072868",
+  "label": "Final Fantasy Tactics Advance"
+ },
+ {
+  "platform": "gba",
+  "title": "Pokémon Emerald",
+  "year": 2004,
+  "notability": 16,
+  "candidates": [
+   "Q2045645"
+  ],
+  "matches": [
+   {
+    "qid": "Q2045645",
+    "label": "Pokémon Emerald",
+    "years": [
+     2004,
+     2005
+    ]
+   }
+  ],
+  "qid": "Q2045645",
+  "label": "Pokémon Emerald"
+ },
+ {
+  "platform": "gba",
+  "title": "Kirby & the Amazing Mirror",
+  "year": 2004,
+  "notability": 17,
+  "candidates": [
+   "Q2306443"
+  ],
+  "matches": [
+   {
+    "qid": "Q2306443",
+    "label": "Kirby & the Amazing Mirror",
+    "years": [
+     2004
+    ]
+   }
+  ],
+  "qid": "Q2306443",
+  "label": "Kirby & the Amazing Mirror"
+ },
+ {
+  "platform": "gba",
+  "title": "Castlevania: Circle of the Moon",
+  "year": 2001,
+  "notability": 18,
+  "candidates": [
+   "Q2562228"
+  ],
+  "matches": [
+   {
+    "qid": "Q2562228",
+    "label": "Castlevania: Circle of the Moon",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q2562228",
+  "label": "Castlevania: Circle of the Moon"
+ },
+ {
+  "platform": "gba",
+  "title": "Advance Wars 2: Black Hole Rising",
+  "year": 2003,
+  "notability": 19,
+  "candidates": [
+   "Q2569478"
+  ],
+  "matches": [
+   {
+    "qid": "Q2569478",
+    "label": "Advance Wars 2: Black Hole Rising",
+    "years": [
+     2003,
+     2015
+    ]
+   }
+  ],
+  "qid": "Q2569478",
+  "label": "Advance Wars 2: Black Hole Rising"
+ },
+ {
+  "platform": "gba",
+  "title": "Golden Sun: The Lost Age",
+  "year": 2002,
+  "notability": 20,
+  "candidates": [
+   "Q2342264"
+  ],
+  "matches": [
+   {
+    "qid": "Q2342264",
+    "label": "Golden Sun: The Lost Age",
+    "years": [
+     2002
+    ]
+   }
+  ],
+  "qid": "Q2342264",
+  "label": "Golden Sun: The Lost Age"
+ },
+ {
+  "platform": "gba",
+  "title": "Drill Dozer",
+  "year": 2005,
+  "notability": 21,
+  "candidates": [
+   "Q5307541"
+  ],
+  "matches": [
+   {
+    "qid": "Q5307541",
+    "label": "Drill Dozer",
+    "years": [
+     2005
+    ]
+   }
+  ],
+  "qid": "Q5307541",
+  "label": "Drill Dozer"
+ },
+ {
+  "platform": "gba",
+  "title": "Rhythm Tengoku",
+  "year": 2006,
+  "notability": 22,
+  "candidates": [
+   "Q3108764",
+   "Q64035874",
+   "Q528376",
+   "Q133567956",
+   "Q19758360"
+  ],
+  "matches": [
+   {
+    "qid": "Q3108764",
+    "label": "Rhythm Tengoku",
+    "years": [
+     2006,
+     2007
+    ]
+   }
+  ],
+  "qid": "Q3108764",
+  "label": "Rhythm Tengoku"
+ },
+ {
+  "platform": "gba",
+  "title": "Mother 3",
+  "year": 2006,
+  "notability": 24,
+  "candidates": [
+   "Q2383167",
+   "Q5136974",
+   "Q65117366"
+  ],
+  "matches": [
+   {
+    "qid": "Q2383167",
+    "label": "Mother 3",
+    "years": [
+     2006,
+     2015
+    ]
+   }
+  ],
+  "qid": "Q2383167",
+  "label": "Mother 3"
+ },
+ {
+  "platform": "gba",
+  "title": "The Legend of Zelda: A Link to the Past & Four Swords",
+  "year": 2002,
+  "notability": 25,
+  "candidates": [
+   "Q1358804"
+  ],
+  "matches": [
+   {
+    "qid": "Q1358804",
+    "label": "The Legend of Zelda: A Link to the Past and Four Swords",
+    "years": [
+     2002
+    ]
+   }
+  ],
+  "qid": "Q1358804",
+  "label": "The Legend of Zelda: A Link to the Past and Four Swords"
+ },
+ {
+  "platform": "n64",
+  "title": "Super Mario 64",
+  "year": 1996,
+  "notability": 1,
+  "candidates": [
+   "Q216995",
+   "Q1142888",
+   "Q134995826",
+   "Q98997792",
+   "Q17630799",
+   "Q126914640"
+  ],
+  "matches": [
+   {
+    "qid": "Q216995",
+    "label": "Super Mario 64",
+    "years": [
+     1996,
+     1997
+    ]
+   }
+  ],
+  "qid": "Q216995",
+  "label": "Super Mario 64"
+ },
+ {
+  "platform": "n64",
+  "title": "The Legend of Zelda: Ocarina of Time",
+  "year": 1998,
+  "notability": 2,
+  "candidates": [
+   "Q213911",
+   "Q642526",
+   "Q3987974",
+   "Q2714265",
+   "Q140140365",
+   "Q1133604",
+   "Q4589346",
+   "Q6144778",
+   "Q140201384"
+  ],
+  "matches": [
+   {
+    "qid": "Q213911",
+    "label": "The Legend of Zelda: Ocarina of Time",
+    "years": [
+     1998,
+     2002,
+     2003,
+     2007
+    ]
+   }
+  ],
+  "qid": "Q213911",
+  "label": "The Legend of Zelda: Ocarina of Time"
+ },
+ {
+  "platform": "n64",
+  "title": "GoldenEye 007",
+  "year": 1997,
+  "notability": 3,
+  "candidates": [
+   "Q2708114",
+   "Q114374241",
+   "Q369086",
+   "Q3772920",
+   "Q19863171"
+  ],
+  "matches": [
+   {
+    "qid": "Q369086",
+    "label": null,
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "qid": "Q369086",
+  "label": null
+ },
+ {
+  "platform": "n64",
+  "title": "Mario Kart 64",
+  "year": 1996,
+  "notability": 4,
+  "candidates": [
+   "Q1046604"
+  ],
+  "matches": [
+   {
+    "qid": "Q1046604",
+    "label": "Mario Kart 64",
+    "years": [
+     1996,
+     1997,
+     2007,
+     2016
+    ]
+   }
+  ],
+  "qid": "Q1046604",
+  "label": "Mario Kart 64"
+ },
+ {
+  "platform": "n64",
+  "title": "Super Smash Bros.",
+  "year": 1999,
+  "notability": 5,
+  "candidates": [
+   "Q2778220",
+   "Q870981",
+   "Q54093632",
+   "Q1052131",
+   "Q843131",
+   "Q1195150",
+   "Q67980165",
+   "Q15693869",
+   "Q6358289",
+   "Q130723328",
+   "Q41359742",
+   "Q105624102",
+   "Q21563306",
+   "Q105623822",
+   "Q105624049",
+   "Q110462126",
+   "Q132540830",
+   "Q12004041"
+  ],
+  "matches": [
+   {
+    "qid": "Q870981",
+    "label": "Super Smash Bros.",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q870981",
+  "label": "Super Smash Bros."
+ },
+ {
+  "platform": "n64",
+  "title": "The Legend of Zelda: Majora's Mask",
+  "year": 2000,
+  "notability": 6,
+  "candidates": [
+   "Q732943",
+   "Q18536859",
+   "Q7746798"
+  ],
+  "matches": [
+   {
+    "qid": "Q732943",
+    "label": "The Legend of Zelda: Majora's Mask",
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "qid": "Q732943",
+  "label": "The Legend of Zelda: Majora's Mask"
+ },
+ {
+  "platform": "n64",
+  "title": "Banjo-Kazooie",
+  "year": 1998,
+  "notability": 7,
+  "candidates": [
+   "Q129000",
+   "Q2715287",
+   "Q806592",
+   "Q64683207",
+   "Q806590",
+   "Q105624063",
+   "Q806598"
+  ],
+  "matches": [
+   {
+    "qid": "Q129000",
+    "label": "Banjo-Kazooie",
+    "years": [
+     1998
+    ]
+   }
+  ],
+  "qid": "Q129000",
+  "label": "Banjo-Kazooie"
+ },
+ {
+  "platform": "n64",
+  "title": "Perfect Dark",
+  "year": 2000,
+  "notability": 8,
+  "candidates": [
+   "Q1408723",
+   "Q3375307",
+   "Q7167962",
+   "Q106547243",
+   "Q7167963",
+   "Q524661",
+   "Q1734019",
+   "Q140901068",
+   "Q137885652",
+   "Q7167964",
+   "Q16587945",
+   "Q11281000"
+  ],
+  "matches": [
+   {
+    "qid": "Q1408723",
+    "label": "Perfect Dark",
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "qid": "Q1408723",
+  "label": "Perfect Dark"
+ },
+ {
+  "platform": "n64",
+  "title": "Star Fox 64",
+  "year": 1997,
+  "notability": 9,
+  "candidates": [
+   "Q1141963",
+   "Q1371603",
+   "Q139856525"
+  ],
+  "matches": [
+   {
+    "qid": "Q1141963",
+    "label": "Star Fox 64",
+    "years": [
+     1997,
+     2003,
+     2007,
+     2008
+    ]
+   }
+  ],
+  "qid": "Q1141963",
+  "label": "Star Fox 64"
+ },
+ {
+  "platform": "n64",
+  "title": "Donkey Kong 64",
+  "year": 1999,
+  "notability": 10,
+  "candidates": [
+   "Q774773"
+  ],
+  "matches": [
+   {
+    "qid": "Q774773",
+    "label": "Donkey Kong 64",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q774773",
+  "label": "Donkey Kong 64"
+ },
+ {
+  "platform": "n64",
+  "title": "Paper Mario",
+  "year": 2000,
+  "notability": 11,
+  "candidates": [
+   "Q149998",
+   "Q764736",
+   "Q3921209",
+   "Q1075255",
+   "Q94397518",
+   "Q23001119",
+   "Q522508",
+   "Q122560431",
+   "Q1181368"
+  ],
+  "matches": [
+   {
+    "qid": "Q149998",
+    "label": "Paper Mario",
+    "years": [
+     2000,
+     2001,
+     2007,
+     2015,
+     2021
+    ]
+   }
+  ],
+  "qid": "Q149998",
+  "label": "Paper Mario"
+ },
+ {
+  "platform": "n64",
+  "title": "Conker's Bad Fur Day",
+  "year": 2001,
+  "notability": 12,
+  "candidates": [
+   "Q841712"
+  ],
+  "matches": [
+   {
+    "qid": "Q841712",
+    "label": "Conker's Bad Fur Day",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q841712",
+  "label": "Conker's Bad Fur Day"
+ },
+ {
+  "platform": "n64",
+  "title": "F-Zero X",
+  "year": 1998,
+  "notability": 13,
+  "candidates": [
+   "Q2609497",
+   "Q108721646"
+  ],
+  "matches": [
+   {
+    "qid": "Q2609497",
+    "label": null,
+    "years": [
+     1998
+    ]
+   }
+  ],
+  "qid": "Q2609497",
+  "label": null
+ },
+ {
+  "platform": "n64",
+  "title": "Diddy Kong Racing",
+  "year": 1997,
+  "notability": 14,
+  "candidates": [
+   "Q545072",
+   "Q20560349",
+   "Q3274291"
+  ],
+  "matches": [
+   {
+    "qid": "Q545072",
+    "label": "Diddy Kong Racing",
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "qid": "Q545072",
+  "label": "Diddy Kong Racing"
+ },
+ {
+  "platform": "n64",
+  "title": "Wave Race 64",
+  "year": 1996,
+  "notability": 15,
+  "candidates": [
+   "Q3142278"
+  ],
+  "matches": [
+   {
+    "qid": "Q3142278",
+    "label": "Wave Race 64",
+    "years": [
+     1996,
+     1997
+    ]
+   }
+  ],
+  "qid": "Q3142278",
+  "label": "Wave Race 64"
+ },
+ {
+  "platform": "n64",
+  "title": "Pokémon Snap",
+  "year": 1999,
+  "notability": 16,
+  "candidates": [
+   "Q1705294",
+   "Q52793624",
+   "Q96357198",
+   "Q18817158"
+  ],
+  "matches": [
+   {
+    "qid": "Q1705294",
+    "label": "Pokémon Snap",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q1705294",
+  "label": "Pokémon Snap"
+ },
+ {
+  "platform": "n64",
+  "title": "Pokémon Stadium",
+  "year": 1998,
+  "notability": 17,
+  "candidates": [
+   "Q2034425",
+   "Q2290930",
+   "Q91064656",
+   "Q3393978"
+  ],
+  "matches": [
+   {
+    "qid": "Q2034425",
+    "label": "Pokémon Stadium",
+    "years": [
+     1999,
+     2000
+    ]
+   }
+  ],
+  "qid": "Q2034425",
+  "label": "Pokémon Stadium"
+ },
+ {
+  "platform": "n64",
+  "title": "Banjo-Tooie",
+  "year": 2000,
+  "notability": 19,
+  "candidates": [
+   "Q806598"
+  ],
+  "matches": [
+   {
+    "qid": "Q806598",
+    "label": "Banjo-Tooie",
+    "years": [
+     2000,
+     2001,
+     2009
+    ]
+   }
+  ],
+  "qid": "Q806598",
+  "label": "Banjo-Tooie"
+ },
+ {
+  "platform": "n64",
+  "title": "Mario Tennis",
+  "year": 2000,
+  "notability": 20,
+  "candidates": [
+   "Q2397985",
+   "Q14906476",
+   "Q2729858",
+   "Q1758628",
+   "Q47208788",
+   "Q2150454",
+   "Q20141656",
+   "Q1156917",
+   "Q136231667",
+   "Q2698314",
+   "Q17116499",
+   "Q16060724"
+  ],
+  "matches": [
+   {
+    "qid": "Q2397985",
+    "label": "Mario Tennis",
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "qid": "Q2397985",
+  "label": "Mario Tennis"
+ },
+ {
+  "platform": "n64",
+  "title": "1080° Snowboarding",
+  "year": 1998,
+  "notability": 21,
+  "candidates": [
+   "Q168615"
+  ],
+  "matches": [
+   {
+    "qid": "Q168615",
+    "label": "1080° Snowboarding",
+    "years": [
+     1998,
+     2008
+    ]
+   }
+  ],
+  "qid": "Q168615",
+  "label": "1080° Snowboarding"
+ },
+ {
+  "platform": "n64",
+  "title": "Yoshi's Story",
+  "year": 1997,
+  "notability": 22,
+  "candidates": [
+   "Q2337280"
+  ],
+  "matches": [
+   {
+    "qid": "Q2337280",
+    "label": null,
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "qid": "Q2337280",
+  "label": null
+ },
+ {
+  "platform": "n64",
+  "title": "Turok: Dinosaur Hunter",
+  "year": 1997,
+  "notability": 23,
+  "candidates": [
+   "Q2431467",
+   "Q131941073"
+  ],
+  "matches": [
+   {
+    "qid": "Q2431467",
+    "label": "Turok: Dinosaur Hunter",
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "qid": "Q2431467",
+  "label": "Turok: Dinosaur Hunter"
+ },
+ {
+  "platform": "n64",
+  "title": "Sin and Punishment",
+  "year": 2000,
+  "notability": 24,
+  "candidates": [
+   "Q3099600",
+   "Q137434684",
+   "Q2732145",
+   "Q119038398",
+   "Q124390023",
+   "Q118276201"
+  ],
+  "matches": [
+   {
+    "qid": "Q3099600",
+    "label": "Sin and Punishment",
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "qid": "Q3099600",
+  "label": "Sin and Punishment"
+ },
+ {
+  "platform": "n64",
+  "title": "Ogre Battle 64",
+  "year": 1999,
+  "notability": 25,
+  "candidates": [
+   "Q2295559"
+  ],
+  "matches": [
+   {
+    "qid": "Q2295559",
+    "label": "Ogre Battle 64: Person of Lordly Caliber",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q2295559",
+  "label": "Ogre Battle 64: Person of Lordly Caliber"
+ },
+ {
+  "platform": "ps1",
+  "title": "Final Fantasy VII",
+  "year": 1997,
+  "notability": 1,
+  "candidates": [
+   "Q214232",
+   "Q2647594",
+   "Q245006",
+   "Q20155152",
+   "Q76874839",
+   "Q112617712",
+   "Q115813551",
+   "Q105689376",
+   "Q96377920",
+   "Q109690723",
+   "Q112663549",
+   "Q2302850",
+   "Q387674",
+   "Q3269066",
+   "Q134913346",
+   "Q122208228",
+   "Q134912631",
+   "Q122578166",
+   "Q97198578",
+   "Q107674014"
+  ],
+  "matches": [
+   {
+    "qid": "Q214232",
+    "label": "Final Fantasy VII",
+    "years": [
+     1997,
+     1998,
+     2013,
+     2015,
+     2016,
+     2019
+    ]
+   }
+  ],
+  "qid": "Q214232",
+  "label": "Final Fantasy VII"
+ },
+ {
+  "platform": "ps1",
+  "title": "Metal Gear Solid",
+  "year": 1998,
+  "notability": 2,
+  "candidates": [
+   "Q6582527",
+   "Q2600361",
+   "Q717600",
+   "Q247935",
+   "Q907226",
+   "Q66734074",
+   "Q846167",
+   "Q1880634",
+   "Q2005935",
+   "Q1996911",
+   "Q11879017",
+   "Q2480047",
+   "Q105270154",
+   "Q1081217",
+   "Q11343679",
+   "Q3307220",
+   "Q12636722",
+   "Q3280262",
+   "Q2713469",
+   "Q3855447"
+  ],
+  "matches": [
+   {
+    "qid": "Q6582527",
+    "label": "Metal Gear Solid",
+    "years": [
+     1998
+    ]
+   }
+  ],
+  "qid": "Q6582527",
+  "label": "Metal Gear Solid"
+ },
+ {
+  "platform": "ps1",
+  "title": "Resident Evil",
+  "year": 1996,
+  "notability": 3,
+  "candidates": [
+   "Q220260",
+   "Q1248594",
+   "Q622336",
+   "Q1056069",
+   "Q17520607",
+   "Q275950",
+   "Q141208487",
+   "Q153484",
+   "Q739784",
+   "Q733992",
+   "Q1276325",
+   "Q1138864",
+   "Q109303478",
+   "Q18203301",
+   "Q1050284",
+   "Q1140712",
+   "Q1152909",
+   "Q2088616",
+   "Q1053024",
+   "Q3282068"
+  ],
+  "matches": [
+   {
+    "qid": "Q1248594",
+    "label": "Resident Evil",
+    "years": [
+     1996,
+     1997
+    ]
+   }
+  ],
+  "qid": "Q1248594",
+  "label": "Resident Evil"
+ },
+ {
+  "platform": "ps1",
+  "title": "Gran Turismo",
+  "year": 1997,
+  "notability": 4,
+  "candidates": [
+   "Q1152420",
+   "Q652928",
+   "Q744620",
+   "Q13026135",
+   "Q944320",
+   "Q845695",
+   "Q773395",
+   "Q980535",
+   "Q975773",
+   "Q5884557",
+   "Q21563294",
+   "Q1953864",
+   "Q1369501",
+   "Q112909147",
+   "Q2324928",
+   "Q2472234",
+   "Q3175685",
+   "Q18345763",
+   "Q122144130",
+   "Q119577024"
+  ],
+  "matches": [
+   {
+    "qid": "Q944320",
+    "label": null,
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "qid": "Q944320",
+  "label": null
+ },
+ {
+  "platform": "ps1",
+  "title": "Tekken 3",
+  "year": 1997,
+  "notability": 6,
+  "candidates": [
+   "Q1062106",
+   "Q499635",
+   "Q7695393",
+   "Q869960"
+  ],
+  "matches": [
+   {
+    "qid": "Q1062106",
+    "label": "Tekken 3",
+    "years": [
+     1996,
+     1997,
+     1998
+    ]
+   }
+  ],
+  "qid": "Q1062106",
+  "label": "Tekken 3"
+ },
+ {
+  "platform": "ps1",
+  "title": "Final Fantasy VIII",
+  "year": 1999,
+  "notability": 7,
+  "candidates": [
+   "Q245006",
+   "Q76874839",
+   "Q1650323",
+   "Q2778533"
+  ],
+  "matches": [
+   {
+    "qid": "Q245006",
+    "label": "Final Fantasy VIII",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q245006",
+  "label": "Final Fantasy VIII"
+ },
+ {
+  "platform": "ps1",
+  "title": "Silent Hill",
+  "year": 1999,
+  "notability": 8,
+  "candidates": [
+   "Q753164",
+   "Q21661523",
+   "Q236821",
+   "Q752835",
+   "Q637842",
+   "Q837338",
+   "Q613124",
+   "Q840699",
+   "Q1754133",
+   "Q938935",
+   "Q288596",
+   "Q1765369",
+   "Q134881642",
+   "Q114772020",
+   "Q1058928",
+   "Q3960498",
+   "Q114770599",
+   "Q3283277",
+   "Q61314193",
+   "Q383724"
+  ],
+  "matches": [
+   {
+    "qid": "Q753164",
+    "label": "Silent Hill",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q753164",
+  "label": "Silent Hill"
+ },
+ {
+  "platform": "ps1",
+  "title": "Castlevania: Symphony of the Night",
+  "year": 1997,
+  "notability": 9,
+  "candidates": [
+   "Q2007022",
+   "Q5304703"
+  ],
+  "matches": [
+   {
+    "qid": "Q2007022",
+    "label": null,
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "qid": "Q2007022",
+  "label": null
+ },
+ {
+  "platform": "ps1",
+  "title": "Resident Evil 2",
+  "year": 1998,
+  "notability": 10,
+  "candidates": [
+   "Q733992",
+   "Q54920200",
+   "Q106810849",
+   "Q61448741",
+   "Q61448975",
+   "Q6106424",
+   "Q161400",
+   "Q3933365",
+   "Q122538777",
+   "Q91325446",
+   "Q27790946"
+  ],
+  "matches": [
+   {
+    "qid": "Q733992",
+    "label": "Resident Evil 2",
+    "years": [
+     1998
+    ]
+   }
+  ],
+  "qid": "Q733992",
+  "label": "Resident Evil 2"
+ },
+ {
+  "platform": "ps1",
+  "title": "Final Fantasy IX",
+  "year": 2000,
+  "notability": 13,
+  "candidates": [
+   "Q474573",
+   "Q4845252"
+  ],
+  "matches": [
+   {
+    "qid": "Q474573",
+    "label": null,
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "qid": "Q474573",
+  "label": null
+ },
+ {
+  "platform": "ps1",
+  "title": "Gran Turismo 2",
+  "year": 1999,
+  "notability": 14,
+  "candidates": [
+   "Q980535",
+   "Q124463149"
+  ],
+  "matches": [
+   {
+    "qid": "Q980535",
+    "label": "Gran Turismo 2",
+    "years": [
+     1999,
+     2000
+    ]
+   }
+  ],
+  "qid": "Q980535",
+  "label": "Gran Turismo 2"
+ },
+ {
+  "platform": "ps1",
+  "title": "Crash Bandicoot 2: Cortex Strikes Back",
+  "year": 1997,
+  "notability": 15,
+  "candidates": [
+   "Q569822"
+  ],
+  "matches": [
+   {
+    "qid": "Q569822",
+    "label": "Crash Bandicoot 2: Cortex Strikes Back",
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "qid": "Q569822",
+  "label": "Crash Bandicoot 2: Cortex Strikes Back"
+ },
+ {
+  "platform": "ps1",
+  "title": "Chrono Cross",
+  "year": 1999,
+  "notability": 16,
+  "candidates": [
+   "Q1088142",
+   "Q111021896",
+   "Q104224132"
+  ],
+  "matches": [
+   {
+    "qid": "Q1088142",
+    "label": "Chrono Cross",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q1088142",
+  "label": "Chrono Cross"
+ },
+ {
+  "platform": "ps1",
+  "title": "Xenogears",
+  "year": 1998,
+  "notability": 17,
+  "candidates": [
+   "Q583360",
+   "Q8043582"
+  ],
+  "matches": [
+   {
+    "qid": "Q583360",
+    "label": "Xenogears",
+    "years": [
+     1998
+    ]
+   }
+  ],
+  "qid": "Q583360",
+  "label": "Xenogears"
+ },
+ {
+  "platform": "ps1",
+  "title": "Vagrant Story",
+  "year": 2000,
+  "notability": 19,
+  "candidates": [
+   "Q1536626",
+   "Q11336771"
+  ],
+  "matches": [
+   {
+    "qid": "Q1536626",
+    "label": "Vagrant Story",
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "qid": "Q1536626",
+  "label": "Vagrant Story"
+ },
+ {
+  "platform": "ps1",
+  "title": "Suikoden II",
+  "year": 1998,
+  "notability": 20,
+  "candidates": [
+   "Q3503174",
+   "Q3503171",
+   "Q133796354",
+   "Q16678173"
+  ],
+  "matches": [
+   {
+    "qid": "Q3503174",
+    "label": "Suikoden II",
+    "years": [
+     1998
+    ]
+   }
+  ],
+  "qid": "Q3503174",
+  "label": "Suikoden II"
+ },
+ {
+  "platform": "ps1",
+  "title": "Driver",
+  "year": 1999,
+  "notability": 22,
+  "candidates": [
+   "Q16869674",
+   "Q2293778",
+   "Q352388",
+   "Q508846",
+   "Q216541",
+   "Q1033951",
+   "Q83863160",
+   "Q2309900",
+   "Q10349745",
+   "Q378622",
+   "Q23640580",
+   "Q284786",
+   "Q19587362",
+   "Q1770004",
+   "Q205647",
+   "Q1988780",
+   "Q104774451",
+   "Q376217",
+   "Q1750961",
+   "Q421748"
+  ],
+  "matches": [
+   {
+    "qid": "Q2293778",
+    "label": "Driver",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q2293778",
+  "label": "Driver"
+ },
+ {
+  "platform": "ps1",
+  "title": "Wipeout",
+  "year": 1995,
+  "notability": 23,
+  "candidates": [
+   "Q8026681",
+   "Q8026685",
+   "Q52497",
+   "Q1416204",
+   "Q286205",
+   "Q839768",
+   "Q3070290",
+   "Q7883261",
+   "Q3569423",
+   "Q2539345",
+   "Q3009561",
+   "Q2700365",
+   "Q8483834",
+   "Q26874916",
+   "Q3015143",
+   "Q8026683",
+   "Q114512824",
+   "Q56826750",
+   "Q8026682",
+   "Q8026700"
+  ],
+  "matches": [
+   {
+    "qid": "Q286205",
+    "label": null,
+    "years": [
+     1995
+    ]
+   }
+  ],
+  "qid": "Q286205",
+  "label": null
+ },
+ {
+  "platform": "ps1",
+  "title": "Ridge Racer",
+  "year": 1993,
+  "notability": 24,
+  "candidates": [
+   "Q15087581",
+   "Q3431726",
+   "Q6147237",
+   "Q389781",
+   "Q925448",
+   "Q7332695",
+   "Q2708202",
+   "Q2698346",
+   "Q3278829",
+   "Q909812",
+   "Q3130903",
+   "Q3132524",
+   "Q7332696",
+   "Q86106193",
+   "Q29951626",
+   "Q1192914",
+   "Q610676",
+   "Q130348204",
+   "Q111981688",
+   "Q114487863"
+  ],
+  "matches": [
+   {
+    "qid": "Q15087581",
+    "label": "Ridge Racer",
+    "years": [
+     1993,
+     1994,
+     1995
+    ]
+   }
+  ],
+  "qid": "Q15087581",
+  "label": "Ridge Racer"
+ },
+ {
+  "platform": "ps1",
+  "title": "Tekken 2",
+  "year": 1995,
+  "notability": 25,
+  "candidates": [
+   "Q589359",
+   "Q18154863",
+   "Q7695391"
+  ],
+  "matches": [
+   {
+    "qid": "Q589359",
+    "label": "Tekken 2",
+    "years": [
+     1995
+    ]
+   }
+  ],
+  "qid": "Q589359",
+  "label": "Tekken 2"
+ },
+ {
+  "platform": "ps1",
+  "title": "Ape Escape",
+  "year": 1999,
+  "notability": 27,
+  "candidates": [
+   "Q5783242",
+   "Q960773",
+   "Q63175157",
+   "Q2316722",
+   "Q618121",
+   "Q7202967",
+   "Q4779275",
+   "Q2858157",
+   "Q4779276",
+   "Q16348215",
+   "Q4779273",
+   "Q3620575",
+   "Q2858156",
+   "Q92775824"
+  ],
+  "matches": [
+   {
+    "qid": "Q960773",
+    "label": "Ape Escape",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q960773",
+  "label": "Ape Escape"
+ },
+ {
+  "platform": "ps1",
+  "title": "Um Jammer Lammy",
+  "year": 1999,
+  "notability": 28,
+  "candidates": [
+   "Q2164073",
+   "Q136680736"
+  ],
+  "matches": [
+   {
+    "qid": "Q2164073",
+    "label": "Um Jammer Lammy",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "qid": "Q2164073",
+  "label": "Um Jammer Lammy"
+ },
+ {
+  "platform": "ps1",
+  "title": "PaRappa the Rapper",
+  "year": 1996,
+  "notability": 29,
+  "candidates": [
+   "Q1340462",
+   "Q113815279",
+   "Q16962668",
+   "Q3888350",
+   "Q109284113",
+   "Q113462992",
+   "Q7121310",
+   "Q7135752",
+   "Q16962673",
+   "Q136688119"
+  ],
+  "matches": [
+   {
+    "qid": "Q1340462",
+    "label": "PaRappa the Rapper",
+    "years": [
+     1996
+    ]
+   }
+  ],
+  "qid": "Q1340462",
+  "label": "PaRappa the Rapper"
+ },
+ {
+  "platform": "ps1",
+  "title": "Abe's Oddysee",
+  "year": 1997,
+  "notability": 30,
+  "candidates": [
+   "Q1064350"
+  ],
+  "matches": [
+   {
+    "qid": "Q1064350",
+    "label": "Oddworld: Abe's Oddysee",
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "qid": "Q1064350",
+  "label": "Oddworld: Abe's Oddysee"
+ },
+ {
+  "platform": "ps2",
+  "title": "Grand Theft Auto: San Andreas",
+  "year": 2004,
+  "notability": 1,
+  "candidates": [
+   "Q83265",
+   "Q109240155",
+   "Q5595150",
+   "Q64547511",
+   "Q101003016",
+   "Q105860693",
+   "Q105857642",
+   "Q2090000",
+   "Q55675394",
+   "Q109848777",
+   "Q2995713",
+   "Q3174820"
+  ],
+  "matches": [
+   {
+    "qid": "Q83265",
+    "label": "Grand Theft Auto: San Andreas",
+    "years": [
+     2004,
+     2005,
+     2008,
+     2010,
+     2012
+    ]
+   }
+  ],
+  "qid": "Q83265",
+  "label": "Grand Theft Auto: San Andreas"
+ },
+ {
+  "platform": "ps2",
+  "title": "Shadow of the Colossus",
+  "year": 2005,
+  "notability": 2,
+  "candidates": [
+   "Q846051",
+   "Q47474153",
+   "Q3267491",
+   "Q65422741"
+  ],
+  "matches": [
+   {
+    "qid": "Q846051",
+    "label": "Shadow of the Colossus",
+    "years": [
+     2005
+    ]
+   }
+  ],
+  "qid": "Q846051",
+  "label": "Shadow of the Colossus"
+ },
+ {
+  "platform": "ps2",
+  "title": "Ico",
+  "year": 2001,
+  "notability": 3,
+  "candidates": [
+   "Q1324448",
+   "Q42302581",
+   "Q104545978",
+   "Q47164141",
+   "Q37528297",
+   "Q6581097",
+   "Q3242920",
+   "Q1807902",
+   "Q25367852",
+   "Q107475868",
+   "Q132137",
+   "Q218414",
+   "Q729366",
+   "Q273138",
+   "Q44148",
+   "Q211236",
+   "Q3147728",
+   "Q79857",
+   "Q5986754",
+   "Q48192"
+  ],
+  "matches": [
+   {
+    "qid": "Q1324448",
+    "label": "Ico",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q1324448",
+  "label": "Ico"
+ },
+ {
+  "platform": "ps2",
+  "title": "Metal Gear Solid 3: Snake Eater",
+  "year": 2004,
+  "notability": 5,
+  "candidates": [
+   "Q247935",
+   "Q118645540",
+   "Q126897634",
+   "Q6822641",
+   "Q6822639",
+   "Q124526599"
+  ],
+  "matches": [
+   {
+    "qid": "Q247935",
+    "label": "Metal Gear Solid 3: Snake Eater",
+    "years": [
+     2004
+    ]
+   }
+  ],
+  "qid": "Q247935",
+  "label": "Metal Gear Solid 3: Snake Eater"
+ },
+ {
+  "platform": "ps2",
+  "title": "Grand Theft Auto III",
+  "year": 2001,
+  "notability": 6,
+  "candidates": [
+   "Q149106",
+   "Q764070",
+   "Q109238093",
+   "Q105857952",
+   "Q2295894",
+   "Q109385526"
+  ],
+  "matches": [
+   {
+    "qid": "Q149106",
+    "label": "Grand Theft Auto III",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q149106",
+  "label": "Grand Theft Auto III"
+ },
+ {
+  "platform": "ps2",
+  "title": "Grand Theft Auto: Vice City",
+  "year": 2002,
+  "notability": 7,
+  "candidates": [
+   "Q94671",
+   "Q94640",
+   "Q109240477",
+   "Q2324882",
+   "Q2460366",
+   "Q5595151",
+   "Q5595152",
+   "Q3489369",
+   "Q2324862",
+   "Q27963048"
+  ],
+  "matches": [
+   {
+    "qid": "Q94671",
+    "label": "Grand Theft Auto: Vice City",
+    "years": [
+     2002
+    ]
+   }
+  ],
+  "qid": "Q94671",
+  "label": "Grand Theft Auto: Vice City"
+ },
+ {
+  "platform": "ps2",
+  "title": "God of War",
+  "year": 2005,
+  "notability": 8,
+  "candidates": [
+   "Q817369",
+   "Q18345138",
+   "Q1129452",
+   "Q41863069",
+   "Q390137",
+   "Q317846",
+   "Q2252689",
+   "Q1341921",
+   "Q2298167",
+   "Q573779",
+   "Q573768",
+   "Q13263462",
+   "Q111807441",
+   "Q30326663",
+   "Q11682149",
+   "Q107424186",
+   "Q5576061",
+   "Q6439957",
+   "Q107424185",
+   "Q107424184"
+  ],
+  "matches": [
+   {
+    "qid": "Q817369",
+    "label": "God of War",
+    "years": [
+     2005
+    ]
+   }
+  ],
+  "qid": "Q817369",
+  "label": "God of War"
+ },
+ {
+  "platform": "ps2",
+  "title": "Gran Turismo 3: A-Spec",
+  "year": 2001,
+  "notability": 10,
+  "candidates": [
+   "Q975773"
+  ],
+  "matches": [
+   {
+    "qid": "Q975773",
+    "label": "Gran Turismo 3: A-Spec",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q975773",
+  "label": "Gran Turismo 3: A-Spec"
+ },
+ {
+  "platform": "ps2",
+  "title": "Metal Gear Solid 2: Sons of Liberty",
+  "year": 2001,
+  "notability": 11,
+  "candidates": [
+   "Q907226",
+   "Q3855448",
+   "Q135014173",
+   "Q126897611",
+   "Q6822631",
+   "Q14945833"
+  ],
+  "matches": [
+   {
+    "qid": "Q907226",
+    "label": "Metal Gear Solid 2: Sons of Liberty",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q907226",
+  "label": "Metal Gear Solid 2: Sons of Liberty"
+ },
+ {
+  "platform": "ps2",
+  "title": "Devil May Cry",
+  "year": 2001,
+  "notability": 12,
+  "candidates": [
+   "Q840889",
+   "Q55076932",
+   "Q751936",
+   "Q839794",
+   "Q583601",
+   "Q3291789",
+   "Q96376296",
+   "Q4037272",
+   "Q386361",
+   "Q3493488",
+   "Q122898407",
+   "Q436567",
+   "Q96033312",
+   "Q112064791",
+   "Q130612726",
+   "Q121009209",
+   "Q100391176",
+   "Q436573",
+   "Q105854856",
+   "Q1826997"
+  ],
+  "matches": [
+   {
+    "qid": "Q840889",
+    "label": "Devil May Cry",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q840889",
+  "label": "Devil May Cry"
+ },
+ {
+  "platform": "ps2",
+  "title": "Okami",
+  "year": 2006,
+  "notability": 13,
+  "candidates": [
+   "Q385184",
+   "Q644201",
+   "Q1204015",
+   "Q92203821",
+   "Q26447306",
+   "Q39241338",
+   "Q12867780",
+   "Q1054901",
+   "Q27242839",
+   "Q25539390",
+   "Q63228460",
+   "Q15872248",
+   "Q108371256",
+   "Q26267771",
+   "Q7081763",
+   "Q385228",
+   "Q36708867",
+   "Q140588457",
+   "Q14848263",
+   "Q131436208"
+  ],
+  "matches": [
+   {
+    "qid": "Q385184",
+    "label": "Ōkami",
+    "years": [
+     2006,
+     2007,
+     2008,
+     2009
+    ]
+   }
+  ],
+  "qid": "Q385184",
+  "label": "Ōkami"
+ },
+ {
+  "platform": "ps2",
+  "title": "Persona 4",
+  "year": 2008,
+  "notability": 14,
+  "candidates": [
+   "Q568609",
+   "Q16746773",
+   "Q63228434",
+   "Q3375698",
+   "Q15818154",
+   "Q134739905",
+   "Q3900174",
+   "Q18454925",
+   "Q105865429",
+   "Q125743735",
+   "Q6593901"
+  ],
+  "matches": [
+   {
+    "qid": "Q568609",
+    "label": "Persona 4",
+    "years": [
+     2008,
+     2009,
+     2012,
+     2013,
+     2022
+    ]
+   }
+  ],
+  "qid": "Q568609",
+  "label": "Persona 4"
+ },
+ {
+  "platform": "ps2",
+  "title": "Persona 3",
+  "year": 2006,
+  "notability": 15,
+  "candidates": [
+   "Q910889",
+   "Q63120969",
+   "Q47473998",
+   "Q11337498",
+   "Q131144309",
+   "Q11282097",
+   "Q121368251",
+   "Q15648596",
+   "Q15041365",
+   "Q19776549",
+   "Q17152104",
+   "Q15648591",
+   "Q56277292",
+   "Q11446568",
+   "Q115231904",
+   "Q119294958",
+   "Q460528",
+   "Q20642796",
+   "Q115231763",
+   "Q20660948"
+  ],
+  "matches": [
+   {
+    "qid": "Q910889",
+    "label": "Persona 3",
+    "years": [
+     2006,
+     2007,
+     2008
+    ]
+   }
+  ],
+  "qid": "Q910889",
+  "label": "Persona 3"
+ },
+ {
+  "platform": "ps2",
+  "title": "Resident Evil 4",
+  "year": 2005,
+  "notability": 16,
+  "candidates": [
+   "Q275950",
+   "Q112231148",
+   "Q66770124",
+   "Q112064127",
+   "Q110073859",
+   "Q130723385",
+   "Q110019175",
+   "Q324557",
+   "Q97342014",
+   "Q25400234"
+  ],
+  "matches": [
+   {
+    "qid": "Q275950",
+    "label": "Resident Evil 4",
+    "years": [
+     2005,
+     2007,
+     2014
+    ]
+   }
+  ],
+  "qid": "Q275950",
+  "label": "Resident Evil 4"
+ },
+ {
+  "platform": "ps2",
+  "title": "Silent Hill 2",
+  "year": 2001,
+  "notability": 17,
+  "candidates": [
+   "Q752835",
+   "Q114770599",
+   "Q61314193",
+   "Q9336890",
+   "Q64017",
+   "Q130530685",
+   "Q130530716",
+   "Q124128613",
+   "Q58155311",
+   "Q130525278",
+   "Q130525207"
+  ],
+  "matches": [
+   {
+    "qid": "Q752835",
+    "label": "Silent Hill 2",
+    "years": [
+     2001,
+     2002
+    ]
+   }
+  ],
+  "qid": "Q752835",
+  "label": "Silent Hill 2"
+ },
+ {
+  "platform": "ps2",
+  "title": "Jak and Daxter: The Precursor Legacy",
+  "year": 2001,
+  "notability": 18,
+  "candidates": [
+   "Q1784103"
+  ],
+  "matches": [
+   {
+    "qid": "Q1784103",
+    "label": "Jak and Daxter: The Precursor Legacy",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q1784103",
+  "label": "Jak and Daxter: The Precursor Legacy"
+ },
+ {
+  "platform": "ps2",
+  "title": "Burnout 3: Takedown",
+  "year": 2004,
+  "notability": 20,
+  "candidates": [
+   "Q2079604",
+   "Q1993603"
+  ],
+  "matches": [
+   {
+    "qid": "Q2079604",
+    "label": "Burnout 3: Takedown",
+    "years": [
+     2004
+    ]
+   }
+  ],
+  "qid": "Q2079604",
+  "label": "Burnout 3: Takedown"
+ },
+ {
+  "platform": "ps2",
+  "title": "Tekken 5",
+  "year": 2004,
+  "notability": 21,
+  "candidates": [
+   "Q1052488",
+   "Q2290448"
+  ],
+  "matches": [
+   {
+    "qid": "Q1052488",
+    "label": "Tekken 5",
+    "years": [
+     2005
+    ]
+   }
+  ],
+  "qid": "Q1052488",
+  "label": "Tekken 5"
+ },
+ {
+  "platform": "ps2",
+  "title": "SSX Tricky",
+  "year": 2001,
+  "notability": 23,
+  "candidates": [
+   "Q2377020"
+  ],
+  "matches": [
+   {
+    "qid": "Q2377020",
+    "label": "SSX Tricky",
+    "years": [
+     2001
+    ]
+   }
+  ],
+  "qid": "Q2377020",
+  "label": "SSX Tricky"
+ },
+ {
+  "platform": "ps2",
+  "title": "Katamari Damacy",
+  "year": 2004,
+  "notability": 24,
+  "candidates": [
+   "Q1206519",
+   "Q6375076",
+   "Q93133333",
+   "Q6375079",
+   "Q133893543"
+  ],
+  "matches": [
+   {
+    "qid": "Q1206519",
+    "label": "Katamari Damacy",
+    "years": [
+     2004
+    ]
+   }
+  ],
+  "qid": "Q1206519",
+  "label": "Katamari Damacy"
+ },
+ {
+  "platform": "ps2",
+  "title": "Dragon Quest VIII",
+  "year": 2004,
+  "notability": 25,
+  "candidates": [
+   "Q1948338"
+  ],
+  "matches": [
+   {
+    "qid": "Q1948338",
+    "label": "Dragon Quest VIII",
+    "years": [
+     2004
+    ]
+   }
+  ],
+  "qid": "Q1948338",
+  "label": "Dragon Quest VIII"
+ },
+ {
+  "platform": "switch",
+  "title": "The Legend of Zelda: Breath of the Wild",
+  "year": 2017,
+  "notability": 1,
+  "candidates": [
+   "Q17185964",
+   "Q64577191",
+   "Q134726586",
+   "Q103821157",
+   "Q110465354",
+   "Q116855305",
+   "Q116855235",
+   "Q114273433"
+  ],
+  "matches": [
+   {
+    "qid": "Q17185964",
+    "label": "The Legend of Zelda: Breath of the Wild",
+    "years": [
+     2017
+    ]
+   }
+  ],
+  "qid": "Q17185964",
+  "label": "The Legend of Zelda: Breath of the Wild"
+ },
+ {
+  "platform": "switch",
+  "title": "Super Mario Odyssey",
+  "year": 2017,
+  "notability": 2,
+  "candidates": [
+   "Q28234671",
+   "Q55525413"
+  ],
+  "matches": [
+   {
+    "qid": "Q28234671",
+    "label": "Super Mario Odyssey",
+    "years": [
+     2017
+    ]
+   }
+  ],
+  "qid": "Q28234671",
+  "label": "Super Mario Odyssey"
+ },
+ {
+  "platform": "switch",
+  "title": "Mario Kart 8 Deluxe",
+  "year": 2017,
+  "notability": 3,
+  "candidates": [
+   "Q28321447",
+   "Q111307774"
+  ],
+  "matches": [
+   {
+    "qid": "Q28321447",
+    "label": "Mario Kart 8 Deluxe",
+    "years": [
+     2017
+    ]
+   }
+  ],
+  "qid": "Q28321447",
+  "label": "Mario Kart 8 Deluxe"
+ },
+ {
+  "platform": "switch",
+  "title": "Animal Crossing: New Horizons",
+  "year": 2020,
+  "notability": 4,
+  "candidates": [
+   "Q64566657",
+   "Q108905220",
+   "Q114281608",
+   "Q114199301"
+  ],
+  "matches": [
+   {
+    "qid": "Q64566657",
+    "label": "Animal Crossing: New Horizons",
+    "years": [
+     2020,
+     2026
+    ]
+   }
+  ],
+  "qid": "Q64566657",
+  "label": "Animal Crossing: New Horizons"
+ },
+ {
+  "platform": "switch",
+  "title": "Super Smash Bros. Ultimate",
+  "year": 2018,
+  "notability": 5,
+  "candidates": [
+   "Q54093632",
+   "Q105624102",
+   "Q105623822",
+   "Q105624049",
+   "Q132540830"
+  ],
+  "matches": [
+   {
+    "qid": "Q54093632",
+    "label": "Super Smash Bros. Ultimate",
+    "years": [
+     2018
+    ]
+   }
+  ],
+  "qid": "Q54093632",
+  "label": "Super Smash Bros. Ultimate"
+ },
+ {
+  "platform": "switch",
+  "title": "The Legend of Zelda: Tears of the Kingdom",
+  "year": 2023,
+  "notability": 6,
+  "candidates": [
+   "Q64577191",
+   "Q134726574"
+  ],
+  "matches": [
+   {
+    "qid": "Q64577191",
+    "label": "The Legend of Zelda: Tears of the Kingdom",
+    "years": [
+     2023
+    ]
+   }
+  ],
+  "qid": "Q64577191",
+  "label": "The Legend of Zelda: Tears of the Kingdom"
+ },
+ {
+  "platform": "switch",
+  "title": "Splatoon 2",
+  "year": 2017,
+  "notability": 7,
+  "candidates": [
+   "Q28129061",
+   "Q65040609",
+   "Q114131726"
+  ],
+  "matches": [
+   {
+    "qid": "Q28129061",
+    "label": "Splatoon 2",
+    "years": [
+     2017
+    ]
+   }
+  ],
+  "qid": "Q28129061",
+  "label": "Splatoon 2"
+ },
+ {
+  "platform": "switch",
+  "title": "Super Mario Maker 2",
+  "year": 2019,
+  "notability": 8,
+  "candidates": [
+   "Q61831178"
+  ],
+  "matches": [
+   {
+    "qid": "Q61831178",
+    "label": "Super Mario Maker 2",
+    "years": [
+     2019
+    ]
+   }
+  ],
+  "qid": "Q61831178",
+  "label": "Super Mario Maker 2"
+ },
+ {
+  "platform": "switch",
+  "title": "Pokémon Sword and Shield",
+  "year": 2019,
+  "notability": 9,
+  "candidates": [
+   "Q61897498",
+   "Q96336612",
+   "Q96335562",
+   "Q96440106"
+  ],
+  "matches": [
+   {
+    "qid": "Q61897498",
+    "label": "Pokémon Sword and Shield",
+    "years": [
+     2019
+    ]
+   }
+  ],
+  "qid": "Q61897498",
+  "label": "Pokémon Sword and Shield"
+ },
+ {
+  "platform": "switch",
+  "title": "Metroid Dread",
+  "year": 2021,
+  "notability": 10,
+  "candidates": [
+   "Q17006956",
+   "Q107250060"
+  ],
+  "matches": [
+   {
+    "qid": "Q17006956",
+    "label": "Metroid Dread",
+    "years": [
+     2021
+    ]
+   }
+  ],
+  "qid": "Q17006956",
+  "label": "Metroid Dread"
+ },
+ {
+  "platform": "switch",
+  "title": "Fire Emblem: Three Houses",
+  "year": 2019,
+  "notability": 11,
+  "candidates": [
+   "Q54960673"
+  ],
+  "matches": [
+   {
+    "qid": "Q54960673",
+    "label": "Fire Emblem: Three Houses",
+    "years": [
+     2019
+    ]
+   }
+  ],
+  "qid": "Q54960673",
+  "label": "Fire Emblem: Three Houses"
+ },
+ {
+  "platform": "switch",
+  "title": "Hollow Knight",
+  "year": 2018,
+  "notability": 13,
+  "candidates": [
+   "Q29300592",
+   "Q63294487",
+   "Q123017178",
+   "Q137438185",
+   "Q123378943",
+   "Q116532051",
+   "Q137398334",
+   "Q140322242",
+   "Q136222979"
+  ],
+  "matches": [
+   {
+    "qid": "Q29300592",
+    "label": null,
+    "years": [
+     2017,
+     2018,
+     2026
+    ]
+   }
+  ],
+  "qid": "Q29300592",
+  "label": null
+ },
+ {
+  "platform": "switch",
+  "title": "Stardew Valley",
+  "year": 2017,
+  "notability": 14,
+  "candidates": [
+   "Q23013817",
+   "Q66498376",
+   "Q130731915",
+   "Q85933533",
+   "Q131179339",
+   "Q105654089",
+   "Q130486017",
+   "Q130541304",
+   "Q131299216",
+   "Q122704284"
+  ],
+  "matches": [
+   {
+    "qid": "Q23013817",
+    "label": "Stardew Valley",
+    "years": [
+     2016,
+     2017,
+     2018,
+     2019,
+     2025
+    ]
+   }
+  ],
+  "qid": "Q23013817",
+  "label": "Stardew Valley"
+ },
+ {
+  "platform": "switch",
+  "title": "Celeste",
+  "year": 2018,
+  "notability": 15,
+  "candidates": [
+   "Q3664222",
+   "Q28451532",
+   "Q453136",
+   "Q1052860",
+   "Q18646238",
+   "Q373160",
+   "Q99593577",
+   "Q1052863",
+   "Q128995873",
+   "Q119056146",
+   "Q140820181",
+   "Q320341",
+   "Q1065524",
+   "Q212957",
+   "Q975056",
+   "Q29044277",
+   "Q106278667",
+   "Q76642775",
+   "Q5057870",
+   "Q5947276"
+  ],
+  "matches": [
+   {
+    "qid": "Q28451532",
+    "label": "Celeste",
+    "years": [
+     2018
+    ]
+   }
+  ],
+  "qid": "Q28451532",
+  "label": "Celeste"
+ },
+ {
+  "platform": "switch",
+  "title": "Hades",
+  "year": 2020,
+  "notability": 16,
+  "candidates": [
+   "Q2569513",
+   "Q9284892",
+   "Q1418963",
+   "Q41410",
+   "Q59756366",
+   "Q1521549",
+   "Q2328889",
+   "Q3798506",
+   "Q28602572",
+   "Q115641620",
+   "Q1294240",
+   "Q5637772",
+   "Q112572697",
+   "Q7205675",
+   "Q26379870",
+   "Q5637774",
+   "Q5637785",
+   "Q20982891",
+   "Q5637777",
+   "Q2524327"
+  ],
+  "matches": [
+   {
+    "qid": "Q59756366",
+    "label": null,
+    "years": [
+     2020
+    ]
+   }
+  ],
+  "qid": "Q59756366",
+  "label": null
+ },
+ {
+  "platform": "switch",
+  "title": "Luigi's Mansion 3",
+  "year": 2019,
+  "notability": 17,
+  "candidates": [
+   "Q56641109",
+   "Q105863605"
+  ],
+  "matches": [
+   {
+    "qid": "Q56641109",
+    "label": "Luigi's Mansion 3",
+    "years": [
+     2019
+    ]
+   }
+  ],
+  "qid": "Q56641109",
+  "label": "Luigi's Mansion 3"
+ },
+ {
+  "platform": "switch",
+  "title": "Super Mario Party",
+  "year": 2018,
+  "notability": 18,
+  "candidates": [
+   "Q54936079",
+   "Q126723011"
+  ],
+  "matches": [
+   {
+    "qid": "Q54936079",
+    "label": "Super Mario Party",
+    "years": [
+     2018
+    ]
+   }
+  ],
+  "qid": "Q54936079",
+  "label": "Super Mario Party"
+ },
+ {
+  "platform": "switch",
+  "title": "Splatoon 3",
+  "year": 2022,
+  "notability": 19,
+  "candidates": [
+   "Q105552720",
+   "Q124656859"
+  ],
+  "matches": [
+   {
+    "qid": "Q105552720",
+    "label": "Splatoon 3",
+    "years": [
+     2022
+    ]
+   }
+  ],
+  "qid": "Q105552720",
+  "label": "Splatoon 3"
+ },
+ {
+  "platform": "switch",
+  "title": "Pokémon Legends: Arceus",
+  "year": 2022,
+  "notability": 20,
+  "candidates": [
+   "Q105688771"
+  ],
+  "matches": [
+   {
+    "qid": "Q105688771",
+    "label": "Pokémon Legends: Arceus",
+    "years": [
+     2022
+    ]
+   }
+  ],
+  "qid": "Q105688771",
+  "label": "Pokémon Legends: Arceus"
+ },
+ {
+  "platform": "switch",
+  "title": "Ring Fit Adventure",
+  "year": 2019,
+  "notability": 21,
+  "candidates": [
+   "Q69557147"
+  ],
+  "matches": [
+   {
+    "qid": "Q69557147",
+    "label": "Ring Fit Adventure",
+    "years": [
+     2019
+    ]
+   }
+  ],
+  "qid": "Q69557147",
+  "label": "Ring Fit Adventure"
+ },
+ {
+  "platform": "switch",
+  "title": "Bayonetta 3",
+  "year": 2022,
+  "notability": 22,
+  "candidates": [
+   "Q44997696"
+  ],
+  "matches": [
+   {
+    "qid": "Q44997696",
+    "label": "Bayonetta 3",
+    "years": [
+     2022
+    ]
+   }
+  ],
+  "qid": "Q44997696",
+  "label": "Bayonetta 3"
+ },
+ {
+  "platform": "switch",
+  "title": "Astral Chain",
+  "year": 2019,
+  "notability": 23,
+  "candidates": [
+   "Q61727129"
+  ],
+  "matches": [
+   {
+    "qid": "Q61727129",
+    "label": "Astral Chain",
+    "years": [
+     2019
+    ]
+   }
+  ],
+  "qid": "Q61727129",
+  "label": "Astral Chain"
+ },
+ {
+  "platform": "switch",
+  "title": "Kirby and the Forgotten Land",
+  "year": 2022,
+  "notability": 24,
+  "candidates": [
+   "Q108670544",
+   "Q137864341"
+  ],
+  "matches": [
+   {
+    "qid": "Q108670544",
+    "label": "Kirby and the Forgotten Land",
+    "years": [
+     2022
+    ]
+   }
+  ],
+  "qid": "Q108670544",
+  "label": "Kirby and the Forgotten Land"
+ },
+ {
+  "platform": "switch",
+  "title": "Pikmin 4",
+  "year": 2023,
+  "notability": 25,
+  "candidates": [
+   "Q113956704",
+   "Q121354348",
+   "Q141426192"
+  ],
+  "matches": [
+   {
+    "qid": "Q113956704",
+    "label": "Pikmin 4",
+    "years": [
+     2023
+    ]
+   }
+  ],
+  "qid": "Q113956704",
+  "label": "Pikmin 4"
+ },
+ {
+  "platform": "nes",
+  "title": "Super Mario Bros.",
+  "year": 1985,
+  "notability": 1,
+  "candidates": [
+   "Q11168",
+   "Q535550",
+   "Q639619",
+   "Q23902998",
+   "Q131498275",
+   "Q131498222",
+   "Q854479",
+   "Q2451909",
+   "Q631331",
+   "Q1142888",
+   "Q98893727",
+   "Q3977581",
+   "Q1955712",
+   "Q1090568",
+   "Q3504224",
+   "Q1535629",
+   "Q853143",
+   "Q101620473",
+   "Q216995",
+   "Q20052645"
+  ],
+  "matches": [
+   {
+    "qid": "Q11168",
+    "label": "Super Mario Bros.",
+    "years": [
+     1985,
+     1986,
+     1987,
+     1999,
+     2000,
+     2004,
+     2006,
+     2007,
+     2011,
+     2013,
+     2014,
+     2018
+    ]
+   },
+   {
+    "qid": "Q631331",
+    "label": "Super Mario Bros.: The Lost Levels",
+    "years": [
+     1986
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q11168",
+    "label": "Super Mario Bros.",
+    "years": [
+     1985,
+     1986,
+     1987,
+     1999,
+     2000,
+     2004,
+     2006,
+     2007,
+     2011,
+     2013,
+     2014,
+     2018
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q535550",
+    "label": "Super Mario Bros.",
+    "years": [
+     1993
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q639619",
+    "label": "Super Mario Bros. 3",
+    "years": [
+     1988,
+     1990,
+     1991
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q23902998",
+    "label": null,
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q131498275",
+    "label": "Super Mario Bros.",
+    "years": [],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q11168",
+  "label": "Super Mario Bros.",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "nes",
+  "title": "Final Fantasy",
+  "year": 1987,
+  "notability": 8,
+  "candidates": [
+   "Q12391356",
+   "Q1415970",
+   "Q214232",
+   "Q110492126",
+   "Q99416119",
+   "Q1779100",
+   "Q245006",
+   "Q162045",
+   "Q223381",
+   "Q474573",
+   "Q535940",
+   "Q687559",
+   "Q911226",
+   "Q390595",
+   "Q678394",
+   "Q900305",
+   "Q327594",
+   "Q921957",
+   "Q868389",
+   "Q1774415"
+  ],
+  "matches": [
+   {
+    "qid": "Q1415970",
+    "label": "Final Fantasy",
+    "years": [
+     1987,
+     2009,
+     2010
+    ]
+   },
+   {
+    "qid": "Q921957",
+    "label": "Final Fantasy II",
+    "years": [
+     1988
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q12391356",
+    "label": "Final Fantasy",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1415970",
+    "label": "Final Fantasy",
+    "years": [
+     1987,
+     2009,
+     2010
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q214232",
+    "label": "Final Fantasy VII",
+    "years": [
+     1997,
+     1998,
+     2013,
+     2015,
+     2016,
+     2019
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q110492126",
+    "label": "Final Fantasy Pixel Remaster",
+    "years": [
+     2021
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q99416119",
+    "label": null,
+    "years": [],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q1415970",
+  "label": "Final Fantasy",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "nes",
+  "title": "Dragon Quest",
+  "year": 1986,
+  "notability": 9,
+  "candidates": [
+   "Q2313869",
+   "Q615908",
+   "Q2310470",
+   "Q745481",
+   "Q2312762",
+   "Q81288",
+   "Q2309271",
+   "Q2301014",
+   "Q2221461",
+   "Q1948338",
+   "Q20736242",
+   "Q2294865",
+   "Q20679959",
+   "Q52161838",
+   "Q18054654",
+   "Q15720646",
+   "Q22131519",
+   "Q339485",
+   "Q3038756",
+   "Q11322966"
+  ],
+  "matches": [
+   {
+    "qid": "Q2313869",
+    "label": "Dragon Quest",
+    "years": [
+     1986,
+     1989,
+     1993,
+     1999,
+     2000,
+     2004,
+     2011,
+     2013,
+     2014,
+     2017,
+     2019
+    ]
+   },
+   {
+    "qid": "Q2312762",
+    "label": "Dragon Quest II",
+    "years": [
+     1987,
+     1990,
+     1993
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q2313869",
+    "label": "Dragon Quest",
+    "years": [
+     1986,
+     1989,
+     1993,
+     1999,
+     2000,
+     2004,
+     2011,
+     2013,
+     2014,
+     2017,
+     2019
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q615908",
+    "label": "Dragon Quest",
+    "years": [
+     1986
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2310470",
+    "label": "Dragon Quest IV",
+    "years": [
+     1990,
+     1992
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q745481",
+    "label": "Dragon Quest X",
+    "years": [
+     2012
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2312762",
+    "label": "Dragon Quest II",
+    "years": [
+     1987,
+     1990,
+     1993
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q2313869",
+  "label": "Dragon Quest",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "nes",
+  "title": "Bubble Bobble",
+  "year": 1986,
+  "notability": 22,
+  "candidates": [
+   "Q88759",
+   "Q10437156",
+   "Q4982197",
+   "Q109383378",
+   "Q63125241",
+   "Q63159651",
+   "Q4982194",
+   "Q4982195",
+   "Q4982192",
+   "Q4982193",
+   "Q86738962",
+   "Q1804014",
+   "Q1108749",
+   "Q63159648",
+   "Q134968679",
+   "Q140471948",
+   "Q135114657",
+   "Q16767777"
+  ],
+  "matches": [
+   {
+    "qid": "Q88759",
+    "label": "Bubble Bobble",
+    "years": [
+     1986,
+     1987,
+     1988,
+     1990
+    ]
+   },
+   {
+    "qid": "Q1804014",
+    "label": "Rainbow Islands: The Story of Bubble Bobble 2",
+    "years": [
+     1987,
+     1991
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q88759",
+    "label": "Bubble Bobble",
+    "years": [
+     1986,
+     1987,
+     1988,
+     1990
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q10437156",
+    "label": "Bubble Bobble",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q4982197",
+    "label": "Bubble Bobble Part 2",
+    "years": [
+     1993
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q109383378",
+    "label": "Bubble Bobble also featuring Rainbow Islands",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q63125241",
+    "label": "Bubble Bobble: Old and New",
+    "years": [
+     2002
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q88759",
+  "label": "Bubble Bobble",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "nes",
+  "title": "Mega Man",
+  "year": 1987,
+  "notability": 33,
+  "candidates": [
+   "Q6586317",
+   "Q3297662",
+   "Q10328212",
+   "Q7565689",
+   "Q2987019",
+   "Q9031136",
+   "Q2667596",
+   "Q3174269",
+   "Q2014874",
+   "Q1196400",
+   "Q2360194",
+   "Q2014882",
+   "Q1203511",
+   "Q1837699",
+   "Q2744116",
+   "Q2360218",
+   "Q1925357",
+   "Q100096",
+   "Q2311673",
+   "Q2302721"
+  ],
+  "matches": [
+   {
+    "qid": "Q6586317",
+    "label": "Mega Man",
+    "years": [
+     1987,
+     1989,
+     1990,
+     2007,
+     2008
+    ]
+   },
+   {
+    "qid": "Q2014882",
+    "label": "Mega Man 2",
+    "years": [
+     1988,
+     1989,
+     1990,
+     1991
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q6586317",
+    "label": "Mega Man",
+    "years": [
+     1987,
+     1989,
+     1990,
+     2007,
+     2008
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q3297662",
+    "label": "Mega Man",
+    "years": [
+     1995
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q10328212",
+    "label": "Mega Man",
+    "years": [
+     1990
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q7565689",
+    "label": null,
+    "years": [
+     1987
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2987019",
+    "label": "Mega Man: Dr. Wily's Revenge",
+    "years": [
+     1991
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q6586317",
+  "label": "Mega Man",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "snes",
+  "title": "Donkey Kong Country",
+  "year": 1994,
+  "notability": 5,
+  "candidates": [
+   "Q518987",
+   "Q1072051",
+   "Q585939",
+   "Q1241664",
+   "Q16201230",
+   "Q13427360",
+   "Q1241692",
+   "Q107667453",
+   "Q126723063",
+   "Q6569217",
+   "Q24686990"
+  ],
+  "matches": [
+   {
+    "qid": "Q518987",
+    "label": "Donkey Kong Country",
+    "years": [
+     1994,
+     2000,
+     2001,
+     2003,
+     2006,
+     2007,
+     2008,
+     2014,
+     2015,
+     2016
+    ]
+   },
+   {
+    "qid": "Q1072051",
+    "label": "Donkey Kong Country 2: Diddy's Kong Quest",
+    "years": [
+     1995
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q518987",
+    "label": "Donkey Kong Country",
+    "years": [
+     1994,
+     2000,
+     2001,
+     2003,
+     2006,
+     2007,
+     2008,
+     2014,
+     2015,
+     2016
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1072051",
+    "label": "Donkey Kong Country 2: Diddy's Kong Quest",
+    "years": [
+     1995
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q585939",
+    "label": "Donkey Kong Country Returns",
+    "years": [
+     2010
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1241664",
+    "label": "Donkey Kong Country 3: Dixie Kong's Double Trouble!",
+    "years": [
+     1996
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q16201230",
+    "label": null,
+    "years": [],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q518987",
+  "label": "Donkey Kong Country",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "snes",
+  "title": "Street Fighter II",
+  "year": 1992,
+  "notability": 8,
+  "candidates": [
+   "Q1133204",
+   "Q196255",
+   "Q2467423",
+   "Q5230754",
+   "Q5575485",
+   "Q3500246",
+   "Q3286652",
+   "Q3500245",
+   "Q17994503",
+   "Q3975939",
+   "Q85803726",
+   "Q929998",
+   "Q1314180",
+   "Q113451506",
+   "Q11312444",
+   "Q6134507",
+   "Q1138659",
+   "Q17994498",
+   "Q17219827",
+   "Q6134509"
+  ],
+  "matches": [
+   {
+    "qid": "Q1133204",
+    "label": "Street Fighter II",
+    "years": [
+     1991,
+     1992,
+     2006,
+     2007
+    ]
+   },
+   {
+    "qid": "Q196255",
+    "label": "Street Fighter II Turbo",
+    "years": [
+     1992,
+     1993
+    ]
+   },
+   {
+    "qid": "Q5575485",
+    "label": "Street Fighter II: Champion Edition",
+    "years": [
+     1992
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q1133204",
+    "label": "Street Fighter II",
+    "years": [
+     1991,
+     1992,
+     2006,
+     2007
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q196255",
+    "label": "Street Fighter II Turbo",
+    "years": [
+     1992,
+     1993
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2467423",
+    "label": "Street Fighter III",
+    "years": [
+     1999
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q5230754",
+    "label": "Street Fighter III: 3rd Strike",
+    "years": [
+     1999
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q5575485",
+    "label": "Street Fighter II: Champion Edition",
+    "years": [
+     1992
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q1133204",
+  "label": "Street Fighter II",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "snes",
+  "title": "Mega Man X",
+  "year": 1993,
+  "notability": 11,
+  "candidates": [
+   "Q1196400",
+   "Q2747942",
+   "Q1203511",
+   "Q2744116",
+   "Q100096",
+   "Q2467868",
+   "Q2467881",
+   "Q2733462",
+   "Q2743083",
+   "Q14632819",
+   "Q66834302",
+   "Q56939",
+   "Q66834359",
+   "Q2310820",
+   "Q3084347",
+   "Q3310450",
+   "Q56107307",
+   "Q135015211",
+   "Q120702510",
+   "Q9031129"
+  ],
+  "matches": [
+   {
+    "qid": "Q1196400",
+    "label": "Mega Man X",
+    "years": [
+     1993,
+     1994,
+     2011,
+     2012
+    ]
+   },
+   {
+    "qid": "Q100096",
+    "label": "Mega Man X2",
+    "years": [
+     1994,
+     1995
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q1196400",
+    "label": "Mega Man X",
+    "years": [
+     1993,
+     1994,
+     2011,
+     2012
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2747942",
+    "label": "Mega Man X",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1203511",
+    "label": "Mega Man X4",
+    "years": [
+     1997
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2744116",
+    "label": "Mega Man X3",
+    "years": [
+     1995,
+     1996
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q100096",
+    "label": "Mega Man X2",
+    "years": [
+     1994,
+     1995
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q1196400",
+  "label": "Mega Man X",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "snes",
+  "title": "Star Fox",
+  "year": 1993,
+  "notability": 12,
+  "candidates": [
+   "Q1326889",
+   "Q2881324",
+   "Q1501747",
+   "Q1141963",
+   "Q2081430",
+   "Q1371603",
+   "Q17168217",
+   "Q2666042",
+   "Q2578717",
+   "Q1346365",
+   "Q17168212",
+   "Q2742460",
+   "Q3496959",
+   "Q70330356",
+   "Q58873496",
+   "Q101072729",
+   "Q139683849",
+   "Q126888202",
+   "Q3271686",
+   "Q108916112"
+  ],
+  "matches": [
+   {
+    "qid": "Q1326889",
+    "label": "Star Fox",
+    "years": [
+     1993
+    ]
+   },
+   {
+    "qid": "Q70330356",
+    "label": "Star Fox: Super Weekend",
+    "years": [
+     1993
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q1326889",
+    "label": "Star Fox",
+    "years": [
+     1993
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2881324",
+    "label": "Star Fox",
+    "years": [
+     1983
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1501747",
+    "label": "Star Fox",
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1141963",
+    "label": "Star Fox 64",
+    "years": [
+     1997,
+     2003,
+     2007,
+     2008
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2081430",
+    "label": "Fox McCloud",
+    "years": [],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q1326889",
+  "label": "Star Fox",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "snes",
+  "title": "Super Bomberman",
+  "year": 1993,
+  "notability": 22,
+  "candidates": [
+   "Q2702756",
+   "Q28322339",
+   "Q369264",
+   "Q3129978",
+   "Q3279162",
+   "Q3280284",
+   "Q104527782",
+   "Q112787643",
+   "Q11313861",
+   "Q138018343",
+   "Q60996341"
+  ],
+  "matches": [
+   {
+    "qid": "Q2702756",
+    "label": "Super Bomberman",
+    "years": [
+     1993
+    ]
+   },
+   {
+    "qid": "Q3129978",
+    "label": "Super Bomberman 2",
+    "years": [
+     1994,
+     1995
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q2702756",
+    "label": "Super Bomberman",
+    "years": [
+     1993
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q28322339",
+    "label": "Super Bomberman R",
+    "years": [
+     2017,
+     2018
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q369264",
+    "label": "Super Bomberman 3",
+    "years": [
+     1995
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q3129978",
+    "label": "Super Bomberman 2",
+    "years": [
+     1994,
+     1995
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q3279162",
+    "label": "Super Bomberman 5",
+    "years": [
+     1997
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q2702756",
+  "label": "Super Bomberman",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "snes",
+  "title": "Sim City",
+  "year": 1991,
+  "notability": 32,
+  "candidates": [
+   "Q106936768",
+   "Q249854",
+   "Q7798922",
+   "Q917647",
+   "Q1750905",
+   "Q7517257",
+   "Q1767176",
+   "Q719670",
+   "Q110861809",
+   "Q10316895",
+   "Q2545123",
+   "Q126184780",
+   "Q126184779",
+   "Q4992231",
+   "Q110990986",
+   "Q124001766",
+   "Q124720513",
+   "Q124002338",
+   "Q124005868",
+   "Q111111545"
+  ],
+  "matches": [
+   {
+    "qid": "Q106936768",
+    "label": "Sim City",
+    "years": [
+     1991,
+     2006,
+     2008
+    ]
+   },
+   {
+    "qid": "Q7798922",
+    "label": null,
+    "years": [
+     1989,
+     1991,
+     2006
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q106936768",
+    "label": "Sim City",
+    "years": [
+     1991,
+     2006,
+     2008
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q249854",
+    "label": "SimCity",
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q7798922",
+    "label": null,
+    "years": [
+     1989,
+     1991,
+     2006
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q917647",
+    "label": "SimCity",
+    "years": [
+     2013
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1750905",
+    "label": "SimCity 3000",
+    "years": [
+     1999
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q106936768",
+  "label": "Sim City",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "snes",
+  "title": "Breath of Fire",
+  "year": 1993,
+  "notability": 34,
+  "candidates": [
+   "Q2532658",
+   "Q130467091",
+   "Q904008",
+   "Q2414743",
+   "Q2302461",
+   "Q796510",
+   "Q2709671",
+   "Q16267699",
+   "Q119802453",
+   "Q89358648",
+   "Q5404267"
+  ],
+  "matches": [
+   {
+    "qid": "Q2532658",
+    "label": "Breath of Fire",
+    "years": [
+     1993,
+     1994
+    ]
+   },
+   {
+    "qid": "Q2414743",
+    "label": "Breath of Fire II",
+    "years": [
+     1994,
+     1995,
+     1996
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q2532658",
+    "label": "Breath of Fire",
+    "years": [
+     1993,
+     1994
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q130467091",
+    "label": "Breath of Fire",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q904008",
+    "label": null,
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2414743",
+    "label": "Breath of Fire II",
+    "years": [
+     1994,
+     1995,
+     1996
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2302461",
+    "label": "Breath of Fire III",
+    "years": [
+     1997
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q2532658",
+  "label": "Breath of Fire",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "gb",
+  "title": "Donkey Kong",
+  "year": 1994,
+  "notability": 9,
+  "candidates": [
+   "Q12389",
+   "Q2564684",
+   "Q12384",
+   "Q662004",
+   "Q518987",
+   "Q1072051",
+   "Q774773",
+   "Q585939",
+   "Q2264301",
+   "Q1241664",
+   "Q936413",
+   "Q2733190",
+   "Q13427360",
+   "Q2569337",
+   "Q593946",
+   "Q2718657",
+   "Q65059083",
+   "Q1026656",
+   "Q390291",
+   "Q2879319"
+  ],
+  "matches": [
+   {
+    "qid": "Q2564684",
+    "label": "Donkey Kong",
+    "years": [
+     1994
+    ]
+   },
+   {
+    "qid": "Q2718657",
+    "label": "Donkey Kong Land",
+    "years": [
+     1995
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q12389",
+    "label": "Donkey Kong",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2564684",
+    "label": "Donkey Kong",
+    "years": [
+     1994
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q12384",
+    "label": null,
+    "years": [
+     1981,
+     1983,
+     1986
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q662004",
+    "label": null,
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q518987",
+    "label": "Donkey Kong Country",
+    "years": [
+     1994,
+     2000,
+     2001,
+     2003,
+     2006,
+     2007,
+     2008,
+     2014,
+     2015,
+     2016
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q2564684",
+  "label": "Donkey Kong",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "gb",
+  "title": "Pokémon Yellow",
+  "year": 1998,
+  "notability": 10,
+  "candidates": [
+   "Q1988120",
+   "Q637137"
+  ],
+  "matches": [
+   {
+    "qid": "Q1988120",
+    "label": "Pokémon Yellow",
+    "years": [
+     1998
+    ]
+   },
+   {
+    "qid": "Q637137",
+    "label": "Pokémon Red and Blue",
+    "years": [
+     1998
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q1988120",
+    "label": "Pokémon Yellow",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q637137",
+    "label": "Pokémon Red and Blue",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q1988120",
+  "label": "Pokémon Yellow",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "gba",
+  "title": "Golden Sun",
+  "year": 2001,
+  "notability": 5,
+  "candidates": [
+   "Q1545555",
+   "Q11555175",
+   "Q2342264",
+   "Q520192",
+   "Q112731303",
+   "Q122801059",
+   "Q117011939",
+   "Q122785237",
+   "Q122698159",
+   "Q117072651",
+   "Q136825332",
+   "Q100929915",
+   "Q27960167",
+   "Q11221745",
+   "Q27895071",
+   "Q46955432",
+   "Q110452464",
+   "Q107340059",
+   "Q86260960",
+   "Q15582588"
+  ],
+  "matches": [
+   {
+    "qid": "Q1545555",
+    "label": "Golden Sun",
+    "years": [
+     2001
+    ]
+   },
+   {
+    "qid": "Q2342264",
+    "label": "Golden Sun: The Lost Age",
+    "years": [
+     2002
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q1545555",
+    "label": "Golden Sun",
+    "years": [
+     2001
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q11555175",
+    "label": "Golden Sun",
+    "years": [
+     2001
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2342264",
+    "label": "Golden Sun: The Lost Age",
+    "years": [
+     2002
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q520192",
+    "label": "Golden Sun: Dark Dawn",
+    "years": [
+     2010
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q112731303",
+    "label": "Golden Sun",
+    "years": [
+     2018
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q1545555",
+  "label": "Golden Sun",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "gba",
+  "title": "Super Mario Advance",
+  "year": 2001,
+  "notability": 10,
+  "candidates": [
+   "Q3312351",
+   "Q1886919",
+   "Q14476223",
+   "Q2515386",
+   "Q9383518"
+  ],
+  "matches": [
+   {
+    "qid": "Q3312351",
+    "label": "Super Mario Advance",
+    "years": [
+     2001
+    ]
+   },
+   {
+    "qid": "Q2515386",
+    "label": "Super Mario World: Super Mario Advance 2",
+    "years": [
+     2001,
+     2002
+    ]
+   },
+   {
+    "qid": "Q9383518",
+    "label": "Yoshi's Island: Super Mario Advance 3",
+    "years": [
+     2002,
+     2003,
+     2006,
+     2011,
+     2014
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q3312351",
+    "label": "Super Mario Advance",
+    "years": [
+     2001
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1886919",
+    "label": "Super Mario Advance 4: Super Mario Bros. 3",
+    "years": [
+     2003
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q14476223",
+    "label": "Super Mario Advance",
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q2515386",
+    "label": "Super Mario World: Super Mario Advance 2",
+    "years": [
+     2001,
+     2002
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q9383518",
+    "label": "Yoshi's Island: Super Mario Advance 3",
+    "years": [
+     2002,
+     2003,
+     2006,
+     2011,
+     2014
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q3312351",
+  "label": "Super Mario Advance",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "gba",
+  "title": "Sonic Advance",
+  "year": 2001,
+  "notability": 23,
+  "candidates": [
+   "Q2081510",
+   "Q106892707",
+   "Q2748684",
+   "Q765425",
+   "Q41516373"
+  ],
+  "matches": [
+   {
+    "qid": "Q2081510",
+    "label": "Sonic Advance",
+    "years": [
+     2001
+    ]
+   },
+   {
+    "qid": "Q2748684",
+    "label": "Sonic Advance 2",
+    "years": [
+     2002
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q2081510",
+    "label": "Sonic Advance",
+    "years": [
+     2001
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q106892707",
+    "label": "Sonic Advance",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2748684",
+    "label": "Sonic Advance 2",
+    "years": [
+     2002
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q765425",
+    "label": "Sonic Advance 3",
+    "years": [
+     2004
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q41516373",
+    "label": null,
+    "years": [],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q2081510",
+  "label": "Sonic Advance",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "n64",
+  "title": "Mario Party",
+  "year": 1998,
+  "notability": 18,
+  "candidates": [
+   "Q1196737",
+   "Q6507722",
+   "Q107250201",
+   "Q769042",
+   "Q1205293",
+   "Q743187",
+   "Q17157196",
+   "Q608920",
+   "Q1206280",
+   "Q1205676",
+   "Q1211015",
+   "Q1205277",
+   "Q509177",
+   "Q24706266",
+   "Q13063856",
+   "Q1206503",
+   "Q39878955",
+   "Q3848915",
+   "Q54936079",
+   "Q126034749"
+  ],
+  "matches": [
+   {
+    "qid": "Q6507722",
+    "label": "Mario Party",
+    "years": [
+     1998
+    ]
+   },
+   {
+    "qid": "Q1205676",
+    "label": "Mario Party 2",
+    "years": [
+     1999,
+     2000
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q1196737",
+    "label": "Mario Party",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q6507722",
+    "label": "Mario Party",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q107250201",
+    "label": "Mario Party Superstars",
+    "years": [
+     2021
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q769042",
+    "label": "Mario Party 8",
+    "years": [
+     2007
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1205293",
+    "label": "Mario Party 4",
+    "years": [
+     2002
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q6507722",
+  "label": "Mario Party",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps1",
+  "title": "Crash Bandicoot",
+  "year": 1996,
+  "notability": 5,
+  "candidates": [
+   "Q507898",
+   "Q719176",
+   "Q65966424",
+   "Q109784464",
+   "Q840308",
+   "Q569822",
+   "Q869511",
+   "Q1063506",
+   "Q96574138",
+   "Q1052116",
+   "Q2471393",
+   "Q761957",
+   "Q97070007",
+   "Q775973",
+   "Q1617739",
+   "Q834872",
+   "Q3283646",
+   "Q26698531",
+   "Q507396",
+   "Q130731787"
+  ],
+  "matches": [
+   {
+    "qid": "Q719176",
+    "label": "Crash Bandicoot",
+    "years": [
+     1996
+    ]
+   },
+   {
+    "qid": "Q569822",
+    "label": "Crash Bandicoot 2: Cortex Strikes Back",
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q507898",
+    "label": "Crash Bandicoot",
+    "years": [
+     1996
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q719176",
+    "label": "Crash Bandicoot",
+    "years": [
+     1996
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q65966424",
+    "label": "Crash bandicoot",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q109784464",
+    "label": "Crash Bandicoot",
+    "years": [
+     2003
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q840308",
+    "label": "Crash Bandicoot: Warped",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q719176",
+  "label": "Crash Bandicoot",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps1",
+  "title": "Spyro the Dragon",
+  "year": 1998,
+  "notability": 11,
+  "candidates": [
+   "Q858391",
+   "Q927422",
+   "Q3300732",
+   "Q64729456",
+   "Q942896",
+   "Q18647697"
+  ],
+  "matches": [
+   {
+    "qid": "Q858391",
+    "label": "Spyro the Dragon",
+    "years": [
+     1998
+    ]
+   },
+   {
+    "qid": "Q942896",
+    "label": "Spyro 2: Ripto's Rage!",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q858391",
+    "label": "Spyro the Dragon",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q927422",
+    "label": null,
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q3300732",
+    "label": "Spyro",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q64729456",
+    "label": "Spyro the Dragon universe",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q942896",
+    "label": "Spyro 2: Ripto's Rage!",
+    "years": [
+     1999
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q858391",
+  "label": "Spyro the Dragon",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps1",
+  "title": "Tomb Raider",
+  "year": 1996,
+  "notability": 12,
+  "candidates": [
+   "Q270503",
+   "Q1757876",
+   "Q317620",
+   "Q28489891",
+   "Q2591858",
+   "Q137320666",
+   "Q464014",
+   "Q665785",
+   "Q111328790",
+   "Q1123794",
+   "Q580667",
+   "Q915860",
+   "Q816451",
+   "Q668568",
+   "Q621616",
+   "Q642359",
+   "Q2706771",
+   "Q12343253",
+   "Q1153949",
+   "Q62396187"
+  ],
+  "matches": [
+   {
+    "qid": "Q317620",
+    "label": "Tomb Raider",
+    "years": [
+     1996
+    ]
+   },
+   {
+    "qid": "Q816451",
+    "label": "Tomb Raider II",
+    "years": [
+     1997
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q270503",
+    "label": "Tomb Raider",
+    "years": [
+     1996
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1757876",
+    "label": "Tomb Raider",
+    "years": [
+     2013
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q317620",
+    "label": "Tomb Raider",
+    "years": [
+     1996
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q28489891",
+    "label": "Tomb Raider",
+    "years": [
+     2018
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2591858",
+    "label": "Tomb Raider",
+    "years": [
+     2000
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q317620",
+  "label": "Tomb Raider",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps1",
+  "title": "Parasite Eve",
+  "year": 1998,
+  "notability": 18,
+  "candidates": [
+   "Q2165750",
+   "Q126652656",
+   "Q2266405",
+   "Q95057",
+   "Q16587056",
+   "Q62132185",
+   "Q97332878",
+   "Q8906440",
+   "Q132178481",
+   "Q132188728",
+   "Q3895303",
+   "Q3895299",
+   "Q3895301",
+   "Q132173413",
+   "Q132178694",
+   "Q132173509",
+   "Q132188732",
+   "Q132168960",
+   "Q132159244",
+   "Q30899660"
+  ],
+  "matches": [
+   {
+    "qid": "Q2165750",
+    "label": "Parasite Eve",
+    "years": [
+     1998
+    ]
+   },
+   {
+    "qid": "Q2266405",
+    "label": "Parasite Eve II",
+    "years": [
+     1999
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q2165750",
+    "label": "Parasite Eve",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q126652656",
+    "label": "Parasite Eve",
+    "years": [
+     2005
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2266405",
+    "label": "Parasite Eve II",
+    "years": [
+     1999
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q95057",
+    "label": "Parasite Eve",
+    "years": [
+     1995
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q16587056",
+    "label": "Parasite Eve",
+    "years": [],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q2165750",
+  "label": "Parasite Eve",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps1",
+  "title": "Tony Hawk's Pro Skater",
+  "year": 1999,
+  "notability": 21,
+  "candidates": [
+   "Q2264782",
+   "Q94587084",
+   "Q1189289",
+   "Q1538485",
+   "Q1463730",
+   "Q1512956",
+   "Q19861425",
+   "Q2757933",
+   "Q21772565",
+   "Q132989754",
+   "Q133760330",
+   "Q133760555",
+   "Q135235999",
+   "Q9360012",
+   "Q135213893",
+   "Q135263852",
+   "Q2539807"
+  ],
+  "matches": [
+   {
+    "qid": "Q2264782",
+    "label": "Tony Hawk's Pro Skater",
+    "years": [
+     1999
+    ]
+   },
+   {
+    "qid": "Q1538485",
+    "label": "Tony Hawk's Pro Skater 2",
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q2264782",
+    "label": "Tony Hawk's Pro Skater",
+    "years": [
+     1999
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q94587084",
+    "label": "Tony Hawk's Pro Skater 1 + 2",
+    "years": [
+     2020,
+     2021
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1189289",
+    "label": null,
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1538485",
+    "label": "Tony Hawk's Pro Skater 2",
+    "years": [
+     2000
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1463730",
+    "label": "Tony Hawk's Pro Skater 3",
+    "years": [
+     2001
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q2264782",
+  "label": "Tony Hawk's Pro Skater",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps2",
+  "title": "Final Fantasy X",
+  "year": 2001,
+  "notability": 4,
+  "candidates": [
+   "Q223381",
+   "Q1779100",
+   "Q390595",
+   "Q678394",
+   "Q327594",
+   "Q868389",
+   "Q5449393",
+   "Q633011",
+   "Q1416043",
+   "Q99397792",
+   "Q17013575",
+   "Q1416029",
+   "Q106767005",
+   "Q27513059",
+   "Q33914688",
+   "Q48734409",
+   "Q104818590",
+   "Q64952865",
+   "Q26964672",
+   "Q16636274"
+  ],
+  "matches": [
+   {
+    "qid": "Q223381",
+    "label": "Final Fantasy X",
+    "years": [
+     2001
+    ]
+   },
+   {
+    "qid": "Q678394",
+    "label": "Final Fantasy XI",
+    "years": [
+     2002
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q223381",
+    "label": "Final Fantasy X",
+    "years": [
+     2001
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1779100",
+    "label": "Final Fantasy XV",
+    "years": [
+     2016
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q390595",
+    "label": "Final Fantasy XIII",
+    "years": [
+     2009,
+     2010,
+     2014,
+     2015
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q678394",
+    "label": "Final Fantasy XI",
+    "years": [
+     2002
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q327594",
+    "label": "Final Fantasy XII",
+    "years": [
+     2006
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q223381",
+  "label": "Final Fantasy X",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps2",
+  "title": "Kingdom Hearts",
+  "year": 2002,
+  "notability": 9,
+  "candidates": [
+   "Q225912",
+   "Q755167",
+   "Q16569012",
+   "Q626802",
+   "Q3265748",
+   "Q99428458",
+   "Q281110",
+   "Q843205",
+   "Q2301369",
+   "Q938641",
+   "Q3815455",
+   "Q96603714",
+   "Q1083444",
+   "Q20973486",
+   "Q15725931",
+   "Q2317520",
+   "Q63165538",
+   "Q378595",
+   "Q3197075",
+   "Q111307086"
+  ],
+  "matches": [
+   {
+    "qid": "Q225912",
+    "label": "Kingdom Hearts",
+    "years": [
+     2002
+    ]
+   },
+   {
+    "qid": "Q2317520",
+    "label": "Kingdom Hearts Final Mix",
+    "years": [
+     2002
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q225912",
+    "label": "Kingdom Hearts",
+    "years": [
+     2002
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q755167",
+    "label": "Kingdom Hearts",
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q16569012",
+    "label": "Kingdom Hearts χ",
+    "years": [
+     2015,
+     2016,
+     2018
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q626802",
+    "label": "Kingdom Hearts II",
+    "years": [
+     2005
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q3265748",
+    "label": "Kingdom Hearts III",
+    "years": [
+     2019
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q225912",
+  "label": "Kingdom Hearts",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps2",
+  "title": "Ratchet & Clank",
+  "year": 2002,
+  "notability": 19,
+  "candidates": [
+   "Q5170139",
+   "Q170003",
+   "Q17183048",
+   "Q107356702",
+   "Q96217480",
+   "Q12127045",
+   "Q2322873",
+   "Q2292483",
+   "Q5725706",
+   "Q2312963",
+   "Q2035941",
+   "Q2756548",
+   "Q2456691",
+   "Q13759410",
+   "Q2709973",
+   "Q2075684",
+   "Q2394821",
+   "Q21190203",
+   "Q51249732",
+   "Q3284934"
+  ],
+  "matches": [
+   {
+    "qid": "Q170003",
+    "label": "Ratchet & Clank",
+    "years": [
+     2002
+    ]
+   },
+   {
+    "qid": "Q5725706",
+    "label": "Ratchet & Clank: Going Commando",
+    "years": [
+     2003
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q5170139",
+    "label": "Ratchet & Clank",
+    "years": [
+     2002
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q170003",
+    "label": "Ratchet & Clank",
+    "years": [
+     2002
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q17183048",
+    "label": "Ratchet & Clank",
+    "years": [
+     2016
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q107356702",
+    "label": "Ratchet & Clank",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q96217480",
+    "label": "Ratchet & Clank: Rift Apart",
+    "years": [
+     2021,
+     2023
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q170003",
+  "label": "Ratchet & Clank",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "ps2",
+  "title": "Guitar Hero",
+  "year": 2005,
+  "notability": 22,
+  "candidates": [
+   "Q533752",
+   "Q116578",
+   "Q11924965",
+   "Q1047938",
+   "Q1759208",
+   "Q1798154",
+   "Q630596",
+   "Q19801811",
+   "Q949134",
+   "Q1955682",
+   "Q1799178",
+   "Q2603521",
+   "Q2449832",
+   "Q4354390",
+   "Q2287881",
+   "Q2563834",
+   "Q18612020",
+   "Q3120680",
+   "Q2333905",
+   "Q2557193"
+  ],
+  "matches": [
+   {
+    "qid": "Q116578",
+    "label": "Guitar Hero",
+    "years": [
+     2005
+    ]
+   },
+   {
+    "qid": "Q1798154",
+    "label": "Guitar Hero II",
+    "years": [
+     2006
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q533752",
+    "label": "Guitar Hero",
+    "years": [
+     2005
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q116578",
+    "label": "Guitar Hero",
+    "years": [
+     2005
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q11924965",
+    "label": "Guitar Hero",
+    "years": [
+     2010
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q1047938",
+    "label": "Guitar Hero III: Legends of Rock",
+    "years": [
+     2007,
+     2008
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1759208",
+    "label": "Guitar Hero World Tour",
+    "years": [
+     2008
+    ],
+    "on_platform": true
+   }
+  ],
+  "qid": "Q116578",
+  "label": "Guitar Hero",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "switch",
+  "title": "Xenoblade Chronicles 2",
+  "year": 2017,
+  "notability": 12,
+  "candidates": [
+   "Q28312052",
+   "Q56063408",
+   "Q140179852",
+   "Q141430225"
+  ],
+  "matches": [
+   {
+    "qid": "Q28312052",
+    "label": "Xenoblade Chronicles 2",
+    "years": [
+     2017
+    ]
+   },
+   {
+    "qid": "Q56063408",
+    "label": "Xenoblade Chronicles 2: Torna – The Golden Country",
+    "years": [
+     2018
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q28312052",
+    "label": "Xenoblade Chronicles 2",
+    "years": [
+     2017
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q56063408",
+    "label": "Xenoblade Chronicles 2: Torna – The Golden Country",
+    "years": [
+     2018
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q140179852",
+    "label": "Xenoblade Chronicles 2 – Nintendo Switch 2 Edition Upgrade Pack",
+    "years": [
+     2026
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q141430225",
+    "label": null,
+    "years": [
+     2026
+    ],
+    "on_platform": false
+   }
+  ],
+  "qid": "Q28312052",
+  "label": "Xenoblade Chronicles 2",
+  "verification": "exact_label"
+ },
+ {
+  "platform": "gb",
+  "title": "Pokémon Red and Blue",
+  "year": 1998,
+  "notability": 2,
+  "candidates": [
+   "Q637137"
+  ],
+  "matches": [],
+  "reason": "aucun candidat ne concorde",
+  "near": [
+   {
+    "qid": "Q637137",
+    "label": "Pokémon Red and Blue",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   }
+  ],
+  "residue": "introuvable",
+  "exact": [],
+  "qid": "Q637137",
+  "verification": "arbitrated",
+  "arbitration": "L'année curée (1996) était fausse : 1996 est Rouge/Vert au Japon, Rouge/Bleu à l'international est 1998. La vérification d'année a donc attrapé NOTRE erreur, pas celle de la source — c'est ce qu'on lui demande. Voir le cas de validation n°8 du modèle : trois entités pour un seul souvenir."
+ },
+ {
+  "platform": "gb",
+  "title": "Harvest Moon GB",
+  "year": 1997,
+  "notability": 25,
+  "candidates": [
+   "Q2758069",
+   "Q1313985",
+   "Q2758082",
+   "Q2758074"
+  ],
+  "matches": [],
+  "reason": "aucun candidat ne concorde",
+  "near": [
+   {
+    "qid": "Q2758069",
+    "label": "Harvest Moon GB",
+    "years": [
+     2012
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1313985",
+    "label": "Harvest Moon: Friends of Mineral Town",
+    "years": [
+     2003
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2758082",
+    "label": "Harvest Moon 3",
+    "years": [
+     2012
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2758074",
+    "label": "Harvest Moon 2",
+    "years": [
+     2012
+    ],
+    "on_platform": false
+   }
+  ],
+  "residue": "introuvable",
+  "exact": [],
+  "qid": "Q2758069",
+  "verification": "arbitrated",
+  "arbitration": "Identité certaine. ⚠️ Défaut de la SOURCE : la seule date de publication portée est 2012 — vraisemblablement une réédition en console virtuelle — alors que la description dit 1997. Toute année dérivée de P577 serait donc fausse de quinze ans. C'est l'année curée qui fait foi, et le dataset signale l'écart."
+ },
+ {
+  "platform": "gba",
+  "title": "Fire Emblem: The Blazing Blade",
+  "year": 2003,
+  "notability": 6,
+  "candidates": [
+   "Q1768977",
+   "Q150180",
+   "Q54960673",
+   "Q150146",
+   "Q2698563",
+   "Q2565615",
+   "Q24516",
+   "Q28450801",
+   "Q2604860",
+   "Q28382640",
+   "Q113956929",
+   "Q3072790",
+   "Q110880629",
+   "Q18762399",
+   "Q3072796",
+   "Q150169",
+   "Q30589355",
+   "Q2632064",
+   "Q2322497",
+   "Q3072788"
+  ],
+  "matches": [
+   {
+    "qid": "Q150180",
+    "label": "Fire Emblem: The Blazing Blade",
+    "years": [
+     2003,
+     2004,
+     2014,
+     2023
+    ]
+   },
+   {
+    "qid": "Q150169",
+    "label": "Fire Emblem: The Sacred Stones",
+    "years": [
+     2004,
+     2005,
+     2011,
+     2014,
+     2015,
+     2025
+    ]
+   },
+   {
+    "qid": "Q3072788",
+    "label": "Fire Emblem: The Binding Blade",
+    "years": [
+     2002,
+     2015,
+     2023
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q1768977",
+    "label": "Fire Emblem",
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q150180",
+    "label": "Fire Emblem: The Blazing Blade",
+    "years": [
+     2003,
+     2004,
+     2014,
+     2023
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q54960673",
+    "label": "Fire Emblem: Three Houses",
+    "years": [
+     2019
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q150146",
+    "label": "Fire Emblem: Shadow Dragon and the Blade of Light",
+    "years": [
+     1990,
+     2009,
+     2012,
+     2014,
+     2019,
+     2020
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2698563",
+    "label": "Fire Emblem: Shadow Dragon",
+    "years": [
+     2008,
+     2009,
+     2015,
+     2016
+    ],
+    "on_platform": false
+   }
+  ],
+  "residue": "aucun libellé exact",
+  "exact": [],
+  "qid": "Q150180",
+  "verification": "arbitrated",
+  "arbitration": "« Fire Emblem » tout court est le titre occidental ; le titre canonique est « The Blazing Blade ». ⚠️ Défaut de la SOURCE : P400 ne liste que Wii U — la plateforme de la réédition — pour un jeu que sa propre description qualifie de « 2003 tactical role-playing game for the Game Boy Advance ». La plateforme d'origine manque, ce qui rend l'entrée invisible à toute sélection par plateforme."
+ },
+ {
+  "platform": "ps1",
+  "title": "Medal of Honor",
+  "year": 1999,
+  "notability": 26,
+  "candidates": [
+   "Q850445",
+   "Q203535",
+   "Q644541",
+   "Q1069537",
+   "Q11605748",
+   "Q692360",
+   "Q2000727",
+   "Q1117741",
+   "Q932113",
+   "Q2547348",
+   "Q25413057",
+   "Q2226763",
+   "Q1064176",
+   "Q932349",
+   "Q2201608",
+   "Q2007896",
+   "Q2275773",
+   "Q3853631",
+   "Q86753267",
+   "Q19116887"
+  ],
+  "matches": [
+   {
+    "qid": "Q1069537",
+    "label": null,
+    "years": [
+     1999
+    ]
+   },
+   {
+    "qid": "Q1064176",
+    "label": "Medal of Honor: Underground",
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q850445",
+    "label": "Medal of Honor",
+    "years": [
+     2010
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q203535",
+    "label": "Medal of Honor",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q644541",
+    "label": "Medal of Honor",
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1069537",
+    "label": null,
+    "years": [
+     1999
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q11605748",
+    "label": "Medal with Purple Ribbon",
+    "years": [],
+    "on_platform": false
+   }
+  ],
+  "residue": "aucun libellé exact",
+  "exact": [],
+  "qid": "Q1069537",
+  "verification": "arbitrated",
+  "arbitration": "Identité certaine par l'année et la description. ⚠️ Double défaut de la SOURCE : aucun libellé anglais et aucune plateforme. L'entrée existe, elle est juste inexploitable telle quelle — le titre vient de la curation, la plateforme aussi."
+ }
+]

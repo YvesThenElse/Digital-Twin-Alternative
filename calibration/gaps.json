@@ -1,0 +1,137 @@
+{
+ "absent": [
+  {
+   "platform": "nes",
+   "title": "Bomberman",
+   "year": 1985,
+   "notability": 35,
+   "candidates": [
+    "Q2583040",
+    "Q52058735",
+    "Q18578909",
+    "Q104873002",
+    "Q2909728",
+    "Q4940637",
+    "Q3444160",
+    "Q11338852",
+    "Q2909702",
+    "Q923826",
+    "Q3141541",
+    "Q4940645",
+    "Q3362109",
+    "Q2909714",
+    "Q2909719",
+    "Q2909732",
+    "Q690394",
+    "Q2909731",
+    "Q1527974",
+    "Q2710825"
+   ],
+   "matches": [],
+   "reason": "aucun candidat ne concorde",
+   "near": [
+    {
+     "qid": "Q2583040",
+     "label": "Bomberman",
+     "years": [
+      1990
+     ],
+     "on_platform": false
+    },
+    {
+     "qid": "Q52058735",
+     "label": "Bomberman",
+     "years": [
+      2004
+     ],
+     "on_platform": false
+    },
+    {
+     "qid": "Q18578909",
+     "label": "Bomberman",
+     "years": [
+      2014
+     ],
+     "on_platform": false
+    },
+    {
+     "qid": "Q104873002",
+     "label": "Bomberman",
+     "years": [],
+     "on_platform": false
+    },
+    {
+     "qid": "Q2909728",
+     "label": "Bomberman Party Edition",
+     "years": [
+      1998
+     ],
+     "on_platform": false
+    }
+   ],
+   "residue": "introuvable",
+   "exact": [],
+   "arbitration": "La source porte « Bomber Man » (1983), une série, et une douzaine de suites — mais aucun item propre au Bomberman Famicom de 1985. Rien à rattacher sans inventer. Cas nominal de §3.5 : l'entrée manquante se déclare, elle ne se fabrique pas."
+  },
+  {
+   "platform": "gb",
+   "title": "Pokémon Gold and Silver",
+   "year": 1999,
+   "notability": 16,
+   "candidates": [
+    "Q837346",
+    "Q122538400"
+   ],
+   "matches": [],
+   "reason": "aucun candidat ne concorde",
+   "near": [
+    {
+     "qid": "Q837346",
+     "label": "Pokémon Gold and Silver",
+     "years": [
+      1999
+     ],
+     "on_platform": false
+    },
+    {
+     "qid": "Q122538400",
+     "label": "Pokémon Gold and Silver Adventure Tour",
+     "years": [],
+     "on_platform": false
+    }
+   ],
+   "residue": "introuvable",
+   "exact": [],
+   "arbitration": "Erreur de curation : Or/Argent est un titre **Game Boy Color** (la source le dit, P400 = Game Boy Color), et la Game Boy Color n'est pas une plateforme du POC. Rétrocompatible ne veut pas dire même plateforme — c'est précisément la distinction que le cas de validation n°6 du modèle traite."
+  }
+ ],
+ "retyped": [
+  {
+   "platform": "gb",
+   "title": "Game Boy Camera",
+   "year": 1998,
+   "notability": 23,
+   "candidates": [
+    "Q1493056"
+   ],
+   "matches": [],
+   "reason": "aucun candidat ne concorde",
+   "near": [
+    {
+     "qid": "Q1493056",
+     "label": "Game Boy Camera",
+     "years": [
+      1998
+     ],
+     "on_platform": false
+    }
+   ],
+   "residue": "introuvable",
+   "exact": [],
+   "arbitration": "Erreur de curation : ce n'est pas un jeu mais un accessoire, et le modèle a déjà le concept (§4, `Accessory`). L'entrée sort de la liste des œuvres au lieu d'y être forcée.",
+   "concept": "Accessory",
+   "qid": "Q1493056"
+  }
+ ],
+ "unhandled": []
+}

@@ -47,8 +47,8 @@ Part des entrées où le champ est renseigné :
 | Titre japonais | 93 % | 60 % | 77 % |
 | Alias | 87 % | 47 % | 67 % |
 | Une date, quelle qu'elle soit | 100 % | 100 % | **100 %** |
-| **Date régionalisée** (`P577` qualifié par `P291`) | 47 % | 33 % | **40 %** |
-| Les trois régions | 13 % | 0 % | 7 % |
+| **Date régionalisée** (`P577` qualifié par `P291`) | 47 % | 40 % | **43 %** |
+| Les trois régions | 47 % | 13 % | 30 % |
 | Studio | 93 % | 53 % | 73 % |
 | Éditeur | 93 % | 60 % | 77 % |
 | Genre | 100 % | 80 % | 90 % |
@@ -57,7 +57,13 @@ Part des entrées où le champ est renseigné :
 
 Trois lectures :
 
-1. **`Region` est le coût dominant.** Une date existe toujours ; savoir *à quelle région elle s'applique* manque dans 60 % des cas. Or §3.4 en fait une exigence de Phase 1 — « un joueur PAL à qui l'on propose la ludothèque NTSC-J ne se reconnaît pas ». C'est le champ à produire à la main, entrée par entrée.
+1. **`Region` est le coût dominant.** Une date existe toujours ; savoir *à quelle région elle s'applique* manque dans **57 %** des cas. Or §3.4 en fait une exigence de Phase 1 — « un joueur PAL à qui l'on propose la ludothèque NTSC-J ne se reconnaît pas ». C'est le champ à produire à la main, entrée par entrée.
+
+> ⚠️ **Ces deux lignes ont été corrigées après une erreur de notre côté**, et la nature de l'erreur mérite d'être retenue. La première table de correspondance des qualificateurs de lieu omettait `Q49` (Amérique du Nord) — le qualificateur **le plus fréquent** — et `Q2729044` (zone PAL). La source portait donc la donnée ; c'est notre lecture qui la jetait.
+>
+> Effet : la couverture des trois régions passait de 7 % à **30 %**, soit un facteur quatre. Le taux global bougeait à peine (40 % → 43 %), ce qui est précisément ce qui rendait l'erreur difficile à voir.
+>
+> **Une correspondance incomplète se lit comme une absence de donnée.** C'est le pire mode de défaillance pour un référentiel : il ne produit aucun message d'erreur, seulement un champ vide qui ressemble à une lacune de la source. Toute valeur de qualificateur inconnue doit être remontée, jamais ignorée silencieusement.
 2. **La traîne est nettement plus pauvre que la tête**, sur tous les champs sauf le titre anglais — série 27 % contre 93 %, studio 53 % contre 93 %. La stratification était nécessaire : une moyenne unique aurait masqué un facteur trois.
 3. **7 % d'images** confirme chiffre en main ce que [VERIFICATION-JURIDIQUE.md](../VERIFICATION-JURIDIQUE.md) §3 établit en droit : Wikidata ne fournit pas les visuels. La question des jaquettes ne se règle pas par la source de métadonnées.
 

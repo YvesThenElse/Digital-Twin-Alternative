@@ -1,0 +1,398 @@
+[
+ {
+  "platform": "nes",
+  "title": "Bomberman",
+  "year": 1985,
+  "notability": 35,
+  "candidates": [
+   "Q2583040",
+   "Q52058735",
+   "Q18578909",
+   "Q104873002",
+   "Q2909728",
+   "Q4940637",
+   "Q3444160",
+   "Q11338852",
+   "Q2909702",
+   "Q923826",
+   "Q3141541",
+   "Q4940645",
+   "Q3362109",
+   "Q2909714",
+   "Q2909719",
+   "Q2909732",
+   "Q690394",
+   "Q2909731",
+   "Q1527974",
+   "Q2710825"
+  ],
+  "matches": [],
+  "reason": "aucun candidat ne concorde",
+  "near": [
+   {
+    "qid": "Q2583040",
+    "label": "Bomberman",
+    "years": [
+     1990
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q52058735",
+    "label": "Bomberman",
+    "years": [
+     2004
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q18578909",
+    "label": "Bomberman",
+    "years": [
+     2014
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q104873002",
+    "label": "Bomberman",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2909728",
+    "label": "Bomberman Party Edition",
+    "years": [
+     1998
+    ],
+    "on_platform": false
+   }
+  ],
+  "residue": "introuvable",
+  "exact": []
+ },
+ {
+  "platform": "gb",
+  "title": "Pokémon Red and Blue",
+  "year": 1996,
+  "notability": 2,
+  "candidates": [
+   "Q637137"
+  ],
+  "matches": [],
+  "reason": "aucun candidat ne concorde",
+  "near": [
+   {
+    "qid": "Q637137",
+    "label": "Pokémon Red and Blue",
+    "years": [
+     1998
+    ],
+    "on_platform": true
+   }
+  ],
+  "residue": "introuvable",
+  "exact": []
+ },
+ {
+  "platform": "gb",
+  "title": "Pokémon Gold and Silver",
+  "year": 1999,
+  "notability": 16,
+  "candidates": [
+   "Q837346",
+   "Q122538400"
+  ],
+  "matches": [],
+  "reason": "aucun candidat ne concorde",
+  "near": [
+   {
+    "qid": "Q837346",
+    "label": "Pokémon Gold and Silver",
+    "years": [
+     1999
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q122538400",
+    "label": "Pokémon Gold and Silver Adventure Tour",
+    "years": [],
+    "on_platform": false
+   }
+  ],
+  "residue": "introuvable",
+  "exact": []
+ },
+ {
+  "platform": "gb",
+  "title": "Game Boy Camera",
+  "year": 1998,
+  "notability": 23,
+  "candidates": [
+   "Q1493056"
+  ],
+  "matches": [],
+  "reason": "aucun candidat ne concorde",
+  "near": [
+   {
+    "qid": "Q1493056",
+    "label": "Game Boy Camera",
+    "years": [
+     1998
+    ],
+    "on_platform": false
+   }
+  ],
+  "residue": "introuvable",
+  "exact": []
+ },
+ {
+  "platform": "gb",
+  "title": "Harvest Moon GB",
+  "year": 1997,
+  "notability": 25,
+  "candidates": [
+   "Q2758069",
+   "Q1313985",
+   "Q2758082",
+   "Q2758074"
+  ],
+  "matches": [],
+  "reason": "aucun candidat ne concorde",
+  "near": [
+   {
+    "qid": "Q2758069",
+    "label": "Harvest Moon GB",
+    "years": [
+     2012
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1313985",
+    "label": "Harvest Moon: Friends of Mineral Town",
+    "years": [
+     2003
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2758082",
+    "label": "Harvest Moon 3",
+    "years": [
+     2012
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2758074",
+    "label": "Harvest Moon 2",
+    "years": [
+     2012
+    ],
+    "on_platform": false
+   }
+  ],
+  "residue": "introuvable",
+  "exact": []
+ },
+ {
+  "platform": "gba",
+  "title": "Fire Emblem",
+  "year": 2003,
+  "notability": 6,
+  "candidates": [
+   "Q1768977",
+   "Q150180",
+   "Q54960673",
+   "Q150146",
+   "Q2698563",
+   "Q2565615",
+   "Q24516",
+   "Q28450801",
+   "Q2604860",
+   "Q28382640",
+   "Q113956929",
+   "Q3072790",
+   "Q110880629",
+   "Q18762399",
+   "Q3072796",
+   "Q150169",
+   "Q30589355",
+   "Q2632064",
+   "Q2322497",
+   "Q3072788"
+  ],
+  "matches": [
+   {
+    "qid": "Q150180",
+    "label": "Fire Emblem: The Blazing Blade",
+    "years": [
+     2003,
+     2004,
+     2014,
+     2023
+    ]
+   },
+   {
+    "qid": "Q150169",
+    "label": "Fire Emblem: The Sacred Stones",
+    "years": [
+     2004,
+     2005,
+     2011,
+     2014,
+     2015,
+     2025
+    ]
+   },
+   {
+    "qid": "Q3072788",
+    "label": "Fire Emblem: The Binding Blade",
+    "years": [
+     2002,
+     2015,
+     2023
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q1768977",
+    "label": "Fire Emblem",
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q150180",
+    "label": "Fire Emblem: The Blazing Blade",
+    "years": [
+     2003,
+     2004,
+     2014,
+     2023
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q54960673",
+    "label": "Fire Emblem: Three Houses",
+    "years": [
+     2019
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q150146",
+    "label": "Fire Emblem: Shadow Dragon and the Blade of Light",
+    "years": [
+     1990,
+     2009,
+     2012,
+     2014,
+     2019,
+     2020
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q2698563",
+    "label": "Fire Emblem: Shadow Dragon",
+    "years": [
+     2008,
+     2009,
+     2015,
+     2016
+    ],
+    "on_platform": false
+   }
+  ],
+  "residue": "aucun libellé exact",
+  "exact": []
+ },
+ {
+  "platform": "ps1",
+  "title": "Medal of Honor",
+  "year": 1999,
+  "notability": 26,
+  "candidates": [
+   "Q850445",
+   "Q203535",
+   "Q644541",
+   "Q1069537",
+   "Q11605748",
+   "Q692360",
+   "Q2000727",
+   "Q1117741",
+   "Q932113",
+   "Q2547348",
+   "Q25413057",
+   "Q2226763",
+   "Q1064176",
+   "Q932349",
+   "Q2201608",
+   "Q2007896",
+   "Q2275773",
+   "Q3853631",
+   "Q86753267",
+   "Q19116887"
+  ],
+  "matches": [
+   {
+    "qid": "Q1069537",
+    "label": null,
+    "years": [
+     1999
+    ]
+   },
+   {
+    "qid": "Q1064176",
+    "label": "Medal of Honor: Underground",
+    "years": [
+     2000
+    ]
+   }
+  ],
+  "reason": "plusieurs candidats concordent",
+  "near": [
+   {
+    "qid": "Q850445",
+    "label": "Medal of Honor",
+    "years": [
+     2010
+    ],
+    "on_platform": false
+   },
+   {
+    "qid": "Q203535",
+    "label": "Medal of Honor",
+    "years": [],
+    "on_platform": false
+   },
+   {
+    "qid": "Q644541",
+    "label": "Medal of Honor",
+    "years": [],
+    "on_platform": true
+   },
+   {
+    "qid": "Q1069537",
+    "label": null,
+    "years": [
+     1999
+    ],
+    "on_platform": true
+   },
+   {
+    "qid": "Q11605748",
+    "label": "Medal with Purple Ribbon",
+    "years": [],
+    "on_platform": false
+   }
+  ],
+  "residue": "aucun libellé exact",
+  "exact": []
+ }
+]

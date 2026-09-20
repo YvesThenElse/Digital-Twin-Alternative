@@ -44,18 +44,37 @@ Trente entrées, quinze en tête et quinze en traîne, sur Super Nintendo, PlayS
 | Mesure | Valeur | Conséquence |
 |---|--:|---|
 | **Résolution automatique erronée** | **5 / 15** en tête | Aucune entrée ne se clôt sans arbitrage humain |
-| **Date régionalisée présente** | **40 %** | `Region` est le vrai poste par entrée |
+| *après outillage* (225 titres) | **résidu 3 %** | Trois règles ramènent l'erreur de 33 % à 3 % |
+| **Date régionalisée présente** | **43 %** | `Region` est le vrai poste par entrée |
 | **Image présente** | **7 %** | La source de métadonnées ne règle pas les jaquettes |
 
-> **Le poste dominant n'est pas celui que §2 annonçait.** Ce document supposait que le coût se concentrait sur les entrées litigieuses — 20 à 30 % d'entre elles, longues à arbitrer. La mesure dit autre chose : **un coût faible mais incompressible sur 100 % des entrées** (vérifier que l'entité obtenue est bien le jeu demandé) et **un coût réel sur 60 % d'entre elles** (produire la région).
+> **Le poste dominant n'est pas celui que §2 annonçait.** Ce document supposait que le coût se concentrait sur les entrées litigieuses — 20 à 30 % d'entre elles, longues à arbitrer. La mesure dit autre chose : **un coût faible mais incompressible sur 100 % des entrées** (vérifier que l'entité obtenue est bien le jeu demandé) et **un coût réel sur 57 % d'entre elles** (produire la région).
 >
-> Une date existe toujours — 100 % des trente entrées en portent une. Savoir à quelle région elle s'applique manque six fois sur dix. C'est le champ que §3.4 rend obligatoire en Phase 1, et c'est lui qu'il faut payer.
+> Une date existe toujours — 100 % des trente entrées en portent une. Savoir à quelle région elle s'applique manque près de six fois sur dix. C'est le champ que §3.4 rend obligatoire en Phase 1, et c'est lui qu'il faut payer.
+
+> ⚠️ **Le taux de région a d'abord été annoncé à 40 %, et la couverture des trois régions à 7 %.** L'erreur était de notre côté : la table de correspondance des qualificateurs omettait « Amérique du Nord », le plus fréquent. Après correction, 43 % et **30 %**. Le second chiffre change d'un facteur quatre, le premier à peine — c'est ce qui rendait l'erreur invisible. Leçon consignée dans [calibration/README.md](./calibration/README.md) : une correspondance incomplète se lit comme une absence de donnée, sans jamais lever d'erreur.
 
 **Pourquoi l'erreur de résolution coûte cher alors qu'elle est facile à corriger.** Les cinq erreurs pointent toutes vers une **suite du titre demandé** — Super Mario World devient Yoshi's Island, Donkey Kong Country devient DKC 2, Crash Bandicoot devient Crash Bandicoot 2. Même série, même plateforme, même éditeur. Rien ne les signale à la relecture ; il faut connaître l'année de sortie pour les voir. Une erreur qui se voit se corrige en dix secondes ; une erreur qui ne se voit pas se paie à la Phase 2, quand un testeur ne reconnaît pas sa propre ludothèque.
 
 Et l'un des cinq n'est pas un jeu du tout : *Chrono Trigger: Crimson Echoes* est un **ROM hack amateur annulé**, référencé comme jeu Super Nintendo. Le référentiel d'amorçage ne distingue pas l'œuvre officielle de la production de fans.
 
 **Ce que la mesure ne dit pas.** Elle qualifie l'**import non supervisé**, pas la curation humaine : un curateur qui voit la liste des candidats ne choisit pas « Crimson Echoes ». Sa portée est plus étroite et plus utile — *l'automatisation produit des candidats, elle ne clôt pas une entrée*, à aucune échelle.
+
+### 2.3 Ce que l'outillage a récupéré, et ce qu'il n'a pas récupéré
+
+La construction du [dataset](./dataset/) sur 225 titres a permis de reprendre la mesure avec trois règles au lieu d'une.
+
+| Règle | Effet |
+|---|---|
+| Plateforme **et** année à ±1 an | écarte les suites, qui sortent l'année suivante |
+| **Filtre de type** (`P31`) | écarte les séries — Wikidata porte l'item série et l'item jeu sous le même libellé, **et la série porte elle aussi les plateformes** |
+| **Libellé exact** | tranche le reste |
+
+**Le taux d'erreur tombe de 33 % à un résidu de 3 %**, et les cinq erreurs de la calibration se corrigent sans intervention — Chrono Trigger retrouve le jeu de 1995 plutôt que le ROM hack, Aladdin retrouve la version Capcom, et vers l'identifiant que l'arbitrage manuel avait désigné séparément. C'est la seule validation qui vaut pour une règle automatique.
+
+> **La conclusion de §2.2 tient malgré tout, et c'est le point.** Le résidu de 3 % n'est pas du bruit : ce sont des entrées qu'**aucune règle ne pouvait clore**. Deux titres de 1993 nommés « Disney's Aladdin » chez deux éditeurs différents ; un jeu dont la source ne liste que la plateforme de sa réédition ; un jeu dont la seule date est celle d'une réédition, quinze ans après. Ajouter des règles jusqu'à ce que le résidu disparaisse ne le ferait pas disparaître — cela le rendrait invisible.
+
+**Le vrai coût reste la région.** Sur le dataset livré, **41 % des œuvres n'en portent aucune** et sortent en `confidence: "low"`. C'est le poste manuel qui demeure, et §3.4 ne permet pas de s'en dispenser.
 
 ---
 

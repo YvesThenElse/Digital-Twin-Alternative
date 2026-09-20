@@ -90,6 +90,8 @@ Quatre principes guident le découpage :
 
 ### Périmètre volontairement restreint
 
+> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit le 20 septembre 2026 : **222 œuvres, 706 sorties**, sur les huit plateformes visées, avec `Notability` classée à la main et provenance CC0 sur chaque donnée. 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Reste à produire : **la région sur les 41 % d'œuvres qui n'en portent pas**, et les jaquettes.
+
 On ne cherche pas encore à avoir une base exhaustive. Pour le POC, un dataset de référence de **100 à 300 jeux** répartis sur un cœur de plateformes — **NES, SNES, Game Boy/GBA, N64, PS1, PS2 + Switch** — suffit largement ; on l'étend ensuite si la validation passe. À cette taille, une curation manuelle est réaliste (voir décision du cadrage).
 
 ### Critère de sortie

@@ -138,7 +138,7 @@
     "date": "1995-10-04",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    }
   ],
   "developer": [
@@ -259,7 +259,7 @@
     "date": "1992-04-13",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1992-01-01",
@@ -364,7 +364,7 @@
     "date": "1994-04-18",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1994-07-28",
@@ -376,13 +376,13 @@
     "date": "1994-07-28",
     "place_qid": "Q2729044",
     "place": "PAL region",
-    "region": null
+    "region": "PAL"
    },
    {
     "date": "2007-08-20",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "2007-09-20",
@@ -494,7 +494,7 @@
     "date": "1995-11-20",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1995-12-14",
@@ -605,7 +605,7 @@
     "date": "1997-09-07",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "2016-07-07",
@@ -617,7 +617,7 @@
     "date": "1997-11-14",
     "place_qid": "Q2729044",
     "place": "PAL region",
-    "region": null
+    "region": "PAL"
    },
    {
     "date": "2015-08-19",
@@ -641,7 +641,7 @@
     "date": "2019-03-26",
     "place_qid": "Q13780930",
     "place": "worldwide",
-    "region": null
+    "region": "WORLDWIDE"
    },
    {
     "date": "2013-05-16",
@@ -659,7 +659,7 @@
     "date": "1998-06-25",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    }
   ],
   "developer": [
@@ -915,7 +915,7 @@
     "date": "1989-07-31",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1989-06-14",
@@ -927,7 +927,7 @@
     "date": "1990-09-28",
     "place_qid": "Q2729044",
     "place": "PAL region",
-    "region": null
+    "region": "PAL"
    }
   ],
   "developer": [
@@ -1181,7 +1181,7 @@
     "date": "1993-08-01",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1999-01-01",
@@ -1217,7 +1217,7 @@
     "date": "1998-12-15",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1993-12-01",
@@ -1252,6 +1252,14 @@
    "en": "Pokémon Red and Blue"
   },
   "aliases": [
+   [
+    "ja",
+    "ポケットモンスター 赤・緑・青"
+   ],
+   [
+    "ja",
+    "ポケットモンスター 赤・緑・青・ピカチュウ"
+   ],
    [
     "en",
     "RB"
@@ -1335,14 +1343,6 @@
    [
     "fr",
     "Pokémon vert et rouge"
-   ],
-   [
-    "ja",
-    "ポケットモンスター 赤・緑・青"
-   ],
-   [
-    "ja",
-    "ポケットモンスター 赤・緑・青・ピカチュウ"
    ]
   ],
   "dates": [
@@ -1393,7 +1393,7 @@
     "date": "1993-12-01",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    }
   ],
   "developer": [
@@ -1495,7 +1495,7 @@
     "date": "1993-10-01",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    }
   ],
   "developer": [
@@ -1536,7 +1536,7 @@
     "date": "1993-09-01",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    }
   ],
   "developer": [],
@@ -1755,7 +1755,7 @@
     "date": "1993-10-01",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1993-12-10",
@@ -1802,7 +1802,7 @@
     "date": "1990-06-01",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1990-01-01",
@@ -1885,7 +1885,7 @@
     "date": "1994-04-28",
     "place_qid": "Q34",
     "place": "Sweden",
-    "region": null
+    "region": "PAL"
    },
    {
     "date": "1994-04-28",
@@ -1897,7 +1897,7 @@
     "date": "1993-04-01",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1992-11-21",
@@ -1909,7 +1909,7 @@
     "date": "1993-06-01",
     "place_qid": "Q49",
     "place": "North America",
-    "region": null
+    "region": "NTSC-U"
    },
    {
     "date": "1993-07-09",

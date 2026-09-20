@@ -6,18 +6,51 @@ Visuel    : P18
 """
 import json, wd
 
-# region qualifier values we care about, mapped to the model's Region
+# Qualificateurs de lieu -> Region du modele (PAL / NTSC-U / NTSC-J).
+#
+# La premiere version de cette table omettait Q49 (Amerique du Nord), qui est
+# le qualificateur LE PLUS frequent, et Q2729044 (zone PAL). Elle sous-estimait
+# donc la couverture regionale de la source. Toute omission ici se lit comme
+# une absence de donnee, ce qui est le pire mode de defaillance : la table doit
+# etre revue quand un qualificateur inconnu apparait, pas ignoree.
 REGION = {
-    "Q30":    "NTSC-U",   # United States
-    "Q17":    "NTSC-J",   # Japan
-    "Q183":   "PAL",      # Germany
-    "Q142":   "PAL",      # France
-    "Q145":   "PAL",      # United Kingdom
-    "Q46":    "PAL",      # Europe
-    "Q408":   "PAL",      # Australia
-    "Q258":   "PAL",      # South Africa
-    "Q16":    "NTSC-U",   # Canada
+    # NTSC-J
+    "Q17":      "NTSC-J",    # Japon
+    # NTSC-U
+    "Q49":      "NTSC-U",    # Amerique du Nord
+    "Q30":      "NTSC-U",    # Etats-Unis
+    "Q16":      "NTSC-U",    # Canada
+    "Q96":      "NTSC-U",    # Mexique
+    # PAL
+    "Q2729044": "PAL",       # zone PAL
+    "Q46":      "PAL",       # Europe
+    "Q458":     "PAL",       # Union europeenne
+    "Q142":     "PAL",       # France
+    "Q183":     "PAL",       # Allemagne
+    "Q145":     "PAL",       # Royaume-Uni
+    "Q38":      "PAL",       # Italie
+    "Q29":      "PAL",       # Espagne
+    "Q55":      "PAL",       # Pays-Bas
+    "Q34":      "PAL",       # Suede
+    "Q20":      "PAL",       # Norvege
+    "Q35":      "PAL",       # Danemark
+    "Q33":      "PAL",       # Finlande
+    "Q31":      "PAL",       # Belgique
+    "Q39":      "PAL",       # Suisse
+    "Q40":      "PAL",       # Autriche
+    "Q45":      "PAL",       # Portugal
+    "Q27":      "PAL",       # Irlande
+    "Q408":     "PAL",       # Australie
+    "Q664":     "PAL",       # Nouvelle-Zelande
+    "Q258":     "PAL",       # Afrique du Sud
 }
+
+# Sorties mondiales simultanees : les trois regions a la fois.
+WORLDWIDE = {"Q13780930"}
+
+# Volontairement absents : la Coree du Sud (Q884) et les autres marches qui
+# ne se rangent dans aucune des trois regions du modele. Les forcer
+# inventerait une donnee ; les laisser vides la signale.
 
 QUERY = """
 SELECT ?g ?prop ?val ?valLabel ?qual ?qualLabel WHERE {
@@ -69,7 +102,7 @@ def fetch(qids):
             rec = {"date": b["val"]["value"][:10].lstrip("+"),
                    "place_qid": qual,
                    "place": b.get("qualLabel", {}).get("value"),
-                   "region": REGION.get(qual)}
+                   "region": "WORLDWIDE" if qual in WORLDWIDE else REGION.get(qual)}
             if rec not in g["dates"]:
                 g["dates"].append(rec)
         else:
