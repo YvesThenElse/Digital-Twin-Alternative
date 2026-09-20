@@ -330,3 +330,4 @@ Le modèle est validé quand ces parcours se rejouent en produisant l'état atte
 5. **La compilation** (§6.3) — posséder la compilation implique-t-il posséder les jeux ? Réponse attendue : non, mais l'expérience des jeux est déclarable.
 6. **La rétrocompatibilité** — jouer un jeu Mega Drive sur Switch relève de quelle `Release` ?
 7. **La scission** — une fiche du référentiel se scinde en deux ; les événements utilisateur pointant vers elle se redirigent sans perte.
+8. **Pokémon Rouge** (§23.1) — la source d'amorçage porte **trois entités** pour un seul souvenir : Rouge/Vert (Japon, 1996), Rouge (1996), Rouge/Bleu (international, 1998). Un joueur français de 1999 et un joueur japonais de 1996 doivent pouvoir se comparer. Attendu : une œuvre canonique, les trois rattachées par alias, et aucune duplication dans les profils. Constaté sur pièces lors de la [calibration](./calibration/README.md) — le cas se matérialise dès la trentième entrée, pas à la trente millième.

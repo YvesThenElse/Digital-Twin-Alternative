@@ -1,0 +1,1977 @@
+{
+ "Q1045765": {
+  "qid": "Q1045765",
+  "labels": {
+   "ja": "スーパーマリオ ヨッシーアイランド",
+   "en": "Super Mario World 2: Yoshi's Island"
+  },
+  "aliases": [
+   [
+    "en",
+    "Mario World 2"
+   ],
+   [
+    "en",
+    "Mario World 2: Yoshi’s Island"
+   ],
+   [
+    "en",
+    "SMW 2"
+   ],
+   [
+    "en",
+    "SMW 2: Yoshi Island"
+   ],
+   [
+    "en",
+    "SMW 2: Yoshi’s Island"
+   ],
+   [
+    "en",
+    "SMW2"
+   ],
+   [
+    "en",
+    "SMW2: Yoshi Island"
+   ],
+   [
+    "en",
+    "Super Mario Bros. 5"
+   ],
+   [
+    "en",
+    "Super Mario Brothers 5"
+   ],
+   [
+    "en",
+    "Super Mario World 2"
+   ],
+   [
+    "en",
+    "Super Mario World 2: Yoshi Island"
+   ],
+   [
+    "en",
+    "SWM2: Yoshi’s Island"
+   ],
+   [
+    "en",
+    "Yoshi Island"
+   ],
+   [
+    "en",
+    "Yoshi's Island"
+   ],
+   [
+    "en",
+    "Yoshi's Island: Super Mario World 2"
+   ],
+   [
+    "fr",
+    "SMW 2: Yoshi Island"
+   ],
+   [
+    "fr",
+    "SMW2: Yoshi Island"
+   ],
+   [
+    "fr",
+    "Super Mario World 2"
+   ],
+   [
+    "fr",
+    "Super Mario World 2 : Yoshi's Island"
+   ],
+   [
+    "fr",
+    "Super Mario World 2: Yoshi Island"
+   ],
+   [
+    "fr",
+    "Yoshi Island"
+   ],
+   [
+    "fr",
+    "Yoshi's Island"
+   ],
+   [
+    "ja",
+    "スーパーマリオワールド2"
+   ],
+   [
+    "ja",
+    "ヨッシーアイランド"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "2019-09-05",
+    "place_qid": "Q30",
+    "place": "United States",
+    "region": "NTSC-U"
+   },
+   {
+    "date": "1995-08-05",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "2019-09-06",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1995-10-06",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1996-01-05",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1995-10-04",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   }
+  ],
+  "developer": [
+   "Nintendo Entertainment Analysis & Development"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "platformer"
+  ],
+  "series": [
+   "Q4802838",
+   "Yoshi",
+   "Yoshi's Island"
+  ],
+  "platform": [
+   "Super Nintendo Entertainment System",
+   "Q188642",
+   "Q19610114",
+   "Super NES Classic Edition"
+  ],
+  "image": []
+ },
+ "Q370055": {
+  "qid": "Q370055",
+  "labels": {
+   "ja": "ゼルダの伝説 神々のトライフォース",
+   "fr": "The Legend of Zelda: A Link to the Past",
+   "en": "The Legend of Zelda: A Link to the Past"
+  },
+  "aliases": [
+   [
+    "en",
+    "A Link to the Past"
+   ],
+   [
+    "en",
+    "The Legend of Zelda: Triforce of the Gods"
+   ],
+   [
+    "en",
+    "TLoZ: A Link to the Past"
+   ],
+   [
+    "en",
+    "Triforce of the Gods"
+   ],
+   [
+    "en",
+    "Zelda 3"
+   ],
+   [
+    "en",
+    "Zelda III"
+   ],
+   [
+    "fr",
+    "A Link to the Past"
+   ],
+   [
+    "fr",
+    "The Legend of Zelda: Triforce of the Gods"
+   ],
+   [
+    "fr",
+    "Triforce of the Gods"
+   ],
+   [
+    "fr",
+    "Zelda 3"
+   ],
+   [
+    "fr",
+    "Zelda III"
+   ],
+   [
+    "fr",
+    "Zelda: A Link to the Past"
+   ],
+   [
+    "ja",
+    "神々のトライフォース"
+   ],
+   [
+    "ja",
+    "神トラ"
+   ],
+   [
+    "en",
+    "1991 A Link to the Past"
+   ],
+   [
+    "en",
+    "1991 The Legend of Zelda: A Link to the Past"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "2006-12-02",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "2007-03-23",
+    "place_qid": "Q145",
+    "place": "United Kingdom",
+    "region": "PAL"
+   },
+   {
+    "date": "1991-11-21",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1992-04-13",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1992-01-01",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "2008-06-10",
+    "place_qid": "Q884",
+    "place": "South Korea",
+    "region": null
+   },
+   {
+    "date": "2019-09-05",
+    "place_qid": "Q30",
+    "place": "United States",
+    "region": "NTSC-U"
+   },
+   {
+    "date": "1992-09-24",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "2014-01-30",
+    "place_qid": "Q30",
+    "place": "United States",
+    "region": "NTSC-U"
+   },
+   {
+    "date": "2007-01-22",
+    "place_qid": "Q30",
+    "place": "United States",
+    "region": "NTSC-U"
+   },
+   {
+    "date": "2016-03-04",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "2016-04-14",
+    "place_qid": "Q30",
+    "place": "United States",
+    "region": "NTSC-U"
+   }
+  ],
+  "developer": [
+   "Nintendo Entertainment Analysis & Development"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "action-adventure game",
+   "action role-playing game"
+  ],
+  "series": [
+   "The Legend of Zelda"
+  ],
+  "platform": [
+   "Super Nintendo Entertainment System"
+  ],
+  "image": []
+ },
+ "Q1194825": {
+  "qid": "Q1194825",
+  "labels": {
+   "ja": "スーパーメトロイド",
+   "fr": "Super Metroid",
+   "en": "Super Metroid"
+  },
+  "aliases": [
+   [
+    "en",
+    "Metroid III"
+   ],
+   [
+    "fr",
+    "Metroid 3"
+   ],
+   [
+    "ja",
+    "メトロイド3"
+   ],
+   [
+    "ja",
+    "メトロイドIII"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1994-03-19",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1994-04-18",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1994-07-28",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1994-07-28",
+    "place_qid": "Q2729044",
+    "place": "PAL region",
+    "region": null
+   },
+   {
+    "date": "2007-08-20",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "2007-09-20",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "2007-10-12",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "2007-10-12",
+    "place_qid": "Q408",
+    "place": "Australia",
+    "region": "PAL"
+   }
+  ],
+  "developer": [
+   "Nintendo Research & Development 1"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "action-adventure game",
+   "shooter game",
+   "Metroidvania"
+  ],
+  "series": [
+   "Q12397"
+  ],
+  "platform": [
+   "Wii",
+   "Wii U",
+   "Super Nintendo Entertainment System",
+   "Q17679679"
+  ],
+  "image": []
+ },
+ "Q4036182": {
+  "qid": "Q4036182",
+  "labels": {
+   "en": "Chrono Trigger: Crimson Echoes"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "2009-05-31",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [],
+  "publisher": [],
+  "genre": [
+   "role-playing video game"
+  ],
+  "series": [
+   "Chrono"
+  ],
+  "platform": [
+   "Super Nintendo Entertainment System"
+  ],
+  "image": []
+ },
+ "Q1072051": {
+  "qid": "Q1072051",
+  "labels": {
+   "ja": "スーパードンキーコング2",
+   "fr": "Donkey Kong Country 2: Diddy's Kong Quest",
+   "en": "Donkey Kong Country 2: Diddy's Kong Quest"
+  },
+  "aliases": [
+   [
+    "en",
+    "DKC 2"
+   ],
+   [
+    "en",
+    "DKC2"
+   ],
+   [
+    "en",
+    "Donkey Kong Country 2"
+   ],
+   [
+    "fr",
+    "Diddy Kong's Quest"
+   ],
+   [
+    "fr",
+    "Donkey Kong Country 2"
+   ],
+   [
+    "fr",
+    "Donkey Kong Country 2 : Diddy's Kong Quest"
+   ],
+   [
+    "ja",
+    "スーパードンキーコング2 ディクシー&ディディー"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1995-11-20",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1995-12-14",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1995-12-14",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1995-11-21",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   }
+  ],
+  "developer": [
+   "Rare Ltd."
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "2D platform game"
+  ],
+  "series": [
+   "Q662004",
+   "Q16201230"
+  ],
+  "platform": [
+   "Wii U",
+   "Super Nintendo Entertainment System",
+   "Q188642",
+   "Virtual Console"
+  ],
+  "image": []
+ },
+ "Q214232": {
+  "qid": "Q214232",
+  "labels": {
+   "ja": "ファイナルファンタジーVII",
+   "en": "Final Fantasy VII"
+  },
+  "aliases": [
+   [
+    "fr",
+    "Sister Ray"
+   ],
+   [
+    "en",
+    "FF7"
+   ],
+   [
+    "fr",
+    "FF7"
+   ],
+   [
+    "en",
+    "FFVII"
+   ],
+   [
+    "en",
+    "Final Fantasy 7"
+   ],
+   [
+    "en",
+    "Final Fantasy Seven"
+   ],
+   [
+    "fr",
+    "FFVII"
+   ],
+   [
+    "fr",
+    "Final Fantasy 7"
+   ],
+   [
+    "ja",
+    "FF7"
+   ],
+   [
+    "ja",
+    "FFVII"
+   ],
+   [
+    "ja",
+    "FINAL FANTASY VII"
+   ],
+   [
+    "ja",
+    "FinalFantasy7"
+   ],
+   [
+    "ja",
+    "ファイナルファンタジー7"
+   ],
+   [
+    "ja",
+    "ファイナルファンタジーVII インターナショナル"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1997-09-07",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "2016-07-07",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "1997-11-14",
+    "place_qid": "Q2729044",
+    "place": "PAL region",
+    "region": null
+   },
+   {
+    "date": "2015-08-19",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "1997-01-31",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "2015-12-05",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "2019-03-26",
+    "place_qid": "Q13780930",
+    "place": "worldwide",
+    "region": null
+   },
+   {
+    "date": "2013-05-16",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1998-06-25",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1998-06-25",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   }
+  ],
+  "developer": [
+   "Square"
+  ],
+  "publisher": [
+   "Square Enix",
+   "Square"
+  ],
+  "genre": [
+   "role-playing video game",
+   "cyberpunk video game"
+  ],
+  "series": [
+   "Q99416119"
+  ],
+  "platform": [
+   "Q94",
+   "Microsoft Windows",
+   "Q10677",
+   "Q48493",
+   "Q5014725",
+   "Q19610114"
+  ],
+  "image": []
+ },
+ "Q6582527": {
+  "qid": "Q6582527",
+  "labels": {
+   "ja": "メタルギアソリッド",
+   "fr": "Metal Gear Solid",
+   "en": "Metal Gear Solid"
+  },
+  "aliases": [
+   [
+    "en",
+    "MGS"
+   ],
+   [
+    "fr",
+    "MGS"
+   ],
+   [
+    "en",
+    "MGS1"
+   ],
+   [
+    "fr",
+    "MGS1"
+   ],
+   [
+    "en",
+    "Metal Gear 3"
+   ],
+   [
+    "ja",
+    "MGS1"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1998-09-03",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Konami"
+  ],
+  "publisher": [
+   "Konami"
+  ],
+  "genre": [
+   "action-adventure game",
+   "stealth game"
+  ],
+  "series": [
+   "Metal Gear"
+  ],
+  "platform": [
+   "Microsoft Windows",
+   "Q10677",
+   "PlayStation Portable"
+  ],
+  "image": []
+ },
+ "Q1248594": {
+  "qid": "Q1248594",
+  "labels": {
+   "ja": "バイオハザード",
+   "fr": "Resident Evil",
+   "en": "Resident Evil"
+  },
+  "aliases": [
+   [
+    "en",
+    "1996 Resident Evil"
+   ],
+   [
+    "en",
+    "Bio Hazard"
+   ],
+   [
+    "en",
+    "Resident Evil 1"
+   ],
+   [
+    "fr",
+    "Resident Evil Archives"
+   ],
+   [
+    "ja",
+    "バイオ1"
+   ],
+   [
+    "ja",
+    "バイオハザード Deadly Silence"
+   ],
+   [
+    "ja",
+    "バイオハザード ディレクターズカット"
+   ],
+   [
+    "ja",
+    "バイオハザード ディレクターズカット デュアルショックver."
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1996-03-22",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "1997-09-25",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Capcom"
+  ],
+  "publisher": [
+   "Capcom"
+  ],
+  "genre": [
+   "survival horror"
+  ],
+  "series": [
+   "Q109303478"
+  ],
+  "platform": [
+   "Microsoft Windows",
+   "Q10677",
+   "Nintendo DS",
+   "Q200912"
+  ],
+  "image": []
+ },
+ "Q944320": {
+  "qid": "Q944320",
+  "labels": {
+   "ja": "グランツーリスモ"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "1997-12-23",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Polyphony Digital"
+  ],
+  "publisher": [
+   "Sony Interactive Entertainment"
+  ],
+  "genre": [
+   "racing video game"
+  ],
+  "series": [
+   "Q652928"
+  ],
+  "platform": [
+   "Q10677"
+  ],
+  "image": []
+ },
+ "Q569822": {
+  "qid": "Q569822",
+  "labels": {
+   "ja": "クラッシュ・バンディクー2 コルテックスの逆襲!",
+   "fr": "Crash Bandicoot 2: Cortex Strikes Back",
+   "en": "Crash Bandicoot 2: Cortex Strikes Back"
+  },
+  "aliases": [
+   [
+    "en",
+    "Crash Bandicoot 2"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1997-11-01",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Naughty Dog"
+  ],
+  "publisher": [
+   "Sony Interactive Entertainment"
+  ],
+  "genre": [
+   "3D platform game"
+  ],
+  "series": [
+   "Crash Bandicoot"
+  ],
+  "platform": [
+   "Q10677",
+   "PlayStation 3",
+   "PlayStation Portable"
+  ],
+  "image": []
+ },
+ "Q3519191": {
+  "qid": "Q3519191",
+  "labels": {
+   "ja": "テトリス",
+   "fr": "Tetris",
+   "en": "Tetris"
+  },
+  "aliases": [
+   [
+    "en",
+    "1989 Tetris"
+   ],
+   [
+    "en",
+    "Game Boy Tetris"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1989-07-31",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1989-06-14",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1990-09-28",
+    "place_qid": "Q2729044",
+    "place": "PAL region",
+    "region": null
+   }
+  ],
+  "developer": [
+   "Nintendo Research & Development 1"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "puzzle video game"
+  ],
+  "series": [],
+  "platform": [
+   "Game Boy"
+  ],
+  "image": [
+   "http://commons.wikimedia.org/wiki/Special:FilePath/Game%20Boy%20with%20Tetris%20cartridge.jpg"
+  ]
+ },
+ "Q1634866": {
+  "qid": "Q1634866",
+  "labels": {
+   "ja": "スーパーマリオランド3 ワリオランド",
+   "fr": "Wario Land: Super Mario Land 3",
+   "en": "Wario Land: Super Mario Land 3"
+  },
+  "aliases": [
+   [
+    "en",
+    "SML 3"
+   ],
+   [
+    "en",
+    "SML3"
+   ],
+   [
+    "en",
+    "Super Mario Land 3"
+   ],
+   [
+    "en",
+    "Super Mario Land 3: Wario Land"
+   ],
+   [
+    "en",
+    "Wario Land"
+   ],
+   [
+    "en",
+    "Wario Land 1"
+   ],
+   [
+    "fr",
+    "Super Mario Land 3"
+   ],
+   [
+    "fr",
+    "Super Mario Land 3 : Wario Land"
+   ],
+   [
+    "fr",
+    "Wario Land"
+   ],
+   [
+    "fr",
+    "Wario Land : Super Mario Land 3"
+   ],
+   [
+    "ja",
+    "ワリオランド"
+   ],
+   [
+    "ja",
+    "マリオランド3"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1994-01-21",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Nintendo Research & Development 1"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "platformer"
+  ],
+  "series": [
+   "Q9095556",
+   "Super Mario Land"
+  ],
+  "platform": [
+   "Game Boy",
+   "Nintendo 3DS"
+  ],
+  "image": []
+ },
+ "Q1154044": {
+  "qid": "Q1154044",
+  "labels": {
+   "fr": "Kirby's Dream Land",
+   "en": "Kirby's Dream Land",
+   "ja": "星のカービィ"
+  },
+  "aliases": [
+   [
+    "en",
+    "Hoshi no Kirby"
+   ],
+   [
+    "en",
+    "KDL"
+   ],
+   [
+    "en",
+    "KDL 1"
+   ],
+   [
+    "en",
+    "KDL1"
+   ],
+   [
+    "en",
+    "Kirby Dream Land"
+   ],
+   [
+    "en",
+    "Kirby Dream Land 1"
+   ],
+   [
+    "en",
+    "Kirby's Dream Land 1"
+   ],
+   [
+    "fr",
+    "Kirby's Dreamland"
+   ],
+   [
+    "ja",
+    "ティンクル・ポポ"
+   ],
+   [
+    "ja",
+    "ティンクルポポ"
+   ],
+   [
+    "ja",
+    "星のカービー"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1992-04-27",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "HAL Laboratory"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "platformer"
+  ],
+  "series": [
+   "Q2569953"
+  ],
+  "platform": [
+   "Game Boy"
+  ],
+  "image": []
+ },
+ "Q1060323": {
+  "qid": "Q1060323",
+  "labels": {
+   "ja": "ゼルダの伝説 夢をみる島",
+   "fr": "The Legend of Zelda: Link's Awakening",
+   "en": "The Legend of Zelda: Link's Awakening"
+  },
+  "aliases": [
+   [
+    "en",
+    "LA"
+   ],
+   [
+    "en",
+    "1993 Link's Awakening"
+   ],
+   [
+    "en",
+    "1993 The Legend of Zelda: Link's Awakening"
+   ],
+   [
+    "en",
+    "Dreaming Island"
+   ],
+   [
+    "en",
+    "Game Boy Link's Awakening"
+   ],
+   [
+    "en",
+    "Game Boy The Legend of Zelda: Link's Awakening"
+   ],
+   [
+    "en",
+    "Link's Awakening"
+   ],
+   [
+    "en",
+    "The Legend of Zelda: Dreaming Island"
+   ],
+   [
+    "fr",
+    "Link's Awakening"
+   ],
+   [
+    "fr",
+    "The Legend of Zelda : Link's Awakening"
+   ],
+   [
+    "ja",
+    "ゼルダの伝説 夢を見る島"
+   ],
+   [
+    "ja",
+    "夢をみる島"
+   ],
+   [
+    "ja",
+    "夢を見る島"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1993-12-31",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "1993-08-01",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1999-01-01",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1998-12-12",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1993-06-06",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1993-08-31",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "1993-11-18",
+    "place_qid": "Q145",
+    "place": "United Kingdom",
+    "region": "PAL"
+   },
+   {
+    "date": "1998-12-15",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1993-12-01",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   }
+  ],
+  "developer": [
+   "Nintendo Entertainment Analysis & Development"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "action-adventure game"
+  ],
+  "series": [
+   "The Legend of Zelda"
+  ],
+  "platform": [
+   "Game Boy",
+   "Game Boy Color"
+  ],
+  "image": []
+ },
+ "Q637137": {
+  "qid": "Q637137",
+  "labels": {
+   "ja": "ポケットモンスター 赤・緑",
+   "fr": "Pokémon Rouge et Bleu",
+   "en": "Pokémon Red and Blue"
+  },
+  "aliases": [
+   [
+    "en",
+    "RB"
+   ],
+   [
+    "fr",
+    "Pokémon Version Vert"
+   ],
+   [
+    "fr",
+    "Pokemon Vert"
+   ],
+   [
+    "ja",
+    "ポケットモンスター 緑"
+   ],
+   [
+    "ja",
+    "ポケットモンスター ピカチュウ"
+   ],
+   [
+    "fr",
+    "Pokemon Blue"
+   ],
+   [
+    "fr",
+    "Pokémon Blue"
+   ],
+   [
+    "fr",
+    "Pokemon Red"
+   ],
+   [
+    "fr",
+    "Pokémon Red"
+   ],
+   [
+    "ja",
+    "ポケットモンスター 赤"
+   ],
+   [
+    "ja",
+    "ポケットモンスター 青"
+   ],
+   [
+    "en",
+    "Pokemon Red and Blue"
+   ],
+   [
+    "en",
+    "Pokemon Red and Green"
+   ],
+   [
+    "en",
+    "Pokémon Red and Green"
+   ],
+   [
+    "en",
+    "Pokémon Red Version and Pokémon Blue Version"
+   ],
+   [
+    "fr",
+    "Pokémon bleu"
+   ],
+   [
+    "fr",
+    "Pokémon Bleu et Rouge"
+   ],
+   [
+    "fr",
+    "Pokémon rouge"
+   ],
+   [
+    "fr",
+    "Pokemon Rouge et Bleu"
+   ],
+   [
+    "fr",
+    "Pokémon vert"
+   ],
+   [
+    "fr",
+    "Pokémon vert et rouge"
+   ],
+   [
+    "ja",
+    "ポケットモンスター 赤・緑・青"
+   ],
+   [
+    "ja",
+    "ポケットモンスター 赤・緑・青・ピカチュウ"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1998-09-28",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Game Freak"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "role-playing video game"
+  ],
+  "series": [
+   "Pokémon"
+  ],
+  "platform": [
+   "Game Boy"
+  ],
+  "image": []
+ },
+ "Q3334222": {
+  "qid": "Q3334222",
+  "labels": {
+   "fr": "NBA All-Star Challenge",
+   "en": "NBA All-Star Challenge"
+  },
+  "aliases": [
+   [
+    "en",
+    "NBA All-Star Challenge 2"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1993-05-21",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "1993-12-01",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   }
+  ],
+  "developer": [
+   "Krome Studios Melbourne"
+  ],
+  "publisher": [],
+  "genre": [
+   "basketball video game"
+  ],
+  "series": [],
+  "platform": [
+   "Sega Genesis",
+   "Super Nintendo Entertainment System"
+  ],
+  "image": []
+ },
+ "Q7677964": {
+  "qid": "Q7677964",
+  "labels": {
+   "ja": "武田修宏のスーパーリーグサッカー",
+   "fr": "Takeda Nobuhiro no Super League Soccer",
+   "en": "Takeda Nobuhiro no Super League Soccer"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "1994-11-25",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Tose Co."
+  ],
+  "publisher": [
+   "Jaleco"
+  ],
+  "genre": [
+   "sports video game"
+  ],
+  "series": [],
+  "platform": [
+   "Super Nintendo Entertainment System"
+  ],
+  "image": []
+ },
+ "Q6746074": {
+  "qid": "Q6746074",
+  "labels": {
+   "ja": "ダークキングダム",
+   "fr": "Dark Kingdom",
+   "en": "Dark Kingdom"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "1994-04-29",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [],
+  "publisher": [
+   "Telenet Japan"
+  ],
+  "genre": [
+   "role-playing video game"
+  ],
+  "series": [],
+  "platform": [
+   "Super Nintendo Entertainment System"
+  ],
+  "image": []
+ },
+ "Q941354": {
+  "qid": "Q941354",
+  "labels": {
+   "ja": "サンセットライダーズ",
+   "fr": "Sunset Riders",
+   "en": "Sunset Riders"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "1991-09-04",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "1993-09-03",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1993-10-01",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   }
+  ],
+  "developer": [
+   "Konami"
+  ],
+  "publisher": [
+   "Konami"
+  ],
+  "genre": [
+   "shoot 'em up"
+  ],
+  "series": [],
+  "platform": [
+   "Sega Genesis",
+   "Super Nintendo Entertainment System",
+   "arcade video game",
+   "Q667808"
+  ],
+  "image": [
+   "http://commons.wikimedia.org/wiki/Special:FilePath/Mus%C3%A9e%20M%C3%A9canique%20189.JPG"
+  ]
+ },
+ "Q97584702": {
+  "qid": "Q97584702",
+  "labels": {
+   "ja": "スーパーウィジェット",
+   "en": "Super Widget"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "1993-01-01",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1993-09-01",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   }
+  ],
+  "developer": [],
+  "publisher": [],
+  "genre": [],
+  "series": [],
+  "platform": [
+   "Super Nintendo Entertainment System"
+  ],
+  "image": []
+ },
+ "Q1810472": {
+  "qid": "Q1810472",
+  "labels": {
+   "en": "Space Station Silicon Valley"
+  },
+  "aliases": [
+   [
+    "en",
+    "Evo's Space Adventures"
+   ],
+   [
+    "en",
+    "Spacestation Silicon Valley"
+   ],
+   [
+    "fr",
+    "Evo's Space Adventures"
+   ],
+   [
+    "fr",
+    "Evos Space Adventures"
+   ],
+   [
+    "fr",
+    "Space Station: Silicon Valley"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1998-10-21",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Q94893"
+  ],
+  "publisher": [
+   "Take-Two Interactive"
+  ],
+  "genre": [
+   "platformer"
+  ],
+  "series": [],
+  "platform": [
+   "Q10677",
+   "Nintendo 64"
+  ],
+  "image": []
+ },
+ "Q11500960": {
+  "qid": "Q11500960",
+  "labels": {
+   "ja": "新スーパーロボット大戦",
+   "fr": "Shin Super Robot Taisen",
+   "en": "Shin Super Robot Taisen"
+  },
+  "aliases": [
+   [
+    "ja",
+    "新スーパーロボット大戦スペシャルディスク"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1996-12-27",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [],
+  "publisher": [],
+  "genre": [],
+  "series": [],
+  "platform": [
+   "Q10677"
+  ],
+  "image": []
+ },
+ "Q96623383": {
+  "qid": "Q96623383",
+  "labels": {
+   "en": "Motocross Mania 2"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "2003-06-24",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [],
+  "publisher": [],
+  "genre": [],
+  "series": [],
+  "platform": [
+   "Microsoft Windows",
+   "Q10677"
+  ],
+  "image": []
+ },
+ "Q11348374": {
+  "qid": "Q11348374",
+  "labels": {
+   "ja": "リフレインラブ",
+   "en": "Refrain Love 2"
+  },
+  "aliases": [
+   [
+    "ja",
+    "リフレインラブ 〜あなたに逢いたい〜"
+   ],
+   [
+    "ja",
+    "リフレインラブ2"
+   ],
+   [
+    "en",
+    "Refrain Love#Refrain Love 2"
+   ],
+   [
+    "ja",
+    "リフレイン・ラブ"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1997-01-01",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [],
+  "publisher": [],
+  "genre": [
+   "dating sim"
+  ],
+  "series": [
+   "Refrain Love"
+  ],
+  "platform": [
+   "Microsoft Windows",
+   "Q10677"
+  ],
+  "image": []
+ },
+ "Q2090123": {
+  "qid": "Q2090123",
+  "labels": {
+   "ja": "FRONT MISSION 2",
+   "fr": "Front Mission 2",
+   "en": "Front Mission 2"
+  },
+  "aliases": [
+   [
+    "ja",
+    "FRONT MISSION2"
+   ],
+   [
+    "ja",
+    "フロントミッション セカンド"
+   ],
+   [
+    "ja",
+    "フロントミッション2"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1997-09-25",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [],
+  "publisher": [
+   "Square"
+  ],
+  "genre": [
+   "tactical role-playing game",
+   "mecha video game"
+  ],
+  "series": [
+   "Front Mission"
+  ],
+  "platform": [
+   "Q10677"
+  ],
+  "image": []
+ },
+ "Q2955894": {
+  "qid": "Q2955894",
+  "labels": {
+   "en": "Championship Pool"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "1993-10-01",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1993-12-10",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   }
+  ],
+  "developer": [
+   "Bitmasters"
+  ],
+  "publisher": [
+   "Mindscape",
+   "Imagineer"
+  ],
+  "genre": [
+   "sports video game"
+  ],
+  "series": [],
+  "platform": [
+   "Sega Genesis",
+   "Q47604",
+   "Nintendo Entertainment System",
+   "Super Nintendo Entertainment System",
+   "Game Boy"
+  ],
+  "image": []
+ },
+ "Q123196063": {
+  "qid": "Q123196063",
+  "labels": {
+   "fr": "Batman : The Video Game",
+   "en": "Batman: The Video Game"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "1990-04-13",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1990-06-01",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1990-01-01",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   }
+  ],
+  "developer": [],
+  "publisher": [],
+  "genre": [
+   "action game"
+  ],
+  "series": [
+   "Batman"
+  ],
+  "platform": [
+   "Game Boy"
+  ],
+  "image": []
+ },
+ "Q3489226": {
+  "qid": "Q3489226",
+  "labels": {
+   "ja": "ソーラーストライカー",
+   "fr": "Solar Striker",
+   "en": "Solar Striker"
+  },
+  "aliases": [
+   [
+    "en",
+    "Solarstriker"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1990-01-26",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Nintendo Research & Development 1"
+  ],
+  "publisher": [
+   "Nintendo"
+  ],
+  "genre": [
+   "shoot 'em up",
+   "science fiction video game"
+  ],
+  "series": [],
+  "platform": [
+   "Game Boy"
+  ],
+  "image": []
+ },
+ "Q1328124": {
+  "qid": "Q1328124",
+  "labels": {
+   "ja": "ヨッシーのクッキー",
+   "fr": "Yoshi's Cookie",
+   "en": "Yoshi's Cookie"
+  },
+  "aliases": [
+   [
+    "en",
+    "Yoshi no Cookie"
+   ]
+  ],
+  "dates": [
+   {
+    "date": "1992-01-01",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   },
+   {
+    "date": "1994-04-28",
+    "place_qid": "Q34",
+    "place": "Sweden",
+    "region": null
+   },
+   {
+    "date": "1994-04-28",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   },
+   {
+    "date": "1993-04-01",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1992-11-21",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1993-06-01",
+    "place_qid": "Q49",
+    "place": "North America",
+    "region": null
+   },
+   {
+    "date": "1993-07-09",
+    "place_qid": "Q17",
+    "place": "Japan",
+    "region": "NTSC-J"
+   },
+   {
+    "date": "1993-01-01",
+    "place_qid": "Q46",
+    "place": "Europe",
+    "region": "PAL"
+   }
+  ],
+  "developer": [
+   "Tose Co.",
+   "Bullet-Proof Software"
+  ],
+  "publisher": [
+   "Nintendo",
+   "Bullet-Proof Software"
+  ],
+  "genre": [
+   "puzzle video game"
+  ],
+  "series": [
+   "Yoshi puzzle series"
+  ],
+  "platform": [
+   "Nintendo Entertainment System",
+   "Super Nintendo Entertainment System",
+   "Game Boy"
+  ],
+  "image": []
+ },
+ "Q5215786": {
+  "qid": "Q5215786",
+  "labels": {
+   "en": "Ultra Golf"
+  },
+  "aliases": [],
+  "dates": [
+   {
+    "date": "1991-11-01",
+    "place_qid": null,
+    "place": null,
+    "region": null
+   }
+  ],
+  "developer": [
+   "Ultra Games"
+  ],
+  "publisher": [
+   "Konami"
+  ],
+  "genre": [
+   "sports video game"
+  ],
+  "series": [],
+  "platform": [
+   "Game Boy"
+  ],
+  "image": []
+ }
+}

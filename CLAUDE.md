@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository status
 
-This repository currently contains **no code** — only design documents. There is no build, no test suite and no package manifest. Do not invent build/test commands; when the first code lands, replace this section with the real ones.
+This repository contains **no product code** — design documents, plus throwaway measurement scripts under `calibration/`. There is no build, no test suite and no package manifest. Do not invent build/test commands; when the first product code lands, replace this section with the real ones.
+
+`calibration/` holds Python scripts that queried Wikidata to measure curation cost. They are instruments, not architecture — they imply nothing about the stack, which stays .NET 10 + React.
 
 - `SPECIFICATION.md` (v2) — functional/product spec (cahier des charges), written in French. Sections numbered §1–§25, continuous.
 - `PHASING.md` (v2) — implementation plan derived from the spec: 8 sequential phases (0–7) with explicit exit gates. It supersedes the spec wherever the two disagree (e.g. .NET version).
@@ -12,7 +14,7 @@ This repository currently contains **no code** — only design documents. There 
 - `ORDONNANCEMENT-TEMPOREL.md` — **authoritative on comparing, sorting, grouping and querying `TemporalValue`s**. Interval normal form, the seven retained relations, the deterministic tie-break cascade, the no-date drawer, strict/permissive queries and three-valued dated projections. Eleven test vectors. `MODELE-DE-DOMAINE.md` §3 stays normative on the type itself.
 - `BENCHMARK-CONCURRENTIEL.md` — competitive benchmark, verified 20 Sept 2026. Supersedes the spec's §2.3 claims.
 - `VERIFICATION-JURIDIQUE.md` — source-by-source licence verification, 20 Sept 2026. Supersedes the spec's §19.2 route 1.
-- `COUT-DE-CURATION.md` — curation cost model and calibration protocol.
+- `COUT-DE-CURATION.md` — curation cost model, and the calibration measured on 30 real entries (`calibration/`). Headline: unattended resolution against Wikidata picks the wrong game **5 times in 15**, always a sequel of the requested title; region-qualified dates exist for **40%** of entries; cover images for **7%**. Automation produces candidates, it never closes an entry.
 - `ecrans/` — screen-by-screen UX and visual specification. Start with its `README.md`; `00-principes-transverses.md` (behaviour rules) and `00-langage-visuel.md` (colour, type, shapes, density per breakpoint) override the individual `E01`…`E17` fiches. `PLAN-DU-SITE.md` holds routes, `PARCOURS-ET-LIENS.md` the navigation graph.
 
 All documents are French. New documentation should follow suit; code identifiers stay English.

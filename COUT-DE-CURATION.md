@@ -25,7 +25,7 @@ Le dernier arbitrage de phasage l'a déjà énoncé : *« rédiger va vite, mais
 
 ### 2.1 Hypothèses de temps
 
-> ⚠️ **Ce sont des hypothèses, pas des mesures.** Elles servent à dimensionner, et §5 donne le protocole pour les remplacer par des chiffres réels en une demi-journée.
+> ✅ **Le protocole de §5 a été exécuté** le 20 septembre 2026 sur trente entrées — [calibration/](./calibration/). Les hypothèses ci-dessous restent le cadre de dimensionnement ; §2.2 leur substitue ce qui a été mesuré, et **déplace le poste dominant**.
 
 | Cas | Part estimée | Temps par entrée |
 |---|---|---|
@@ -36,6 +36,26 @@ Le dernier arbitrage de phasage l'a déjà énoncé : *« rédiger va vite, mais
 Moyenne pondérée : **de l'ordre de 6 à 8 minutes par entrée vérifiée.**
 
 La part litigieuse est élevée **et c'est structurel** : les sept plateformes du POC sont exactement celles où le catalogue japonais, le catalogue PAL et le catalogue NTSC-U divergent le plus — c'est-à-dire précisément ce que §3.4 exige de modéliser.
+
+### 2.2 Ce que la mesure a corrigé
+
+Trente entrées, quinze en tête et quinze en traîne, sur Super Nintendo, PlayStation et Game Boy. Le détail est dans [calibration/README.md](./calibration/README.md) ; trois chiffres changent le modèle de coût.
+
+| Mesure | Valeur | Conséquence |
+|---|--:|---|
+| **Résolution automatique erronée** | **5 / 15** en tête | Aucune entrée ne se clôt sans arbitrage humain |
+| **Date régionalisée présente** | **40 %** | `Region` est le vrai poste par entrée |
+| **Image présente** | **7 %** | La source de métadonnées ne règle pas les jaquettes |
+
+> **Le poste dominant n'est pas celui que §2 annonçait.** Ce document supposait que le coût se concentrait sur les entrées litigieuses — 20 à 30 % d'entre elles, longues à arbitrer. La mesure dit autre chose : **un coût faible mais incompressible sur 100 % des entrées** (vérifier que l'entité obtenue est bien le jeu demandé) et **un coût réel sur 60 % d'entre elles** (produire la région).
+>
+> Une date existe toujours — 100 % des trente entrées en portent une. Savoir à quelle région elle s'applique manque six fois sur dix. C'est le champ que §3.4 rend obligatoire en Phase 1, et c'est lui qu'il faut payer.
+
+**Pourquoi l'erreur de résolution coûte cher alors qu'elle est facile à corriger.** Les cinq erreurs pointent toutes vers une **suite du titre demandé** — Super Mario World devient Yoshi's Island, Donkey Kong Country devient DKC 2, Crash Bandicoot devient Crash Bandicoot 2. Même série, même plateforme, même éditeur. Rien ne les signale à la relecture ; il faut connaître l'année de sortie pour les voir. Une erreur qui se voit se corrige en dix secondes ; une erreur qui ne se voit pas se paie à la Phase 2, quand un testeur ne reconnaît pas sa propre ludothèque.
+
+Et l'un des cinq n'est pas un jeu du tout : *Chrono Trigger: Crimson Echoes* est un **ROM hack amateur annulé**, référencé comme jeu Super Nintendo. Le référentiel d'amorçage ne distingue pas l'œuvre officielle de la production de fans.
+
+**Ce que la mesure ne dit pas.** Elle qualifie l'**import non supervisé**, pas la curation humaine : un curateur qui voit la liste des candidats ne choisit pas « Crimson Echoes ». Sa portée est plus étroite et plus utile — *l'automatisation produit des candidats, elle ne clôt pas une entrée*, à aucune échelle.
 
 ---
 
@@ -105,6 +125,16 @@ Ce document vaut ce que valent ses hypothèses de §2.1, et elles sont remplaça
 >
 > Sortie : le temps unitaire réel, la part litigieuse réelle, et le champ le plus coûteux — qui dira s'il faut le simplifier dans le modèle plutôt que de le payer trente mille fois.
 
+> ### ✅ Exécuté le 20 septembre 2026 — [calibration/](./calibration/)
+>
+> Deux écarts au protocole tel qu'il était écrit, et le second est une correction de fond.
+>
+> **L'échantillon a été stratifié.** Un tirage purement aléatoire aurait mesuré le coût de la traîne, alors que le POC ne paie que celui de la tête. Quinze entrées choisies pour leur notoriété, quinze tirées au sort de façon reproductible. L'écart mesuré entre les deux strates est d'un facteur trois sur plusieurs champs — série 93 % contre 27 %, studio 93 % contre 53 %. Une moyenne unique l'aurait masqué. **Le protocole est corrigé en conséquence** pour toute réexécution.
+>
+> **Le chronomètre n'a pas été le bon instrument.** Le protocole mesurait des minutes humaines ; la curation a été faite par automatisation. Ce qu'on obtient à la place est plus utile : le **taux résiduel d'arbitrage humain** — la part des entrées que l'automatisation ne peut pas clore. C'est 100 % pour la vérification de résolution et 60 % pour la région.
+>
+> Le champ le plus coûteux est identifié sans ambiguïté : **`Region`**. La question que le protocole devait poser — faut-il le simplifier dans le modèle plutôt que de le payer trente mille fois — reste ouverte, et §3.4 y répond par la négative pour le POC : sans région, le testeur PAL ne se reconnaît pas. On le paie sur 300 entrées ; on ne le paiera pas sur 30 000.
+
 C'est le même principe que les décisions déjà prises sur pièces dans ce projet : les vignettes ont été tranchées en regardant une planche, pas en discutant. **Le coût de curation se tranche en curant trente entrées.**
 
 ---
@@ -124,4 +154,6 @@ C'est le même principe que les décisions déjà prises sur pièces dans ce pro
 1. **La curation du POC est un poste de ~1,5 à 2 semaines-personne** qui s'ajoute aux autres livrables de Phase 0. La phase ne tient pas en « 1 à 2 semaines ».
 2. **L'exhaustivité du référentiel n'est pas un objectif atteignable** et ne doit apparaître dans aucun engagement. §18.6 le disait déjà — « restreindre le périmètre plutôt que promettre l'exhaustivité » —, ce document donne le chiffre qui le justifie.
 3. **Les trois niveaux de vérification (§4.1) sont une décision de Phase 0**, parce qu'ils exigent que `Confidence` soit affichée sur les fiches du référentiel dès la Phase 1 — une conséquence sur [E05](./ecrans/E05-fiches-referentiel.md), pas seulement sur le modèle.
-4. **Le protocole de calibration (§5) est à faire avant la Phase 1**, pas après : s'il révèle un temps unitaire double de l'hypothèse, c'est le périmètre du dataset POC qui se réduit, pas le calendrier qui s'étire.
+4. ~~**Le protocole de calibration (§5) est à faire avant la Phase 1**~~ — ✅ **fait** le 20 septembre 2026. Il n'a pas révélé un temps unitaire double : il a révélé que le temps unitaire n'était pas la bonne grandeur.
+5. **La production de `Region` devient une ligne de travail nommée** du dataset POC, et non un sous-produit de l'import. Six entrées sur dix l'exigent, et c'est le champ dont §3.4 fait dépendre la reconnaissance du testeur.
+6. **L'amorçage se fait par lots.** Le point d'accès public de Wikidata dépasse son délai sur une requête de catalogue complet pour la Super Nintendo et la PlayStation — 47 secondes rien que pour la Game Boy, la plus petite des trois. Ce n'est pas un obstacle, c'est une ligne de travail à prévoir.

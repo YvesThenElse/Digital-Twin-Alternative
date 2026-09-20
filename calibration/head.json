@@ -1,0 +1,23 @@
+{
+ "snes": {
+  "Super Mario World": "Q1045765",
+  "The Legend of Zelda: A Link to the Past": "Q370055",
+  "Super Metroid": "Q1194825",
+  "Chrono Trigger": "Q4036182",
+  "Donkey Kong Country": "Q1072051"
+ },
+ "ps1": {
+  "Final Fantasy VII": "Q214232",
+  "Metal Gear Solid": "Q6582527",
+  "Resident Evil": "Q1248594",
+  "Gran Turismo": "Q944320",
+  "Crash Bandicoot": "Q569822"
+ },
+ "gb": {
+  "Tetris": "Q3519191",
+  "Super Mario Land": "Q1634866",
+  "Kirby's Dream Land": "Q1154044",
+  "The Legend of Zelda: Link's Awakening": "Q1060323",
+  "Pokemon Red and Blue": null
+ }
+}
