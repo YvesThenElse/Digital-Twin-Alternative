@@ -175,3 +175,26 @@ critère qu'il prétend couvrir.
 > validé par une mutation **de ce mécanisme-là**. Si muter le critère 3 ne
 > tue pas le test nommé « critère 3 », le nom ment — et cette vérification
 > est mécanique, là où la relecture dépend de l'attention.
+
+### 06 — Un critère qui dépend du couple ne peut pas rejoindre une cascade de clés
+
+Les critères 1 à 3 de la cascade sont des **clés** : la position d'un élément
+n'y dépend jamais des autres. Le critère 4 — la cohérence causale — dépend du
+**couple**. L'ajouter naïvement à une chaîne `ThenBy` produirait une relation
+non transitive, que le tri de .NET rejette à l'exécution (« IComparer returns
+inconsistent results ») ou, pire, applique en silence.
+
+La forme qui a marché : appliquer les critères-clés d'abord, **repérer les
+groupes qu'ils ne départagent pas**, et n'exécuter le critère par couple qu'à
+l'intérieur de ces groupes — par tri topologique, en choisissant à chaque pas
+le plus petit candidat au sens de l'ordre déjà établi.
+
+Ce n'est pas seulement une commodité technique : c'est aussi ce que la
+spécification décrit. §4.3 n'invoque la causalité que « à intervalles non
+strictement ordonnés », ce qui est exactement la définition d'un groupe à
+égalité de clés. La contrainte d'implémentation et la règle métier coïncident.
+
+> **Règle** — devant un critère de tri qui dépend de deux éléments, ne pas
+> l'insérer dans la chaîne de clés. Segmenter par les clés, puis l'appliquer
+> dans chaque segment. Et vérifier le déterminisme en permutant l'entrée : un
+> critère par couple est précisément ce qui rend un tri instable.
