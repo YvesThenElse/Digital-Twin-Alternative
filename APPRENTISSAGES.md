@@ -260,3 +260,23 @@ pas : il est **en attente**.
 > **constate** la contrainte amont le rendant inutile, et le dire dans le
 > commentaire. Le test échouera le jour où la contrainte changera, ce qui est
 > exactement le moment où ce code redeviendra nécessaire.
+
+### 09 — Vérifier les champs destinés à un consommateur qui n'existe pas encore
+
+Quatrième trou révélé par une mutation annoncée survivante, et le premier qui
+ne vienne pas d'un utilitaire de test. `TemporalQueryResult` porte un champ
+`Mode` : forcer sa valeur à `Strict` ne cassait aucun test.
+
+Ce champ existe parce que §7.1 exige que le mode retenu soit **visible dans
+l'interface**. L'interface n'est pas construite, donc rien ne lit ce champ,
+donc rien ne remarque qu'il pourrait mentir. Le jour où E10 le branchera,
+l'erreur s'afficherait comme un chiffre juste sous une étiquette fausse.
+
+C'est un angle mort propre au travail en couches : tant que la couche
+consommatrice manque, les données préparées pour elle ne sont vérifiées par
+personne. Les trois trous précédents venaient des helpers ; celui-ci vient de
+l'avance qu'on prend sur l'aval.
+
+> **Règle** — tester tout champ ajouté pour un consommateur absent, au moment
+> où on l'ajoute. Le repérer est mécanique : c'est un membre public que
+> **aucun test n'assert** et **aucun code du domaine ne lit**.
