@@ -443,3 +443,44 @@ erreur que seul un parcours de trente ans pouvait exposer.
 > couverture est bonne. Il vérifie que les tests écrits mordent ; il ne dit
 > rien de ce qu'on n'a pas pensé à tester. Les six mutations conformes de
 > l'item 06 portaient toutes sur du code dont la logique était fausse.
+
+### 14 — L'invariant que j'avais écrit dans le TODO était faux
+
+L'item 14 demandait de vérifier que « `precision` est cohérente avec
+`confidence` ». J'avais écrit cette ligne moi-même, en supposant une
+correspondance stricte : jour ↔ haute, mois ↔ moyenne, année ↔ basse.
+
+Le dataset réel porte **cinq couples**, pas trois :
+
+| precision | confidence | sorties |
+|---|---|---|
+| day | high | 278 |
+| day | medium | 204 |
+| month | medium | 48 |
+| year | medium | 3 |
+| year | low | 130 |
+
+Les 204 sorties `(jour, moyenne)` viennent de Wikipédia : la date y est
+précise au jour, mais la source est secondaire. La précision et la confiance
+mesurent deux choses différentes — la **finesse** de la date et la **solidité**
+de son rattachement. Coder l'équivalence aurait déclaré 255 sorties fautives
+et poussé à « corriger » des données justes.
+
+L'invariant tenable est l'absence de sur-affirmation : `high ⟹ day`,
+`low ⟹ year`, `medium` libre. Il est vrai sur les 663 sorties, et il dit
+quelque chose — on ne revendique jamais une précision que la confiance ne
+soutient pas.
+
+> **Règle** — confronter tout invariant aux données réelles **avant** de
+> l'écrire en test, en énumérant les combinaisons effectivement présentes.
+> Un invariant inventé au bureau transforme des données justes en anomalies.
+
+> **Règle** — écrire le test qui **autorise** explicitement les cas légitimes
+> surprenants, pas seulement celui qui rejette les fautifs. Ici, les cinq
+> couples valides sont un `[Theory]` : il interdit de revenir à la règle
+> stricte lors d'un futur « nettoyage ».
+
+**Contrôle par mutation** : 5 prédictions, 5 exactes, dont une survivante
+voulue (`Ordinal` → `OrdinalIgnoreCase` sur la table des identifiants —
+rien ne protège d'un effondrement par la casse ; sans conséquence tant que
+les identifiants restent en minuscules, mais ce n'est garanti nulle part).
