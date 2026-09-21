@@ -332,4 +332,86 @@ public class UnresolvedClaimTests(PostgresFixture bdd)
         Assert.Single(journal.Where(e => e.Target.Kind == "unresolvedClaim"));
         Assert.All(journal, e => Assert.Equal(new Year(1995), e.OccurredAt));
     }
+
+    // ------------------------------------ rendre la revendication au client
+
+    [Fact]
+    public async Task Le_lot_rend_l_identifiant_des_revendications_qu_il_a_creees()
+    {
+        // L'écran saisit un titre, l'API frappe l'identifiant. Sans le lui
+        // rendre, le front ne peut RIEN rattacher à cette revendication —
+        // et c'est précisément là que vit le contenu le plus personnel du
+        // produit (§9) : un jeu obscur dont on se souvient parce qu'il est
+        // obscur. « Créé, mais introuvable » est la forme la plus coûteuse
+        // d'une donnée qui existe sans que personne ne puisse l'atteindre.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, _) = await Snes(client);
+
+        var reponse = await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_rendu_ucl", "usr_rendu_ucl", plateforme,
+            [new { title = "Le jeu de mon cousin" }]));
+
+        var corps = await reponse.Content.ReadFromJsonAsync<JsonElement>();
+        var revendications = corps.GetProperty("claims");
+
+        Assert.Equal(1, revendications.GetArrayLength());
+        Assert.Equal("Le jeu de mon cousin",
+            revendications[0].GetProperty("title").GetString());
+
+        var id = revendications[0].GetProperty("id").GetString()!;
+        Assert.StartsWith("ucl_", id, StringComparison.Ordinal);
+
+        // L'identifiant rendu est UTILISABLE, et pas seulement bien formé :
+        // c'est la seule assertion qui prouve qu'on n'a pas rendu un
+        // identifiant plausible mais faux.
+        var ecrit = await client.PostAsJsonAsync("/memories", new
+        {
+            userId = "usr_rendu_ucl",
+            targetKind = "unresolvedClaim",
+            targetId = id,
+            text = "Jamais retrouvé le nom, mais le dragon était bleu.",
+        });
+        Assert.Equal(HttpStatusCode.OK, ecrit.StatusCode);
+    }
+
+    [Fact]
+    public async Task Un_lot_sans_titre_libre_rend_une_liste_vide_et_non_l_absence_de_champ()
+    {
+        // Le champ manquant obligerait chaque appelant à distinguer « aucune
+        // revendication » de « le serveur n'en parle pas » — et la seconde
+        // lecture se termine toujours par une exception chez le client.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        var reponse = await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_vide_ucl", "usr_vide_ucl", plateforme,
+            [new { workId = oeuvres[0] }]));
+
+        var corps = await reponse.Content.ReadFromJsonAsync<JsonElement>();
+        Assert.Equal(0, corps.GetProperty("claims").GetArrayLength());
+    }
+
+    [Fact]
+    public async Task Le_meme_titre_redeclare_rend_le_meme_identifiant()
+    {
+        // Sinon un souvenir écrit au premier passage se retrouverait attaché
+        // à une revendication que le second aurait doublée — le souvenir
+        // survivrait en base et disparaîtrait de l'écran.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, _) = await Snes(client);
+
+        async Task<string> Declarer(string lot)
+        {
+            var r = await client.PostAsJsonAsync("/declarations", Lot(
+                lot, "usr_stable_ucl", plateforme,
+                [new { title = "Le jeu de mon cousin" }]));
+            var c = await r.Content.ReadFromJsonAsync<JsonElement>();
+            return c.GetProperty("claims")[0].GetProperty("id").GetString()!;
+        }
+
+        Assert.Equal(await Declarer("bat_stable_1"), await Declarer("bat_stable_2"));
+    }
 }

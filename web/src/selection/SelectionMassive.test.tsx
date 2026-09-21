@@ -1,7 +1,11 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { SelectionMassive } from "./SelectionMassive";
+import {
+  SelectionMassive,
+  type LotDeclaration,
+  type ReponseDeclaration,
+} from "./SelectionMassive";
 import type { Oeuvre } from "./types";
 
 const oeuvres: Oeuvre[] = [
@@ -11,7 +15,14 @@ const oeuvres: Oeuvre[] = [
 ];
 
 function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {}) {
-  const envoyer = vi.fn().mockResolvedValue(undefined);
+  // Le faux rend ce que l'API rend : les revendications qu'elle a frappées.
+  // Un faux qui rendrait `undefined` laisserait passer un composant incapable
+  // de lire la réponse — et c'est exactement le chemin que ce bloc vérifie.
+  const envoyer = vi.fn(async (lot: LotDeclaration) => ({
+    claims: lot.entries
+      .filter((e): e is { title: string } => "title" in e)
+      .map((e, i) => ({ title: e.title, id: `ucl_faux_${i}` })),
+  }));
   const ecrireSouvenir = vi.fn().mockResolvedValue(undefined);
   const recharger = vi.fn();
   const rendu = render(
@@ -413,7 +424,8 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     await utilisateur.type(champ, "Noël 1992, chez ma grand-mère.");
     await utilisateur.tab();
 
-    expect(ecrireSouvenir).toHaveBeenCalledWith("w1", "Noël 1992, chez ma grand-mère.");
+    expect(ecrireSouvenir).toHaveBeenCalledWith(
+      { kind: "work", id: "w1" }, "Noël 1992, chez ma grand-mère.");
   });
 
   it("n'enregistre rien quand le champ reste vide", async () => {
@@ -464,7 +476,9 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     // récompense arrive après la latence, et §24.4 n'est pas tenu.
     const utilisateur = userEvent.setup();
     let resoudre: (() => void) | undefined;
-    const envoyer = vi.fn(() => new Promise<void>((r) => { resoudre = r; }));
+    const envoyer = vi.fn(
+      () => new Promise<ReponseDeclaration>((r) => { resoudre = () => r({ claims: [] }); }),
+    );
     monter({ envoyer });
 
     await utilisateur.click(lignes()[0]);
@@ -662,5 +676,75 @@ describe("SelectionMassive — le jeu absent est un cas nominal (§3.5)", () => 
 
     expect(envoyer.mock.calls[0][0].entries)
       .toEqual([{ title: "Zelda  II : The Adventure of Link" }]);
+  });
+});
+
+describe("SelectionMassive — un souvenir sur un titre saisi (§9)", () => {
+  const champ = () => screen.getByRole("textbox", { name: /titre absent/i });
+  const ajouter = () => screen.getByRole("button", { name: /ajouter ce titre/i });
+  const souvenirLibre = () =>
+    screen.queryByRole("textbox", { name: /Un souvenir sur Le jeu de mon cousin/ });
+
+  async function ajouterUnTitre(utilisateur: ReturnType<typeof userEvent.setup>) {
+    await utilisateur.type(champ(), "Le jeu de mon cousin");
+    await utilisateur.click(ajouter());
+  }
+
+  it("propose d'écrire un souvenir sur un titre saisi", async () => {
+    // C'est là que vit le contenu le plus personnel du produit : un jeu
+    // absent du référentiel est souvent un jeu dont on se souvient
+    // précisément parce qu'il est obscur. L'offrir sur les seules lignes
+    // curées réserverait le souvenir aux titres dont on se souvient le moins.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await ajouterUnTitre(utilisateur);
+
+    expect(souvenirLibre()).toBeInTheDocument();
+  });
+
+  it("attache le souvenir à la REVENDICATION, jamais à une œuvre", async () => {
+    // L'identifiant est frappé par l'API et rendu dans la réponse ; celui que
+    // le composant s'est donné ne quitte pas le navigateur. Envoyer ce
+    // dernier écrirait un souvenir sur une cible que la base ne connaît pas.
+    const utilisateur = userEvent.setup();
+    const { ecrireSouvenir } = monter();
+
+    await ajouterUnTitre(utilisateur);
+    await utilisateur.type(souvenirLibre()!, "Le dragon était bleu.");
+    await utilisateur.tab();
+
+    expect(ecrireSouvenir).toHaveBeenCalledWith(
+      { kind: "unresolvedClaim", id: "ucl_faux_0" }, "Le dragon était bleu.");
+  });
+
+  it("n'offre pas le champ quand la déclaration a échoué, et le dit", async () => {
+    // Sans revendication, un souvenir n'a nulle part où aller. Offrir le
+    // champ quand même laisserait l'utilisateur écrire la phrase la plus
+    // personnelle du produit dans le vide. L'absence du champ ne suffit pas
+    // à l'expliquer : l'alerte le dit.
+    const utilisateur = userEvent.setup();
+    monter({ envoyer: vi.fn().mockRejectedValue(new Error("réseau")) });
+
+    await ajouterUnTitre(utilisateur);
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(souvenirLibre()).toBeNull();
+  });
+
+  it("garde chaque souvenir sur son propre titre saisi", async () => {
+    const utilisateur = userEvent.setup();
+    const { ecrireSouvenir } = monter();
+
+    await ajouterUnTitre(utilisateur);
+    await utilisateur.type(champ(), "Celui avec le dragon bleu");
+    await utilisateur.click(ajouter());
+
+    await utilisateur.type(souvenirLibre()!, "Chez mon cousin.");
+    await utilisateur.tab();
+
+    expect(ecrireSouvenir).toHaveBeenCalledTimes(1);
+    expect(ecrireSouvenir).toHaveBeenCalledWith(
+      { kind: "unresolvedClaim", id: "ucl_faux_0" }, "Chez mon cousin.");
   });
 });

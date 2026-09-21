@@ -21,6 +21,28 @@ export type LotDeclaration = {
   entries: EntreeDeclaration[];
 };
 
+/**
+ * Ce que l'API rend d'un lot : les revendications qu'elle a **frappées**.
+ *
+ * Le front saisit un titre, l'API décide de l'identifiant. Sans ce retour,
+ * plus rien ne peut s'y rattacher — et §9 place justement là le contenu le
+ * plus personnel du produit.
+ */
+export type ReponseDeclaration = { claims: { title: string; id: string }[] };
+
+/**
+ * La cible d'un souvenir, **nommée par son genre**. Un identifiant nu
+ * laisserait l'appelant deviner, et deviner « œuvre » sur une revendication
+ * écrirait un souvenir sur une cible que la base ne connaît pas.
+ */
+export type CibleSouvenir = {
+  kind: "work" | "unresolvedClaim";
+  id: string;
+};
+
+/** Un titre saisi, et la revendication que l'API lui a donnée. */
+type TitreLibre = Oeuvre & { claimId: string | null };
+
 type Props = {
   oeuvres: Oeuvre[];
   /**
@@ -37,12 +59,12 @@ type Props = {
    * Deux stratégies, jamais une disposition étirée (§6).
    */
   disposition: Disposition;
-  envoyer: (lot: LotDeclaration) => Promise<void>;
+  envoyer: (lot: LotDeclaration) => Promise<ReponseDeclaration>;
   /**
    * Enregistre un souvenir. Requis, sans valeur par défaut : un rappel
    * facultatif absent rendrait le champ muet sans que rien ne le signale.
    */
-  ecrireSouvenir: (workId: string, texte: string) => Promise<void>;
+  ecrireSouvenir: (cible: CibleSouvenir, texte: string) => Promise<void>;
   /**
    * Recharger la liste. **Ne doit jamais être appelé en réponse à un clic** :
    * un aller-retour par ligne ruinerait le budget d'un tap par jeu.
@@ -59,6 +81,31 @@ type Props = {
  * on ne défait rien — voir son travail s'effacer est le pire scénario d'un
  * affichage optimiste.
  */
+/**
+ * Le champ de souvenir, identique pour une œuvre et pour un titre saisi.
+ *
+ * <b>Défini au niveau du module, et c'est essentiel.</b> Déclaré dans le
+ * corps de `SelectionMassive`, son type changeait à chaque rendu : React
+ * démontait le `<textarea>` à la première frappe, le focus partait, et la
+ * phrase s'arrêtait à une lettre. Le contenu le plus précieux du produit se
+ * serait perdu sans qu'aucune erreur ne soit levée.
+ */
+function ChampSouvenir({ titre, valeur, surSaisie, surSortie }: {
+  titre: string;
+  valeur: string;
+  surSaisie: (texte: string) => void;
+  surSortie: () => void;
+}) {
+  return (
+    <textarea
+      aria-label={t("souvenir.invite", { titre })}
+      value={valeur}
+      onChange={(e) => surSaisie(e.target.value)}
+      onBlur={surSortie}
+    />
+  );
+}
+
 export function SelectionMassive({
   oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger,
 }: Props) {
@@ -75,7 +122,7 @@ export function SelectionMassive({
   // mélanger leur donnerait un rang, une notoriété et un statut régional
   // qu'ils n'ont pas — c'est-à-dire l'apparence d'une donnée vérifiée là où
   // il n'y a qu'un souvenir.
-  const [titresLibres, setTitresLibres] = useState<Oeuvre[]>([]);
+  const [titresLibres, setTitresLibres] = useState<TitreLibre[]>([]);
   const [saisie, setSaisie] = useState("");
   const compteurLibre = useRef(0);
 
@@ -118,8 +165,12 @@ export function SelectionMassive({
     // décompte, et ne quitte jamais le navigateur.
     compteurLibre.current += 1;
     const id = `libre_${compteurLibre.current}`;
-    const ajoute: Oeuvre = {
+    const ajoute: TitreLibre = {
       id,
+      // Inconnue tant que l'API n'a pas répondu : c'est ELLE qui frappe
+      // l'identifiant. Poser ici une valeur d'attente ferait écrire un
+      // souvenir sur une cible que la base ne connaît pas.
+      claimId: null,
       titre,
       // Inerte, et c'est voulu : un titre saisi n'a pas de notoriété, et il
       // se rend depuis son propre tableau, jamais par le tri du référentiel.
@@ -139,18 +190,39 @@ export function SelectionMassive({
     // Le MÊME lot que les titres cochés : le lot est le passage sur l'écran,
     // pas le geste. En ouvrir un second détacherait ce titre de l'épisode,
     // et la timeline le montrerait isolé alors qu'il vient du même passage.
-    envoyer({ batchId: lot.current, entries: [{ title: titre }] }).catch(() => {
-      setErreur(t("erreur.declaration"));
-    });
+    envoyer({ batchId: lot.current, entries: [{ title: titre }] })
+      .then((reponse) => {
+        const revendication = reponse.claims.find((c) => c.title === titre);
+        // Un lot accepté qui ne rend pas la revendication est un succès
+        // APPARENT : la ligne s'affiche, et le souvenir n'aurait nulle part
+        // où aller. On le dit plutôt que de laisser l'absence parler.
+        if (revendication === undefined) {
+          setErreur(t("erreur.declaration"));
+          return;
+        }
+        setTitresLibres((precedents) =>
+          precedents.map((libre) =>
+            libre.id === id ? { ...libre, claimId: revendication.id } : libre,
+          ),
+        );
+      })
+      .catch(() => {
+        setErreur(t("erreur.declaration"));
+      });
   }
 
-  function enregistrerSouvenir(id: string) {
-    const texte = (souvenirs[id] ?? "").trim();
+  /**
+   * `cle` indexe le texte à l'écran, `cible` dit à qui il appartient en
+   * base. Les deux coïncident pour une œuvre et divergent pour un titre
+   * saisi, dont l'identifiant local ne quitte jamais le navigateur.
+   */
+  function enregistrerSouvenir(cle: string, cible: CibleSouvenir) {
+    const texte = (souvenirs[cle] ?? "").trim();
     // Rien à garder : un souvenir vide occuperait une place à l'écran et
     // ferait croire à une phrase écrite.
     if (texte.length === 0) return;
 
-    ecrireSouvenir(id, texte).catch(() => {
+    ecrireSouvenir(cible, texte).catch(() => {
       setErreur(t("erreur.souvenir"));
     });
   }
@@ -200,13 +272,13 @@ export function SelectionMassive({
                   le plus dense du produit et suggérerait un travail à faire.
                   §9 est un COMPLÉMENT, jamais un passage obligé. */}
               {declare ? (
-                <textarea
-                  aria-label={t("souvenir.invite", { titre: oeuvre.titre })}
-                  value={souvenirs[oeuvre.id] ?? ""}
-                  onChange={(e) =>
-                    setSouvenirs((s) => ({ ...s, [oeuvre.id]: e.target.value }))
+                <ChampSouvenir
+                  titre={oeuvre.titre}
+                  valeur={souvenirs[oeuvre.id] ?? ""}
+                  surSaisie={(texte) =>
+                    setSouvenirs((s) => ({ ...s, [oeuvre.id]: texte }))
                   }
-                  onBlur={() => enregistrerSouvenir(oeuvre.id)}
+                  surSortie={() => enregistrerSouvenir(oeuvre.id, { kind: "work", id: oeuvre.id })}
                 />
               ) : null}
             </li>
@@ -236,18 +308,41 @@ export function SelectionMassive({
 
       {titresLibres.length > 0 ? (
         <ul>
-          {titresLibres.map((libre) => (
+          {titresLibres.map((libre) => {
+            // Liée à une constante : dans une fermeture, TypeScript ne peut
+            // plus garantir qu'une propriété n'a pas changé entre-temps.
+            const revendication = libre.claimId;
+            return (
             <li key={libre.id} data-testid="titre-libre" data-canonique="false">
               <span>{libre.titre}</span>
               {/* La marque est DITE, pas suggérée par une absence : sans
                   elle, une saisie libre se lirait comme une entrée du
                   référentiel dont la date manquerait. */}
               <span>{t("titreLibre.marque")}</span>
-              {/* La marque est DITE, pas suggérée par une absence : sans
-                  elle, une saisie libre se lirait comme une entrée du
-                  référentiel dont la date manquerait. */}
+
+              {/* Le champ n'apparaît qu'une fois la revendication connue :
+                  sans elle, un souvenir n'a nulle part où aller, et laisser
+                  écrire la phrase la plus personnelle du produit dans le
+                  vide serait pire que ne pas l'offrir. L'échec, lui, est DIT
+                  par l'alerte — l'absence du champ ne l'explique pas. */}
+              {revendication !== null ? (
+                <ChampSouvenir
+                  titre={libre.titre}
+                  valeur={souvenirs[libre.id] ?? ""}
+                  surSaisie={(texte) =>
+                    setSouvenirs((s) => ({ ...s, [libre.id]: texte }))
+                  }
+                  surSortie={() =>
+                    enregistrerSouvenir(libre.id, {
+                      kind: "unresolvedClaim",
+                      id: revendication,
+                    })
+                  }
+                />
+              ) : null}
             </li>
-          ))}
+            );
+          })}
         </ul>
       ) : null}
 

@@ -1510,3 +1510,34 @@ référentiel » n'était gardée que par le détecteur de libellés morts — u
 garde du **catalogue**, pas de l'écran, qui se tait dès qu'on retire la clé
 en même temps que la ligne. Une règle qui trouve un second cas le jour où on
 l'écrit décrit un motif, pas un incident.
+
+### 46 — Un composant défini dans le corps d'un autre perd son état à chaque frappe
+
+Le champ de souvenir servait deux cas — une œuvre, un titre saisi. Je l'ai
+extrait en composant… **à l'intérieur** de `SelectionMassive` :
+
+```tsx
+export function SelectionMassive(...) {
+  function ChampSouvenir({ ... }) { return <textarea ... />; }   // ✗
+```
+
+Chaque rendu en crée une fonction **neuve**. React compare les types par
+identité : un type différent n'est pas un rerendu, c'est un **remplacement**.
+Le `<textarea>` est démonté et remonté à la première lettre, le focus part
+avec lui, et la saisie s'arrête là.
+
+Rien n'est levé. L'écran a l'air de fonctionner, le champ reste visible, et
+la phrase est simplement plus courte que ce qui a été tapé — sur le seul
+contenu du produit qui ne se régénère pas.
+
+**La règle** : un composant se déclare **au niveau du module**. Ce dont il a
+besoin passe en props. Un composant imbriqué qui a besoin de l'état du parent
+signale une prop manquante, pas une raison de l'imbriquer.
+
+Ce qui l'a attrapé n'est pas un test neuf mais **trois tests existants** —
+« garde le texte à l'écran après l'enregistrement », « décocher ne détruit
+pas le souvenir déjà écrit ». Ils vérifiaient une valeur **après plusieurs
+frappes**, et c'est ce qui les a rendus sensibles à un défaut que personne ne
+cherchait. Un test qui n'aurait tapé qu'un caractère serait resté vert.
+Voisin de [[12]] : ce qu'un test rend visible dépend moins de ce qu'il
+affirme que de la **longueur du chemin** qu'il fait parcourir.

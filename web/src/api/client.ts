@@ -1,6 +1,10 @@
 import type { Oeuvre, Plateforme } from "../selection/types";
 import type { EntreeTimeline, MomentTimeline } from "../timeline/types";
-import type { EntreeDeclaration } from "../selection/SelectionMassive";
+import type {
+  CibleSouvenir,
+  EntreeDeclaration,
+  ReponseDeclaration,
+} from "../selection/SelectionMassive";
 import type { ValeurTemporelle } from "../temporel/valeur";
 
 /**
@@ -106,13 +110,17 @@ export const client = {
     platformId: string;
     period: unknown;
     entries: EntreeDeclaration[];
-  }) => ecrire<{ created: number }>("/declarations", lot),
+  }) => ecrire<{ created: number } & ReponseDeclaration>("/declarations", lot),
 
-  souvenir: (userId: string, workId: string, texte: string) =>
+  souvenir: (userId: string, cible: CibleSouvenir, texte: string) =>
     ecrire<unknown>("/memories", {
       userId,
-      targetKind: "work",
-      targetId: workId,
+      // Le GENRE vient de l'appelant. Le figer à « work » ici écrirait tous
+      // les souvenirs de titres saisis sur des œuvres inexistantes, et l'API
+      // les refuserait en nommant un identifiant que l'écran n'affiche
+      // jamais.
+      targetKind: cible.kind,
+      targetId: cible.id,
       text: texte,
     }),
 

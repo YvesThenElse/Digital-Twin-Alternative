@@ -80,6 +80,16 @@ public static class DeclarationEndpoints
                 // événements ET que tous étaient déjà là.
                 alreadyRecorded = evenements!.Count > 0 && evenementsAEcrire.Count == 0,
                 eventIds = evenementsAEcrire.Select(e => e.Id).ToList(),
+                // Les revendications frappées ici, rendues à l'appelant. Le
+                // front saisit un titre, l'API décide de l'identifiant : sans
+                // ce retour, plus rien ne peut s'y rattacher — et §9 place
+                // justement là le contenu le plus personnel du produit. La
+                // liste est TOUJOURS présente, vide le cas échéant : « aucune
+                // revendication » et « le serveur n'en parle pas » ne doivent
+                // pas se distinguer à l'absence d'un champ.
+                claims = titres
+                    .Select(titre => new { title = titre!, id = revendications[titre!] })
+                    .ToList(),
             });
         });
 

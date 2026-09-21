@@ -131,10 +131,10 @@ export function App() {
                 platformId: machine.id,
                 period: periode,
                 entries: lot.entries,
-              }).then(() => undefined)
+              })
             }
-            ecrireSouvenir={(workId, texte) =>
-              client.souvenir(UTILISATEUR, workId, texte).then(() => undefined)
+            ecrireSouvenir={(cible, texte) =>
+              client.souvenir(UTILISATEUR, cible, texte).then(() => undefined)
             }
             recharger={() => { void chargerOeuvres(machine); }}
           />

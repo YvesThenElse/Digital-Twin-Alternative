@@ -22,6 +22,9 @@ const TITRES_A_COCHER = 30;
  */
 const TITRE_ABSENT = "Le jeu de mon cousin, jamais retrouvé le nom";
 
+/** Ce qu'on écrit sur le titre saisi — le contenu que §9 rend irremplaçable. */
+const SOUVENIR_LIBRE = "Jamais retrouvé le nom, mais le dragon était bleu.";
+
 /** Trente titres cochés, plus celui qui manquait. */
 const MOMENTS_ATTENDUS = TITRES_A_COCHER + 1;
 
@@ -103,10 +106,40 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Et marqué : une saisie libre n'est pas une entrée du référentiel.
   await expect(page.getByTestId("titre-libre")).toHaveAttribute("data-canonique", "false");
 
-  // --- 5. un souvenir ----------------------------------------------------
+  // --- 5. deux souvenirs -------------------------------------------------
   const souvenir = page.getByRole("textbox", { name: /^Un souvenir sur/ }).first();
   await toucher(souvenir.fill("On l'a fini à deux avec mon frère, l'été 1995."));
   await toucher(page.getByRole("heading", { level: 1 }).click()); // perte de focus
+
+  // Et un souvenir sur le titre SAISI — c'est là que §9 place le contenu le
+  // plus personnel : un jeu absent du référentiel est souvent un jeu dont on
+  // se souvient précisément parce qu'il est obscur.
+  const souvenirLibre = page.getByRole("textbox", {
+    name: `Un souvenir sur ${TITRE_ABSENT} ?`,
+  });
+  await toucher(souvenirLibre.fill(SOUVENIR_LIBRE));
+  await toucher(page.getByRole("heading", { level: 1 }).click());
+
+  // La FRONTIÈRE que seul ce parcours voit : l'identifiant de la
+  // revendication est frappé par l'API et renvoyé par le front. Les deux
+  // côtés ont chacun leur test ; personne ne possède la jointure, et c'est
+  // exactement là que deux défauts se sont déjà logés. On relit donc la base
+  // par l'API plutôt que l'écran, qui ne montre pas encore les souvenirs.
+  const souvenirs = await (
+    await page.request.get(`/api/memories/${profil}`)
+  ).json();
+  const surLeTitreSaisi = souvenirs.filter(
+    (s: { targetKind: string }) => s.targetKind === "unresolvedClaim",
+  );
+  expect(surLeTitreSaisi, "le souvenir du titre saisi n'est pas arrivé en base")
+    .toHaveLength(1);
+  expect(surLeTitreSaisi[0].text).toBe(SOUVENIR_LIBRE);
+  expect(surLeTitreSaisi[0].targetId).toMatch(/^ucl_/);
+
+  // Et celui de la ligne cochée est bien sur l'ŒUVRE : une cible unique pour
+  // les deux dirait que le genre n'a servi à rien.
+  expect(souvenirs.filter((s: { targetKind: string }) => s.targetKind === "work"))
+    .toHaveLength(1);
 
   // --- 6. la timeline ----------------------------------------------------
   await toucher(page.getByRole("button", { name: "Voir ma timeline" }).click());
@@ -136,13 +169,13 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
 
   // --- le KPI de §22.3 ---------------------------------------------------
   //
-  // Un geste par titre, plus l'amorce (machine, période), la note, le
+  // Un geste par titre, plus l'amorce (machine, période), les deux notes, le
   // passage à la timeline et le dépliage. Le titre absent en coûte DEUX —
   // saisir puis valider —, et c'est le prix à surveiller : sur 221 titres le
   // cas se répète, et un troisième geste par titre manquant sortirait du
   // budget « un tap par jeu ». Dépasser signifierait qu'un geste s'est
   // glissé quelque part, et c'est exactement ce que le test doit voir.
-  const budget = TITRES_A_COCHER + 8;
+  const budget = TITRES_A_COCHER + 10;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });
