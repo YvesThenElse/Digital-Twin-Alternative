@@ -1,3 +1,4 @@
+using DigitalTwin.Api.Selection;
 using DigitalTwin.Domain.Player;
 using Microsoft.EntityFrameworkCore;
 
@@ -71,6 +72,77 @@ public sealed class EventStore(PlayerEventDbContext db)
     /// que le RGPD l'exige — « ajout seul » veut dire qu'on ne réécrit pas
     /// une histoire, pas qu'on ne peut pas effacer une personne.
     /// </summary>
-    public Task<int> PurgeUserAsync(string userId, CancellationToken ct = default)
-        => db.PlayerEvents.Where(e => e.UserId == userId).ExecuteDeleteAsync(ct);
+    public async Task<int> PurgeUserAsync(string userId, CancellationToken ct = default)
+    {
+        // TOUTES les tables de USER DATA, pas seulement le journal. Une table
+        // oubliée ici laisserait des données personnelles après un droit à
+        // l'effacement — et rien ne le signalerait.
+        var evenements = await db.PlayerEvents
+            .Where(e => e.UserId == userId).ExecuteDeleteAsync(ct);
+        var declarations = await db.PlayDeclarations
+            .Where(d => d.UserId == userId).ExecuteDeleteAsync(ct);
+        return evenements + declarations;
+    }
+
+    /// <summary>
+    /// Écrit ou révise des déclarations permanentes.
+    ///
+    /// <para>Mise à jour en place, et c'est voulu : une déclaration n'a pas
+    /// de date, elle est un jugement courant. Invariant 10 — une incohérence
+    /// produit un avertissement, jamais un refus —, donc déclarer « jamais
+    /// joué » après avoir déclaré « joué » est une <b>correction</b> que l'on
+    /// accepte.</para>
+    /// </summary>
+    public async Task<int> ApplyDeclarationsAsync(
+        string userId, IEnumerable<DeclarationIntent> intentions,
+        CancellationToken ct = default)
+    {
+        var aAppliquer = intentions.ToList();
+        if (aAppliquer.Count == 0) return 0;
+
+        var existantes = await db.PlayDeclarations
+            .Where(d => d.UserId == userId).ToListAsync(ct);
+
+        foreach (var intention in aAppliquer)
+        {
+            var ligne = existantes.FirstOrDefault(
+                d => d.WorkId == intention.WorkId && d.PlatformId == intention.PlatformId);
+            if (ligne is null)
+            {
+                ligne = new PlayDeclarationRow
+                {
+                    UserId = userId,
+                    WorkId = intention.WorkId,
+                    PlatformId = intention.PlatformId,
+                };
+                db.PlayDeclarations.Add(ligne);
+                existantes.Add(ligne);
+            }
+
+            // On passe par le TYPE DE DOMAINE : c'est lui qui sait que
+            // `DeclareNeverPlayed` efface provenance et affect (invariant 8),
+            // et que déclarer une provenance lève `NeverPlayed` (invariant
+            // 10). Les réimplémenter ici les laisserait diverger.
+            var jugement = PlayDeclarationMapping.ToDomain(ligne);
+            jugement = intention.Kind switch
+            {
+                DeclarationIntent.NeverPlayed => jugement.DeclareNeverPlayed(),
+                DeclarationIntent.Provenance =>
+                    jugement.WithProvenance(Enum.Parse<Provenance>(intention.Value!)),
+                _ => throw new NotSupportedException(
+                    $"Intention de déclaration inconnue : « {intention.Kind} »."),
+            };
+            PlayDeclarationMapping.Apply(ligne, jugement);
+        }
+
+        await db.SaveChangesAsync(ct);
+        return aAppliquer.Count;
+    }
+
+    public async Task<IReadOnlyList<PlayDeclarationRow>> ReadDeclarationsAsync(
+        string userId, CancellationToken ct = default)
+        => await db.PlayDeclarations.AsNoTracking()
+            .Where(d => d.UserId == userId)
+            .OrderBy(d => d.WorkId).ThenBy(d => d.PlatformId)
+            .ToListAsync(ct);
 }

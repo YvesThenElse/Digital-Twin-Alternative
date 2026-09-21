@@ -26,7 +26,7 @@ public static class DeclarationEndpoints
             }
 
             var d = source.Dataset;
-            var (evenements, refus) = DeclarationTranslator.Translate(
+            var (evenements, declarations, refus) = DeclarationTranslator.Translate(
                 lot,
                 plateformeConnue: id => d.Platforms.Any(p => p.CanonicalId == id),
                 oeuvreConnue: id => d.Works.Any(w => w.CanonicalId == id),
@@ -42,14 +42,33 @@ public static class DeclarationEndpoints
             }
 
             await magasin.AppendAsync(evenements!, ct);
+            var jugements = await magasin.ApplyDeclarationsAsync(lot.UserId, declarations!, ct);
 
             return Results.Ok(new
             {
                 batchId = lot.BatchId,
                 created = evenements!.Count,
+                declarationsRecorded = jugements,
                 alreadyRecorded = false,
                 eventIds = evenements.Select(e => e.Id).ToList(),
             });
+        });
+
+        routes.MapGet("/declarations/{userId}", async (
+            string userId, EventStore magasin, CancellationToken ct) =>
+        {
+            // Prouve la distinction qui fait tout l'intérêt de §24.3 : une
+            // œuvre ABSENTE de cette liste n'a pas été déclarée, une œuvre
+            // présente avec `neverPlayed` l'a été explicitement.
+            var declarations = await magasin.ReadDeclarationsAsync(userId, ct);
+            return Results.Ok(declarations.Select(d => new
+            {
+                workId = d.WorkId,
+                platformId = d.PlatformId,
+                neverPlayed = d.NeverPlayed,
+                provenance = d.Provenance,
+                affect = d.Affect,
+            }).ToList());
         });
 
         return routes;

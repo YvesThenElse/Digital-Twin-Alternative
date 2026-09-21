@@ -1,3 +1,4 @@
+using DigitalTwin.Api.Persistence;
 using DigitalTwin.Domain.Player;
 using DigitalTwin.Domain.Temporal;
 
@@ -7,7 +8,10 @@ namespace DigitalTwin.Api.Selection;
 /// <param name="Completion">finished · stillPlaying · abandoned · <c>null</c></param>
 /// <param name="Provenance">owned · elsewhere · borrowed · <c>null</c></param>
 public sealed record DeclarationEntry(
-    string WorkId, string? Completion = null, string? Provenance = null);
+    string WorkId,
+    string? Completion = null,
+    string? Provenance = null,
+    bool NeverPlayed = false);
 
 /// <summary>
 /// Un lot de déclarations issu d'un passage sur l'écran de sélection massive.
@@ -23,6 +27,20 @@ public sealed record DeclarationBatch(
     string PlatformId,
     PeriodInput Period,
     IReadOnlyList<DeclarationEntry> Entries);
+
+/// <summary>
+/// Ce qu'une ligne cochée demande de changer dans le jugement permanent.
+///
+/// <para>Une <b>intention</b>, pas une ligne toute faite : une déclaration
+/// porte trois champs indépendants, et réécrire la ligne entière effacerait
+/// ceux qu'on n'a pas touchés. « Mon préféré sur Super Nintendo »
+/// disparaîtrait parce qu'on a dit « je l'avais ».</para>
+/// </summary>
+public sealed record DeclarationIntent(string WorkId, string PlatformId, string Kind, string? Value)
+{
+    public const string NeverPlayed = "neverPlayed";
+    public const string Provenance = "provenance";
+}
 
 /// <summary>Ce qui empêche un lot d'être enregistré, en nommant l'entrée.</summary>
 public sealed record BatchRejection(string Message);
@@ -49,7 +67,9 @@ public static class DeclarationTranslator
     /// Rend les événements, ou le refus. <paramref name="surLaPlateforme"/>
     /// dit si une œuvre paraît bien sur la machine déclarée.
     /// </summary>
-    public static (IReadOnlyList<PlayerEvent>? Events, BatchRejection? Rejection) Translate(
+    public static (IReadOnlyList<PlayerEvent>? Events,
+                   IReadOnlyList<DeclarationIntent>? Declarations,
+                   BatchRejection? Rejection) Translate(
         DeclarationBatch lot,
         Func<string, bool> plateformeConnue,
         Func<string, bool> oeuvreConnue,
@@ -60,11 +80,11 @@ public static class DeclarationTranslator
         {
             // Rien à déclarer n'est pas une déclaration : un lot vide
             // produirait un épisode vide dans la timeline.
-            return (null, new BatchRejection("Le lot ne contient aucune déclaration."));
+            return (null, null, new BatchRejection("Le lot ne contient aucune déclaration."));
         }
         if (!plateformeConnue(lot.PlatformId))
         {
-            return (null, new BatchRejection($"Plateforme inconnue : « {lot.PlatformId} »."));
+            return (null, null, new BatchRejection($"Plateforme inconnue : « {lot.PlatformId} »."));
         }
 
         TemporalValue quand;
@@ -74,27 +94,58 @@ public static class DeclarationTranslator
         }
         catch (ArgumentException e)
         {
-            return (null, new BatchRejection(e.Message));
+            return (null, null, new BatchRejection(e.Message));
         }
 
         var evenements = new List<PlayerEvent>();
+        var declarations = new List<DeclarationIntent>();
         foreach (var entree in lot.Entries)
         {
             if (!oeuvreConnue(entree.WorkId))
             {
-                return (null, new BatchRejection($"Œuvre inconnue : « {entree.WorkId} »."));
+                return (null, null, new BatchRejection($"Œuvre inconnue : « {entree.WorkId} »."));
             }
             if (!surLaPlateforme(entree.WorkId, lot.PlatformId))
             {
                 // Cocher un jeu Game Boy sur l'écran Super Nintendo est une
                 // faute du client : l'accepter attribuerait un souvenir à une
                 // machine où le jeu n'existe pas.
-                return (null, new BatchRejection(
+                return (null, null, new BatchRejection(
                     $"« {entree.WorkId} » ne paraît pas sur « {lot.PlatformId} »."));
             }
 
+            if (entree.NeverPlayed)
+            {
+                // Invariant 8 : `NeverPlayed` exclut toute autre déclaration
+                // sur la même œuvre. Les garder produirait « je n'y ai jamais
+                // joué, et je l'ai fini ».
+                if (entree.Completion is not null || entree.Provenance is not null)
+                {
+                    return (null, null, new BatchRejection(
+                        $"« {entree.WorkId} » est déclaré « jamais joué » et porte "
+                        + "aussi un achèvement ou une provenance : les deux "
+                        + "s'excluent (invariant 8)."));
+                }
+
+                // AUCUN événement. « Jamais joué » n'a pas de date — c'est un
+                // jugement, et lui en forcer une inventerait une précision.
+                declarations.Add(new DeclarationIntent(
+                    entree.WorkId, lot.PlatformId, DeclarationIntent.NeverPlayed, null));
+                continue;
+            }
+
             var types = TypesDe(entree, out var refus);
-            if (refus is not null) return (null, refus);
+            if (refus is not null) return (null, null, refus);
+
+            if (entree.Provenance is not null)
+            {
+                // La provenance est un attribut de déclaration (§4.5). Elle
+                // double l'événement d'acquisition sans le remplacer : l'un
+                // date, l'autre qualifie.
+                declarations.Add(new DeclarationIntent(
+                    entree.WorkId, lot.PlatformId, DeclarationIntent.Provenance,
+                    ProvenanceDomaine(entree.Provenance)));
+            }
 
             foreach (var type in types)
             {
@@ -109,8 +160,16 @@ public static class DeclarationTranslator
             }
         }
 
-        return (evenements, null);
+        return (evenements, declarations, null);
     }
+
+    private static string ProvenanceDomaine(string valeur) => valeur switch
+    {
+        Owned => nameof(DigitalTwin.Domain.Player.Provenance.Owned),
+        Elsewhere => nameof(DigitalTwin.Domain.Player.Provenance.Elsewhere),
+        Borrowed => nameof(DigitalTwin.Domain.Player.Provenance.Borrowed),
+        _ => nameof(DigitalTwin.Domain.Player.Provenance.Unknown),
+    };
 
     /// <summary>
     /// Les types d'événements qu'une ligne produit.

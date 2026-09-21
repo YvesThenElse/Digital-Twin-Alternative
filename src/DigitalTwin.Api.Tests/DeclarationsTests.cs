@@ -333,6 +333,212 @@ public class DeclarationsTests(PostgresFixture bdd)
             StringComparison.Ordinal);
     }
 
+    // -------------------------------------------- « jamais joué » (§24.3)
+
+    private async Task<JsonElement> Jugements(HttpClient c, string userId)
+        => await c.GetFromJsonAsync<JsonElement>($"/declarations/{userId}");
+
+    [Fact]
+    public async Task Jamais_joue_ne_produit_aucun_evenement()
+    {
+        // « Je n'y ai jamais joué » n'a pas de date. Lui forger un événement
+        // inventerait un moment qui n'a pas eu lieu, et la timeline
+        // afficherait une partie que personne n'a jouée.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_jamais", "usr_jamais", plateforme,
+            [new { workId = oeuvres[0], neverPlayed = true }]));
+
+        Assert.Empty(await Journal("usr_jamais"));
+    }
+
+    [Fact]
+    public async Task Jamais_joue_se_distingue_d_un_titre_non_coche_et_survit_au_rechargement()
+    {
+        // LE point de l'item. Ne rien dire et dire « je n'y ai jamais joué »
+        // sont deux informations différentes, et la seconde fait avancer la
+        // reconstruction.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_distinction", "usr_distinction", plateforme,
+            [
+                new { workId = oeuvres[0], neverPlayed = true },
+                new { workId = oeuvres[1] },
+            ]));
+
+        // Relu par une AUTRE requête, donc un autre contexte : la distinction
+        // vient de la base, pas d'un état en mémoire.
+        var jugements = await Jugements(client, "usr_distinction");
+        var declares = jugements.EnumerateArray()
+            .ToDictionary(j => j.GetProperty("workId").GetString()!,
+                          j => j.GetProperty("neverPlayed").GetBoolean());
+
+        Assert.True(declares[oeuvres[0]]);
+        // oeuvres[1] a été JOUÉ — il n'a pas de jugement « jamais joué ».
+        Assert.False(declares.GetValueOrDefault(oeuvres[1]));
+        // oeuvres[2] n'a RIEN reçu : absent de la liste, et c'est la
+        // troisième réponse, distincte des deux autres.
+        Assert.DoesNotContain(oeuvres[2], declares.Keys);
+    }
+
+    [Theory]
+    [InlineData("completion", "finished")]
+    [InlineData("provenance", "owned")]
+    public async Task Jamais_joue_combine_a_une_autre_declaration_est_refuse(
+        string champ, string valeur)
+    {
+        // Invariant 8 : `NeverPlayed` exclut toute autre déclaration sur la
+        // même œuvre. Les garder produirait « je n'y ai jamais joué, et je
+        // l'ai fini ».
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        object entree = champ == "completion"
+            ? new { workId = oeuvres[0], neverPlayed = true, completion = valeur }
+            : new { workId = oeuvres[0], neverPlayed = true, provenance = valeur };
+
+        var reponse = await client.PostAsJsonAsync("/declarations", Lot(
+            $"bat_inv8_{champ}", $"usr_inv8_{champ}", plateforme, [entree]));
+
+        Assert.Equal(HttpStatusCode.BadRequest, reponse.StatusCode);
+        var texte = await reponse.Content.ReadAsStringAsync();
+        Assert.Contains(oeuvres[0], texte, StringComparison.Ordinal);
+        Assert.Contains("invariant 8", texte, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task Un_lot_mele_des_joues_et_des_jamais_joues()
+    {
+        // Le cas réel : on parcourt une liste et on tranche dans les deux
+        // sens. Exiger deux appels doublerait la friction du geste central.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_mele", "usr_mele", plateforme,
+            [
+                new { workId = oeuvres[0] },
+                new { workId = oeuvres[1], neverPlayed = true },
+                new { workId = oeuvres[2] },
+            ]));
+
+        Assert.Equal(2, (await Journal("usr_mele")).Count);
+        var jugements = await Jugements(client, "usr_mele");
+        Assert.Equal(1, jugements.GetArrayLength());
+        Assert.True(jugements[0].GetProperty("neverPlayed").GetBoolean());
+    }
+
+    [Fact]
+    public async Task Declarer_jamais_joue_deux_fois_ne_produit_pas_deux_lignes()
+    {
+        // Une déclaration est un jugement COURANT, pas un journal : la
+        // réécrire est normal, la dupliquer ne l'est pas.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_deux1", "usr_deux", plateforme,
+            [new { workId = oeuvres[0], neverPlayed = true }]));
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_deux2", "usr_deux", plateforme,
+            [new { workId = oeuvres[0], neverPlayed = true }]));
+
+        Assert.Equal(1, (await Jugements(client, "usr_deux")).GetArrayLength());
+    }
+
+    [Fact]
+    public async Task Avoir_joue_apres_avoir_dit_jamais_joue_est_une_correction_et_non_un_refus()
+    {
+        // Invariant 10 : une incohérence produit un avertissement, jamais un
+        // refus. Refuser obligerait le joueur à défaire avant de corriger —
+        // exactement la friction que le produit combat.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_corr1", "usr_corr", plateforme,
+            [new { workId = oeuvres[0], neverPlayed = true }]));
+
+        var seconde = await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_corr2", "usr_corr", plateforme,
+            [new { workId = oeuvres[0], provenance = "owned" }]));
+
+        Assert.Equal(HttpStatusCode.OK, seconde.StatusCode);
+        var jugements = await Jugements(client, "usr_corr");
+        Assert.False(jugements[0].GetProperty("neverPlayed").GetBoolean());
+        Assert.Equal("Owned", jugements[0].GetProperty("provenance").GetString());
+    }
+
+    [Fact]
+    public async Task Declarer_une_provenance_ne_efface_pas_un_affect_deja_posé()
+    {
+        // Une déclaration porte TROIS champs indépendants. Réécrire la ligne
+        // entière à chaque geste effacerait ceux qu'on n'a pas touchés — et
+        // « mon préféré sur Super Nintendo » disparaîtrait parce qu'on a dit
+        // « je l'avais ». Aucun écran n'écrit encore l'affect : le défaut
+        // serait donc resté invisible jusqu'à ce qu'il coûte cher.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await using (var db = bdd.CreerContexte())
+        {
+            db.PlayDeclarations.Add(new PlayDeclarationRow
+            {
+                UserId = "usr_affect",
+                WorkId = oeuvres[0],
+                PlatformId = plateforme,
+                Affect = "Favourite",
+            });
+            await db.SaveChangesAsync();
+        }
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_affect", "usr_affect", plateforme,
+            [new { workId = oeuvres[0], provenance = "owned" }]));
+
+        var jugements = await Jugements(client, "usr_affect");
+        Assert.Equal("Owned", jugements[0].GetProperty("provenance").GetString());
+        Assert.Equal("Favourite", jugements[0].GetProperty("affect").GetString());
+    }
+
+    [Fact]
+    public async Task La_purge_efface_aussi_les_declarations()
+    {
+        // §10.1 : une opération unique suffit à TOUT effacer. Une table
+        // oubliée laisserait des données personnelles après un droit à
+        // l'effacement, et rien ne le signalerait.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_purge", "usr_purge", plateforme,
+            [
+                new { workId = oeuvres[0] },
+                new { workId = oeuvres[1], neverPlayed = true },
+            ]));
+
+        await using (var db = bdd.CreerContexte())
+        {
+            var efface = await new EventStore(db).PurgeUserAsync("usr_purge");
+            Assert.Equal(2, efface);
+        }
+
+        Assert.Empty(await Journal("usr_purge"));
+        Assert.Equal(0, (await Jugements(client, "usr_purge")).GetArrayLength());
+    }
+
     [Fact]
     public async Task Un_lot_vide_est_refuse()
     {

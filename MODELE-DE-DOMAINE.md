@@ -153,7 +153,9 @@ En ajout seul, partitionné par utilisateur.
 
 ### `PlayDeclaration` — les déclarations permanentes
 
-Un enregistrement par couple utilisateur / œuvre, sans date.
+Un enregistrement par triplet **utilisateur / œuvre / plateforme**, sans date.
+
+> ⚠️ Ce document disait « par couple utilisateur / œuvre ». C'était incompatible avec l'invariant 6 — `Favourite` est unique **par plateforme** —, qui exige que la clé porte la machine : une œuvre parue sur deux consoles peut être le préféré de l'une sans l'être de l'autre. Corrigé le 21 septembre 2026 ; le code portait déjà les trois colonnes.
 
 | Champ | Valeurs | Note |
 |---|---|---|

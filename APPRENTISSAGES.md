@@ -952,3 +952,51 @@ la même cible.
 
 > **Règle** — avant de poser une contrainte d'unicité, vérifier qu'elle
 > n'interdit pas une opération que la spécification exige.
+
+### 27 — Un champ que rien ne préserve est un champ que rien ne teste
+
+Une mutation a retiré la relecture de `NeverPlayed` dans la traduction
+ligne → domaine. **Aucun test n'a bronché.** La raison est subtile : les deux
+intentions existantes — « jamais joué » et « provenance » — réécrivent toutes
+deux ce champ. Aucun chemin ne le **préserve**, donc sa relecture n'était
+observable nulle part.
+
+Le jour où une troisième intention arrive — l'affect —, la faute effacerait
+« je n'y ai jamais joué » au premier « j'ai adoré », et personne ne
+comprendrait pourquoi.
+
+> **Règle** — une mutation qui survit sur une ligne qu'on croyait utile
+> signale souvent que **le chemin qui l'utiliserait n'existe pas encore**.
+> Tester alors l'unité elle-même, sans attendre le chemin : c'est moins cher
+> maintenant que le jour où il arrive.
+
+**Un défaut trouvé sans mutation, en relisant ce que je venais d'écrire.**
+Mon premier upsert réécrivait la ligne entière : `NeverPlayed`, `Provenance`
+et `Affect` à chaque geste. Or ces trois champs sont indépendants — déclarer
+« je l'avais » aurait effacé « mon préféré sur Super Nintendo ». Aucun écran
+n'écrit encore l'affect, donc rien ne l'aurait montré avant longtemps.
+
+Le correctif n'est pas de recopier champ par champ, mais de **passer par le
+type de domaine** : `DeclareNeverPlayed` efface ce que l'invariant 8 exclut,
+`WithProvenance` lève `NeverPlayed` comme l'invariant 10 l'exige. Les
+réimplémenter dans le magasin les aurait laissés diverger.
+
+> **Règle** — quand le magasin doit décider ce qu'une écriture conserve,
+> c'est que la décision appartient au domaine. Charger, appliquer la méthode
+> du type, réécrire — plutôt que d'assigner les colonnes.
+
+**Une divergence documentaire, tranchée dans le bon sens.**
+`MODELE-DE-DOMAINE.md` annonçait « un enregistrement par couple utilisateur /
+œuvre », tout en posant l'invariant 6 : `Favourite` est unique **par
+plateforme**. Les deux ne tiennent ensemble que si la clé porte la machine —
+ce que le code faisait déjà. C'est la légende qui était imprécise ; elle est
+corrigée.
+
+> **Règle** — rappel de l'item 03b : quand le modèle et sa description
+> divergent, établir **lequel a raison** avant de corriger. Ici encore, le
+> code avait raison.
+
+**Et une prédiction de mutation fausse, par sous-comptage.** « Aucune
+déclaration écrite » : prévu 5, obtenu 6 — j'avais oublié un test qui lit les
+jugements. Sans conséquence, mais c'est la troisième fois que le nombre
+annoncé vient d'une énumération de mémoire plutôt que d'un `grep`.

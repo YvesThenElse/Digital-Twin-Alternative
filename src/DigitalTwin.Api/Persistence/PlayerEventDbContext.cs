@@ -15,6 +15,13 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
 {
     public DbSet<PlayerEventRow> PlayerEvents => Set<PlayerEventRow>();
 
+    /// <summary>
+    /// Les jugements permanents. <b>Mutables</b>, contrairement au journal :
+    /// une déclaration se révise, et l'invariant 10 interdit de refuser une
+    /// correction.
+    /// </summary>
+    public DbSet<PlayDeclarationRow> PlayDeclarations => Set<PlayDeclarationRow>();
+
     protected override void OnModelCreating(ModelBuilder b)
     {
         var e = b.Entity<PlayerEventRow>();
@@ -48,6 +55,21 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
         e.HasIndex(x => new { x.UserId, x.TargetId });
         // Reconnaître un lot déjà enregistré, et regrouper un épisode.
         e.HasIndex(x => new { x.UserId, x.BatchId });
+
+
+        var d = b.Entity<PlayDeclarationRow>();
+        d.ToTable("play_declarations");
+        // Trois colonnes et non deux : l'affect porte sur une PLATEFORME —
+        // « mon préféré sur Super Nintendo » — et `Favourite` y est unique.
+        d.HasKey(x => new { x.UserId, x.WorkId, x.PlatformId });
+        d.Property(x => x.UserId).HasColumnName("user_id").IsRequired();
+        d.Property(x => x.WorkId).HasColumnName("work_id").IsRequired();
+        d.Property(x => x.PlatformId).HasColumnName("platform_id").IsRequired();
+        d.Property(x => x.NeverPlayed).HasColumnName("never_played").IsRequired();
+        d.Property(x => x.Provenance).HasColumnName("provenance").IsRequired();
+        d.Property(x => x.Affect).HasColumnName("affect").IsRequired();
+        // Invariant 11 : purgeable par UserId seul.
+        d.HasIndex(x => x.UserId);
     }
 
     /// <summary>
