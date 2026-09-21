@@ -519,3 +519,148 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     expect(new Set(lots).size).toBe(1);
   });
 });
+
+describe("SelectionMassive — le jeu absent est un cas nominal (§3.5)", () => {
+  const champ = () => screen.getByRole("textbox", { name: /titre absent/i });
+  const ajouter = () => screen.getByRole("button", { name: /ajouter ce titre/i });
+
+  it("offre l'issue de secours même quand la liste est pleine", () => {
+    // « Elle reste présente même quand il y a des résultats, car le bon jeu
+    // peut manquer au milieu de dix mauvais » (E06). Une issue qui
+    // n'apparaîtrait qu'une fois la liste vide ne servirait jamais : la
+    // liste n'est jamais vide sur cet écran.
+    monter();
+
+    expect(champ()).toBeInTheDocument();
+    expect(ajouter()).toBeInTheDocument();
+  });
+
+  it("envoie le titre libre dans le MÊME lot que les titres cochés", async () => {
+    // Le lot est le PASSAGE sur l'écran (§4.4). Ouvrir un second lot pour le
+    // titre saisi le détacherait de l'épisode : sur la timeline il
+    // apparaîtrait comme un moment isolé, alors que le joueur l'a déclaré
+    // dans le même geste que les autres.
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.type(champ(), "Le jeu de mon cousin");
+    await utilisateur.click(ajouter());
+
+    expect(envoyer).toHaveBeenCalledTimes(2);
+    const [coche, libre] = envoyer.mock.calls.map((appel) => appel[0]);
+    expect(libre.batchId).toBe(coche.batchId);
+    expect(libre.entries).toEqual([{ title: "Le jeu de mon cousin" }]);
+  });
+
+  it("n'envoie ni un champ vide ni des espaces", async () => {
+    // Rien à garder. Accepter produirait une revendication sans titre, que
+    // plus aucun écran ne saurait nommer.
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.click(ajouter());
+    await utilisateur.type(champ(), "   ");
+    await utilisateur.click(ajouter());
+
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("montre le titre ajouté sans le confondre avec une œuvre curée", async () => {
+    // Il « apparaît comme les autres » — mais jamais AU MÊME TITRE : une
+    // saisie libre n'a ni fiche, ni notoriété, ni statut régional, et la
+    // présenter comme une entrée du référentiel ferait croire à une donnée
+    // vérifiée là où il n'y a qu'un souvenir.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.type(champ(), "Le jeu de mon cousin");
+    await utilisateur.click(ajouter());
+
+    const ajoute = screen.getByTestId("titre-libre");
+    expect(ajoute).toHaveTextContent("Le jeu de mon cousin");
+    expect(ajoute).toHaveAttribute("data-canonique", "false");
+
+    // Et la marque est LUE, pas seulement posée pour la machine
+    // (apprentissage 44) : `data-canonique` ne dit rien à un joueur, et
+    // l'utilisateur qui relit sa liste doit voir pourquoi cette ligne n'a ni
+    // date ni statut régional. Sans la phrase, elle se lirait comme une
+    // entrée du référentiel dont les données manquent.
+    expect(ajoute).toHaveTextContent(/hors du référentiel/i);
+
+    // Les lignes du référentiel, elles, ne portent pas cette marque.
+    expect(screen.getAllByTestId("titre-libre")).toHaveLength(1);
+  });
+
+  it("compte le titre ajouté dans la récompense, sans le placer sur la bande", async () => {
+    // §24.4 : la récompense arrive PENDANT la saisie. Un titre saisi qui ne
+    // ferait pas bouger la bande dirait à l'utilisateur que son geste n'a
+    // rien produit — et c'est justement le geste le plus fragile de l'écran.
+    // Sans date, il est compté et jamais placé, comme un jeu non daté.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.type(champ(), "Le jeu de mon cousin");
+    await utilisateur.click(ajouter());
+
+    expect(bande()).toHaveAttribute("data-total", "1");
+    expect(bande()).toHaveAttribute("data-tranches", "0");
+  });
+
+  it("vide le champ après l'ajout, pour que le suivant s'enchaîne", async () => {
+    // Sur 221 titres, le cas se répète. Obliger à effacer sa propre saisie
+    // ajouterait un geste par titre manquant, sur l'écran dont tout le
+    // budget est « un tap par jeu ».
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.type(champ(), "Le jeu de mon cousin");
+    await utilisateur.click(ajouter());
+    expect(champ()).toHaveValue("");
+
+    // Et un second clic ne renvoie pas le même titre : rien n'est saisi.
+    await utilisateur.click(ajouter());
+    expect(envoyer).toHaveBeenCalledTimes(1);
+  });
+
+  it("accepte deux titres libres sans les confondre", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.type(champ(), "Le jeu de mon cousin");
+    await utilisateur.click(ajouter());
+    await utilisateur.type(champ(), "Celui avec le dragon bleu");
+    await utilisateur.click(ajouter());
+
+    expect(screen.getAllByTestId("titre-libre").map((n) => n.textContent))
+      .toEqual(expect.arrayContaining([
+        expect.stringContaining("Le jeu de mon cousin"),
+        expect.stringContaining("Celui avec le dragon bleu"),
+      ]));
+    expect(bande()).toHaveAttribute("data-total", "2");
+  });
+
+  it("un échec d'envoi se dit sans effacer ce que l'utilisateur a saisi", async () => {
+    // Même règle que pour les lignes cochées : voir son travail s'effacer
+    // est le pire scénario d'un affichage optimiste.
+    const utilisateur = userEvent.setup();
+    monter({ envoyer: vi.fn().mockRejectedValue(new Error("réseau")) });
+
+    await utilisateur.type(champ(), "Le jeu de mon cousin");
+    await utilisateur.click(ajouter());
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(screen.getByTestId("titre-libre")).toHaveTextContent("Le jeu de mon cousin");
+  });
+
+  it("rogne les bords de la saisie sans toucher au milieu", async () => {
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.type(champ(), "  Zelda  II : The Adventure of Link  ");
+    await utilisateur.click(ajouter());
+
+    expect(envoyer.mock.calls[0][0].entries)
+      .toEqual([{ title: "Zelda  II : The Adventure of Link" }]);
+  });
+});

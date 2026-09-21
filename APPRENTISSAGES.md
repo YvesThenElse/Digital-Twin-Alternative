@@ -1476,3 +1476,37 @@ Voisin de [[43]] — un test vrai des deux côtés d'une mutation — mais la
 cause diffère : là, l'assertion portait sur un état que la mutation ne
 changeait pas ; ici, elle porte sur un **substitut** de ce qu'elle prétend
 vérifier.
+
+### 45 — Un chemin dont le parcours est le seul garde n'est pas gardé
+
+La timeline résout le libellé d'un titre saisi en interrogeant les
+revendications de l'utilisateur. Retirer cette recherche — tous les titres
+saisis rendus sous le même libellé générique — n'a cassé **aucun** des 518
+tests .NET. Seul le parcours de bout en bout le voyait.
+
+C'est une couverture trompeuse, pour trois raisons :
+
+- il y a **un** parcours, et la boucle interdit de l'affaiblir tout en
+  l'autorisant à évoluer : le jour où une assertion en sort parce qu'elle
+  ralentit, le chemin devient nu sans qu'aucun test ne rougisse ;
+- il ne tourne pas dans `./test.sh` ni dans `./web.sh test` — les deux
+  commandes qu'on lance en boucle ;
+- quand il échoue, il ne nomme pas la couche fautive. Un test d'API dit
+  « l'API ne résout pas » ; le parcours dit « le titre n'est pas à l'écran »,
+  et il reste à chercher lequel des trois étages l'a perdu.
+
+**La règle** : après avoir écrit un chemin que le parcours traverse, demande
+**quel test unitaire le tue**. S'il n'y en a aucun, le parcours porte une
+charge pour laquelle il n'est pas fait — écris le test de la couche, et
+garde le parcours pour ce que lui seul voit : les **frontières** ([[42]],
+[[17]]).
+
+La vérification est mécanique, et c'est ce qui la rend fiable : la mutation
+tournée contre `./test.sh` seul répond en trente secondes, là où relire le
+code en se demandant « est-ce testé ? » dépend de l'attention.
+
+Au passage, [[44]] a resservi dans la même itération : la marque « hors du
+référentiel » n'était gardée que par le détecteur de libellés morts — un
+garde du **catalogue**, pas de l'écran, qui se tait dès qu'on retire la clé
+en même temps que la ligne. Une règle qui trouve un second cas le jour où on
+l'écrit décrit un motif, pas un incident.

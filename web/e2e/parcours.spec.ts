@@ -14,6 +14,17 @@ import { expect, test } from "@playwright/test";
 /** Ce que le budget « un tap par jeu » autorise, plus l'amorce et la note. */
 const TITRES_A_COCHER = 30;
 
+/**
+ * Le jeu absent du référentiel — un cas NOMINAL sur 221 titres (§3.5), pas
+ * un cas limite. Le parcours le traverse pour la même raison qu'il coche
+ * trente lignes : un utilisateur bloqué au premier titre manquant invalide
+ * le test utilisateur bien avant d'invalider le produit.
+ */
+const TITRE_ABSENT = "Le jeu de mon cousin, jamais retrouvé le nom";
+
+/** Trente titres cochés, plus celui qui manquait. */
+const MOMENTS_ATTENDUS = TITRES_A_COCHER + 1;
+
 test("reconstruire trente titres et voir la timeline se remplir", async ({ page }, infos) => {
   let gestes = 0;
   const toucher = async (action: Promise<unknown>) => {
@@ -80,12 +91,24 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   const bande = page.getByTestId("bande-epoque");
   await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
 
-  // --- 4. un souvenir ----------------------------------------------------
-  const souvenir = page.getByRole("textbox").first();
+  // --- 4. le jeu qui manque ----------------------------------------------
+  await toucher(
+    page.getByRole("textbox", { name: "Titre absent de la liste" }).fill(TITRE_ABSENT),
+  );
+  await toucher(page.getByRole("button", { name: "Ajouter ce titre" }).click());
+
+  // Compté dans la récompense, comme les autres : un geste qui ne ferait
+  // rien bouger dirait à l'utilisateur qu'il n'a rien produit.
+  await expect(bande).toHaveAttribute("data-total", String(MOMENTS_ATTENDUS));
+  // Et marqué : une saisie libre n'est pas une entrée du référentiel.
+  await expect(page.getByTestId("titre-libre")).toHaveAttribute("data-canonique", "false");
+
+  // --- 5. un souvenir ----------------------------------------------------
+  const souvenir = page.getByRole("textbox", { name: /^Un souvenir sur/ }).first();
   await toucher(souvenir.fill("On l'a fini à deux avec mon frère, l'été 1995."));
   await toucher(page.getByRole("heading", { level: 1 }).click()); // perte de focus
 
-  // --- 5. la timeline ----------------------------------------------------
+  // --- 6. la timeline ----------------------------------------------------
   await toucher(page.getByRole("button", { name: "Voir ma timeline" }).click());
 
   // Les trente titres ont été cochés d'un seul passage, sur une même
@@ -94,22 +117,33 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   const axe = page.getByTestId("axe");
   await expect(axe).toHaveAttribute("data-entrees", "1");
   const entree = axe.locator("> li");
-  await expect(entree).toHaveAttribute("data-moments", String(TITRES_A_COCHER));
+  await expect(entree).toHaveAttribute("data-moments", String(MOMENTS_ATTENDUS));
 
-  // Déplié, le joueur retrouve ses trente titres. Le NOMBRE EXACT, et non
-  // « il y a des moments » : un compte plus faible dirait que des
-  // déclarations se sont perdues, un compte plus fort qu'on lit le profil de
-  // quelqu'un d'autre.
+  // Déplié, le joueur retrouve ses titres. Le NOMBRE EXACT, et non « il y a
+  // des moments » : un compte plus faible dirait que des déclarations se
+  // sont perdues, un compte plus fort qu'on lit le profil de quelqu'un
+  // d'autre.
   await toucher(page.getByRole("button", { name: /Déplier/ }).click());
-  await expect(page.getByTestId("moment-titre")).toHaveCount(TITRES_A_COCHER);
+  await expect(page.getByTestId("moment-titre")).toHaveCount(MOMENTS_ATTENDUS);
+
+  // Le titre saisi est là, AVEC SON TITRE — et dans le même épisode que les
+  // autres. C'est l'acceptation de §3.5 : la déclaration non résolue est
+  // « visible dans son profil comme les autres ». Une timeline qui le
+  // montrerait sous son identifiant, ou pas du tout, laisserait le joueur
+  // croire que sa saisie n'a servi à rien.
+  await expect(page.getByTestId("moment-titre").filter({ hasText: TITRE_ABSENT }))
+    .toHaveCount(1);
 
   // --- le KPI de §22.3 ---------------------------------------------------
   //
-  // Un geste par titre, plus l'amorce (machine, période), la note et le
-  // passage à la timeline. Dépasser ce budget signifierait qu'un geste s'est
-  // glissé quelque part — et c'est exactement ce que le test doit voir.
-  const budget = TITRES_A_COCHER + 6;
-  expect(gestes, `${gestes} gestes pour ${TITRES_A_COCHER} titres`).toBeLessThanOrEqual(budget);
+  // Un geste par titre, plus l'amorce (machine, période), la note, le
+  // passage à la timeline et le dépliage. Le titre absent en coûte DEUX —
+  // saisir puis valider —, et c'est le prix à surveiller : sur 221 titres le
+  // cas se répète, et un troisième geste par titre manquant sortirait du
+  // budget « un tap par jeu ». Dépasser signifierait qu'un geste s'est
+  // glissé quelque part, et c'est exactement ce que le test doit voir.
+  const budget = TITRES_A_COCHER + 8;
+  expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });
 });

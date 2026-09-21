@@ -9,9 +9,16 @@ import { anneeDe, forme, libelle } from "../temporel/valeur";
 import { construireBande } from "./bande";
 import type { Oeuvre } from "./types";
 
+/**
+ * Une entrée déclare **soit** une œuvre du référentiel, **soit** un titre
+ * libre. Les deux ensemble seraient ambigus, et l'API les refuse en le
+ * disant (§3.5).
+ */
+export type EntreeDeclaration = { workId: string } | { title: string };
+
 export type LotDeclaration = {
   batchId: string;
-  entries: { workId: string }[];
+  entries: EntreeDeclaration[];
 };
 
 type Props = {
@@ -64,11 +71,26 @@ export function SelectionMassive({
   // placé serait impardonnable sur le seul contenu non régénérable.
   const [souvenirs, setSouvenirs] = useState<Record<string, string>>({});
 
+  // Les titres saisis. Ils vivent à part des œuvres du référentiel : les
+  // mélanger leur donnerait un rang, une notoriété et un statut régional
+  // qu'ils n'ont pas — c'est-à-dire l'apparence d'une donnée vérifiée là où
+  // il n'y a qu'un souvenir.
+  const [titresLibres, setTitresLibres] = useState<Oeuvre[]>([]);
+  const [saisie, setSaisie] = useState("");
+  const compteurLibre = useRef(0);
+
   // Le lot est le PASSAGE sur l'écran, pas le geste : douze titres cochés
   // d'un coup forment un épisode (§4.4), pas douze points identiques.
   const lot = useRef(`bat_${Math.random().toString(36).slice(2, 12)}`);
 
-  const bande = useMemo(() => construireBande(oeuvres, declarees), [oeuvres, declarees]);
+  // La bande compte les titres saisis comme les autres. Un geste qui ne
+  // ferait pas bouger la récompense dirait à l'utilisateur qu'il n'a rien
+  // produit — et c'est le geste le plus fragile de l'écran (§24.4). Sans
+  // date, ils sont comptés et jamais placés, comme un jeu non daté.
+  const bande = useMemo(
+    () => construireBande([...oeuvres, ...titresLibres], declarees),
+    [oeuvres, titresLibres, declarees],
+  );
 
   function basculer(id: string) {
     const suivant = new Set(declarees);
@@ -81,6 +103,43 @@ export function SelectionMassive({
     if (etaitDeclare) return;
 
     envoyer({ batchId: lot.current, entries: [{ workId: id }] }).catch(() => {
+      setErreur(t("erreur.declaration"));
+    });
+  }
+
+  function ajouterTitreLibre() {
+    const titre = saisie.trim();
+    // Rien à garder : une revendication sans titre serait une ligne que plus
+    // aucun écran ne saurait nommer.
+    if (titre.length === 0) return;
+
+    // Identifiant LOCAL : le vrai est frappé par l'API, qui seule peut
+    // garantir son unicité. Celui-ci ne sert qu'à la clé de rendu et au
+    // décompte, et ne quitte jamais le navigateur.
+    compteurLibre.current += 1;
+    const id = `libre_${compteurLibre.current}`;
+    const ajoute: Oeuvre = {
+      id,
+      titre,
+      // Inerte, et c'est voulu : un titre saisi n'a pas de notoriété, et il
+      // se rend depuis son propre tableau, jamais par le tri du référentiel.
+      // Le champ n'est là que pour satisfaire la forme d'`Oeuvre` attendue
+      // par `construireBande`, qui l'ignore. Une mutation le confirme.
+      rang: Number.MAX_SAFE_INTEGER,
+      sortie: null,
+      couverture: null,
+      regions: [],
+      statutRegional: {},
+    };
+
+    setTitresLibres((precedents) => [...precedents, ajoute]);
+    setDeclarees((precedentes) => new Set(precedentes).add(id));
+    setSaisie("");
+
+    // Le MÊME lot que les titres cochés : le lot est le passage sur l'écran,
+    // pas le geste. En ouvrir un second détacherait ce titre de l'épisode,
+    // et la timeline le montrerait isolé alors qu'il vient du même passage.
+    envoyer({ batchId: lot.current, entries: [{ title: titre }] }).catch(() => {
       setErreur(t("erreur.declaration"));
     });
   }
@@ -154,6 +213,43 @@ export function SelectionMassive({
           );
         })}
       </ul>
+
+      {/* L'issue de secours, TOUJOURS présente — même quand la liste est
+          pleine : le bon jeu peut manquer au milieu de dix mauvais (E06), et
+          une issue qui n'apparaîtrait qu'une fois la liste vide ne servirait
+          jamais, cette liste n'étant jamais vide. */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          ajouterTitreLibre();
+        }}
+      >
+        <p>{t("titreLibre.invite")}</p>
+        <input
+          type="text"
+          aria-label={t("titreLibre.champ")}
+          value={saisie}
+          onChange={(e) => setSaisie(e.target.value)}
+        />
+        <button type="submit">{t("titreLibre.ajouter")}</button>
+      </form>
+
+      {titresLibres.length > 0 ? (
+        <ul>
+          {titresLibres.map((libre) => (
+            <li key={libre.id} data-testid="titre-libre" data-canonique="false">
+              <span>{libre.titre}</span>
+              {/* La marque est DITE, pas suggérée par une absence : sans
+                  elle, une saisie libre se lirait comme une entrée du
+                  référentiel dont la date manquerait. */}
+              <span>{t("titreLibre.marque")}</span>
+              {/* La marque est DITE, pas suggérée par une absence : sans
+                  elle, une saisie libre se lirait comme une entrée du
+                  référentiel dont la date manquerait. */}
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
       {erreur ? <p role="alert">{erreur}</p> : null}
 

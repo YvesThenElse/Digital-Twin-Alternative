@@ -258,6 +258,40 @@ public class TimelineTests(PostgresFixture bdd)
         Assert.NotEmpty(libelle);
     }
 
+    [Fact]
+    public async Task Un_titre_saisi_porte_le_titre_saisi_pas_un_libelle_generique()
+    {
+        // Le jeu absent du référentiel est un cas NOMINAL sur 221 titres
+        // (§3.5), et §3.5 exige qu'il soit « visible dans son profil comme
+        // les autres ». Le rendre sous un libellé générique le rendrait
+        // indiscernable des autres titres saisis : le joueur verrait trois
+        // lignes identiques là où il a déclaré trois jeux différents, et
+        // conclurait que sa saisie n'a pas été gardée.
+        //
+        // On passe par /declarations, et non par le magasin : c'est le chemin
+        // exact du front, revendication comprise.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var plateformes = await client.GetFromJsonAsync<JsonElement>("/platforms");
+        var pf = plateformes[0].GetProperty("id").GetString()!;
+
+        var reponse = await client.PostAsJsonAsync("/declarations", new
+        {
+            batchId = "bat_libre_tl",
+            userId = "usr_titre_libre_tl",
+            platformId = pf,
+            period = new { kind = "year", year = 1995 },
+            entries = new[] { new { title = "Le jeu de mon cousin" } },
+        });
+        Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
+
+        var rendu = await Timeline(client, "usr_titre_libre_tl");
+        var moment = rendu.GetProperty("entries")[0].GetProperty("moments")[0];
+
+        Assert.Equal("unresolvedClaim", moment.GetProperty("targetKind").GetString());
+        Assert.Equal("Le jeu de mon cousin", moment.GetProperty("targetLabel").GetString());
+    }
+
     // ------------------------------------------------------- les épisodes
 
     [Fact]

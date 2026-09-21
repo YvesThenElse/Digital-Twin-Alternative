@@ -30,6 +30,13 @@ export const MESSAGES = {
   "souvenir.invite": "Un souvenir sur {titre} ?",
   "action.recharger": "Recharger la liste",
 
+  // Le jeu absent est un CAS NOMINAL, pas une erreur (§3.5) : l'invitation
+  // le dit comme une possibilité offerte, jamais comme un échec de recherche.
+  "titreLibre.invite": "Un jeu manque à cette liste ?",
+  "titreLibre.champ": "Titre absent de la liste",
+  "titreLibre.ajouter": "Ajouter ce titre",
+  "titreLibre.marque": "Titre saisi, hors du référentiel",
+
   // --- les échecs, dits sans effacer le travail --------------------------
   "erreur.declaration":
     "Une déclaration n'a pas pu être enregistrée. Elle reste affichée ; réessayez plus tard.",

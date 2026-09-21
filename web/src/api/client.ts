@@ -1,5 +1,6 @@
 import type { Oeuvre, Plateforme } from "../selection/types";
 import type { EntreeTimeline, MomentTimeline } from "../timeline/types";
+import type { EntreeDeclaration } from "../selection/SelectionMassive";
 import type { ValeurTemporelle } from "../temporel/valeur";
 
 /**
@@ -104,7 +105,7 @@ export const client = {
     userId: string;
     platformId: string;
     period: unknown;
-    entries: { workId: string }[];
+    entries: EntreeDeclaration[];
   }) => ecrire<{ created: number }>("/declarations", lot),
 
   souvenir: (userId: string, workId: string, texte: string) =>
