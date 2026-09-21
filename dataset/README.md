@@ -1,6 +1,8 @@
 # Dataset POC
 
-> Produit les **20 et 21 septembre 2026**. 221 œuvres, 663 sorties, 8 plateformes. Licence **CC BY-SA 4.0**.
+> Produit les **20 et 21 septembre 2026**. 221 œuvres, 590 sorties, 8 plateformes. Licence **CC BY-SA 4.0**.
+>
+> **Couverture** : région sur 588 des 590 sorties (99 %) ; date au jour sur 95 % des œuvres.
 >
 > Ses invariants sont vérifiés par du code — `DigitalTwin.Domain.Reference.DatasetLoader` — et non par relecture : unicité des identifiants, préfixe conforme au type, plateforme existante, précision jamais supérieure à ce que la confiance soutient, classement couvrant exactement les plateformes où l'œuvre sort, et table de redirection sans impasse ni boucle.
 
@@ -10,7 +12,7 @@
 
 **Une œuvre, un identifiant externe.** Les deux fiches Bubble Bobble sont fusionnées : 222 œuvres deviennent **221**, sans perdre une seule sortie. L'identifiant absorbé entre dans `redirects`, qui n'est jamais purgée (§10.2).
 
-**`region_free` sur la plateforme.** La Switch n'a pas de zonage : une sortie sans région y est **mondiale**, pas incomplète. Ce n'est pas « toute sortie y est mondiale » — un titre peut rester exclusif au Japon et le déclarer. Sans cet attribut, 12 sorties correctes comptaient comme dette de curation au même titre qu'une NES sans région : la dette réelle est de **92 sorties**, pas 104.
+**`region_free` sur la plateforme.** La Switch n'a pas de zonage : une sortie sans région y est **mondiale**, pas incomplète. Ce n'est pas « toute sortie y est mondiale » — un titre peut rester exclusif au Japon et le déclarer. Sans cet attribut, 12 sorties correctes comptaient comme dette de curation au même titre qu'une NES sans région.
 >
 > Périmètre voulu par [PHASING.md](../PHASING.md) §3 : 100 à 300 jeux sur NES, SNES, Game Boy/GBA, N64, PS1, PS2 et Switch, curés à la main. **Ne pas l'étendre « tant qu'on y est ».**
 
@@ -41,7 +43,24 @@ La première version de ce dataset prenait **toutes** les dates de publication d
 
 La source portait pourtant l'information : **le qualificateur de plateforme est sur la déclaration de date**. L'émetteur ne retient désormais que les dates rattachées à la plateforme curée, et 706 « sorties » tombent à **408** — les 298 disparues étaient des rééditions sur d'autres machines.
 
-Le complément Wikipédia a ensuite ramené le total à **663 sorties** réellement rattachées à leur plateforme, dont 559 avec région. Le solde net par rapport aux 706 d'origine est donc de **−43**, mais aucune des 663 n'est une réédition prise pour une sortie d'origine.
+Le complément Wikipédia a ensuite ramené le total à **663 sorties** réellement rattachées à leur plateforme.
+
+### Puis 663 → 590, par correction de l'analyseur
+
+Vingt-trois œuvres n'avaient aucune date Wikipédia. **Vingt-deux d'entre elles avaient un article qui la portait** : c'est l'analyseur d'infobox qui échouait, en silence, sur six défauts distincts —
+
+| Défaut | Effet |
+|---|---|
+| `{{vgr}}` et `{{vgrelease new}}` non reconnus comme modèles de sortie | supprimés comme parasites, avec leurs dates |
+| `{{ubl}}`, `{{Unbulleted list}}`, `{{collapsible list}}` supprimés **avec leur contenu** | toutes les sorties Switch perdues |
+| code de région combiné « NA/PAL » absent de la table | Oddworld n'existait ni en Amérique ni en Europe |
+| têtes en gras qui ne sont pas des plateformes — « Final Mix », « International », le titre du jeu en gras-italique | champ entièrement rejeté |
+| `<br/>` en tête d'une date : la troncature censée couper ce qui **suit** coupait tout | date nue non lue |
+| « 22 May 2000 » (jour d'abord) | lu comme un mois |
+
+Les corriger a ajouté **29 sorties régionales** et fait passer la couverture régionale de 84 % à **99 %** des sorties. Elles sont figées par `calibration/test_wp_parser.py`, qui rejoue les onze cas réels sur des wikitextes mis en cache — le test ne dépend pas du réseau et ne change pas de verdict quand un contributeur réécrit un article.
+
+**Et 91 sorties ont été retirées.** Une date sans région n'est désormais conservée que si aucune autre n'en porte. Elle servait de repli quand rien d'autre n'existait ; depuis que les dates régionales sont là, elle décrit la même sortie avec moins d'information — « Gradius · ? · 1986 » à côté de « Gradius · Japon · 25 avril 1986 ». Il en reste **une** : Pokémon Yellow, dont l'article n'a pas de champ `released`.
 
 ## ⚠️ Ce que ce dataset ne peut PAS dire
 

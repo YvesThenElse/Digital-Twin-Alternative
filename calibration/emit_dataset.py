@@ -164,6 +164,17 @@ def build(entry, raw, platform_ids, platform_qid, seq, wp=None):
 
     releases += _wikipedia_fill(releases, work_id, platform_ids[entry["platform"]],
                                 wp, raw["qid"], seen)
+
+    # Une sortie SANS region n est retenue que si aucune autre n en porte.
+    # La date non qualifiee est un repli : elle decrit la meme sortie avec
+    # moins d information. Tant qu elle etait seule, elle rendait service ;
+    # depuis que Wikipedia fournit les dates regionales, elle produit un
+    # doublon degrade — « Gradius · ? · 1986 » a cote de « Gradius · Japon ·
+    # 25 avril 1986 », pour une seule et meme sortie. 91 des 92 sorties sans
+    # region etaient dans ce cas.
+    if any(r["region"] for r in releases):
+        releases = [r for r in releases if r["region"]]
+
     releases.sort(key=lambda r: (r["date"], r["region"] or ""))
     regions = [r for r in releases if r["region"]]
 

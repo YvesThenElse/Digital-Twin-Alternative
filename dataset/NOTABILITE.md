@@ -33,7 +33,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 7 | Contra | ✓ | NTSC-J NTSC-U PAL | img |
 | 8 | Final Fantasy | ✓ | NTSC-J NTSC-U | img |
 | 9 | Dragon Quest | ✓ | NTSC-J NTSC-U | img |
-| 10 | Punch-Out!! | ✓ | NTSC-U PAL | img |
+| 10 | Punch-Out!! | ✓ | NTSC-J NTSC-U PAL | img |
 | 11 | Kirby's Adventure | ✓ | NTSC-J NTSC-U PAL | img |
 | 12 | Ninja Gaiden | ✓ | NTSC-J NTSC-U PAL | img |
 | 13 | Zelda II: The Adventure of Link | ✓ | NTSC-J NTSC-U PAL | img |
@@ -104,7 +104,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | # | Titre | | Régions | |
 |--:|---|:-:|---|---|
 | 1 | Tetris | ✓ | NTSC-J NTSC-U PAL | img |
-| 2 | Pokémon Red and Blue | ≈ | — | img |
+| 2 | Pokémon Red and Blue | ✓ | NTSC-J NTSC-U PAL | img |
 | 3 | The Legend of Zelda: Link's Awakening | ✓ | NTSC-J NTSC-U PAL | img |
 | 4 | Super Mario Land | ✓ | NTSC-J NTSC-U PAL | img |
 | 5 | Super Mario Land 2: 6 Golden Coins | ✓ | NTSC-J NTSC-U PAL | img |
@@ -122,7 +122,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 18 | Tetris 2 | ✓ | NTSC-J NTSC-U PAL | img |
 | 19 | Bubble Bobble | ✓ | NTSC-J |  |
 | 20 | Solar Striker | ✓ | NTSC-J NTSC-U PAL | img |
-| 21 | Balloon Kid | ≈ | — | img |
+| 21 | Balloon Kid | ✓ | NTSC-J NTSC-U PAL | img |
 | 22 | Kirby's Dream Land 2 | ✓ | NTSC-J NTSC-U PAL | img |
 | 24 | Mole Mania | ✓ | NTSC-J NTSC-U PAL | img |
 | 25 | Harvest Moon GB | ✓ | NTSC-J NTSC-U | img |
@@ -141,12 +141,12 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 8 | Castlevania: Aria of Sorrow | ✓ | NTSC-J NTSC-U PAL | img |
 | 9 | Metroid: Zero Mission | ✓ | NTSC-J NTSC-U PAL | img |
 | 10 | Super Mario Advance | ≈ | NTSC-J |  |
-| 11 | Pokémon FireRed and LeafGreen | ~ | NTSC-J NTSC-U PAL | img |
+| 11 | Pokémon FireRed and LeafGreen | ✓ | NTSC-J NTSC-U PAL | img |
 | 12 | Mario & Luigi: Superstar Saga | ✓ | NTSC-J NTSC-U PAL | img |
 | 13 | WarioWare, Inc.: Mega Microgames! | ✓ | NTSC-J NTSC-U PAL | img |
 | 14 | Astro Boy: Omega Factor | ✓ | NTSC-J NTSC-U PAL | img |
 | 15 | Final Fantasy Tactics Advance | ✓ | NTSC-J NTSC-U PAL | img |
-| 16 | Pokémon Emerald | ~ | NTSC-J NTSC-U PAL | img |
+| 16 | Pokémon Emerald | ✓ | NTSC-J NTSC-U PAL | img |
 | 17 | Kirby & the Amazing Mirror | ✓ | NTSC-J NTSC-U PAL | img |
 | 18 | Castlevania: Circle of the Moon | ✓ | NTSC-J NTSC-U PAL | img |
 | 19 | Advance Wars 2: Black Hole Rising | ✓ | NTSC-J NTSC-U PAL | img |
@@ -155,7 +155,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 22 | Rhythm Tengoku | ✓ | NTSC-J | img |
 | 23 | Sonic Advance | ✓ | NTSC-J NTSC-U PAL | img |
 | 24 | Mother 3 | ✓ | NTSC-J | img |
-| 25 | The Legend of Zelda: A Link to the Past and Four Swords | ✓ | NTSC-J NTSC-U PAL WORLDWIDE | img |
+| 25 | The Legend of Zelda: A Link to the Past and Four Swords | ✓ | NTSC-J NTSC-U PAL | img |
 
 ## Nintendo 64 — 25 titres
 
@@ -163,18 +163,18 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 |--:|---|:-:|---|---|
 | 1 | Super Mario 64 | ✓ | NTSC-J NTSC-U PAL | img |
 | 2 | The Legend of Zelda: Ocarina of Time | ✓ | NTSC-J NTSC-U PAL | img |
-| 3 | GoldenEye 007 | ~ | NTSC-J NTSC-U PAL | img |
+| 3 | GoldenEye 007 | ✓ | NTSC-J NTSC-U PAL | img |
 | 4 | Mario Kart 64 | ✓ | NTSC-J NTSC-U PAL | img |
 | 5 | Super Smash Bros. | ✓ | NTSC-J NTSC-U PAL | img |
 | 6 | The Legend of Zelda: Majora's Mask | ✓ | NTSC-J NTSC-U PAL | img |
-| 7 | Banjo-Kazooie | ~ | NTSC-U PAL | img |
-| 8 | Perfect Dark | ≈ | — | img |
+| 7 | Banjo-Kazooie | ✓ | NTSC-U PAL | img |
+| 8 | Perfect Dark | ✓ | NTSC-U PAL | img |
 | 9 | Star Fox 64 | ✓ | NTSC-J NTSC-U PAL | img |
 | 10 | Donkey Kong 64 | ✓ | NTSC-J NTSC-U PAL | img |
 | 11 | Paper Mario | ✓ | NTSC-J NTSC-U PAL | img |
-| 12 | Conker's Bad Fur Day | ~ | NTSC-U PAL | img |
+| 12 | Conker's Bad Fur Day | ✓ | NTSC-U PAL | img |
 | 13 | F-Zero X | ✓ | NTSC-J NTSC-U PAL | img |
-| 14 | Diddy Kong Racing | ~ | NTSC-J NTSC-U PAL | img |
+| 14 | Diddy Kong Racing | ✓ | NTSC-J NTSC-U PAL | img |
 | 15 | Wave Race 64 | ✓ | NTSC-J NTSC-U PAL | img |
 | 16 | Pokémon Snap | ✓ | NTSC-J NTSC-U PAL | img |
 | 17 | Pokémon Stadium | ✓ | NTSC-J NTSC-U PAL | img |
@@ -183,8 +183,8 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 20 | Mario Tennis | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | 1080° Snowboarding | ✓ | NTSC-J NTSC-U PAL | img |
 | 22 | Yoshi's Story | ✓ | NTSC-J NTSC-U PAL | img |
-| 23 | Turok: Dinosaur Hunter | ✓ | PAL | img |
-| 24 | Sin and Punishment | ~ | NTSC-J | img |
+| 23 | Turok: Dinosaur Hunter | ✓ | NTSC-U PAL | img |
+| 24 | Sin and Punishment | ✓ | NTSC-J | img |
 | 25 | Ogre Battle 64: Person of Lordly Caliber | ✓ | NTSC-J NTSC-U | img |
 
 ## PlayStation — 30 titres
@@ -202,7 +202,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 9 | Castlevania: Symphony of the Night | ✓ | NTSC-J NTSC-U PAL | img |
 | 10 | Resident Evil 2 | ✓ | NTSC-J NTSC-U PAL | img |
 | 11 | Spyro the Dragon | ✓ | NTSC-U PAL | img |
-| 12 | Tomb Raider | ~ | NTSC-U PAL | img |
+| 12 | Tomb Raider | ✓ | NTSC-U PAL | img |
 | 13 | Final Fantasy IX | ✓ | NTSC-J NTSC-U PAL | img |
 | 14 | Gran Turismo 2 | ✓ | NTSC-J NTSC-U PAL | img |
 | 15 | Crash Bandicoot 2: Cortex Strikes Back | ✓ | NTSC-U PAL | img |
@@ -213,28 +213,28 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 20 | Suikoden II | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | Tony Hawk's Pro Skater | ✓ | NTSC-U PAL | img |
 | 22 | Driver | ✓ | NTSC-U PAL | img |
-| 23 | Wipeout | ~ | NTSC-U PAL | img |
+| 23 | Wipeout | ✓ | NTSC-U PAL | img |
 | 24 | Ridge Racer | ✓ | NTSC-J NTSC-U PAL | img |
 | 25 | Tekken 2 | ✓ | NTSC-J NTSC-U PAL | img |
 | 26 | Medal of Honor | ✓ | NTSC-U PAL | img |
 | 27 | Ape Escape | ✓ | NTSC-J WORLDWIDE | img |
 | 28 | Um Jammer Lammy | ✓ | NTSC-J NTSC-U PAL | img |
-| 29 | PaRappa the Rapper | ~ | NTSC-J NTSC-U PAL | img |
-| 30 | Oddworld: Abe's Oddysee | ≈ | — | img |
+| 29 | PaRappa the Rapper | ✓ | NTSC-J NTSC-U PAL | img |
+| 30 | Oddworld: Abe's Oddysee | ✓ | NTSC-U PAL | img |
 
 ## PlayStation 2 — 25 titres
 
 | # | Titre | | Régions | |
 |--:|---|:-:|---|---|
-| 1 | Grand Theft Auto: San Andreas | ~ | NTSC-U PAL | img |
+| 1 | Grand Theft Auto: San Andreas | ✓ | NTSC-U PAL | img |
 | 2 | Shadow of the Colossus | ✓ | NTSC-J NTSC-U PAL | img |
 | 3 | Ico | ✓ | NTSC-J NTSC-U PAL | img |
-| 4 | Final Fantasy X | ≈ | — | img |
+| 4 | Final Fantasy X | ✓ | NTSC-J NTSC-U PAL | img |
 | 5 | Metal Gear Solid 3: Snake Eater | ✓ | NTSC-J NTSC-U PAL | img |
 | 6 | Grand Theft Auto III | ✓ | NTSC-U PAL | img |
-| 7 | Grand Theft Auto: Vice City | ~ | NTSC-U PAL | img |
+| 7 | Grand Theft Auto: Vice City | ✓ | NTSC-U PAL | img |
 | 8 | God of War | ✓ | NTSC-U PAL | img |
-| 9 | Kingdom Hearts | ≈ | — | img |
+| 9 | Kingdom Hearts | ✓ | NTSC-J NTSC-U PAL | img |
 | 10 | Gran Turismo 3: A-Spec | ✓ | NTSC-J NTSC-U PAL | img |
 | 11 | Metal Gear Solid 2: Sons of Liberty | ✓ | NTSC-J NTSC-U PAL | img |
 | 12 | Devil May Cry | ✓ | NTSC-J NTSC-U PAL | img |
@@ -244,11 +244,11 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 16 | Resident Evil 4 | ✓ | NTSC-J NTSC-U PAL | img |
 | 17 | Silent Hill 2 | ✓ | NTSC-J NTSC-U PAL | img |
 | 18 | Jak and Daxter: The Precursor Legacy | ✓ | NTSC-U PAL | img |
-| 19 | Ratchet & Clank | ✓ | PAL | img |
-| 20 | Burnout 3: Takedown | ~ | NTSC-U PAL | img |
+| 19 | Ratchet & Clank | ✓ | NTSC-U PAL | img |
+| 20 | Burnout 3: Takedown | ✓ | NTSC-U PAL | img |
 | 21 | Tekken 5 | ✓ | NTSC-J NTSC-U PAL | img |
 | 22 | Guitar Hero | ✓ | NTSC-U PAL | img |
-| 23 | SSX Tricky | ~ | NTSC-U PAL | img |
+| 23 | SSX Tricky | ✓ | NTSC-U PAL | img |
 | 24 | Katamari Damacy | ✓ | NTSC-J NTSC-U | img |
 | 25 | Dragon Quest VIII | ✓ | NTSC-J NTSC-U PAL | img |
 
@@ -258,28 +258,28 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 
 | # | Titre | | Régions | |
 |--:|---|:-:|---|---|
-| 1 | The Legend of Zelda: Breath of the Wild | ≈ | — | img |
+| 1 | The Legend of Zelda: Breath of the Wild | ✓ | WORLDWIDE | img |
 | 2 | Super Mario Odyssey | ✓ | WORLDWIDE | img |
 | 3 | Mario Kart 8 Deluxe | ≈ | — |  |
 | 4 | Animal Crossing: New Horizons | ✓ | WORLDWIDE | img |
-| 5 | Super Smash Bros. Ultimate | ≈ | — | img |
-| 6 | The Legend of Zelda: Tears of the Kingdom | ≈ | — | img |
-| 7 | Splatoon 2 | ≈ | NTSC-J | img |
+| 5 | Super Smash Bros. Ultimate | ✓ | WORLDWIDE | img |
+| 6 | The Legend of Zelda: Tears of the Kingdom | ✓ | WORLDWIDE | img |
+| 7 | Splatoon 2 | ✓ | NTSC-J WORLDWIDE | img |
 | 8 | Super Mario Maker 2 | ✓ | WORLDWIDE | img |
-| 9 | Pokémon Sword and Shield | ≈ | — | img |
+| 9 | Pokémon Sword and Shield | ✓ | WORLDWIDE | img |
 | 10 | Metroid Dread | ≈ | WORLDWIDE | img |
-| 11 | Fire Emblem: Three Houses | ≈ | — | img |
+| 11 | Fire Emblem: Three Houses | ✓ | WORLDWIDE | img |
 | 12 | Xenoblade Chronicles 2 | ≈ | WORLDWIDE | img |
 | 13 | Hollow Knight | ✓ | WORLDWIDE | img |
 | 14 | Stardew Valley | ✓ | WORLDWIDE | img |
 | 15 | Celeste | ✓ | WORLDWIDE | img |
-| 16 | Hades | ≈ | — | img |
-| 17 | Luigi's Mansion 3 | ≈ | — | img |
+| 16 | Hades | ✓ | WORLDWIDE | img |
+| 17 | Luigi's Mansion 3 | ✓ | WORLDWIDE | img |
 | 18 | Super Mario Party | ✓ | WORLDWIDE | img |
 | 19 | Splatoon 3 | ≈ | WORLDWIDE | img |
-| 20 | Pokémon Legends: Arceus | ≈ | — | img |
-| 21 | Ring Fit Adventure | ≈ | — | img |
+| 20 | Pokémon Legends: Arceus | ✓ | WORLDWIDE | img |
+| 21 | Ring Fit Adventure | ✓ | WORLDWIDE | img |
 | 22 | Bayonetta 3 | ≈ | WORLDWIDE | img |
 | 23 | Astral Chain | ≈ | WORLDWIDE | img |
-| 24 | Kirby and the Forgotten Land | ≈ | — | img |
+| 24 | Kirby and the Forgotten Land | ✓ | WORLDWIDE | img |
 | 25 | Pikmin 4 | ≈ | WORLDWIDE | img |

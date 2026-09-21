@@ -89,25 +89,6 @@
    }
   }
  },
- "Q2705496": {
-  "platform": "nes",
-  "title": "Punch-Out!!",
-  "article": "https://en.wikipedia.org/wiki/Punch-Out!!_(1987_video_game)",
-  "regions": {
-   "NTSC-J": {
-    "date": "1987-09-18",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1987-10",
-    "precision": "month"
-   },
-   "PAL": {
-    "date": "1987-12-15",
-    "precision": "day"
-   }
-  }
- },
  "Q1154059": {
   "platform": "nes",
   "title": "Kirby's Adventure",
@@ -153,17 +134,6 @@
   "regions": {
    "NTSC-J": {
     "date": "1987-01-14",
-    "precision": "day"
-   }
-  }
- },
- "Q854479": {
-  "platform": "nes",
-  "title": "Super Mario Bros. 2",
-  "article": "https://en.wikipedia.org/wiki/Super_Mario_Bros._2",
-  "regions": {
-   "NTSC-J": {
-    "date": "1987-07-10",
     "precision": "day"
    }
   }
@@ -303,12 +273,12 @@
     "precision": "month"
    },
    "NTSC-J": {
-    "date": "1991-12-20",
-    "precision": "day"
+    "date": "1991-12",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1993-02-18",
-    "precision": "day"
+    "date": "1993-02",
+    "precision": "month"
    }
   }
  },
@@ -477,16 +447,16 @@
   "article": "https://en.wikipedia.org/wiki/Super_Mario_World",
   "regions": {
    "NTSC-J": {
-    "date": "1990-11-21",
-    "precision": "day"
+    "date": "1990-11",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1991-08-23",
-    "precision": "day"
+    "date": "1991-08",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1992-04-11",
-    "precision": "day"
+    "date": "1992-04",
+    "precision": "month"
    }
   }
  },
@@ -615,40 +585,6 @@
    }
   }
  },
- "Q2529000": {
-  "platform": "snes",
-  "title": "Earthbound",
-  "article": "https://en.wikipedia.org/wiki/EarthBound",
-  "regions": {
-   "NTSC-J": {
-    "date": "1994-08-27",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1995-06-05",
-    "precision": "day"
-   }
-  }
- },
- "Q1045765": {
-  "platform": "snes",
-  "title": "Super Mario World 2: Yoshi's Island",
-  "article": "https://en.wikipedia.org/wiki/Yoshi's_Island",
-  "regions": {
-   "NTSC-J": {
-    "date": "1995-08-05",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1995-10-04",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "1995-10-05",
-    "precision": "day"
-   }
-  }
- },
  "Q1198491": {
   "platform": "snes",
   "title": "F-Zero",
@@ -693,16 +629,16 @@
   "article": "https://en.wikipedia.org/wiki/Donkey_Kong_Country_2",
   "regions": {
    "NTSC-J": {
-    "date": "1995-11-21",
-    "precision": "day"
+    "date": "1995-11",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1995-12-04",
-    "precision": "day"
+    "date": "1995-12",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1995-12-14",
-    "precision": "day"
+    "date": "1995-12",
+    "precision": "month"
    }
   }
  },
@@ -947,8 +883,8 @@
   "article": "https://en.wikipedia.org/wiki/Lufia_&_the_Fortress_of_Doom",
   "regions": {
    "NTSC-J": {
-    "date": "1993-06-25",
-    "precision": "day"
+    "date": "1993-06",
+    "precision": "month"
    },
    "NTSC-U": {
     "date": "1993-11",
@@ -1248,25 +1184,6 @@
    }
   }
  },
- "Q2881381": {
-  "platform": "gb",
-  "title": "Balloon Kid",
-  "article": "https://en.wikipedia.org/wiki/Balloon_Kid",
-  "regions": {
-   "NTSC-U": {
-    "date": "1990-10",
-    "precision": "month"
-   },
-   "PAL": {
-    "date": "1991-01-31",
-    "precision": "day"
-   },
-   "NTSC-J": {
-    "date": "1992-03-27",
-    "precision": "day"
-   }
-  }
- },
  "Q2273753": {
   "platform": "gb",
   "title": "Kirby's Dream Land 2",
@@ -1444,16 +1361,16 @@
   "article": "https://en.wikipedia.org/wiki/Pokémon_FireRed_and_LeafGreen",
   "regions": {
    "NTSC-J": {
-    "date": "2004-01-29",
-    "precision": "day"
+    "date": "2004-01",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "2004-09-07",
-    "precision": "day"
+    "date": "2004-09",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2004-09-23",
-    "precision": "day"
+    "date": "2004-09",
+    "precision": "month"
    }
   }
  },
@@ -1466,12 +1383,8 @@
     "date": "2003-11-17",
     "precision": "day"
    },
-   "NTSC-J": {
-    "date": "2003-11-21",
-    "precision": "day"
-   },
    "PAL": {
-    "date": "2003-11-21",
+    "date": "2003-11-28",
     "precision": "day"
    }
   }
@@ -1539,16 +1452,16 @@
   "article": "https://en.wikipedia.org/wiki/Pokémon_Emerald",
   "regions": {
    "NTSC-J": {
-    "date": "2004-09-16",
-    "precision": "day"
+    "date": "2004-09",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "2005-05-01",
-    "precision": "day"
+    "date": "2005-05",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2005-06-09",
-    "precision": "day"
+    "date": "2005-06",
+    "precision": "month"
    }
   }
  },
@@ -1681,6 +1594,10 @@
    "PAL": {
     "date": "2003-03-28",
     "precision": "day"
+   },
+   "WORLDWIDE": {
+    "date": "2011-09-28",
+    "precision": "day"
    }
   }
  },
@@ -1728,16 +1645,16 @@
   "article": "https://en.wikipedia.org/wiki/GoldenEye_007",
   "regions": {
    "NTSC-J": {
-    "date": "1997-08-23",
-    "precision": "day"
+    "date": "1997-08",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1997-08-25",
-    "precision": "day"
+    "date": "1997-08",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1997-11-07",
-    "precision": "day"
+    "date": "1997-11",
+    "precision": "month"
    }
   }
  },
@@ -1804,27 +1721,12 @@
   "article": "https://en.wikipedia.org/wiki/Banjo-Kazooie_(video_game)",
   "regions": {
    "NTSC-U": {
-    "date": "1998-06-29",
-    "precision": "day"
+    "date": "1998-06",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1998-07-17",
-    "precision": "day"
-   }
-  }
- },
- "Q1408723": {
-  "platform": "n64",
-  "title": "Perfect Dark",
-  "article": "https://en.wikipedia.org/wiki/Perfect_Dark",
-  "regions": {
-   "NTSC-U": {
-    "date": "2000-05-22",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "2000-06-30",
-    "precision": "day"
+    "date": "1998-07",
+    "precision": "month"
    }
   }
  },
@@ -1891,12 +1793,12 @@
   "article": "https://en.wikipedia.org/wiki/Conker's_Bad_Fur_Day",
   "regions": {
    "NTSC-U": {
-    "date": "2001-03-05",
-    "precision": "day"
+    "date": "2001-03",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2001-04-06",
-    "precision": "day"
+    "date": "2001-04",
+    "precision": "month"
    }
   }
  },
@@ -1925,16 +1827,16 @@
   "article": "https://en.wikipedia.org/wiki/Diddy_Kong_Racing",
   "regions": {
    "NTSC-J": {
-    "date": "1997-11-21",
-    "precision": "day"
+    "date": "1997-11",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1997-11-21",
-    "precision": "day"
+    "date": "1997-11",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1997-11-24",
-    "precision": "day"
+    "date": "1997-11",
+    "precision": "month"
    }
   }
  },
@@ -2001,16 +1903,16 @@
   "article": "https://en.wikipedia.org/wiki/Banjo-Tooie",
   "regions": {
    "NTSC-U": {
-    "date": "2000-11-20",
-    "precision": "day"
+    "date": "2000-11",
+    "precision": "month"
    },
    "NTSC-J": {
-    "date": "2000-11-27",
-    "precision": "day"
+    "date": "2000-11",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2001-04-12",
-    "precision": "day"
+    "date": "2001-04",
+    "precision": "month"
    }
   }
  },
@@ -2039,16 +1941,16 @@
   "article": "https://en.wikipedia.org/wiki/1080°_Snowboarding",
   "regions": {
    "NTSC-J": {
-    "date": "1998-02-28",
-    "precision": "day"
+    "date": "1998-02",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1998-04-01",
-    "precision": "day"
+    "date": "1998-04",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1998-10-09",
-    "precision": "day"
+    "date": "1998-10",
+    "precision": "month"
    }
   }
  },
@@ -2076,12 +1978,8 @@
   "title": "Turok: Dinosaur Hunter",
   "article": "https://en.wikipedia.org/wiki/Turok:_Dinosaur_Hunter",
   "regions": {
-   "NTSC-U": {
-    "date": "1997-03-04",
-    "precision": "day"
-   },
    "PAL": {
-    "date": "1997-03-04",
+    "date": "1997-03-17",
     "precision": "day"
    }
   }
@@ -2092,8 +1990,8 @@
   "article": "https://en.wikipedia.org/wiki/Sin_and_Punishment",
   "regions": {
    "NTSC-J": {
-    "date": "2000-11-21",
-    "precision": "day"
+    "date": "2000-11",
+    "precision": "month"
    }
   }
  },
@@ -2410,12 +2308,12 @@
   "article": "https://en.wikipedia.org/wiki/Driver_(video_game)",
   "regions": {
    "PAL": {
-    "date": "1999-06-25",
-    "precision": "day"
+    "date": "1999-06",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1999-07-08",
-    "precision": "day"
+    "date": "1999-07",
+    "precision": "month"
    }
   }
  },
@@ -2425,12 +2323,12 @@
   "article": "https://en.wikipedia.org/wiki/Wipeout_(video_game)",
   "regions": {
    "PAL": {
-    "date": "1995-09-29",
-    "precision": "day"
+    "date": "1995-09",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1995-11-21",
-    "precision": "day"
+    "date": "1995-11",
+    "precision": "month"
    }
   }
  },
@@ -2440,16 +2338,16 @@
   "article": "https://en.wikipedia.org/wiki/Ridge_Racer_(1993_video_game)",
   "regions": {
    "NTSC-J": {
-    "date": "1994-12-03",
-    "precision": "day"
+    "date": "1994-12",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1995-09-09",
-    "precision": "day"
+    "date": "1995-09",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1995-09-29",
-    "precision": "day"
+    "date": "1995-09",
+    "precision": "month"
    }
   }
  },
@@ -2512,31 +2410,16 @@
   "article": "https://en.wikipedia.org/wiki/PaRappa_the_Rapper",
   "regions": {
    "NTSC-J": {
-    "date": "1996-12-06",
-    "precision": "day"
+    "date": "1996-12",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1997-09-26",
-    "precision": "day"
+    "date": "1997-09",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1997-11-17",
-    "precision": "day"
-   }
-  }
- },
- "Q1064350": {
-  "platform": "ps1",
-  "title": "Oddworld: Abe's Oddysee",
-  "article": "https://en.wikipedia.org/wiki/Oddworld:_Abe's_Oddysee",
-  "regions": {
-   "NTSC-U": {
-    "date": "1997-09-18",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "1997-09-18",
-    "precision": "day"
+    "date": "1997-11",
+    "precision": "month"
    }
   }
  },
@@ -2546,12 +2429,12 @@
   "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_San_Andreas",
   "regions": {
    "NTSC-U": {
-    "date": "2004-10-26",
-    "precision": "day"
+    "date": "2004-10",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2004-10-29",
-    "precision": "day"
+    "date": "2004-10",
+    "precision": "month"
    }
   }
  },
@@ -2618,12 +2501,12 @@
   "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto_III",
   "regions": {
    "NTSC-U": {
-    "date": "2001-10-23",
-    "precision": "day"
+    "date": "2001-10",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2001-10-26",
-    "precision": "day"
+    "date": "2001-10",
+    "precision": "month"
    }
   }
  },
@@ -2633,12 +2516,12 @@
   "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_Vice_City",
   "regions": {
    "NTSC-U": {
-    "date": "2002-10-29",
-    "precision": "day"
+    "date": "2002-10",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2002-11-08",
-    "precision": "day"
+    "date": "2002-11",
+    "precision": "month"
    }
   }
  },
@@ -2720,16 +2603,16 @@
   "article": "https://en.wikipedia.org/wiki/Ōkami",
   "regions": {
    "NTSC-J": {
-    "date": "2006-04-20",
-    "precision": "day"
+    "date": "2006-04",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "2006-09-19",
-    "precision": "day"
+    "date": "2006-09",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2007-02-09",
-    "precision": "day"
+    "date": "2007-02",
+    "precision": "month"
    }
   }
  },
@@ -2830,12 +2713,12 @@
   "article": "https://en.wikipedia.org/wiki/Burnout_3:_Takedown",
   "regions": {
    "NTSC-U": {
-    "date": "2004-09-08",
-    "precision": "day"
+    "date": "2004-09",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2004-09-09",
-    "precision": "day"
+    "date": "2004-09",
+    "precision": "month"
    }
   }
  },
@@ -2864,12 +2747,12 @@
   "article": "https://en.wikipedia.org/wiki/SSX_Tricky",
   "regions": {
    "NTSC-U": {
-    "date": "2001-11-06",
-    "precision": "day"
+    "date": "2001-11",
+    "precision": "month"
    },
    "PAL": {
-    "date": "2001-11-30",
-    "precision": "day"
+    "date": "2001-11",
+    "precision": "month"
    }
   }
  },
@@ -2907,35 +2790,13 @@
    }
   }
  },
- "Q17185964": {
-  "platform": "switch",
-  "title": "The Legend of Zelda: Breath of the Wild",
-  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Breath_of_the_Wild",
-  "regions": {
-   "WORLDWIDE": {
-    "date": "2017-03-03",
-    "precision": "day"
-   }
-  }
- },
  "Q28234671": {
   "platform": "switch",
   "title": "Super Mario Odyssey",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Odyssey",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2017-10-27",
-    "precision": "day"
-   }
-  }
- },
- "Q64566657": {
-  "platform": "switch",
-  "title": "Animal Crossing: New Horizons",
-  "article": "https://en.wikipedia.org/wiki/Animal_Crossing:_New_Horizons",
-  "regions": {
-   "WORLDWIDE": {
-    "date": "2020-03-20",
     "precision": "day"
    }
   }
@@ -2945,19 +2806,8 @@
   "title": "Super Smash Bros. Ultimate",
   "article": "https://en.wikipedia.org/wiki/Super_Smash_Bros._Ultimate",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2018-12-07",
-    "precision": "day"
-   }
-  }
- },
- "Q64577191": {
-  "platform": "switch",
-  "title": "The Legend of Zelda: Tears of the Kingdom",
-  "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Tears_of_the_Kingdom",
-  "regions": {
-   "WORLDWIDE": {
-    "date": "2023-05-12",
     "precision": "day"
    }
   }
@@ -2967,7 +2817,7 @@
   "title": "Splatoon 2",
   "article": "https://en.wikipedia.org/wiki/Splatoon_2",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2017-07-21",
     "precision": "day"
    }
@@ -2978,7 +2828,7 @@
   "title": "Super Mario Maker 2",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Maker_2",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2019-06-28",
     "precision": "day"
    }
@@ -2989,9 +2839,9 @@
   "title": "Pokémon Sword and Shield",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Sword_and_Shield",
   "regions": {
-   "WORLDWIDE": {
-    "date": "2019-11-15",
-    "precision": "day"
+   "UNKNOWN": {
+    "date": "2019-11",
+    "precision": "month"
    }
   }
  },
@@ -3000,7 +2850,7 @@
   "title": "Metroid Dread",
   "article": "https://en.wikipedia.org/wiki/Metroid_Dread",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2021-10-08",
     "precision": "day"
    }
@@ -3011,19 +2861,8 @@
   "title": "Fire Emblem: Three Houses",
   "article": "https://en.wikipedia.org/wiki/Fire_Emblem:_Three_Houses",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2019-07-26",
-    "precision": "day"
-   }
-  }
- },
- "Q29300592": {
-  "platform": "switch",
-  "title": "Hollow Knight",
-  "article": "https://en.wikipedia.org/wiki/Hollow_Knight",
-  "regions": {
-   "WORLDWIDE": {
-    "date": "2018-06-12",
     "precision": "day"
    }
   }
@@ -3033,7 +2872,7 @@
   "title": "Stardew Valley",
   "article": "https://en.wikipedia.org/wiki/Stardew_Valley",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2017-10-05",
     "precision": "day"
    }
@@ -3050,23 +2889,12 @@
    }
   }
  },
- "Q59756366": {
-  "platform": "switch",
-  "title": "Hades",
-  "article": "https://en.wikipedia.org/wiki/Hades_(video_game)",
-  "regions": {
-   "WORLDWIDE": {
-    "date": "2020-09-17",
-    "precision": "day"
-   }
-  }
- },
  "Q56641109": {
   "platform": "switch",
   "title": "Luigi's Mansion 3",
   "article": "https://en.wikipedia.org/wiki/Luigi's_Mansion_3",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2019-10-31",
     "precision": "day"
    }
@@ -3077,9 +2905,9 @@
   "title": "Super Mario Party",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Party",
   "regions": {
-   "WORLDWIDE": {
-    "date": "2018-10-05",
-    "precision": "day"
+   "UNKNOWN": {
+    "date": "2018-10",
+    "precision": "month"
    }
   }
  },
@@ -3088,9 +2916,9 @@
   "title": "Splatoon 3",
   "article": "https://en.wikipedia.org/wiki/Splatoon_3",
   "regions": {
-   "WORLDWIDE": {
-    "date": "2022-09-09",
-    "precision": "day"
+   "UNKNOWN": {
+    "date": "2022-09",
+    "precision": "month"
    }
   }
  },
@@ -3099,9 +2927,9 @@
   "title": "Pokémon Legends: Arceus",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Legends:_Arceus",
   "regions": {
-   "WORLDWIDE": {
-    "date": "2022-01-28",
-    "precision": "day"
+   "UNKNOWN": {
+    "date": "2022-01",
+    "precision": "month"
    }
   }
  },
@@ -3110,7 +2938,7 @@
   "title": "Ring Fit Adventure",
   "article": "https://en.wikipedia.org/wiki/Ring_Fit_Adventure",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2019-10-18",
     "precision": "day"
    }
@@ -3121,7 +2949,7 @@
   "title": "Bayonetta 3",
   "article": "https://en.wikipedia.org/wiki/Bayonetta_3",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2022-10-28",
     "precision": "day"
    }
@@ -3132,30 +2960,8 @@
   "title": "Astral Chain",
   "article": "https://en.wikipedia.org/wiki/Astral_Chain",
   "regions": {
-   "WORLDWIDE": {
+   "UNKNOWN": {
     "date": "2019-08-30",
-    "precision": "day"
-   }
-  }
- },
- "Q108670544": {
-  "platform": "switch",
-  "title": "Kirby and the Forgotten Land",
-  "article": "https://en.wikipedia.org/wiki/Kirby_and_the_Forgotten_Land",
-  "regions": {
-   "WORLDWIDE": {
-    "date": "2022-03-25",
-    "precision": "day"
-   }
-  }
- },
- "Q113956704": {
-  "platform": "switch",
-  "title": "Pikmin 4",
-  "article": "https://en.wikipedia.org/wiki/Pikmin_4",
-  "regions": {
-   "WORLDWIDE": {
-    "date": "2023-07-21",
     "precision": "day"
    }
   }
@@ -3234,16 +3040,16 @@
   "article": "https://en.wikipedia.org/wiki/Donkey_Kong_Country",
   "regions": {
    "PAL": {
-    "date": "1994-11-18",
-    "precision": "day"
+    "date": "1994-11",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1994-11-21",
-    "precision": "day"
+    "date": "1994-11",
+    "precision": "month"
    },
    "NTSC-J": {
-    "date": "1994-11-26",
-    "precision": "day"
+    "date": "1994-11",
+    "precision": "month"
    }
   }
  },
@@ -3291,16 +3097,16 @@
   "article": "https://en.wikipedia.org/wiki/Star_Fox_(1993_video_game)",
   "regions": {
    "NTSC-J": {
-    "date": "1993-02-21",
-    "precision": "day"
+    "date": "1993-02",
+    "precision": "month"
    },
    "NTSC-U": {
-    "date": "1993-03-23",
-    "precision": "day"
+    "date": "1993-03",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1993-06-03",
-    "precision": "day"
+    "date": "1993-06",
+    "precision": "month"
    }
   }
  },
@@ -3450,12 +3256,12 @@
   "article": "https://en.wikipedia.org/wiki/Tomb_Raider_(1996_video_game)",
   "regions": {
    "NTSC-U": {
-    "date": "1996-11-14",
-    "precision": "day"
+    "date": "1996-11",
+    "precision": "month"
    },
    "PAL": {
-    "date": "1996-11-22",
-    "precision": "day"
+    "date": "1996-11",
+    "precision": "month"
    }
   }
  },
@@ -3489,55 +3295,13 @@
    }
   }
  },
- "Q223381": {
-  "platform": "ps2",
-  "title": "Final Fantasy X",
-  "article": "https://en.wikipedia.org/wiki/Final_Fantasy_X",
-  "regions": {
-   "NTSC-J": {
-    "date": "2001-07-19",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "2001-12-18",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "2002-05-17",
-    "precision": "day"
-   }
-  }
- },
- "Q225912": {
-  "platform": "ps2",
-  "title": "Kingdom Hearts",
-  "article": "https://en.wikipedia.org/wiki/Kingdom_Hearts_(video_game)",
-  "regions": {
-   "NTSC-J": {
-    "date": "2002-03-28",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "2002-09-17",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "2002-11-15",
-    "precision": "day"
-   }
-  }
- },
  "Q170003": {
   "platform": "ps2",
   "title": "Ratchet & Clank",
   "article": "https://en.wikipedia.org/wiki/Ratchet_&_Clank_(2002_video_game)",
   "regions": {
-   "NTSC-U": {
-    "date": "2002-11-06",
-    "precision": "day"
-   },
    "PAL": {
-    "date": "2002-11-06",
+    "date": "2002-11-08",
     "precision": "day"
    }
   }
@@ -3564,25 +3328,6 @@
   "regions": {
    "WORLDWIDE": {
     "date": "2017-12-01",
-    "precision": "day"
-   }
-  }
- },
- "Q637137": {
-  "platform": "gb",
-  "title": "Pokémon Red and Blue",
-  "article": "https://en.wikipedia.org/wiki/Pokémon_Red,_Blue,_and_Yellow",
-  "regions": {
-   "NTSC-J": {
-    "date": "1996-02-27",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1998-09-28",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "1998-10-23",
     "precision": "day"
    }
   }

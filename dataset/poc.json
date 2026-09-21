@@ -776,6 +776,21 @@
    },
    "releases": [
     {
+     "canonical_id": "rel_01M24BB8KAB8CAWDFN71MCRSH2",
+     "work": "wrk_01M24BB8KA54GESS668DYBMZTX",
+     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
+     "region": "NTSC-J",
+     "date": "1987-09-18",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Punch-Out!!_(1987_video_game)",
+      "basis": "infobox_released"
+     }
+    },
+    {
      "canonical_id": "rel_01M24BB8KABJGMAGBWS358RG1X",
      "work": "wrk_01M24BB8KA54GESS668DYBMZTX",
      "platform": "plt_01M24BB8G14JH196A6SSC386J6",
@@ -1862,22 +1877,6 @@
     "plt_01M24BB8G14JH196A6SSC386J6": 20
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8KMG6941NNW3MXDD3D6",
-     "work": "wrk_01M24BB8KMHF27DR4H5G2WN7CK",
-     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
-     "region": null,
-     "date": "1986",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1324646",
-      "place_qid": null,
-      "basis": "platform_qualified",
-      "raw_date": "1986-01-01"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8KM2MRYFM19CMP7DHQP",
      "work": "wrk_01M24BB8KMHF27DR4H5G2WN7CK",
@@ -3189,22 +3188,6 @@
       "place_qid": "Q408",
       "basis": "platform_qualified",
       "raw_date": "1992-07-01"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8M1ZTNYVMCEDPVGQSN3",
-     "work": "wrk_01M24BB8M1C5H8KB1WJMXGCDTV",
-     "platform": "plt_01M24BB8G2HM7T8EEFA2TT8J0W",
-     "region": null,
-     "date": "1993",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q853143",
-      "place_qid": "Q155",
-      "basis": "platform_qualified",
-      "raw_date": "1993-08-30"
      }
     }
    ],
@@ -6030,22 +6013,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8MZ4YZG4JBPC4VFH8BG",
-     "work": "wrk_01M24BB8MZZXXHKTHJC5J6KHK0",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1989",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q647249",
-      "place_qid": null,
-      "basis": "platform_qualified",
-      "raw_date": "1989-08-11"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8MZSZV3DMYMGPHP3SWT",
      "work": "wrk_01M24BB8MZZXXHKTHJC5J6KHK0",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
@@ -6270,22 +6237,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8N1ZZK25QPPYHQ7GADA",
-     "work": "wrk_01M24BB8N1495XK7RER04ZPCPE",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1992",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1154044",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1992-04-27"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8N1XGT3E80QTH5JEBCZ",
      "work": "wrk_01M24BB8N1495XK7RER04ZPCPE",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
@@ -6485,22 +6436,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8N3EX63MZ4JEQFS7KY4",
-     "work": "wrk_01M24BB8N3M0NV71G63Z5N9QYY",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1994",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1634866",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1994-01-21"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8N39J9BTRSR7K35CREZ",
      "work": "wrk_01M24BB8N3M0NV71G63Z5N9QYY",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
@@ -6586,22 +6521,6 @@
     "plt_01M24BB8G3VNG6F5RXF04QW3NA": 11
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8N469Q4JN002F1XKRGJ",
-     "work": "wrk_01M24BB8N4CWRV7K5F111SYYS1",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1989",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2563041",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1989-10-27"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8N4MMNCYT2ETPW2F7G9",
      "work": "wrk_01M24BB8N4CWRV7K5F111SYYS1",
@@ -6705,22 +6624,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8N513MXG36GV9XBQTAY",
-     "work": "wrk_01M24BB8N5KESM45E062T4BJYC",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1991",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2333557",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1991-06-08"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8N5HM9GJPE8K4H7KF1Y",
      "work": "wrk_01M24BB8N5KESM45E062T4BJYC",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
@@ -6814,22 +6717,6 @@
     "plt_01M24BB8G3VNG6F5RXF04QW3NA": 13
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8N6E9VBXF9J59KV7WCM",
-     "work": "wrk_01M24BB8N6E6KH0S436KYMJ4H9",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1991",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2987019",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1991-07-26"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8N61D0V61N5X7YVD6GZ",
      "work": "wrk_01M24BB8N6E6KH0S436KYMJ4H9",
@@ -7009,22 +6896,6 @@
     "plt_01M24BB8G3VNG6F5RXF04QW3NA": 15
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8N824DNMG116352TVPA",
-     "work": "wrk_01M24BB8N8WMEEC7BKD3FDHTWW",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1991",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2565757",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1991-11-05"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8N8SH81443QJH248JZ5",
      "work": "wrk_01M24BB8N8WMEEC7BKD3FDHTWW",
@@ -7355,22 +7226,6 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8NBP1A6EE62T18VAX04",
-     "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1987",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q88759",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1987-10-30"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8NB9CT4GJQNDV2TFNGT",
      "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
@@ -7431,22 +7286,6 @@
     "plt_01M24BB8G3VNG6F5RXF04QW3NA": 20
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8NCAH6WW3WCZZ6TDKST",
-     "work": "wrk_01M24BB8NC1GQDCJTP9WX8JZCD",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1990",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q3489226",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1990-01-26"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8NC08ECBSYWNHW69M1F",
      "work": "wrk_01M24BB8NC1GQDCJTP9WX8JZCD",
@@ -7542,19 +7381,48 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NDYWF3WRHZTVWNEWGQ",
+     "canonical_id": "rel_01M24BB8NDDFKYBFMWAYFP33HZ",
      "work": "wrk_01M24BB8NDVF43X6YGCCKV4EN0",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1990",
-     "precision": "year",
-     "confidence": "low",
+     "region": "NTSC-U",
+     "date": "1990-10",
+     "precision": "month",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2881381",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1990-10-05"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Balloon_Kid",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8ND3K1S3GQH8AYM8M46",
+     "work": "wrk_01M24BB8NDVF43X6YGCCKV4EN0",
+     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
+     "region": "PAL",
+     "date": "1991-01-31",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Balloon_Kid",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8NDWFDTAE4A1DMGWYE8",
+     "work": "wrk_01M24BB8NDVF43X6YGCCKV4EN0",
+     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
+     "region": "NTSC-J",
+     "date": "1992-03-27",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Balloon_Kid",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -7570,7 +7438,7 @@
     "date_basis": "unqualified",
     "curated_year": 1990,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -7605,22 +7473,6 @@
     "plt_01M24BB8G3VNG6F5RXF04QW3NA": 22
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8NE2GF3XSJQY33E6QZ2",
-     "work": "wrk_01M24BB8NEAV11HYVZYJEYGREK",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1995",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2273753",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1995-03-21"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8NEGTW6YF79WS57MW59",
      "work": "wrk_01M24BB8NEAV11HYVZYJEYGREK",
@@ -7712,22 +7564,6 @@
     "plt_01M24BB8G3VNG6F5RXF04QW3NA": 24
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8NFE3TQ4Z3B37PGDTMK",
-     "work": "wrk_01M24BB8NFH6Z5RX0AMS2VZ4XV",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1996",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q6141895",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1996-07-21"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8NF4EC1F6MNHAZKY5M7",
      "work": "wrk_01M24BB8NFH6Z5RX0AMS2VZ4XV",
@@ -7925,22 +7761,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NHFXARF5FZFE6HZGWZ",
-     "work": "wrk_01M24BB8NH7P84GNYPGKQEVHZV",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q474798",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2004-11-04"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8NHZPKGWAMZP9054XKD",
      "work": "wrk_01M24BB8NH7P84GNYPGKQEVHZV",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -8123,22 +7943,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NKEBSS7VDYFEAKDQQ1",
-     "work": "wrk_01M24BB8NKDBQPR5HBH3Y7APZG",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q953229",
-      "place_qid": "Q45256",
-      "basis": "platform_qualified",
-      "raw_date": "2001-01-01"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8NKQ0C7VQJCWR9FE24A",
      "work": "wrk_01M24BB8NKDBQPR5HBH3Y7APZG",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -8232,22 +8036,6 @@
     "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 7
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8NM1S6B328QJBDE68SN",
-     "work": "wrk_01M24BB8NMFXBEN3PPY55HWCBN",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2068675",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-07-21"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8NMYESRRXGGMKPGV1KT",
      "work": "wrk_01M24BB8NMFXBEN3PPY55HWCBN",
@@ -8343,22 +8131,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NNZPBH8CAY0MJEEVSP",
-     "work": "wrk_01M24BB8NNJASC4AS4BM0J3KNE",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2003",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2291309",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2003-05-06"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8NNTKAKT9J6RTF04W16",
      "work": "wrk_01M24BB8NNJASC4AS4BM0J3KNE",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -8448,22 +8220,6 @@
     "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 9
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8NP5AB05V9HK56ZGNKF",
-     "work": "wrk_01M24BB8NPYK3V3CXHE2AXAQ53",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2012171",
-      "place_qid": "Q45256",
-      "basis": "unqualified",
-      "raw_date": "2004-03-19"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8NPTTY89CN617APCTVE",
      "work": "wrk_01M24BB8NPYK3V3CXHE2AXAQ53",
@@ -8566,28 +8322,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NQQYNT622EP6G4YJSK",
-     "work": "wrk_01M24BB8NQBP2T9FXEQ6RFT91V",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q609063",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2004-01-29"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8NQGJM5JC3G81AM0PHJ",
+     "canonical_id": "rel_01M24BB8NQ68NG50GP9RS9MQM8",
      "work": "wrk_01M24BB8NQBP2T9FXEQ6RFT91V",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
      "region": "NTSC-J",
-     "date": "2004-01",
-     "precision": "month",
+     "date": "2004-01-29",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -8597,12 +8337,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8NQZ1A4ZYPPYJSKJP1V",
+     "canonical_id": "rel_01M24BB8NQHRYB5KVRX78FEC7R",
      "work": "wrk_01M24BB8NQBP2T9FXEQ6RFT91V",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
      "region": "NTSC-U",
-     "date": "2004-09",
-     "precision": "month",
+     "date": "2004-09-07",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -8612,12 +8352,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8NQKX4798BWX3Y8NVHK",
+     "canonical_id": "rel_01M24BB8NQCPRZJKPX18E15EAG",
      "work": "wrk_01M24BB8NQBP2T9FXEQ6RFT91V",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
      "region": "PAL",
-     "date": "2004-09",
-     "precision": "month",
+     "date": "2004-09-23",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -8800,22 +8540,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NS789TMYQ2ZBPTVR3G",
-     "work": "wrk_01M24BB8NS7M784AAQ0CQQCGJ3",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2003",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1195267",
-      "place_qid": "Q45256",
-      "basis": "platform_qualified",
-      "raw_date": "2003-06-06"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8NSEFNHX1349GW4FJG9",
      "work": "wrk_01M24BB8NS7M784AAQ0CQQCGJ3",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -8861,22 +8585,6 @@
       "place_qid": "Q49",
       "basis": "platform_qualified",
       "raw_date": "2003-05-26"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8NS0136XBA7EGJATQCN",
-     "work": "wrk_01M24BB8NS7M784AAQ0CQQCGJ3",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2005",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1195267",
-      "place_qid": "Q148",
-      "basis": "platform_qualified",
-      "raw_date": "2005-07-04"
      }
     }
    ],
@@ -8924,22 +8632,6 @@
     "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 14
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8NTTGBGQ1SS1YERH921",
-     "work": "wrk_01M24BB8NT56B86F55A6XCWQQP",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2003",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q751268",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2003-12-18"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8NTP866CDWY85H9A49X",
      "work": "wrk_01M24BB8NT56B86F55A6XCWQQP",
@@ -9035,22 +8727,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NVK87KDBFEA6Y6E5T8",
-     "work": "wrk_01M24BB8NVKV89Y337PAW9K75F",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2003",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1072868",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2003-02-14"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8NVT56JQ5DXY4YPR26G",
      "work": "wrk_01M24BB8NVKV89Y337PAW9K75F",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -9145,12 +8821,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NW9368WG3NR702PG8D",
+     "canonical_id": "rel_01M24BB8NWZVNSXFN5QM548SG3",
      "work": "wrk_01M24BB8NWZTR82Z2MHR9TCXZ4",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
      "region": "NTSC-J",
-     "date": "2004-09",
-     "precision": "month",
+     "date": "2004-09-16",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -9176,12 +8852,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8NW7QJM42QNVDEXB52M",
+     "canonical_id": "rel_01M24BB8NW6833JBPANN4W19B2",
      "work": "wrk_01M24BB8NWZTR82Z2MHR9TCXZ4",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
      "region": "NTSC-U",
-     "date": "2005-05",
-     "precision": "month",
+     "date": "2005-05-01",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -9238,22 +8914,6 @@
     "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 17
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8NX5R11MEH8QV4J85YC",
-     "work": "wrk_01M24BB8NXV3SD1MF4AHJYPMD6",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2306443",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2004-04-15"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8NXE0YMVH2W63F4042Y",
      "work": "wrk_01M24BB8NXV3SD1MF4AHJYPMD6",
@@ -9347,22 +9007,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8NYT3G4WKRM2E9CTNVQ",
-     "work": "wrk_01M24BB8NYKMMAA1ZNP8GF8KYT",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2562228",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-03-21"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8NYNX34YQVJD8876QHW",
      "work": "wrk_01M24BB8NYKMMAA1ZNP8GF8KYT",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -9453,22 +9097,6 @@
     "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 19
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8NZ7GBZX5GZ56S10R9S",
-     "work": "wrk_01M24BB8NZNJC9NGARCPTQWCDD",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2003",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2569478",
-      "place_qid": "Q45256",
-      "basis": "platform_qualified",
-      "raw_date": "2003-07-10"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8NZN29EGSDAM1P1MEFB",
      "work": "wrk_01M24BB8NZNJC9NGARCPTQWCDD",
@@ -9566,22 +9194,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8P02P2KQWBK2XN161YM",
-     "work": "wrk_01M24BB8P0YSV2S3EZ5BYYKWDP",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2002",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2342264",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2002-06-28"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8P0ES5JZTQEHCQSTSDQ",
      "work": "wrk_01M24BB8P0YSV2S3EZ5BYYKWDP",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -9671,22 +9283,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8P1RNNFKXPKY05W1J7V",
-     "work": "wrk_01M24BB8P14564JW9KQ65B5CFH",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2005",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q5307541",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2005-09-22"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8P109R9FYDVDBW1422F",
      "work": "wrk_01M24BB8P14564JW9KQ65B5CFH",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -9765,22 +9361,6 @@
     "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 22
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8P28VXKYVRAJBX6X97H",
-     "work": "wrk_01M24BB8P2FS5NTMT5AQPYMY91",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2006",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q3108764",
-      "place_qid": null,
-      "basis": "platform_qualified",
-      "raw_date": "2006-08-03"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8P24RBV4F2RAKB3T5RF",
      "work": "wrk_01M24BB8P2FS5NTMT5AQPYMY91",
@@ -9910,22 +9490,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8P4X9B2T2F7Q8NRNJ7G",
-     "work": "wrk_01M24BB8P4JF07N0D81RS9B7GE",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2002",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1358804",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2002-12-02"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8P4H5P0A1V1SDE6CQDR",
      "work": "wrk_01M24BB8P4JF07N0D81RS9B7GE",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -9961,21 +9525,6 @@
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
      "region": "PAL",
      "date": "2003-03-28",
-     "precision": "day",
-     "confidence": "medium",
-     "provenance": {
-      "source": "wikipedia",
-      "licence": "CC BY-SA 4.0",
-      "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_A_Link_to_the_Past_and_Four_Swords",
-      "basis": "infobox_released"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8P4H4TST7CY2YV95PAZ",
-     "work": "wrk_01M24BB8P4JF07N0D81RS9B7GE",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": "WORLDWIDE",
-     "date": "2011-09-28",
      "precision": "day",
      "confidence": "medium",
      "provenance": {
@@ -10164,38 +9713,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8P6NJNT12WVV5EQ56KJ",
-     "work": "wrk_01M24BB8P6QJVZZXZ4TEFZB9EE",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q213911",
-      "place_qid": "Q45256",
-      "basis": "platform_qualified",
-      "raw_date": "1998-12-18"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8P6QZ3KCYEY5APAAQHV",
-     "work": "wrk_01M24BB8P6QJVZZXZ4TEFZB9EE",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q213911",
-      "place_qid": "Q298",
-      "basis": "platform_qualified",
-      "raw_date": "1998-11-21"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8P6Y22SZ207411J9BSE",
      "work": "wrk_01M24BB8P6QJVZZXZ4TEFZB9EE",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
@@ -10301,12 +9818,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8P7P738K4DPC7PSZB88",
+     "canonical_id": "rel_01M24BB8P7JDK85NQEPWFZYD6S",
      "work": "wrk_01M24BB8P722CP9BH1RME5QQ7C",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "NTSC-U",
-     "date": "1997-08",
-     "precision": "month",
+     "date": "1997-08-25",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -10316,12 +9833,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8P7A76GX1Y1HTMFDETW",
+     "canonical_id": "rel_01M24BB8P78HY7C7PQ7Q82T7BR",
      "work": "wrk_01M24BB8P722CP9BH1RME5QQ7C",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "PAL",
-     "date": "1997-11",
-     "precision": "month",
+     "date": "1997-11-07",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -10587,22 +10104,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PAEZC174BAG93YHQ51",
-     "work": "wrk_01M24BB8PANPT73QV8V4WD05XY",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "2000",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q732943",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2000-04-27"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8PAA6VQWN5FNB3ZAA9K",
      "work": "wrk_01M24BB8PANPT73QV8V4WD05XY",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
@@ -10699,28 +10200,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PBDXRTYC9SDJFSZ3EV",
-     "work": "wrk_01M24BB8PB99W37WRCWYJ3QQ5X",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q129000",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-06-29"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8PBRD00D2N0CP72BB7G",
+     "canonical_id": "rel_01M24BB8PBRR43TTKWP3C46XZW",
      "work": "wrk_01M24BB8PB99W37WRCWYJ3QQ5X",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "NTSC-U",
-     "date": "1998-06",
-     "precision": "month",
+     "date": "1998-06-29",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -10730,12 +10215,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8PBWKMNRXQY1EV8CV9D",
+     "canonical_id": "rel_01M24BB8PB18154XYP393VTWBJ",
      "work": "wrk_01M24BB8PB99W37WRCWYJ3QQ5X",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "PAL",
-     "date": "1998-07",
-     "precision": "month",
+     "date": "1998-07-17",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -10790,19 +10275,33 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PC5RPE9KSXQF1ECBYX",
+     "canonical_id": "rel_01M24BB8PCQ0DWT2A58CQWP450",
      "work": "wrk_01M24BB8PC89TX0N0WDM4WXE9A",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "2000",
-     "precision": "year",
-     "confidence": "low",
+     "region": "NTSC-U",
+     "date": "2000-05-22",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1408723",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2000-05-22"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Perfect_Dark",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8PC36RY74PJ87EN2ST6",
+     "work": "wrk_01M24BB8PC89TX0N0WDM4WXE9A",
+     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
+     "region": "PAL",
+     "date": "2000-06-30",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Perfect_Dark",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -10818,7 +10317,7 @@
     "date_basis": "unqualified",
     "curated_year": 2000,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -10954,22 +10453,6 @@
     "plt_01M24BB8G57BD537WJ4RDJGAF6": 10
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8PE3MKQPPY78Z09VF9V",
-     "work": "wrk_01M24BB8PE9WG68AR79AD7E50C",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1999",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q774773",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1999-11-22"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8PE83JSHBZEY57R2EPH",
      "work": "wrk_01M24BB8PE9WG68AR79AD7E50C",
@@ -11167,28 +10650,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PGD680CWZY4SDJYD0R",
-     "work": "wrk_01M24BB8PGTP8SK7SHMKQBBXMD",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q841712",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-03-05"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8PGNF39NTFRS3GZ7V26",
+     "canonical_id": "rel_01M24BB8PG5RBT7YXXAQ5EPQ63",
      "work": "wrk_01M24BB8PGTP8SK7SHMKQBBXMD",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "NTSC-U",
-     "date": "2001-03",
-     "precision": "month",
+     "date": "2001-03-05",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -11198,12 +10665,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8PG5BXW9K09HD63B7NA",
+     "canonical_id": "rel_01M24BB8PGX216KBFBHXCTNTK3",
      "work": "wrk_01M24BB8PGTP8SK7SHMKQBBXMD",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "PAL",
-     "date": "2001-04",
-     "precision": "month",
+     "date": "2001-04-06",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -11348,28 +10815,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PJZX8PDKD247RPFKJF",
-     "work": "wrk_01M24BB8PJZT62HQJKR0DT56N6",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1997",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q545072",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1997-11-21"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8PJ4Q9D9D72079Y8ZY9",
+     "canonical_id": "rel_01M24BB8PJYSMZRF94RXANBGTX",
      "work": "wrk_01M24BB8PJZT62HQJKR0DT56N6",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "NTSC-J",
-     "date": "1997-11",
-     "precision": "month",
+     "date": "1997-11-21",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -11379,27 +10830,27 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8PJ7JCXMBCMKH9CB5RF",
-     "work": "wrk_01M24BB8PJZT62HQJKR0DT56N6",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": "NTSC-U",
-     "date": "1997-11",
-     "precision": "month",
-     "confidence": "medium",
-     "provenance": {
-      "source": "wikipedia",
-      "licence": "CC BY-SA 4.0",
-      "article": "https://en.wikipedia.org/wiki/Diddy_Kong_Racing",
-      "basis": "infobox_released"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8PJ29AKPGECTKAP5EME",
+     "canonical_id": "rel_01M24BB8PJKGPM9QBJRYQ5KMHW",
      "work": "wrk_01M24BB8PJZT62HQJKR0DT56N6",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "PAL",
-     "date": "1997-11",
-     "precision": "month",
+     "date": "1997-11-21",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Diddy_Kong_Racing",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8PJB3RNDHS6E85QYDJX",
+     "work": "wrk_01M24BB8PJZT62HQJKR0DT56N6",
+     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
+     "region": "NTSC-U",
+     "date": "1997-11-24",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -11550,22 +11001,6 @@
     "plt_01M24BB8G57BD537WJ4RDJGAF6": 16
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8PMFJDXYCZ6VGVMDZC7",
-     "work": "wrk_01M24BB8PMY8CBX6D64Y1MHH88",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1999",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1705294",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1999-03-21"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8PMKYC65C3RKV1D4SQX",
      "work": "wrk_01M24BB8PMY8CBX6D64Y1MHH88",
@@ -11754,21 +11189,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PPZM0GBVCRPZMC9PC6",
-     "work": "wrk_01M24BB8PP93HJCAV4T5R4Z4F9",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": "NTSC-J",
-     "date": "2000-11",
-     "precision": "month",
-     "confidence": "medium",
-     "provenance": {
-      "source": "wikipedia",
-      "licence": "CC BY-SA 4.0",
-      "article": "https://en.wikipedia.org/wiki/Banjo-Tooie",
-      "basis": "infobox_released"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8PPAFN64QVPC99SXRCE",
      "work": "wrk_01M24BB8PP93HJCAV4T5R4Z4F9",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
@@ -11782,6 +11202,21 @@
       "place_qid": "Q49",
       "basis": "platform_qualified",
       "raw_date": "2000-11-20"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8PPVM09PK98V104AWWN",
+     "work": "wrk_01M24BB8PP93HJCAV4T5R4Z4F9",
+     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
+     "region": "NTSC-J",
+     "date": "2000-11-27",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Banjo-Tooie",
+      "basis": "infobox_released"
      }
     },
     {
@@ -11846,22 +11281,6 @@
     "plt_01M24BB8G57BD537WJ4RDJGAF6": 20
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8PQ4F76WAT3WCH3CX6N",
-     "work": "wrk_01M24BB8PQYQBN8W3FNED7YPDE",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "2000",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2397985",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2000-07-21"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8PQ6739RYV8A2BCSF9M",
      "work": "wrk_01M24BB8PQYQBN8W3FNED7YPDE",
@@ -12044,22 +11463,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PSWR4J0CF73XZ41W54",
-     "work": "wrk_01M24BB8PSJ72MJATGTT77WDBX",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1997",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2337280",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1997-12-21"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8PS0A323VXW4F9VT6WW",
      "work": "wrk_01M24BB8PSJ72MJATGTT77WDBX",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
@@ -12148,27 +11551,26 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PTJ8KF2ED0KVDEG3EM",
+     "canonical_id": "rel_01M24BB8PTXC0PX3GWCTBVDTAV",
      "work": "wrk_01M24BB8PT4R360MQQNJG7QZAB",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1997",
-     "precision": "year",
-     "confidence": "low",
+     "region": "NTSC-U",
+     "date": "1997-03-04",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2431467",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1997-02-28"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Turok:_Dinosaur_Hunter",
+      "basis": "infobox_released"
      }
     },
     {
-     "canonical_id": "rel_01M24BB8PT4EGC7BEWW4N6REXF",
+     "canonical_id": "rel_01M24BB8PTF0S5JBYS3KGZRVR6",
      "work": "wrk_01M24BB8PT4R360MQQNJG7QZAB",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "PAL",
-     "date": "1997-03-17",
+     "date": "1997-03-04",
      "precision": "day",
      "confidence": "medium",
      "provenance": {
@@ -12235,28 +11637,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PV3SRJ3767D8K1XRBW",
-     "work": "wrk_01M24BB8PV4QM4BP9GV52V5X9D",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "2000",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q3099600",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2000-11-21"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8PVV4DMN56T668BJ2EA",
+     "canonical_id": "rel_01M24BB8PV78ABC2G8CAERSX2B",
      "work": "wrk_01M24BB8PV4QM4BP9GV52V5X9D",
      "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
      "region": "NTSC-J",
-     "date": "2000-11",
-     "precision": "month",
+     "date": "2000-11-21",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -12313,22 +11699,6 @@
     "plt_01M24BB8G57BD537WJ4RDJGAF6": 25
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8PWEFEXDS2F5DXZC7XE",
-     "work": "wrk_01M24BB8PW7WN7AK4CCBVYDYA1",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1999",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2295559",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1999-07-14"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8PWA8Z3HX2DJRMXM0P7",
      "work": "wrk_01M24BB8PW7WN7AK4CCBVYDYA1",
@@ -12518,22 +11888,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PYH9NW8VMWZGRS367Q",
-     "work": "wrk_01M24BB8PYWDH18ZHVJQGHF7K4",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q6582527",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-09-03"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8PYFJN22XEZQMSHTP1A",
      "work": "wrk_01M24BB8PYWDH18ZHVJQGHF7K4",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
@@ -12631,22 +11985,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8PZ1RC6G2K1PW0NB069",
-     "work": "wrk_01M24BB8PZN2PCPHMT5CV7MSK8",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1996",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1248594",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1996-03-22"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8PZM0TYF2DFXGSRMNAZ",
      "work": "wrk_01M24BB8PZN2PCPHMT5CV7MSK8",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
@@ -12732,22 +12070,6 @@
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 4
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8Q01P2QB72101KZD843",
-     "work": "wrk_01M24BB8Q0NA3TN44FN69VE689",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1997",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q944320",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1997-12-23"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8Q0YYQGJNMK1TFEPRTC",
      "work": "wrk_01M24BB8Q0NA3TN44FN69VE689",
@@ -12936,22 +12258,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8Q2H8Q0E13BZA4SMN20",
-     "work": "wrk_01M24BB8Q2108NE6S8FQNEB4J3",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1999",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q245006",
-      "place_qid": null,
-      "basis": "platform_qualified",
-      "raw_date": "1999-02-11"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8Q2M2Y15TQ9Q5VHRFQ5",
      "work": "wrk_01M24BB8Q2108NE6S8FQNEB4J3",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
@@ -13137,22 +12443,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8Q4629C3DN59B8152E2",
-     "work": "wrk_01M24BB8Q4ZHD7J5XCXP2N0A51",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1997",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2007022",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1997-03-20"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8Q46FVV8JZ1W8B04CD5",
      "work": "wrk_01M24BB8Q4ZHD7J5XCXP2N0A51",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
@@ -13253,22 +12543,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8Q5JMAER2KHT99PJS22",
-     "work": "wrk_01M24BB8Q52KSD46W0A931WWJG",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q733992",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-01-21"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8Q5HA3A0EH03DXQ40YP",
      "work": "wrk_01M24BB8Q52KSD46W0A931WWJG",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
@@ -13358,22 +12632,6 @@
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 13
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8Q6Q12J5BBZHGMXV8C0",
-     "work": "wrk_01M24BB8Q6S0443ENJ41X09VZZ",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "2000",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q474573",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2000-07-07"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8Q6N8SKJB66DAJNHXG9",
      "work": "wrk_01M24BB8Q6S0443ENJ41X09VZZ",
@@ -13556,22 +12814,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8Q88KAP6ZVK68D64TV6",
-     "work": "wrk_01M24BB8Q8VQT4RBYREFDSMVTD",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1997",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q569822",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1997-11-01"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8Q8KV56GQ1JZF84TT6M",
      "work": "wrk_01M24BB8Q8VQT4RBYREFDSMVTD",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
@@ -13726,22 +12968,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QAT1FFQ9695J85PH7X",
-     "work": "wrk_01M24BB8QA4KDW6FBE7KZN458A",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q583360",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-02-11"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8QA368NTCH5A2T1KRDF",
      "work": "wrk_01M24BB8QA4KDW6FBE7KZN458A",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
@@ -13817,22 +13043,6 @@
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 19
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QB47BCSFC3M913RWJW",
-     "work": "wrk_01M24BB8QB7KXBZ2N6C56R83XD",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "2000",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1536626",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2000-02-10"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QBDG65YZ9HSRPP4E4A",
      "work": "wrk_01M24BB8QB7KXBZ2N6C56R83XD",
@@ -13928,22 +13138,6 @@
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 20
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QC0F2W89E35BADYM5G",
-     "work": "wrk_01M24BB8QC5ZSM3JH2HJVKKPVC",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q3503174",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-12-17"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QCMK42PMT461YAPJSA",
      "work": "wrk_01M24BB8QC5ZSM3JH2HJVKKPVC",
@@ -14109,28 +13303,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QEM8MZY5ASK4XPH73H",
-     "work": "wrk_01M24BB8QEZ91TMXSYF705TFN1",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1995",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q286205",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1995-09-29"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8QEGY8ZATSK3FJTVRTG",
+     "canonical_id": "rel_01M24BB8QEJF0FPGDG64P2KR57",
      "work": "wrk_01M24BB8QEZ91TMXSYF705TFN1",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
      "region": "PAL",
-     "date": "1995-09",
-     "precision": "month",
+     "date": "1995-09-29",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -14140,12 +13318,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8QES5WYDH3JHGSA5ZVJ",
+     "canonical_id": "rel_01M24BB8QEQ2HREAE5DFMDZ8VB",
      "work": "wrk_01M24BB8QEZ91TMXSYF705TFN1",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
      "region": "NTSC-U",
-     "date": "1995-11",
-     "precision": "month",
+     "date": "1995-11-21",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -14289,27 +13467,11 @@
    ],
    "series": "Tekken",
    "first_release_year": 1995,
-   "platform_release_year": 1995,
+   "platform_release_year": 1996,
    "notability": {
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 25
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QG6YH2QENQ9EWSZ9HD",
-     "work": "wrk_01M24BB8QG7RJ6DFW1CQNQG452",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1995",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q589359",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1995-09-29"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QGYB1W6Y0ZYQ67J7FC",
      "work": "wrk_01M24BB8QG7RJ6DFW1CQNQG452",
@@ -14398,22 +13560,6 @@
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 27
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QH4T0ZT8XT3SCXA19G",
-     "work": "wrk_01M24BB8QH9VHB7KZFZQ3DXY8E",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1999",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q960773",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1999-05-31"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QHQ7GR8PCXZ2CT9EM0",
      "work": "wrk_01M24BB8QH9VHB7KZFZQ3DXY8E",
@@ -14585,28 +13731,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QKEH91JCPXAVMEF0NR",
-     "work": "wrk_01M24BB8QKS8CMBRXPS2TYTW32",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1996",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1340462",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1996-12-06"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8QKJFTXK461P4Q9WRHS",
+     "canonical_id": "rel_01M24BB8QKTQ9ZNE7DN2Q4370E",
      "work": "wrk_01M24BB8QKS8CMBRXPS2TYTW32",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
      "region": "NTSC-J",
-     "date": "1996-12",
-     "precision": "month",
+     "date": "1996-12-06",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -14616,12 +13746,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8QKDRVHXYC4FYQ8J3F3",
+     "canonical_id": "rel_01M24BB8QKEF7JPPV2NAQPJDHN",
      "work": "wrk_01M24BB8QKS8CMBRXPS2TYTW32",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
      "region": "PAL",
-     "date": "1997-09",
-     "precision": "month",
+     "date": "1997-09-26",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -14631,12 +13761,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8QK2G7TES932RWP1BS8",
+     "canonical_id": "rel_01M24BB8QKFGCBKN7PH5HEZV6A",
      "work": "wrk_01M24BB8QKS8CMBRXPS2TYTW32",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
      "region": "NTSC-U",
-     "date": "1997-11",
-     "precision": "month",
+     "date": "1997-11-17",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -14696,19 +13826,33 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QM5TC8TQWN0BTZB0V0",
+     "canonical_id": "rel_01M24BB8QMT4154ARPC7YFY965",
      "work": "wrk_01M24BB8QMVQ49XGM4H4QGEA44",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1997",
-     "precision": "year",
-     "confidence": "low",
+     "region": "NTSC-U",
+     "date": "1997-09-18",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1064350",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1997-08-31"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Oddworld:_Abe's_Oddysee",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8QMTPX1Z788VA3FX0AS",
+     "work": "wrk_01M24BB8QMVQ49XGM4H4QGEA44",
+     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
+     "region": "PAL",
+     "date": "1997-09-18",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Oddworld:_Abe's_Oddysee",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -14724,7 +13868,7 @@
     "date_basis": "unqualified",
     "curated_year": 1997,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -14759,28 +13903,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QNGC37A5GQ1Q7S91GC",
-     "work": "wrk_01M24BB8QNP1DSPAY9GKBC3ZCE",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q83265",
-      "place_qid": null,
-      "basis": "platform_qualified",
-      "raw_date": "2004-10-26"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8QNKPTCSR8Z98MBBAZ2",
+     "canonical_id": "rel_01M24BB8QN0BRKJB0913R5PBXQ",
      "work": "wrk_01M24BB8QNP1DSPAY9GKBC3ZCE",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "NTSC-U",
-     "date": "2004-10",
-     "precision": "month",
+     "date": "2004-10-26",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -14790,12 +13918,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8QNSFN6TG0F17NQ5160",
+     "canonical_id": "rel_01M24BB8QNX70E9P2RBYG61BH6",
      "work": "wrk_01M24BB8QNP1DSPAY9GKBC3ZCE",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "PAL",
-     "date": "2004-10",
-     "precision": "month",
+     "date": "2004-10-29",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -14849,22 +13977,6 @@
     "plt_01M24BB8G7FKG3VSAS60HE192X": 2
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QPHHJ2Z34XDZ39SBD7",
-     "work": "wrk_01M24BB8QPH5ZXBZCHRJA2J1WK",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2005",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q846051",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2005-10-18"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QP2PX9F77JKDPQTHM7",
      "work": "wrk_01M24BB8QPH5ZXBZCHRJA2J1WK",
@@ -14955,22 +14067,6 @@
     "plt_01M24BB8G7FKG3VSAS60HE192X": 3
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QQ7FG1KDC85DYET8YR",
-     "work": "wrk_01M24BB8QQ2RAEEYST9DCY9QZZ",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1324448",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-09-25"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QQ17TWF45TFG7BV2YN",
      "work": "wrk_01M24BB8QQ2RAEEYST9DCY9QZZ",
@@ -15071,22 +14167,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QR8F836SXY845BFG3M",
-     "work": "wrk_01M24BB8QRRCH1PXV7FAPVY2QM",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q247935",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2004-11-17"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8QR4KB3E37C0HRYFPGM",
      "work": "wrk_01M24BB8QRRCH1PXV7FAPVY2QM",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
@@ -15181,21 +14261,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QSTRZQ320P7RM7503D",
-     "work": "wrk_01M24BB8QSD71X4KT7W652W6N6",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": "PAL",
-     "date": "2001-10",
-     "precision": "month",
-     "confidence": "medium",
-     "provenance": {
-      "source": "wikipedia",
-      "licence": "CC BY-SA 4.0",
-      "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto_III",
-      "basis": "infobox_released"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8QSJ3TWTEPQC6S4TEAS",
      "work": "wrk_01M24BB8QSD71X4KT7W652W6N6",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
@@ -15209,6 +14274,21 @@
       "place_qid": "Q49",
       "basis": "platform_qualified",
       "raw_date": "2001-10-23"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8QSPY66KJAN9YNK6XAF",
+     "work": "wrk_01M24BB8QSD71X4KT7W652W6N6",
+     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
+     "region": "PAL",
+     "date": "2001-10-26",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto_III",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -15256,28 +14336,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QT9T3A735EHX2JKCM2",
-     "work": "wrk_01M24BB8QT1W9CDBP5VJWT72Y4",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2002",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q94671",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2002-10-29"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8QTW6R944ZGQAMRPNJS",
+     "canonical_id": "rel_01M24BB8QTWMEQ06RWD1M1PG8C",
      "work": "wrk_01M24BB8QT1W9CDBP5VJWT72Y4",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "NTSC-U",
-     "date": "2002-10",
-     "precision": "month",
+     "date": "2002-10-29",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -15287,12 +14351,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8QTEMTV6VE5ZXTZH6VE",
+     "canonical_id": "rel_01M24BB8QTJPQD7N71H0HDYYR0",
      "work": "wrk_01M24BB8QT1W9CDBP5VJWT72Y4",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "PAL",
-     "date": "2002-11",
-     "precision": "month",
+     "date": "2002-11-08",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -15350,22 +14414,6 @@
     "plt_01M24BB8G7FKG3VSAS60HE192X": 8
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QVAB65MRN3NF8JD8V0",
-     "work": "wrk_01M24BB8QV526WVGCE2SH1WK56",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2005",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q817369",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2005-03-22"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QV4TCJV5X7YQRG0TBC",
      "work": "wrk_01M24BB8QV526WVGCE2SH1WK56",
@@ -15443,22 +14491,6 @@
     "plt_01M24BB8G7FKG3VSAS60HE192X": 10
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QW3GPMT6FVA3NZSZY7",
-     "work": "wrk_01M24BB8QWQ03E2Y656GCHZRVW",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q975773",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-04-28"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QW7QGZYZJQCW6FBYW4",
      "work": "wrk_01M24BB8QWQ03E2Y656GCHZRVW",
@@ -15566,22 +14598,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8QXDG27S32T9VBVWDE2",
-     "work": "wrk_01M24BB8QX5102NRG55V2WFFM3",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q907226",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-11-13"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8QXVXQXKZBXPP8PC5TQ",
      "work": "wrk_01M24BB8QX5102NRG55V2WFFM3",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
@@ -15673,22 +14689,6 @@
     "plt_01M24BB8G7FKG3VSAS60HE192X": 12
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8QY46N8HK6DKYWCVC06",
-     "work": "wrk_01M24BB8QY2XJX2PP2SNVEA2PW",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q840889",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-08-23"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8QYVP8T0H1TTJ25XA9P",
      "work": "wrk_01M24BB8QY2XJX2PP2SNVEA2PW",
@@ -16107,22 +15107,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8R2WM70MXCA7WWYEP8N",
-     "work": "wrk_01M24BB8R24KBJEJNKQ4XM2ADE",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2005",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q275950",
-      "place_qid": null,
-      "basis": "platform_qualified",
-      "raw_date": "2005-10-25"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8R28MQ4XJJ7APRJ9PQ3",
      "work": "wrk_01M24BB8R24KBJEJNKQ4XM2ADE",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
@@ -16311,22 +15295,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8R4GCED2N1ZJZ0C1A6P",
-     "work": "wrk_01M24BB8R49PJ63KBHWT3XNR41",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1784103",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-12-03"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8R4Z5S5KXW21YXJBPA7",
      "work": "wrk_01M24BB8R49PJ63KBHWT3XNR41",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
@@ -16402,28 +15370,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8R50XGFPW9E47B4EG3A",
-     "work": "wrk_01M24BB8R5MSDKBNGCRBEW2NKX",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2079604",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2004-09-07"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8R5M8CVXRG7V8JWP85A",
+     "canonical_id": "rel_01M24BB8R5VGCPYFECE2GC75VG",
      "work": "wrk_01M24BB8R5MSDKBNGCRBEW2NKX",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "NTSC-U",
-     "date": "2004-09",
-     "precision": "month",
+     "date": "2004-09-08",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -16433,12 +15385,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8R5S5GA7M8RPZYQ4762",
+     "canonical_id": "rel_01M24BB8R57P8SV3ERY9G11AQC",
      "work": "wrk_01M24BB8R5MSDKBNGCRBEW2NKX",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "PAL",
-     "date": "2004-09",
-     "precision": "month",
+     "date": "2004-09-09",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -16494,22 +15446,6 @@
     "plt_01M24BB8G7FKG3VSAS60HE192X": 21
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8R64B2NH2PWC8SF8J53",
-     "work": "wrk_01M24BB8R6ECRZXNXP01T28A43",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2005",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1052488",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2005-02-24"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8R6E6KSVWANTYRZP42N",
      "work": "wrk_01M24BB8R6ECRZXNXP01T28A43",
@@ -16602,28 +15538,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8R75Y9CCHK09FSWKNVJ",
-     "work": "wrk_01M24BB8R760KKV5VKNBPVVRJR",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2377020",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-11-05"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8R78C8J8590EJSERMW1",
+     "canonical_id": "rel_01M24BB8R71JJ876W7PATEYKJF",
      "work": "wrk_01M24BB8R760KKV5VKNBPVVRJR",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "NTSC-U",
-     "date": "2001-11",
-     "precision": "month",
+     "date": "2001-11-06",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -16633,12 +15553,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8R7ZVMC0EHT01ZZR059",
+     "canonical_id": "rel_01M24BB8R7G4R2HHP97VRAVVEM",
      "work": "wrk_01M24BB8R760KKV5VKNBPVVRJR",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "PAL",
-     "date": "2001-11",
-     "precision": "month",
+     "date": "2001-11-30",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -16694,22 +15614,6 @@
     "plt_01M24BB8G7FKG3VSAS60HE192X": 24
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8R8W0KJHSS6HTSC9K35",
-     "work": "wrk_01M24BB8R80BY44RGQFGH9KH5T",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1206519",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2004-03-18"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8R8SGGXKQYP7MJMZJYB",
      "work": "wrk_01M24BB8R80BY44RGQFGH9KH5T",
@@ -16792,22 +15696,6 @@
     "plt_01M24BB8G7FKG3VSAS60HE192X": 25
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8R946DB1BA2X0948AX1",
-     "work": "wrk_01M24BB8R9AGQHS6S1KRYV22E1",
-     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2004",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1948338",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2004-11-27"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8R9BZJHVCFDF3GSHT4Z",
      "work": "wrk_01M24BB8R9AGQHS6S1KRYV22E1",
@@ -16913,19 +15801,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RAKZ3XR0CJTDZ50YDW",
+     "canonical_id": "rel_01M24BB8RAH8ADMEMH8ENN5XDH",
      "work": "wrk_01M24BB8RACABGBSVB1FW63X0K",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2017",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2017-03-03",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q17185964",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2017-03-03"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Breath_of_the_Wild",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -16941,7 +15828,7 @@
     "date_basis": "unqualified",
     "curated_year": 2017,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -17194,19 +16081,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RE2MB7SXGP7KCD3NJ5",
+     "canonical_id": "rel_01M24BB8REP8XKVAEPN6MT23DD",
      "work": "wrk_01M24BB8RENJ0K4F0PWW33281X",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2018",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2018-12-07",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q54093632",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2018-12-07"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Super_Smash_Bros._Ultimate",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -17222,7 +16108,7 @@
     "date_basis": "unqualified",
     "curated_year": 2018,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "present",
     "title_from": "source"
    }
@@ -17275,19 +16161,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RFB6JRHJJW54X0WAQK",
+     "canonical_id": "rel_01M24BB8RFVQ799AX23RWA6CCJ",
      "work": "wrk_01M24BB8RFAEVQTRFGB9AZXCE6",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2023",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2023-05-12",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q64577191",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2023-05-12"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Tears_of_the_Kingdom",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -17303,7 +16188,7 @@
     "date_basis": "unqualified",
     "curated_year": 2023,
     "year_source_vs_curated": "diverges",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -17352,6 +16237,21 @@
       "place_qid": "Q17",
       "basis": "unqualified",
       "raw_date": "2017-07-21"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8RGEM67TRY6R93VMQXD",
+     "work": "wrk_01M24BB8RGBKANRAEYHQTRHYP5",
+     "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
+     "region": "WORLDWIDE",
+     "date": "2017-07-21",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Splatoon_2",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -17479,19 +16379,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RJ58C2RNAGX6W42TEF",
+     "canonical_id": "rel_01M24BB8RJ990F1XKMWHX6HB55",
      "work": "wrk_01M24BB8RJJBMA3FWNCWV4DKWY",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2019",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2019-11-15",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q61897498",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2019-11-15"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Pokémon_Sword_and_Shield",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -17507,7 +16406,7 @@
     "date_basis": "unqualified",
     "curated_year": 2019,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -17617,19 +16516,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RMVYAF8B988AJMHMJM",
+     "canonical_id": "rel_01M24BB8RMCEHXPTDT19734TND",
      "work": "wrk_01M24BB8RMMT9ZDM35ADHYS0MT",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2019",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2019-07-26",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q54960673",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2019-07-26"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Fire_Emblem:_Three_Houses",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -17645,7 +16543,7 @@
     "date_basis": "unqualified",
     "curated_year": 2019,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -17797,22 +16695,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RQ3XMCPWPV1HHZDEYC",
-     "work": "wrk_01M24BB8RQN3RD5JM0TT69NTPQ",
-     "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2018",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q28451532",
-      "place_qid": null,
-      "basis": "platform_qualified",
-      "raw_date": "2018-01-25"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8RQZG16KFYZGM99QT1E",
      "work": "wrk_01M24BB8RQN3RD5JM0TT69NTPQ",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
@@ -17875,19 +16757,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RRBCFN82F0XHYD7VB1",
+     "canonical_id": "rel_01M24BB8RRWJXZPTGRVWJ5E0PR",
      "work": "wrk_01M24BB8RRDPBER0BGXCMFV7QF",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2020",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2020-09-17",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q59756366",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2020-09-17"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Hades_(video_game)",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -17903,7 +16784,7 @@
     "date_basis": "unqualified",
     "curated_year": 2020,
     "year_source_vs_curated": "diverges",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "curation"
    }
@@ -17938,19 +16819,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RSXK1M4BMXK7S9EAJ8",
+     "canonical_id": "rel_01M24BB8RSZW5P9EZF7PXHBG0M",
      "work": "wrk_01M24BB8RSCG48FAW534F2CXWT",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2019",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2019-10-31",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q56641109",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2019-10-31"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Luigi's_Mansion_3",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -17966,7 +16846,7 @@
     "date_basis": "unqualified",
     "curated_year": 2019,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -18133,19 +17013,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RWQ35J7B0TYBYNB04P",
+     "canonical_id": "rel_01M24BB8RWPD83V4SX7NKE6XWW",
      "work": "wrk_01M24BB8RW7Y6AN94AY46KF4G5",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2022",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2022-01-28",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q105688771",
-      "place_qid": null,
-      "basis": "platform_qualified",
-      "raw_date": "2022-01-28"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Pokémon_Legends:_Arceus",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -18161,7 +17040,7 @@
     "date_basis": "platform_qualified",
     "curated_year": 2022,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -18192,19 +17071,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8RXJZ3WRAWXKE8E8CZB",
+     "canonical_id": "rel_01M24BB8RXDQFH5H7ZK0JT93DM",
      "work": "wrk_01M24BB8RX8R1ZBJ62Q83HM2WD",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2019",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2019-10-18",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q69557147",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2019-10-18"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Ring_Fit_Adventure",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -18220,7 +17098,7 @@
     "date_basis": "unqualified",
     "curated_year": 2019,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -18380,19 +17258,18 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8S0W23A84062987HAAX",
+     "canonical_id": "rel_01M24BB8S0BK9GH3WXBR0JB7D3",
      "work": "wrk_01M24BB8S0TPWJWET67T2TK0JE",
      "platform": "plt_01M24BB8G80Q8YN18MV658NPGH",
-     "region": null,
-     "date": "2022",
-     "precision": "year",
-     "confidence": "low",
+     "region": "WORLDWIDE",
+     "date": "2022-03-25",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q108670544",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2022-03-25"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Kirby_and_the_Forgotten_Land",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -18408,7 +17285,7 @@
     "date_basis": "unqualified",
     "curated_year": 2022,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -19602,22 +18479,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8SE1JQQ76QSVD85VDKF",
-     "work": "wrk_01M24BB8SEABZR8AWAQJTG998A",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1994",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2564684",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1994-06-14"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8SEW7XB483K3XYTNK8V",
      "work": "wrk_01M24BB8SEABZR8AWAQJTG998A",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
@@ -19775,22 +18636,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8SGD82S5AZ8N1HGDPVR",
-     "work": "wrk_01M24BB8SG44GBS6GJCMJ0JT9C",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1545555",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-08-01"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8SGTQ687A9CEFDN8A65",
      "work": "wrk_01M24BB8SG44GBS6GJCMJ0JT9C",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -19939,22 +18784,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8SJG1DJE3XTKA6Y00G0",
-     "work": "wrk_01M24BB8SJANA7VK6JN839Q3Q1",
-     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2081510",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-12-20"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8SJG0NN4SKMSEXYMC2T",
      "work": "wrk_01M24BB8SJANA7VK6JN839Q3Q1",
      "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
@@ -20049,22 +18878,6 @@
     "plt_01M24BB8G57BD537WJ4RDJGAF6": 18
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8SK51881EM5X83GBPFB",
-     "work": "wrk_01M24BB8SKX047YTVXB5P1H7XK",
-     "platform": "plt_01M24BB8G57BD537WJ4RDJGAF6",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q6507722",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-12-18"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8SKHJPQS3FNESP8ZSW0",
      "work": "wrk_01M24BB8SKX047YTVXB5P1H7XK",
@@ -20232,22 +19045,6 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8SNB71R280MP7DG99B4",
-     "work": "wrk_01M24BB8SN87H8VVJVVEHBYFPR",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q858391",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-09-10"
-     }
-    },
-    {
      "canonical_id": "rel_01M24BB8SNFTS8T120HQGEDDFR",
      "work": "wrk_01M24BB8SN87H8VVJVVEHBYFPR",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
@@ -20328,28 +19125,12 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8SP25QNGZJMS80SHD6K",
-     "work": "wrk_01M24BB8SPPWCRNG35YBC143MY",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1996",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q317620",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1996-10-25"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8SPVZQJMJH23K8K78CH",
+     "canonical_id": "rel_01M24BB8SP6C5DXEKHF7Z007H4",
      "work": "wrk_01M24BB8SPPWCRNG35YBC143MY",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
      "region": "NTSC-U",
-     "date": "1996-11",
-     "precision": "month",
+     "date": "1996-11-14",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -20359,12 +19140,12 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8SPS4VV356M2T25CTAS",
+     "canonical_id": "rel_01M24BB8SPC5SK52X1WRKVH2H3",
      "work": "wrk_01M24BB8SPPWCRNG35YBC143MY",
      "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
      "region": "PAL",
-     "date": "1996-11",
-     "precision": "month",
+     "date": "1996-11-22",
+     "precision": "day",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",
@@ -20418,22 +19199,6 @@
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 18
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8SQMYKRXE24JT08S0C8",
-     "work": "wrk_01M24BB8SQQ3RCWYP69Q6CHVWM",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2165750",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-03-29"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8SQVA5QW3BZ86NRSDBC",
      "work": "wrk_01M24BB8SQQ3RCWYP69Q6CHVWM",
@@ -20512,22 +19277,6 @@
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 21
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8SRT99AKC8GGBC7Z8WY",
-     "work": "wrk_01M24BB8SR0E35CXS351HWWKZX",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1999",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2264782",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1999-08-31"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8SRWQBR57KXE5MAX4KC",
      "work": "wrk_01M24BB8SR0E35CXS351HWWKZX",
@@ -20616,19 +19365,48 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8SSQ92E325GX7RVQFCA",
+     "canonical_id": "rel_01M24BB8SS2P5EJF44J0YPSREW",
      "work": "wrk_01M24BB8SSKKDPXCD6TN3PY57X",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2001",
-     "precision": "year",
-     "confidence": "low",
+     "region": "NTSC-J",
+     "date": "2001-07-19",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q223381",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2001-07-19"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Final_Fantasy_X",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8SS0MAVHD35GXDBP7TK",
+     "work": "wrk_01M24BB8SSKKDPXCD6TN3PY57X",
+     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
+     "region": "NTSC-U",
+     "date": "2001-12-18",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Final_Fantasy_X",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8SSCRJEPNTZWW6DHRGD",
+     "work": "wrk_01M24BB8SSKKDPXCD6TN3PY57X",
+     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
+     "region": "PAL",
+     "date": "2002-05-17",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Final_Fantasy_X",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -20644,7 +19422,7 @@
     "date_basis": "unqualified",
     "curated_year": 2001,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -20677,19 +19455,48 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8ST45B2MGX0DVWVB3V6",
+     "canonical_id": "rel_01M24BB8STM8FG508GQ5J07GQE",
      "work": "wrk_01M24BB8STF00BDBDKCJNJJ85G",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2002",
-     "precision": "year",
-     "confidence": "low",
+     "region": "NTSC-J",
+     "date": "2002-03-28",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q225912",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2002-03-28"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Kingdom_Hearts_(video_game)",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8STWZCK0C6GQNZ176TV",
+     "work": "wrk_01M24BB8STF00BDBDKCJNJJ85G",
+     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
+     "region": "NTSC-U",
+     "date": "2002-09-17",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Kingdom_Hearts_(video_game)",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8ST10F16XJ92FGHK5RQ",
+     "work": "wrk_01M24BB8STF00BDBDKCJNJJ85G",
+     "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
+     "region": "PAL",
+     "date": "2002-11-15",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Kingdom_Hearts_(video_game)",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -20705,7 +19512,7 @@
     "date_basis": "unqualified",
     "curated_year": 2002,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -20740,27 +19547,26 @@
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8SVPDHR6E1MM1JK48HK",
+     "canonical_id": "rel_01M24BB8SVJDWDE43RCACVWMY7",
      "work": "wrk_01M24BB8SVNVKQ24WMZ5ZESQ9N",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
-     "region": null,
-     "date": "2002",
-     "precision": "year",
-     "confidence": "low",
+     "region": "NTSC-U",
+     "date": "2002-11-06",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q170003",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2002-11-04"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Ratchet_&_Clank_(2002_video_game)",
+      "basis": "infobox_released"
      }
     },
     {
-     "canonical_id": "rel_01M24BB8SVE8PGGRTTQ6YKRQYS",
+     "canonical_id": "rel_01M24BB8SVDT2E3DFAK5A2M58N",
      "work": "wrk_01M24BB8SVNVKQ24WMZ5ZESQ9N",
      "platform": "plt_01M24BB8G7FKG3VSAS60HE192X",
      "region": "PAL",
-     "date": "2002-11-08",
+     "date": "2002-11-06",
      "precision": "day",
      "confidence": "medium",
      "provenance": {
@@ -20973,25 +19779,54 @@
    ],
    "series": "Pokémon",
    "first_release_year": 1998,
-   "platform_release_year": 1998,
+   "platform_release_year": 1996,
    "notability": {
     "plt_01M24BB8G3VNG6F5RXF04QW3NA": 2
    },
    "releases": [
     {
-     "canonical_id": "rel_01M24BB8SYHF775BQSV5NSVY07",
+     "canonical_id": "rel_01M24BB8SYQHGS2RGHY4WZ7FWZ",
      "work": "wrk_01M24BB8SYKXWGRXG20V9HM4KE",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "1998",
-     "precision": "year",
-     "confidence": "low",
+     "region": "NTSC-J",
+     "date": "1996-02-27",
+     "precision": "day",
+     "confidence": "medium",
      "provenance": {
-      "source": "wikidata",
-      "external_id": "Q637137",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1998-09-28"
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Pokémon_Red,_Blue,_and_Yellow",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8SYFM6Q4ECGS0QBF1RP",
+     "work": "wrk_01M24BB8SYKXWGRXG20V9HM4KE",
+     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
+     "region": "NTSC-U",
+     "date": "1998-09-28",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Pokémon_Red,_Blue,_and_Yellow",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8SYWSGSW9XYYRWGAZYR",
+     "work": "wrk_01M24BB8SYKXWGRXG20V9HM4KE",
+     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
+     "region": "PAL",
+     "date": "1998-10-23",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Pokémon_Red,_Blue,_and_Yellow",
+      "basis": "infobox_released"
      }
     }
    ],
@@ -21007,7 +19842,7 @@
     "date_basis": "unqualified",
     "curated_year": 1998,
     "year_source_vs_curated": "match",
-    "region": "missing",
+    "region": "from_source",
     "cover": "missing",
     "title_from": "source"
    }
@@ -21065,22 +19900,6 @@
       "licence": "CC BY-SA 4.0",
       "article": "https://en.wikipedia.org/wiki/Harvest_Moon_GB",
       "basis": "infobox_released"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8SZPA2DJJ58YHFSW96Z",
-     "work": "wrk_01M24BB8SZ20M788B5R74N33J8",
-     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
-     "region": null,
-     "date": "2012",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q2758069",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "2012-01-25"
      }
     }
    ],
@@ -21243,22 +20062,6 @@
     "plt_01M24BB8G626NRPKG5H7AY1P3Q": 26
    },
    "releases": [
-    {
-     "canonical_id": "rel_01M24BB8T1AVDQFCX224VSXK24",
-     "work": "wrk_01M24BB8T1G2EXZHMPGBVWSJYG",
-     "platform": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
-     "region": null,
-     "date": "1999",
-     "precision": "year",
-     "confidence": "low",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q1069537",
-      "place_qid": null,
-      "basis": "unqualified",
-      "raw_date": "1999-10-31"
-     }
-    },
     {
      "canonical_id": "rel_01M24BB8T1TGNMA0N3Y63KJSG9",
      "work": "wrk_01M24BB8T1G2EXZHMPGBVWSJYG",

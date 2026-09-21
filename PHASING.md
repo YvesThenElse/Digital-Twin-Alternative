@@ -90,11 +90,13 @@ Quatre principes guident le découpage :
 
 ### Périmètre volontairement restreint
 
-> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit les 20 et 21 septembre 2026 : **221 œuvres, 663 sorties** sur les huit plateformes visées, `Notability` classée à la main, provenance portée sur chaque donnée, licence **CC BY-SA 4.0** (Wikidata CC0 + Wikipédia CC BY-SA). 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Ses invariants sont vérifiés par du code (`DatasetLoader`), pas par relecture.
+> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit les 20 et 21 septembre 2026 : **221 œuvres, 590 sorties** sur les huit plateformes visées, `Notability` classée à la main, provenance portée sur chaque donnée, licence **CC BY-SA 4.0** (Wikidata CC0 + Wikipédia CC BY-SA). 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Ses invariants sont vérifiés par du code (`DatasetLoader`), pas par relecture.
 >
 > **706 → 663** : les 43 sorties retirées étaient des **rééditions prises pour des sorties d'origine**. Le dataset annonçait Super Mario Bros. en PAL 2011 et Ocarina of Time en PAL 2003. Les déclarations de date sont désormais filtrées sur la plateforme qu'elles qualifient.
 >
-> **Couverture** : région sur **92 % des œuvres** (84 % des sorties) ; date au jour sur **82 % des œuvres** (482 sorties au jour, 48 au mois, 133 à l'année seule) ; **217 jaquettes sur 222**, chacune avec son URL source, son article et son régime de licence conservés.
+> **Couverture au 21 septembre** : région sur **99 % des sorties** (588 / 590) et **99 % des œuvres** ; date au jour sur **95 % des œuvres** (542 sorties au jour, 17 au mois, 31 à l'année seule) ; **217 jaquettes sur 221**, chacune avec son URL source, son article et son régime de licence conservés.
+>
+> **663 → 590, et c'est un gain.** L'analyseur d'infobox ne reconnaissait ni `{{vgr}}`, ni `{{vgrelease new}}`, ni les conteneurs `{{ubl}}` — qu'il supprimait avec leur contenu —, ni les codes de région combinés « NA/PAL », ni les dates écrites « 22 May 2000 ». Vingt-deux articles sur vingt-trois portaient l'information ; c'est l'extraction qui échouait, en silence. Les corriger a ajouté 29 sorties régionales et permis d'en retirer 91 : la date non qualifiée servait de repli quand rien d'autre n'existait, et produisait depuis un **doublon dégradé** — « Gradius · ? · 1986 » à côté de « Gradius · Japon · 25 avril 1986 », pour une seule et même sortie.
 
 > ⚠️ Et un point que la source ne peut pas trancher : elle **ne distingue pas « pas de sortie PAL » de « sortie PAL non renseignée »**. Les deux réponses cassent la reconnaissance en sens inverse — retirer un jeu que le testeur a possédé, ou lui en proposer un qu'il n'a jamais pu voir. C'est un arbitrage de curation, pas un défaut d'outillage.
 
@@ -138,8 +140,8 @@ la Phase 0 :
 
 | Reste | Nature | Bloquant pour |
 |---|---|---|
-| **92 sorties sans région** sur machine zonée (les 12 autres sont sur Switch, sans zonage : l'absence y est la bonne réponse) | curation | rien en Phase 1 ; gênant au test de Phase 2 pour un joueur PAL |
-| **~400 arbitrages de région** impliqués par la cible « international dès le départ » | curation | l'affichage des dates par région |
+| **57 arbitrages de région** — des couples (œuvre, plateforme, région) qu'aucune source n'atteste (27 NTSC-J, 22 PAL, 8 NTSC-U) | curation | l'affichage des dates par région ; gênant au test de Phase 2 pour un joueur PAL |
+| **1 sortie sans aucune région** : Pokémon Yellow sur Game Boy, dont l'article n'a pas de champ `released` | curation | marginal |
 | **40 œuvres sans date au jour** | curation | rien : l'incertitude est affichée, c'est la décision prise |
 | **`NOTABILITE.md` en attente d'annotation** | décision humaine | le réordonnancement déplace les `CanonicalId` — rien ne doit toucher à l'ordre avant |
 | **5 œuvres sans jaquette** | acquisition | marginal ; tuile générée en repli |

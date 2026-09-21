@@ -565,3 +565,62 @@ d'évaluation. C'est le test de la chaîne — écrit parce qu'une mutation avai
 
 > **Règle** — une mutation qui survit est une question, pas un satisfecit.
 > Écrire le test qu'elle réclame, même quand la suite est verte.
+
+### 17 — « La source ne l'a pas » était faux pour la cinquième fois
+
+Le chantier de curation s'ouvrait sur 92 sorties sans région et 76 arbitrages
+à rendre à la main. Avant de curer, j'ai vérifié d'où venait le manque.
+
+**Vingt-deux articles sur vingt-trois portaient l'information.** L'analyseur
+d'infobox échouait, en silence, sur six défauts distincts :
+
+| Défaut | Ce qu'il coûtait |
+|---|---|
+| `{{vgr}}`, `{{vgrelease new}}` non reconnus | supprimés comme parasites, avec leurs dates |
+| conteneurs `{{ubl}}`, `{{collapsible list}}` supprimés **avec leur contenu** | toutes les sorties Switch |
+| code de région combiné « NA/PAL » absent de la table | Oddworld sorti nulle part |
+| têtes en gras qui ne sont pas des plateformes — « Final Mix », « International » | champ entièrement rejeté |
+| `<br/>` en tête : la troncature censée couper ce qui **suit** coupait tout | date nue non lue |
+| « 22 May 2000 » | lu comme un mois |
+
+Résultat : couverture régionale de 84 % à **99 %** des sorties, date au jour
+de 82 % à **95 %** des œuvres, arbitrages de 76 à **57**. Le chiffre de
+« ≈ 400 arbitrages » qui figurait dans la spécification depuis la décision
+« international dès le départ » était faux d'un ordre de grandeur.
+
+C'est la **cinquième** fois dans ce projet : la table des régions incomplète,
+les identifiants instables, les rééditions prises pour des sorties, l'API des
+jaquettes qui exclut le non-libre, et maintenant l'analyseur d'infobox. À
+chaque fois, une extraction défaillante s'est lue comme une absence de
+donnée, et à chaque fois j'ai failli en tirer une conclusion sur le monde.
+
+> **Règle** — avant d'ouvrir un chantier de saisie manuelle, mesurer combien
+> des cas manquants sont **présents dans la source**. Curer à la main ce que
+> l'extraction laisse tomber coûte cher et masque le défaut.
+
+> **Règle** — une absence n'est jamais une donnée tant qu'elle n'a pas été
+> distinguée d'un échec. Aucun des six défauts ci-dessus ne levait
+> d'exception ; tous rendaient un dictionnaire vide.
+
+**Ce que la correction a rendu visible.** Une fois les dates régionales
+obtenues, 91 des 92 sorties sans région se sont révélées être des **doublons
+dégradés** : la date non qualifiée servait de repli quand rien d'autre
+n'existait, et décrivait désormais la même sortie avec moins d'information.
+Un testeur aurait vu « Gradius · ? · 1986 » à côté de « Gradius · Japon ·
+25 avril 1986 ».
+
+> **Règle** — un repli doit être retiré quand ce qu'il remplaçait arrive.
+> Il ne devient pas faux, il devient du bruit — et le bruit ne lève pas
+> d'erreur non plus.
+
+**Le garde-fou qui a fonctionné.** Corriger l'analyseur a d'abord fait
+régresser Duck Hunt et Balloon Fight, qui récupéraient des dates de borne
+d'arcade — exactement le défaut que le découpage par plateforme existait pour
+empêcher. Ce n'est pas un test qui l'a vu : c'est la **comparaison
+systématique** de la nouvelle sortie avec l'ancienne, article par article,
+avant de remplacer quoi que ce soit.
+
+> **Règle** — quand on corrige un extracteur, comparer l'ancienne et la
+> nouvelle sortie sur l'intégralité du corpus, et justifier chaque
+> différence. Les onze cas réparés se voient ; les deux cassés ne se voient
+> que là.

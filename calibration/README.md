@@ -103,6 +103,18 @@ python3 analyze.py sample.json strata.json
 >
 > Ils n'interrogent que **Wikidata** (CC0) et **Wikipédia** (CC BY-SA 4.0), les deux seules sources autorisées par [VERIFICATION-JURIDIQUE.md](../VERIFICATION-JURIDIQUE.md) §5 — la règle « aucun script ne parcourt une source tierce » est respectée. Les scripts Wikipédia (`wp_dates.py`, `fetch_covers.py`) sont postérieurs à la correction du 21 septembre ; les autres sont antérieurs et n'interrogeaient que Wikidata.
 
+## Tests
+
+Trois scripts sans dépendance réseau, à rejouer après toute modification du pipeline.
+
+| Script | Ce qu'il protège |
+|---|---|
+| `test_id_stability.py` | l'invariant 9 sous trois perturbations : une œuvre perd une date, le classement de notoriété est entièrement rebattu, et aucun identifiant n'est émis deux fois. Il refuse de s'exécuter si sa couverture ne correspond pas au dataset publié |
+| `test_wp_parser.py` | les onze cas réels d'infobox qui ont mis l'analyseur en défaut, chacun nommant le défaut qu'il exerce |
+| `emit_notabilite.py` | régénère `dataset/NOTABILITE.md` ; ce n'est pas un test, mais il remplace un fichier écrit à la main qui s'était périmé en silence |
+
+Les wikitextes sont mis en cache par `cache_wikitextes.py` dans `wp_wikitextes.json`. **C'est délibéré** : sans cache, chaque essai relance 221 requêtes, et le verdict d'un test change quand un contributeur réécrit un article. Le cache date du 21 septembre 2026 ; le rafraîchir est une décision, pas un effet de bord.
+
 ## Données
 
 `sample.json` contient les trente entrées telles que récupérées — c'est la pièce, au sens où la planche de vignettes en était une. `strata.json` définit l'échantillon, `head.json` et `tail.json` sa constitution.

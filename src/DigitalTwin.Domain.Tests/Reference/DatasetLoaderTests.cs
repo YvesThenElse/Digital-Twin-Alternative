@@ -41,7 +41,7 @@ public class DatasetLoaderTests
 
         Assert.Equal(8, resultat.Platforms.Count);
         Assert.Equal(221, resultat.Works.Count);
-        Assert.Equal(663, resultat.Releases.Count);
+        Assert.Equal(590, resultat.Releases.Count);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class DatasetLoaderTests
             .Concat(resultat.Releases.Select(r => r.CanonicalId))
             .ToList();
 
-        Assert.Equal(892, tous.Count);
+        Assert.Equal(819, tous.Count);
         Assert.Equal(tous.Count, tous.Distinct(StringComparer.Ordinal).Count());
     }
 
