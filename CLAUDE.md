@@ -13,7 +13,10 @@ Product code landed on 21 Sept 2026. Two commands, both containerised — **neit
 | `./dotnet.sh <args>` | any `dotnet` command, in `mcr.microsoft.com/dotnet/sdk:10.0` |
 | `docker compose up -d` | PostgreSQL 17 on host port **5433** (not 5432 — a locally installed Postgres must not silently decide what the app talks to) |
 | `./session.sh <nom>` | runs the app for a **user-test session** (Phase 2) and prints the URL with a fresh profile; `--mesures <profil>` prints that profile's KPIs |
+| `./session.sh --reseau [<nom>]` | same, but bound to the **Tailscale address** and detached, so a phone on the tailnet can reach it; `--arret` stops it |
 | `./e2e.sh` | the single end-to-end journey, on both layouts |
+
+⚠️ **`--reseau` binds the front to the Tailscale IP, never `0.0.0.0`.** The API stays on loopback — Vite's proxy reaches it server-side, so there is no second surface to open. The LAN interface is in a closed firewall zone, but relying on that would make the app's reach depend on a setting it does not control. Vite's `allowedHosts` is opened to `.ts.net` only; `true` would disable a check that exists to stop a third-party domain resolving to this machine. **There is no authentication**: whoever reaches the address reads and writes any profile, so the tailnet is the whole boundary — and it is also what keeps the borrowed cover art inside the "bounded distribution" condition of `VERIFICATION-JURIDIQUE.md` §3.3. Tailscale Funnel would not.
 
 ⚠️ **`e2e.sh` and `session.sh` share `services.sh`** — one copy of the orchestration, so the journey starts the app *exactly* as a tester receives it. Two traps found by rehearsing the protocol, both of which had already fired: `exec` at the end of `e2e.sh` meant its EXIT trap never ran, so containers survived every **successful** run; and the readiness probe accepted any server on the port, so a two-hour-old leftover served a session that believed it had just started. The probe now refuses a busy port and checks its own container is still alive.
 

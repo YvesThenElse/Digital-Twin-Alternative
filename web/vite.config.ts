@@ -25,6 +25,11 @@ export default defineConfig({
   preview: {
     host: "127.0.0.1",
     port: 4173,
+    // Vite refuse une requête dont l'en-tête `Host` n'est ni une adresse IP
+    // ni une valeur autorisée. On ouvre le tailnet — et lui seul : `true`
+    // désactiverait le contrôle, qui existe pour empêcher qu'un site tiers
+    // fasse résoudre son propre nom vers cette machine.
+    allowedHosts: [".ts.net"],
     proxy: {
       "/api": {
         target: "http://127.0.0.1:5199",

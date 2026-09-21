@@ -20,8 +20,17 @@ WEB_CONTENEUR=dt-web
 # Les ports sont FIXÉS, pas configurables : `vite.config.ts` écrit la cible du
 # mandataire en dur. Les rendre variables ici donnerait un front qui démarre
 # et qui ne joint rien — un écran vide, sans erreur.
+# L'API reste TOUJOURS sur la boucle locale, même quand le front est exposé :
+# le mandataire de Vite tourne sur cette machine et l'y joint sans passer par
+# le réseau. Une surface de moins, et aucune raison d'en ouvrir une seconde.
 API_URL=http://127.0.0.1:5199
-FRONT_URL=http://127.0.0.1:4173
+
+# Le front, lui, peut être lié ailleurs — voir `session.sh --reseau`.
+services_hote_front() {
+  SERVICES_FRONT_HOTE="$1"
+  FRONT_URL="http://${SERVICES_FRONT_HOTE}:4173"
+}
+services_hote_front 127.0.0.1
 
 services_nettoyer() {
   # `dt-*-e2e` sont les anciens noms : un dépôt mis à jour peut en traîner,
@@ -108,7 +117,7 @@ services_front() {
     --network host --user "$(id -u):$(id -g)" \
     -v "$SERVICES_RACINE:/work" -w /work/web \
     -v "$SERVICES_RACINE/.npm-home:/home/node" -e HOME=/home/node \
-    node:22-alpine npm run preview >/dev/null
+    node:22-alpine npm run preview -- --host "$SERVICES_FRONT_HOTE" >/dev/null
 
   for _ in $(seq 1 60); do
     curl -sf "$FRONT_URL/" >/dev/null 2>&1 && return 0
