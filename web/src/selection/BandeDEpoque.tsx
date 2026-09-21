@@ -1,3 +1,4 @@
+import { t } from "../i18n/t";
 import type { Bande } from "./bande";
 
 /**
@@ -21,7 +22,7 @@ export function BandeDEpoque({ bande }: { bande: Bande }) {
       data-total={bande.total}
       data-tranches={bande.tranches.length}
       data-sans-date={bande.sansDate}
-      aria-label="Votre histoire, en construction"
+      aria-label={t("bande.intitule")}
     >
       <div role="presentation" className="bande">
         {bande.tranches.map((tranche) => (
@@ -38,14 +39,21 @@ export function BandeDEpoque({ bande }: { bande: Bande }) {
       <figcaption>
         {bande.periode ? (
           <span>
-            {bande.periode.debut} – {bande.periode.fin}
+            {t("bande.periode", {
+              debut: bande.periode.debut,
+              fin: bande.periode.fin,
+            })}
           </span>
         ) : null}
-        <span>{bande.total} déclaré{bande.total > 1 ? "s" : ""}</span>
+        <span>
+          {t(bande.total > 1 ? "bande.declares.plusieurs" : "bande.declares.un", {
+            n: bande.total,
+          })}
+        </span>
         {bande.sansDate > 0 ? (
           // Comptés, jamais placés. Le dire évite que l'écart entre le total
           // et la bande passe pour une erreur.
-          <span>dont {bande.sansDate} sans date</span>
+          <span>{t("bande.sansDate", { n: bande.sansDate })}</span>
         ) : null}
       </figcaption>
     </figure>

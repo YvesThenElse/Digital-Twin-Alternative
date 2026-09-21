@@ -1,3 +1,5 @@
+import { t } from "./i18n/t";
+
 export type EtatSante = {
   status: "ok" | "degraded";
   database: { status: "ok" | "unreachable"; detail: string };
@@ -19,20 +21,20 @@ export function EtatDuService({ etat }: { etat?: EtatSante }) {
   if (!etat) {
     return (
       <p role="status" data-etat="inconnu">
-        Vérification du service…
+        {t("service.verification")}
       </p>
     );
   }
   if (etat.status === "ok") {
     return (
       <p role="status" data-etat="disponible">
-        Service disponible.
+        {t("service.disponible")}
       </p>
     );
   }
   return (
     <p role="status" data-etat="indisponible">
-      Service indisponible — base de données : {etat.database.detail}
+      {t("service.indisponible", { detail: etat.database.detail })}
     </p>
   );
 }

@@ -1,3 +1,5 @@
+import { MESSAGES, type CleMessage } from "../i18n/messages";
+import { t } from "../i18n/t";
 import type { Oeuvre } from "../selection/types";
 
 /**
@@ -33,33 +35,27 @@ export function statutRegion(oeuvre: Oeuvre, region: string): StatutRegion {
   return "inconnu";
 }
 
-const REGIONS: Record<string, string> = {
-  PAL: "Europe",
-  "NTSC-U": "Amérique du Nord",
-  "NTSC-J": "Japon",
-};
-
 /**
  * Le libellé visible. **Aucun des quatre états ne se rend par une chaîne
  * vide** : un état muet serait indistinguable d'un défaut d'affichage, et les
  * trois autres perdraient leur sens par contraste.
  *
  * Le code de région n'est jamais montré : « PAL » ne dit rien à un joueur.
- *
- * ⚠️ Libellés rassemblés ici pour l'item 14.
  */
 export function libelleStatut(statut: StatutRegion, region: string): string {
-  const nom = REGIONS[region] ?? region;
+  // Le NOM de la région, jamais son code : « PAL » ne dit rien à un joueur.
+  // Une région hors catalogue retombe sur son code plutôt que de rendre vide.
+  const cleRegion = `region.${region}` as CleMessage;
+  const nom = cleRegion in MESSAGES ? t(cleRegion) : region;
+
   switch (statut) {
     case "sorti":
-      return `Sorti en ${nom}`;
+      return t("region.sorti", { region: nom });
     case "jamais-sorti":
-      return `Jamais sorti en ${nom}`;
+      return t("region.jamaisSorti", { region: nom });
     case "inconnu":
-      // Formulé SANS négation : « pas sorti » et « on ne sait pas » se
-      // ressemblent trop à la lecture rapide d'une liste de 35 lignes.
-      return `Sortie ${nom === "Japon" ? "japonaise" : nom === "Europe" ? "européenne" : "nord-américaine"} inconnue`;
+      return t("region.inconnue", { region: nom });
     case "mondiale":
-      return "Sortie mondiale";
+      return t("region.mondiale");
   }
 }

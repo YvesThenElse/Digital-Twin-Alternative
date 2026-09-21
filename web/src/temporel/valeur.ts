@@ -1,3 +1,6 @@
+import type { CleMessage } from "../i18n/messages";
+import { t } from "../i18n/t";
+
 /**
  * La valeur temporelle telle que l'API la rend — sept variantes, pas une de
  * plus (§7.3).
@@ -57,11 +60,6 @@ export function surLAxe(v: ValeurTemporelle): boolean {
   return true;
 }
 
-const MOIS = [
-  "janvier", "février", "mars", "avril", "mai", "juin",
-  "juillet", "août", "septembre", "octobre", "novembre", "décembre",
-];
-
 /**
  * Le libellé visible.
  *
@@ -70,31 +68,40 @@ const MOIS = [
  * corrigerait une date qu'il n'a jamais donnée. C'est le premier des trois
  * interdits de §2, et le plus coûteux à violer.
  *
- * ⚠️ Les libellés sont rassemblés ici exprès : l'item 14 doit les sortir du
- * code sans avoir à parcourir les composants.
+ * Le texte lui-même vit dans le catalogue (§20) : cette fonction choisit la
+ * FORME, jamais les mots.
  */
 export function libelle(v: ValeurTemporelle): string {
   switch (v.kind) {
     case "ExactDate": {
-      const [a, m, j] = v.date.split("-").map(Number);
-      return `${j} ${MOIS[m - 1]} ${a}`;
+      const [annee, mois, jour] = v.date.split("-").map(Number);
+      return t("temporel.dateExacte", {
+        jour,
+        mois: t(`mois.${mois}` as CleMessage),
+        annee,
+      });
     }
     case "Month":
-      return `${MOIS[v.month - 1]} ${v.year}`;
+      return t("temporel.mois", {
+        mois: t(`mois.${v.month}` as CleMessage),
+        annee: v.year,
+      });
     case "Year":
-      return `${v.year}`;
+      return t("temporel.annee", { annee: v.year });
     case "YearRange":
       // Une période sans fin connue se lit « depuis » : la refermer sur son
       // début inventerait une fin que personne n'a déclarée.
-      return v.endYear === null ? `depuis ${v.year}` : `${v.year}–${v.endYear}`;
+      return v.endYear === null
+        ? t("temporel.depuis", { annee: v.year })
+        : t("temporel.periode", { debut: v.year, fin: v.endYear });
     case "ApproximateYear":
       // La marge n'est PAS affichée : « vers 1994 » dit l'imprécision, « 1994
       // ± 2 » fait remonter le modèle dans l'écran (principe 9).
-      return `vers ${v.year}`;
+      return t("temporel.vers", { annee: v.year });
     case "Age":
-      return `vers mes ${v.age} ans`;
+      return t("temporel.age", { age: v.age });
     case "Unknown":
-      return "à une date inconnue";
+      return t("temporel.inconnu");
   }
 }
 

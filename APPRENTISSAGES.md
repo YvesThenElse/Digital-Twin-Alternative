@@ -1274,3 +1274,42 @@ démarrage. Le premier est un état valide du produit, le second non.
 > demander si son absence décrit un **état valide du produit**. Échouer sur
 > un défaut prévu par la conception est aussi faux que passer sous silence
 > une donnée corrompue.
+
+### 37 — Une exclusion qui n'excluait rien
+
+Le détecteur de libellés en dur portait une liste de fichiers autorisés,
+contenant le catalogue lui-même. Une mutation l'a vidée : **zéro échec**.
+
+La raison est simple et je ne l'avais pas vue : le détecteur ne regarde que
+le texte JSX et les attributs visibles. Le catalogue est un `.ts` sans JSX et
+sans attributs — il ne pouvait pas être signalé, avec ou sans exclusion. La
+ligne protégeait d'un danger qui n'existait pas, tout en donnant l'impression
+d'avoir été pensée.
+
+> **Règle** — une exclusion, une exception, un cas particulier : vérifier
+> qu'il change quelque chose. Une mutation qui le supprime sans rien casser
+> dit qu'il n'a jamais servi — et qu'il masquera peut-être un vrai cas le
+> jour où le contexte change.
+
+**Écrire un détecteur textuel est plus dur qu'il n'y paraît.** Trois
+itérations ont été nécessaires pour ne plus confondre du JSX avec du
+TypeScript :
+
+| Confusion | Exemple | Correctif |
+|---|---|---|
+| générique | `Promise<void>` | le texte doit tenir sur une seule ligne |
+| flèche | `(lot) => Promise<T>` | le `>` doit clore une balise |
+| comparaison | `total > 1 ? "a" : "b"` | idem : `>` collé à un caractère de fin de balise |
+
+Chacune produisait un faux positif **crédible**, qui aurait pu me faire
+affaiblir la règle plutôt que le détecteur.
+
+> **Règle** — devant un faux positif, corriger le détecteur avant d'envisager
+> une exception. Une exception se propage ; un détecteur affiné protège
+> davantage.
+
+**Et un effet secondaire heureux.** Le passage au catalogue a reformulé
+« Sortie européenne inconnue » en « Sortie inconnue en Europe ». **Aucun test
+n'a bougé** : ils assertent la marque de l'état — le mot « inconnue »,
+l'absence de « jamais », la présence de « Europe » — et non la phrase. C'est
+la correction faite à l'item 11 qui a payé ici.

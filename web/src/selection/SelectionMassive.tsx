@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { BandeDEpoque } from "./BandeDEpoque";
 import { StatutRegional } from "../region/StatutRegional";
 import { statutRegion } from "../region/statut";
+import { t } from "../i18n/t";
 import { Tuile } from "../disposition/Tuile";
 import type { Disposition } from "../disposition/epoque";
 import { anneeDe, forme, libelle } from "../temporel/valeur";
@@ -80,7 +81,7 @@ export function SelectionMassive({
     if (etaitDeclare) return;
 
     envoyer({ batchId: lot.current, entries: [{ workId: id }] }).catch(() => {
-      setErreur("Une déclaration n'a pas pu être enregistrée. Elle reste affichée ; réessayez plus tard.");
+      setErreur(t("erreur.declaration"));
     });
   }
 
@@ -91,7 +92,7 @@ export function SelectionMassive({
     if (texte.length === 0) return;
 
     ecrireSouvenir(id, texte).catch(() => {
-      setErreur("Un souvenir n'a pas pu être enregistré. Il reste affiché ; réessayez plus tard.");
+      setErreur(t("erreur.souvenir"));
     });
   }
 
@@ -112,7 +113,7 @@ export function SelectionMassive({
               <button
                 type="button"
                 aria-pressed={declare}
-                aria-label={declare ? `Déclaré : ${oeuvre.titre}` : `Déclarer : ${oeuvre.titre}`}
+                aria-label={t(declare ? "ligne.declare" : "ligne.declarer", { titre: oeuvre.titre })}
                 onClick={() => basculer(oeuvre.id)}
               >
                 {/* La grille balaye des IMAGES, la liste balaye du TEXTE :
@@ -130,7 +131,7 @@ export function SelectionMassive({
                     datées qu'à l'année, et les rendre exactes affirmerait un
                     jour que la source ne donne pas. */}
                 <span data-forme={oeuvre.sortie ? forme(oeuvre.sortie) : "aucune"}>
-                  {oeuvre.sortie ? libelle(oeuvre.sortie) : "date inconnue"}
+                  {oeuvre.sortie ? libelle(oeuvre.sortie) : t("ligne.dateInconnue")}
                 </span>
                 <StatutRegional statut={statutRegion(oeuvre, region)} region={region} />
               </button>
@@ -141,7 +142,7 @@ export function SelectionMassive({
                   §9 est un COMPLÉMENT, jamais un passage obligé. */}
               {declare ? (
                 <textarea
-                  aria-label={`Un souvenir sur ${oeuvre.titre} ?`}
+                  aria-label={t("souvenir.invite", { titre: oeuvre.titre })}
                   value={souvenirs[oeuvre.id] ?? ""}
                   onChange={(e) =>
                     setSouvenirs((s) => ({ ...s, [oeuvre.id]: e.target.value }))
@@ -159,7 +160,7 @@ export function SelectionMassive({
       <BandeDEpoque bande={bande} />
 
       <button type="button" onClick={recharger}>
-        Recharger la liste
+        {t("action.recharger")}
       </button>
     </section>
   );

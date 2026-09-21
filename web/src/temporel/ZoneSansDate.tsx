@@ -1,3 +1,4 @@
+import { t } from "../i18n/t";
 import { libelle, type ValeurTemporelle } from "./valeur";
 
 export type MomentSansDate = {
@@ -24,7 +25,7 @@ export function ZoneSansDate({ moments }: { moments: MomentSansDate[] }) {
 
   return (
     <section data-testid="zone-sans-date" data-compte={moments.length}>
-      <h2>À une date inconnue</h2>
+      <h2>{t("tiroir.intitule")}</h2>
       <ul>
         {moments.map((m) => (
           <li key={m.id}>
