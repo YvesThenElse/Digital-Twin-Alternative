@@ -1088,3 +1088,41 @@ prouvé.
 > ce qu'elle mesure, la corriger dans le journal plutôt que de forcer des
 > tests qui ne prouvent rien. Un test artificiel coûte deux fois : il ne
 > protège pas, et il fait croire qu'il protège.
+
+### 31 — Ce qu'un test de composant ne voit pas
+
+L'écran de sélection massive est couvert par quinze tests de composant. Ils
+prouvent que cocher une ligne fait grandir la bande d'époque sans
+rechargement, que décocher la rétrécit, que l'ordre suit le rang de
+notoriété, que l'état déclaré est lisible par une machine.
+
+**Ils ne voient rien de ce qui a motivé le dessin de cet écran.** Pas la
+densité de la liste, pas la taille de la cible, pas le fait qu'un titre tienne
+sur 375 px, pas le mouvement de la bande. Or c'est ce calcul-là — quatre
+cibles de 44 px occupent 200 px et ne laissent que 143 px de titre — qui a
+fait rejeter la première version de la fiche.
+
+> **Règle** — à la fin d'un item d'interface, écrire explicitement ce que les
+> tests ne couvrent pas. Un « tout est vert » sur un écran laisse croire à
+> une garantie que le test de composant ne donne pas, et c'est à l'œil
+> humain que revient le reste.
+
+**Un affichage optimiste ne défait jamais le travail de l'utilisateur.** Si
+l'envoi échoue, on le signale et on garde ce qui est coché. Voir son travail
+s'effacer est le pire scénario possible sur un écran dont toute la promesse
+est « ça vaut le coup de saisir ». C'est le joueur qui décide de réessayer.
+
+> **Règle** — quand l'affichage précède la confirmation du serveur, décider
+> **à l'avance** ce que fait l'échec. « On verra » signifie en pratique « on
+> annule », c'est-à-dire le pire choix.
+
+**Une prédiction de mutation fausse, par oubli d'un chemin.** J'avais prévu
+deux échecs pour une mutation du calcul de la bande ; il y en a eu un. La
+fonction a un **retour anticipé** — aucune déclaration datée — que ma
+mutation ne touchait pas, et le test concerné passait par là. Les deux
+chemins sont bien couverts, vérifié en mutant le second séparément.
+
+> **Règle** — avant d'annoncer un nombre d'échecs, repérer les **sorties
+> multiples** de la fonction mutée et se demander par laquelle chaque test
+> passe. Un retour anticipé est une deuxième implémentation qui ne se voit
+> pas.
