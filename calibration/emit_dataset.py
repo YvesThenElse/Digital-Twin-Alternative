@@ -45,6 +45,31 @@ def cid(prefix, key, seq):
     return "%s_%s" % (prefix, ulid(prefix + ":" + key, seq))
 
 
+_REGISTRE = "id_seq.json"
+
+
+def _charger_registre(qids):
+    """Le registre QID → seq, persistant et en ajout seul.
+
+    Il n'est jamais réordonné ni purgé : un identifiant émis une fois garde
+    son horodatage pour toujours, quel que soit le classement de notoriété
+    ultérieur. Une œuvre absente du registre y entre au rang suivant."""
+    try:
+        seqs = json.load(open(_REGISTRE))
+    except FileNotFoundError:
+        seqs = {}
+    prochain = max(seqs.values(), default=_WORK_BASE - 1) + 1
+    nouveaux = [q for q in qids if q not in seqs]
+    for q in nouveaux:
+        seqs[q] = prochain
+        prochain += 1
+    if nouveaux:
+        json.dump(seqs, open(_REGISTRE, "w"), indent=1,
+                  ensure_ascii=False, sort_keys=True)
+        print("  registre : %d œuvre(s) ajoutée(s)" % len(nouveaux))
+    return seqs
+
+
 def first_year(dates):
     years = sorted(int(d["date"][:4]) for d in dates if d["date"][:4].isdigit())
     return years[0] if years else None
@@ -213,9 +238,26 @@ def main():
         wpd = json.load(open("wp_dates.json"))
     except Exception:
         wpd = {}
+    # Le `seq` d'une œuvre vient du REGISTRE, pas de sa position dans la liste
+    # curée. C'est la correction du 21 septembre 2026 : le rang de notoriété
+    # est un jugement révisable, l'identifiant ne l'est pas. Les indexer sur la
+    # même valeur faisait qu'intervertir deux titres ÉCHANGEAIT leurs
+    # identifiants — une réattribution, précisément ce que l'invariant 9
+    # interdit (MODELE-DE-DOMAINE §10.2).
+    #
+    # Le registre encode l'ordre de PREMIÈRE émission, qui est la sémantique
+    # que ULID attend de son horodatage. Une œuvre nouvelle prend le rang
+    # suivant ; aucune œuvre déjà émise n'en change jamais.
+    # La clé est (QID, plateforme) et non le QID seul : une même œuvre peut
+    # être curée sur deux machines — Bubble Bobble l'est sur Game Boy et sur
+    # NES. Or la partie basse du ULID ne dérive que du QID : deux entrées
+    # partageant le même `seq` recevraient des identifiants IDENTIQUES.
+    # C'était masqué par le couplage au rang, qui les séparait par accident.
+    seqs = _charger_registre(["%s|%s" % (e["qid"], e["platform"])
+                              for e in resolved if e["qid"] in raw])
     works = [build(e, raw[e["qid"]], platform_ids, PLATFORMS[e["platform"]][0],
-                   _WORK_BASE + i, wpd.get(e["qid"]))
-             for i, e in enumerate(resolved) if e["qid"] in raw]
+                   seqs["%s|%s" % (e["qid"], e["platform"])], wpd.get(e["qid"]))
+             for e in resolved if e["qid"] in raw]
 
     dataset = {"dataset_version": DATASET_VERSION,
                # Le partage à l'identique de Wikipédia se propage à l'ensemble
