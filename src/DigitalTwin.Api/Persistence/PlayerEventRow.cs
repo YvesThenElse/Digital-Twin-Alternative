@@ -48,6 +48,9 @@ public sealed class PlayerEventRow
     /// </summary>
     public string? BatchId { get; set; }
 
+    /// <summary>La machine choisie avant de cocher (§22.3 B).</summary>
+    public string? PlatformId { get; set; }
+
     /// <summary>L'axe exact. <c>timestamptz</c> : jamais de date locale ici.</summary>
     public DateTime RecordedAt { get; set; }
 

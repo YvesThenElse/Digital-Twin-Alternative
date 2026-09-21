@@ -33,6 +33,7 @@ public static class PlayerEventMapping
             TargetId = e.Target.Id,
             RecordedAt = e.RecordedAt,
             BatchId = e.BatchId,
+            PlatformId = e.PlatformId,
             SupersededByEventId = e.SupersededByEventId,
         };
         Ecrire(e.OccurredAt, ligne);
@@ -84,6 +85,7 @@ public static class PlayerEventMapping
             DateTime.SpecifyKind(l.RecordedAt, DateTimeKind.Utc))
         {
             BatchId = l.BatchId,
+            PlatformId = l.PlatformId,
         };
 
         return l.SupersededByEventId is null

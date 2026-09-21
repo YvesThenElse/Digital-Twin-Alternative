@@ -56,6 +56,7 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
         e.Property(x => x.OccurredAge).HasColumnName("occurred_age");
 
         e.Property(x => x.BatchId).HasColumnName("batch_id");
+        e.Property(x => x.PlatformId).HasColumnName("platform_id");
         e.Property(x => x.RecordedAt).HasColumnName("recorded_at")
             .HasColumnType("timestamp with time zone").IsRequired();
         e.Property(x => x.SupersededByEventId).HasColumnName("superseded_by_event_id");

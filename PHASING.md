@@ -292,6 +292,82 @@ juge une application en panne.
 Le reste — passe 2, « jamais joué », recherche, statistiques, profil — est
 une perte de richesse, pas un obstacle.
 
+### Clôture de la Phase 1 — 21 septembre 2026
+
+> **Les trois manques bloquants sont levés. Le POC est montrable ; la Phase 1
+> n'est pas pour autant « réussie ».**
+
+La distinction est celle du critère de sortie lui-même : il parle d'un
+**utilisateur test**, pas d'un dépôt. Ce qui est acquis, c'est le droit
+d'ouvrir la Phase 2 — la porte, elle, se franchit avec des testeurs.
+
+#### Ce qui a levé les blocages
+
+| Blocage du bilan précédent | Levée |
+|---|---|
+| Les jaquettes annoncées et non servies | `/covers/{id}` sert depuis le manifeste ; le catalogue n'annonce que les fichiers **présents sur le disque**, et le parcours échoue si une image de la grille ne **charge** pas |
+| E03 inexistante | L'axe rend chaque moment avec sa forme temporelle et l'accent de son époque ; un lot coché d'un passage s'y montre comme **une bande repliée** ; la zone sans date est montée |
+| Le jeu absent non saisissable | Saisie libre **sans quitter la sélection**, dans le **même lot**, comptée dans la récompense, relue sur la timeline sous son titre et **marquée** hors référentiel |
+
+S'y ajoutent deux compléments décidés après la clôture : le **souvenir sur
+un titre saisi** — §9 y place le contenu le plus personnel, l'API l'acceptait
+déjà, aucun écran ne le proposait — et la **plateforme portée par
+l'événement**, sans laquelle un indicateur engagé de §22.3 n'existait pas
+(voir plus bas).
+
+**523 tests .NET, 149 tests front, 1 parcours × 2 dispositions.**
+
+Le parcours mesure **40 gestes pour 31 titres**, dont 32 gestes de
+déclaration — soit **1,03 geste par jeu déclaré** contre une cible à 1,35
+(§22.3 A). C'est un **plancher** obtenu sans hésitation ni retour en
+arrière : il prouve que le chemin optimal tient dans le budget, pas que les
+testeurs l'y tiendront.
+
+#### Ce qui manque encore, et ce que ça coûte
+
+| Manque | Conséquence pour la Phase 2 |
+|---|---|
+| **La passe 2 n'est pas à l'écran** — achèvement, provenance, affect | Le profil reste binaire : joué ou rien. Perte de richesse, **pas de blocage** |
+| **« Jamais joué » n'est pas à l'écran** (§24.3) | L'information positive la plus simple à donner reste inaccessible. **Pas de blocage** |
+| **Aucune instrumentation produit** | Deux indicateurs de §22.3 A — gestes par jeu, achèvement du parcours — se comptent **à la main** sur enregistrement d'écran. Contrainte de protocole, pas de produit |
+| Recherche, statistiques, page de profil (§4) | Hors périmètre livré ; leur absence se voit |
+
+#### Ce que la préparation du test a fait apparaître
+
+En éprouvant les requêtes de mesure **contre le schéma réel** plutôt qu'en
+les relisant, celle de §22.3 B — « testeurs ayant déclaré sur ≥ 2
+plateformes », cible engagée à 75 % — rendait `0`.
+
+Le lot portait la machine, l'API la validait, et l'événement ne la gardait
+pas. La table `play_declarations` n'est écrite que pour les jugements de
+passe 2 : un tap « joué » n'y laisse rien. **Un zéro se lit « aucune
+plateforme », jamais « la donnée n'existe pas »** — la porte serait tombée
+sur un indicateur qui n'existait pas.
+
+La déduire de l'œuvre aurait fonctionné : **une seule des 221 œuvres du
+dataset est multi-plateforme**. C'est exactement ce qui rend la déduction
+dangereuse — elle aurait été juste aujourd'hui et fausse dès que le
+référentiel grandit, sans rien pour le signaler. La plateforme est donc
+**enregistrée**, parce que c'est une donnée que le joueur a fournie et que le
+système jetait.
+
+> Même famille que tous les défauts de ce dépôt : **ce qui manque ne lève
+> pas d'erreur**. Cette fois, le manque était dans l'instrument de mesure —
+> l'endroit où il aurait coûté le plus cher, parce qu'il aurait condamné le
+> produit au lieu de se signaler.
+
+#### Décision
+
+**La Phase 2 peut s'ouvrir.** Le protocole opérationnel est écrit avant le
+premier testeur, dans [`PROTOCOLE-DE-TEST.md`](./PROTOCOLE-DE-TEST.md) :
+recrutement et critère opposable, déroulé et ce que l'animateur ne dit
+jamais, requêtes de mesure **exécutées et vérifiées**, codage de la question
+aveugle, restitution.
+
+La passe 2 et « jamais joué » ne sont **pas** construits avant le test. Les
+ajouter maintenant supposerait de savoir ce qui manque au profil pour qu'il
+ressemble à quelqu'un — ce que seul le test dira.
+
 ## 5. Phase 2 — Validation utilisateur
 
 **Durée : 2 à 4 semaines.**

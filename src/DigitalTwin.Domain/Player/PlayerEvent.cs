@@ -153,6 +153,24 @@ public sealed record PlayerEvent : ISortableMoment
     /// </summary>
     public string? BatchId { get; init; }
 
+    /// <summary>
+    /// La plateforme sur laquelle cette déclaration a été faite.
+    ///
+    /// <para><b>Une donnée reçue, pas une donnée déduite.</b> Le joueur choisit
+    /// une machine avant de cocher : c'est un fait qu'il a fourni. La déduire
+    /// ensuite de l'œuvre fonctionnerait sur le dataset POC — une seule de ses
+    /// 221 œuvres est multi-plateforme — et se mettrait à mentir dès qu'il
+    /// grandit.</para>
+    ///
+    /// <para>Elle porte l'indicateur §22.3 B, « testeurs ayant déclaré sur
+    /// ≥ 2 plateformes ». Sans elle, la mesure rend zéro, et un zéro se lit
+    /// « aucune plateforme », jamais « la donnée n'existe pas ».</para>
+    ///
+    /// <para><c>null</c> pour un événement qui ne vient pas d'une sélection
+    /// par machine — une acquisition de console, par exemple.</para>
+    /// </summary>
+    public string? PlatformId { get; init; }
+
     // --- contrat de tri (item 05) ---------------------------------------
     string? ISortableMoment.SubjectId => Target.Id;
     string? ISortableMoment.Kind => Type;

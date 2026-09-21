@@ -211,6 +211,7 @@ public static class DeclarationTranslator
                     quand, enregistreA)
                 {
                     BatchId = lot.BatchId,
+                    PlatformId = lot.PlatformId,
                 });
             }
         }

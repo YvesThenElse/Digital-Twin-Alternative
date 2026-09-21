@@ -626,4 +626,54 @@ public class DeclarationsTests(PostgresFixture bdd)
         Assert.Equal(HttpStatusCode.BadRequest, reponse.StatusCode);
         Assert.Empty(await Journal("usr_partiel"));
     }
+
+    // --------------------------------- la plateforme, pour la mesure §22.3
+
+    [Fact]
+    public async Task Chaque_evenement_porte_la_plateforme_sur_laquelle_il_a_ete_declare()
+    {
+        // Le lot la donne, l'API la valide… et elle était jetée. Or §22.3 B
+        // engage une cible sur « testeurs ayant déclaré sur ≥ 2 plateformes »
+        // : sans elle, la requête de mesure rend ZÉRO, et un zéro se lit
+        // « aucune plateforme » et non « la donnée n'existe pas ».
+        //
+        // La déduire de l'œuvre serait pire : une seule des 221 œuvres du
+        // dataset est multi-plateforme, donc la déduction « marcherait »
+        // aujourd'hui et se mettrait à mentir dès que le référentiel grandit.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_plateforme", "usr_plateforme", plateforme,
+            [new { workId = oeuvres[0] }, new { title = "Le jeu de mon cousin" }]));
+
+        var journal = await Journal("usr_plateforme");
+        Assert.Equal(2, journal.Count);
+        // Le titre SAISI aussi : c'est sur cette machine que le joueur l'a
+        // cherché, et c'est ce que le référentiel doit apprendre (§3.5).
+        Assert.All(journal, e => Assert.Equal(plateforme, e.PlatformId));
+    }
+
+    [Fact]
+    public async Task Deux_plateformes_declarees_se_comptent_pour_deux()
+    {
+        // L'indicateur lui-même, joué de bout en bout. Le tester sur un seul
+        // lot laisserait passer une valeur figée au premier lot reçu.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var plateformes = await client.GetFromJsonAsync<JsonElement>("/platforms");
+
+        foreach (var (indice, nom) in new[] { (0, "bat_pf_a"), (1, "bat_pf_b") })
+        {
+            var pf = plateformes[indice].GetProperty("id").GetString()!;
+            var oeuvres = await client.GetFromJsonAsync<JsonElement>($"/platforms/{pf}/works");
+            await client.PostAsJsonAsync("/declarations", Lot(
+                nom, "usr_deux_pf", pf,
+                [new { workId = oeuvres[0].GetProperty("id").GetString()! }]));
+        }
+
+        var journal = await Journal("usr_deux_pf");
+        Assert.Equal(2, journal.Select(e => e.PlatformId).Distinct().Count());
+    }
 }
