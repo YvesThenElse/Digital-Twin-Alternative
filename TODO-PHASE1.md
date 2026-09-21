@@ -1,0 +1,77 @@
+# Phase 1 — POC fonctionnel
+
+> Liste de travail de la boucle, au même format que [TODO-PHASE0.md](./TODO-PHASE0.md).
+> Un item par itération, dans l'ordre. Les règles de travail sont dans
+> [LOOP.md](./LOOP.md) ; les leçons accumulées dans
+> [APPRENTISSAGES.md](./APPRENTISSAGES.md), à relire au début de chaque
+> itération.
+
+## La question à laquelle ce POC répond
+
+> Est-ce qu'un utilisateur reconstruit rapidement une partie significative de
+> son histoire vidéoludique, et trouve le résultat intéressant ?
+
+Tout item qui ne sert pas cette question est hors périmètre, même s'il figure
+dans la spécification.
+
+## Décisions de cadrage — 21 septembre 2026
+
+| Décision | Conséquence |
+|---|---|
+| **Tranche verticale E02 + E03**, de l'API à l'écran | Ni compte ni connexion : un utilisateur local en dur. E01, E04, E06 et les suivants attendent |
+| **PostgreSQL en Docker dès le départ** | Le domaine est temporel, et les types de date diffèrent entre fournisseurs EF Core. Valider sur SQLite puis migrer ferait réapparaître la classe de bug la plus coûteuse de ce dépôt |
+| **Tests de composant et d'API partout ; Playwright sur un seul parcours** | Celui du critère de sortie. Un test de bout en bout instable finit affaibli plutôt que réparé — un seul, et il doit rester vert |
+| **Référentiel chargé en mémoire depuis le fichier** | 221 œuvres et 592 sorties tiennent en quelques centaines de kilo-octets. `DatasetLoader` vérifie les invariants **au démarrage** : un dataset corrompu se voit au lancement, pas à la première requête d'un testeur |
+
+Pile verrouillée en [PHASING.md](./PHASING.md) §4 : .NET 10 LTS + EF Core 10,
+React + TypeScript (Vite), TanStack Query, PostgreSQL 17+.
+
+---
+
+## Socle
+
+- [ ] **01 — Squelette de la solution.** Ajouter `DigitalTwin.Api` (API minimale .NET 10) et `DigitalTwin.Api.Tests` à `src/DigitalTwin.slnx`, un `docker-compose.yml` avec PostgreSQL 17, et `web/` (Vite + React + TypeScript). *Acceptation : `./test.sh` exécute les tests du domaine ET de l'API ; `./web.sh test` exécute ceux du front ; l'API répond sur un point de santé qui **inclut l'état de la base** — un point de santé vert alors que la base est tombée ne sert à rien.*
+
+- [ ] **02 — Le référentiel au démarrage.** Charger `dataset/poc.json` via `DatasetLoader` à l'amorçage, et **refuser de démarrer** si le dataset porte une violation, en nommant l'entrée fautive. Exposer `GET /platforms` et `GET /platforms/{id}/works`. *Acceptation : les œuvres reviennent ordonnées par `notability` **de cette plateforme** ; Bubble Bobble apparaît sur Game Boy et sur NES avec deux rangs différents ; un dataset corrompu empêche le démarrage avec un message nommant l'entrée.*
+
+- [ ] **03 — Les événements en base.** Modèle EF Core de `PlayerEvent` : table en ajout seul, deux axes temporels (`OccurredAt`, `RecordedAt`), `SupersededBy`, partitionnement par utilisateur prévu (§10.1). Migration PostgreSQL. *Acceptation : un aller-retour en base préserve **les sept variantes** de `TemporalValue` à l'identique, y compris `Age` non résolu et `Unknown` ; un événement déclaré en 2026 pour un fait de 1998 garde ses deux dates distinctes ; aucune mise à jour en place n'est possible.*
+
+## E02 — la sélection massive
+
+- [ ] **04 — Passe 1 : plateforme et période.** `GET /platforms` alimente le choix de machine ; la période est une `TemporalValue` approximative (§24.3). *Acceptation : les huit plateformes reviennent dans l'ordre chronologique de génération ; une période « vers 1995 » produit un `ApproximateYear` de marge ≥ 1, pas une année exacte.*
+
+- [ ] **05 — Passe 2 : cocher joué / terminé / possédé.** `POST /declarations` accepte un **lot**. *Acceptation : trente déclarations en un appel produisent trente événements ; rejouer le même lot ne duplique rien ; une plateforme inconnue est refusée **en la nommant** ; « terminé » implique « joué » sans créer deux événements contradictoires.*
+
+- [ ] **06 — « Jamais joué » est une déclaration.** (§24.3) Pas une absence de réponse. *Acceptation : un titre déclaré « jamais joué » se distingue en base d'un titre non coché, et la distinction survit à un rechargement.*
+
+- [ ] **07 — Le jeu absent du référentiel.** (§3.5) Sur 221 titres, le cas est permanent. *Acceptation : un testeur peut saisir un titre absent sans être bloqué ; l'entrée est marquée comme non référencée et n'est jamais confondue avec une œuvre curée.*
+
+## E03 — la timeline
+
+- [ ] **08 — Projection de timeline.** `GET /timeline` s'appuie sur `TimelineSorter`. *Acceptation : les huit cas de validation rejoués **à travers l'API** produisent le même ordre que les tests du domaine ; les moments sans date reviennent dans le tiroir, pas mélangés ; les incohérences causales reviennent comme avertissements et ne bloquent rien.*
+
+- [ ] **09 — Restitution immédiate.** (§24.4) La timeline se remplit **pendant** qu'on coche. *Acceptation : un test de composant prouve que cocher un titre modifie la timeline sans rechargement ni appel complet ; un POC qui ne montre le résultat qu'à la fin ne teste pas la bonne chose.*
+
+## L'incertitude, visible
+
+- [ ] **10 — Afficher ce qu'on ne sait pas.** Dates approximatives, `Age` non résolu, zone sans date. *Acceptation : une date à l'année ne s'affiche jamais comme une date au jour ; les 31 sorties à l'année seule sont reconnaissables à l'écran ; un test de composant le vérifie sur les trois précisions.*
+
+- [ ] **11 — Région et non-sortie.** Les trois états de `region_status`. *Acceptation : « jamais sorti en Europe » (22 cas établis) s'affiche différemment de « région inconnue » (33 cas) et de « sorti » ; **aucune des trois ne se rend par l'absence d'indication**.*
+
+- [ ] **12 — Souvenir minimal.** (§9) Note libre sur un événement. *Acceptation : la note se saisit sans quitter la sélection, survit au rechargement, et est facultative — c'est elle qui produit « oui, ça me ressemble », le critère de sortie de la Phase 2.*
+
+## Forme et sortie
+
+- [ ] **13 — Deux dispositions, pas une étirée.** (§21.2, [langage visuel](./ecrans/00-langage-visuel.md) §6) Liste dense sur mobile, grille visuelle sur desktop avec les 218 jaquettes. *Acceptation : un test de composant vérifie les deux dispositions aux points de rupture déclarés ; une œuvre sans jaquette rend une tuile générée et jamais un trou.*
+
+- [ ] **14 — Aucun libellé en dur.** (§20, décision « international dès le départ ») *Acceptation : un test échoue si une chaîne visible par l'utilisateur est écrite dans un composant ; le français est la seule langue livrée, et c'est un choix, pas une contrainte du code.*
+
+- [ ] **15 — Le parcours de bout en bout.** Playwright, **un seul test** : choisir une console, une période, cocher trente titres, voir la timeline se remplir, ajouter une note. *Acceptation : il passe sur la grille desktop et sur la liste mobile ; il mesure le nombre de gestes, qui est le KPI de §22.3.*
+
+- [ ] **16 — Bilan.** Mettre à jour [PHASING.md](./PHASING.md) §4 : ce qui est livré, ce qui ne l'est pas, et si le POC est en état d'être montré à un testeur. *Acceptation : le fichier dit la vérité, y compris si le POC n'est pas présentable.*
+
+---
+
+## Journal
+
+Une ligne par item terminé, ajoutée dans le commit qui le clôt.
