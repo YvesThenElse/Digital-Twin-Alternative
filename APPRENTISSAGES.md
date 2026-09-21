@@ -1408,3 +1408,38 @@ l'exclusion qui n'excluait rien.
 bloquants sont devenus des items. Constater sans inscrire aurait produit un
 document juste et sans effet — ce qui est la forme la plus discrète de
 l'inutilité.
+
+### 42 — Le parcours a trouvé la frontière que les deux côtés ignoraient
+
+L'API sert `/covers/{id}` et ses tests le prouvent. Le navigateur, lui, parle
+au **mandataire** de Vite, qui ne relaie que `/api`. Il demandait donc
+`/covers/…` au serveur du front, recevait la page HTML, et affichait une
+image cassée.
+
+Les deux côtés avaient raison séparément. Personne ne possédait la frontière.
+
+> **Règle** — une adresse rendue par une API est relative à **l'API**. Le
+> client, qui seul sait par où il passe, doit la préfixer. Tester les deux
+> côtés ne suffit pas : c'est le chemin complet qu'il faut parcourir.
+
+C'est la deuxième fois dans cette phase qu'un parcours réel trouve un défaut
+qu'aucun test de couche ne pouvait voir — après l'identifiant de lot compris
+différemment par le front et par l'API.
+
+### 43 — Un test vrai des deux côtés d'une mutation ne teste rien
+
+Pour garantir que le catalogue n'annonce que les jaquettes **présentes sur le
+disque**, j'avais écrit : « pour chaque jaquette annoncée, le fichier
+existe ». Une mutation retirant le filtre n'a rien cassé — les 218 fichiers
+étant là, l'assertion reste vraie **avec ou sans** filtre.
+
+Le cas que le filtre protège — un clone neuf, où le manifeste survit et les
+images non — n'était produit par aucun test. Il fallait le **fabriquer** :
+un dossier temporaire, un manifeste annonçant un fichier absent.
+
+> **Règle** — un test qui décrit l'état actuel ne protège pas la règle qui
+> l'a produit. Si la mutation qui supprime la règle laisse le test vert, le
+> test décrit, il ne vérifie pas. Fabriquer l'état où la règle mord.
+
+Et son pendant, écrit dans la foulée : sans un test qui exige qu'une jaquette
+présente **soit** annoncée, « ne rien annoncer jamais » passerait le premier.

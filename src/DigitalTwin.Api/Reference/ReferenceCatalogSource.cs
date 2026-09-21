@@ -22,15 +22,28 @@ public sealed class ReferenceCatalogSource
     public DatasetLoadResult Dataset { get; }
 
     /// <summary>
-    /// Les œuvres pour lesquelles une jaquette existe.
+    /// Les œuvres dont la jaquette est <b>réellement servable</b> : présente
+    /// au manifeste ET sur le disque.
     ///
-    /// <para>Un manifeste absent donne un catalogue <b>sans aucune
-    /// jaquette</b>, et c'est délibérément silencieux : §19.2 fait de la
-    /// tuile générée le socle permanent, pas un repli d'erreur. Tout
-    /// afficher en tuiles composées reste un état valide du produit — à la
-    /// différence d'un dataset manquant, qui ne l'est pas.</para>
+    /// <para>Le manifeste enregistre une <i>acquisition</i> ; il ne prouve
+    /// pas une <i>présence</i>. Les images sont hors du dépôt — emprunt
+    /// révocable sous fair use (VERIFICATION-JURIDIQUE §3.3) —, donc un clone
+    /// neuf n'en a aucune. Annoncer une adresse pour un fichier absent
+    /// produirait une image cassée, <b>pire qu'un trou parce que ça
+    /// ressemble à une panne</b>.</para>
+    ///
+    /// <para>Un manifeste absent, ou des fichiers absents, donnent un
+    /// catalogue tout en tuiles composées. C'est délibérément silencieux :
+    /// §19.2 en fait le socle permanent, pas un repli d'erreur.</para>
     /// </summary>
     public IReadOnlySet<string> WorksWithCover { get; }
+
+    /// <summary>Le fichier de jaquette d'une œuvre, ou <c>null</c>.</summary>
+    public string? CoverFile(string workId)
+        => _fichiersDeJaquette.TryGetValue(workId, out var chemin) ? chemin : null;
+
+    private readonly Dictionary<string, string> _fichiersDeJaquette =
+        new(StringComparer.Ordinal);
 
     public ReferenceCatalogSource(string chemin)
     {
@@ -43,7 +56,7 @@ public sealed class ReferenceCatalogSource
 
         Dataset = DatasetLoader.Load(File.ReadAllText(chemin));
 
-        WorksWithCover = LireManifeste(chemin);
+        WorksWithCover = LireManifeste(chemin, _fichiersDeJaquette);
 
         if (!Dataset.IsValid)
         {
@@ -63,16 +76,23 @@ public sealed class ReferenceCatalogSource
     /// <summary>
     /// Le manifeste des jaquettes, s'il est là. Il vit à côté du dataset.
     /// </summary>
-    private static IReadOnlySet<string> LireManifeste(string cheminDataset)
+    private static IReadOnlySet<string> LireManifeste(
+        string cheminDataset, Dictionary<string, string> fichiers)
     {
-        var manifeste = Path.Combine(
-            Path.GetDirectoryName(cheminDataset) ?? ".", "covers", "MANIFEST.json");
+        var dossier = Path.Combine(Path.GetDirectoryName(cheminDataset) ?? ".", "covers");
+        var manifeste = Path.Combine(dossier, "MANIFEST.json");
         if (!File.Exists(manifeste)) return new HashSet<string>(StringComparer.Ordinal);
 
         using var doc = JsonDocument.Parse(File.ReadAllText(manifeste));
-        return doc.RootElement.EnumerateObject()
-            .Select(e => e.Name)
-            .ToHashSet(StringComparer.Ordinal);
+        foreach (var entree in doc.RootElement.EnumerateObject())
+        {
+            if (!entree.Value.TryGetProperty("file", out var nom)) continue;
+            var fichier = Path.Combine(dossier, nom.GetString()!);
+            // PRÉSENT, pas seulement annoncé. Le manifeste survit au clone,
+            // les images non.
+            if (File.Exists(fichier)) fichiers[entree.Name] = fichier;
+        }
+        return fichiers.Keys.ToHashSet(StringComparer.Ordinal);
     }
 
     /// <summary>

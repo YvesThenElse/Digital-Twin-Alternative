@@ -51,6 +51,7 @@ app.Services.GetRequiredService<ReferenceCatalogSource>();
 
 app.MapHealth();
 app.MapReference();
+app.MapCovers();
 app.MapDeclarations();
 app.MapTimeline();
 app.MapMemories();

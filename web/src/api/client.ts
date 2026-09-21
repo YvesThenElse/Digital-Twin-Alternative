@@ -87,7 +87,12 @@ export const client = {
         titre: o.title,
         rang: o.notability,
         sortie: sortieDe(o),
-        couverture: o.coverUrl,
+        // L'adresse rendue par l'API est relative À L'API (« /covers/… »).
+        // Le navigateur, lui, parle au mandataire : sans préfixe, il
+        // demandait la page du front et recevait du HTML à la place d'une
+        // image. L'API n'a pas à connaître le mandataire ; c'est le client
+        // qui sait par où il passe.
+        couverture: o.coverUrl === null ? null : `${BASE}${o.coverUrl}`,
         regions: [...new Set(o.releases.map((r) => r.region).filter((r): r is string => r !== null))],
         statutRegional: o.regionStatus,
       })),

@@ -227,6 +227,141 @@ public class ReferentielTests
         Assert.Equal(JsonValueKind.Null, simCity.GetProperty("coverUrl").ValueKind);
     }
 
+    [Fact]
+    public async Task Une_adresse_de_jaquette_annoncee_resout_vraiment()
+    {
+        // LE test qui manquait. L'item 13 vérifiait que `coverUrl` vaut
+        // `null` quand il n'y a PAS de jaquette ; jamais qu'elle résout quand
+        // il y en a une. L'API annonçait donc 218 adresses que personne ne
+        // servait, et la grille desktop affichait 218 images cassées — pire
+        // qu'un trou, parce que ça ressemble à une panne.
+        //
+        // Un navigateur n'échoue pas sur une image cassée : seul ce test peut
+        // le voir.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var snes = await IdPlateforme(client, "Super Nintendo Entertainment System");
+        var oeuvres = await Lire(client, $"/platforms/{snes}/works");
+
+        var avecJaquette = oeuvres.EnumerateArray()
+            .First(w => w.GetProperty("coverUrl").ValueKind != JsonValueKind.Null);
+        var adresse = avecJaquette.GetProperty("coverUrl").GetString()!;
+
+        var reponse = await client.GetAsync(adresse);
+
+        Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
+        Assert.StartsWith("image/", reponse.Content.Headers.ContentType!.MediaType!,
+            StringComparison.Ordinal);
+        Assert.True((await reponse.Content.ReadAsByteArrayAsync()).Length > 0);
+    }
+
+    [Fact]
+    public async Task Toutes_les_adresses_annoncees_d_une_plateforme_resolvent()
+    {
+        // Une seule qui résout ne prouve rien : la faute était systématique.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var gb = await IdPlateforme(client, "Game Boy");
+        var oeuvres = await Lire(client, $"/platforms/{gb}/works");
+
+        var adresses = oeuvres.EnumerateArray()
+            .Select(w => w.GetProperty("coverUrl"))
+            .Where(u => u.ValueKind != JsonValueKind.Null)
+            .Select(u => u.GetString()!)
+            .ToList();
+
+        Assert.NotEmpty(adresses);
+        foreach (var adresse in adresses)
+        {
+            var reponse = await client.GetAsync(adresse);
+            Assert.True(reponse.IsSuccessStatusCode, $"{adresse} → {reponse.StatusCode}");
+        }
+    }
+
+    [Fact]
+    public async Task Une_jaquette_inconnue_rend_404_en_nommant_l_oeuvre()
+    {
+        using var usine = Usine();
+        var reponse = await usine.CreateClient().GetAsync("/covers/wrk_fantome");
+
+        Assert.Equal(HttpStatusCode.NotFound, reponse.StatusCode);
+        Assert.Contains("wrk_fantome", await reponse.Content.ReadAsStringAsync(),
+            StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task Le_catalogue_n_annonce_que_les_jaquettes_presentes_sur_le_disque()
+    {
+        // Le manifeste enregistre une ACQUISITION, pas une présence : les
+        // images sont hors du dépôt, donc un clone neuf n'en a aucune.
+        // Annoncer une adresse pour un fichier absent serait exactement la
+        // faute qu'on vient de corriger, déplacée d'un cran.
+        using var usine = Usine();
+        var source = usine.Services.GetRequiredService<Reference.ReferenceCatalogSource>();
+
+        Assert.NotEmpty(source.WorksWithCover);
+        Assert.All(source.WorksWithCover, id =>
+        {
+            var fichier = source.CoverFile(id);
+            Assert.NotNull(fichier);
+            Assert.True(File.Exists(fichier), $"{id} → {fichier}");
+        });
+    }
+
+    [Fact]
+    public void Un_manifeste_qui_annonce_un_fichier_absent_n_annonce_pas_la_jaquette()
+    {
+        // LE cas du clone neuf : les images sont hors du dépôt — emprunt
+        // révocable sous fair use —, donc le manifeste survit et les fichiers
+        // non.
+        //
+        // Ce test crée cette situation, qu'aucun autre ne pouvait produire :
+        // les 218 fichiers étant présents sur cette machine, l'assertion
+        // « les fichiers annoncés existent » est vraie avec ou sans filtre.
+        // Une mutation l'a montré.
+        var dossier = Path.Combine(Path.GetTempPath(), $"dt-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(Path.Combine(dossier, "covers"));
+        try
+        {
+            File.WriteAllText(Path.Combine(dossier, "poc.json"), DatasetMinimal);
+            File.WriteAllText(
+                Path.Combine(dossier, "covers", "MANIFEST.json"),
+                """{"wrk_mario": {"file": "jamais-telechargee.png"}}""");
+
+            var source = new Reference.ReferenceCatalogSource(
+                Path.Combine(dossier, "poc.json"));
+
+            Assert.Empty(source.WorksWithCover);
+            Assert.Null(source.CoverFile("wrk_mario"));
+        }
+        finally { Directory.Delete(dossier, recursive: true); }
+    }
+
+    [Fact]
+    public void Un_manifeste_dont_le_fichier_existe_annonce_la_jaquette()
+    {
+        // Le pendant : sans lui, « ne rien annoncer jamais » passerait le
+        // test précédent.
+        var dossier = Path.Combine(Path.GetTempPath(), $"dt-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(Path.Combine(dossier, "covers"));
+        try
+        {
+            File.WriteAllText(Path.Combine(dossier, "poc.json"), DatasetMinimal);
+            File.WriteAllBytes(
+                Path.Combine(dossier, "covers", "presente.png"), [0x89, 0x50, 0x4E, 0x47]);
+            File.WriteAllText(
+                Path.Combine(dossier, "covers", "MANIFEST.json"),
+                """{"wrk_mario": {"file": "presente.png"}}""");
+
+            var source = new Reference.ReferenceCatalogSource(
+                Path.Combine(dossier, "poc.json"));
+
+            Assert.Equal(["wrk_mario"], source.WorksWithCover);
+            Assert.NotNull(source.CoverFile("wrk_mario"));
+        }
+        finally { Directory.Delete(dossier, recursive: true); }
+    }
+
     // --------------------------------------------------------------- œuvres
 
     [Fact]
@@ -355,6 +490,24 @@ public class ReferentielTests
         return oeuvres.EnumerateArray()
             .Single(w => w.GetProperty("title").GetString() == titre);
     }
+
+    /// <summary>Un dataset valide et minuscule, pour éprouver le manifeste.</summary>
+    private const string DatasetMinimal = """
+        {
+          "dataset_version": "0.0.0",
+          "license": "essai",
+          "sources": [],
+          "redirects": {},
+          "platforms": [{"canonical_id": "plt_nes", "name": "NES",
+                         "region_free": false, "launch_year": 1983}],
+          "works": [
+            {"canonical_id": "wrk_mario", "title": "A", "notability": {"plt_nes": 1},
+             "region_status": {},
+             "releases": [{"canonical_id": "rel_a", "platform": "plt_nes", "region": "PAL",
+                           "date": "1987-05-15", "precision": "day", "confidence": "high"}]}
+          ]
+        }
+        """;
 
     /// <summary>
     /// Deux œuvres partageant un identifiant : une violation d'unicité, que

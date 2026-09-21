@@ -48,6 +48,28 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   const attendue = infos.project.name === "desktop" ? "grille" : "liste";
   await expect(page.getByRole("list").last()).toHaveAttribute("data-disposition", attendue);
 
+  if (attendue === "grille") {
+    // Les jaquettes doivent CHARGER, pas seulement être annoncées. Un
+    // navigateur n'échoue pas sur une image cassée : sans cette vérification,
+    // la grille pouvait afficher 218 cadres vides et le parcours rester vert.
+    //
+    // `naturalWidth` vaut 0 tant qu'une image n'a pas été décodée — c'est le
+    // seul signal qu'un `<img>` donne d'un échec.
+    const images = page.locator('[data-tuile="jaquette"] img');
+    const combien = await images.count();
+    expect(combien, "aucune jaquette dans la grille : le test ne prouverait rien")
+      .toBeGreaterThan(0);
+
+    for (let i = 0; i < combien; i += 1) {
+      await expect(images.nth(i)).toHaveJSProperty("complete", true);
+      const largeur = await images.nth(i).evaluate(
+        (img) => (img as HTMLImageElement).naturalWidth,
+      );
+      const source = await images.nth(i).getAttribute("src");
+      expect(largeur, `image non chargée : ${source}`).toBeGreaterThan(0);
+    }
+  }
+
   for (let i = 0; i < TITRES_A_COCHER; i += 1) {
     // Toujours la PREMIÈRE ligne encore non déclarée : c'est le geste réel —
     // on descend la liste sans chercher.
