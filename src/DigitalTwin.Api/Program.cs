@@ -1,5 +1,7 @@
 using DigitalTwin.Api.Health;
+using DigitalTwin.Api.Persistence;
 using DigitalTwin.Api.Reference;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,8 @@ var connexion = builder.Configuration.GetConnectionString("Postgres")
     ?? "Host=localhost;Port=5433;Database=digitaltwin;Username=digitaltwin;Password=digitaltwin";
 
 builder.Services.AddSingleton<IDatabaseProbe>(new PostgresProbe(connexion));
+builder.Services.AddDbContext<PlayerEventDbContext>(o => o.UseNpgsql(connexion));
+builder.Services.AddScoped<EventStore>();
 
 // L'enregistrement est paresseux, la vérification ne l'est pas.
 //

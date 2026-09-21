@@ -14,6 +14,26 @@
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+# PostgreSQL est une dépendance DURE de la suite, pas une option.
+#
+# Les tests de persistance pourraient être « sautés » quand la base est
+# absente. Ce serait la pire issue : une suite verte qui n'a pas vérifié la
+# persistance ressemble exactement à une suite verte qui l'a vérifiée. On
+# démarre donc la base, et on échoue franchement si elle ne vient pas.
+if ! docker compose up -d postgres >/dev/null 2>&1; then
+  echo "PostgreSQL n'a pas démarré — la suite ne peut pas vérifier la persistance." >&2
+  exit 1
+fi
+for _ in $(seq 1 60); do
+  etat="$(docker inspect -f '{{.State.Health.Status}}' digitaltwin-postgres 2>/dev/null || echo absent)"
+  [ "$etat" = "healthy" ] && break
+  sleep 1
+done
+if [ "$etat" != "healthy" ]; then
+  echo "PostgreSQL n'est pas sain après 60 s (état : $etat)." >&2
+  exit 1
+fi
+
 ./dotnet.sh build src/DigitalTwin.slnx
 
 mapfile -t PROJETS < <(find src -maxdepth 1 -type d -name '*.Tests' | sort)

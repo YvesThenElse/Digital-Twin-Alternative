@@ -758,3 +758,56 @@ d'erreur.
 > contrainte que la donnée elle-même permet de vérifier. Ici : **une sortie ne
 > peut pas précéder la machine sur laquelle elle paraît.** Inscrit à l'item
 > 03b.
+
+### 21 — « Ajout seul » et « marquer l'ancien comme remplacé » se contredisent, en apparence
+
+MODELE §5 dit deux choses : le journal est **en ajout seul**, et corriger
+« chaîne un nouvel événement **et marque l'ancien comme remplacé** ».
+Marquer *est* une mise à jour. Un déclencheur qui refuse tout `UPDATE`
+rendrait donc la correction impossible — la fonctionnalité que §5.3 met au
+premier plan.
+
+La lecture qui tient les deux : **on ne réécrit pas une histoire, on pose un
+marqueur**. Le déclencheur autorise la seule colonne
+`superseded_by_event_id`, et **une seule fois** : la poser n'est pas
+réécrire, la déplacer si.
+
+Deuxième tension du même genre : §10.1 exige une **purge physique** par
+utilisateur. « Ajout seul » ne peut donc pas vouloir dire « rien ne
+s'efface » — cela veut dire qu'on ne réécrit pas une histoire, pas qu'on ne
+peut pas effacer une personne. La suppression reste possible ; elle ne passe
+que par le chemin de purge.
+
+> **Règle** — quand deux exigences d'une spécification semblent
+> s'exclure, chercher la formulation plus étroite qui les satisfait toutes
+> deux avant de conclure à la contradiction. Ici, « ajout seul » portait sur
+> le **contenu**, pas sur l'absence totale d'écriture.
+
+**Deux garde-fous, à deux niveaux, et ce n'est pas une redondance.** Le
+contexte EF protège le code de l'application ; le déclencheur SQL protège la
+base de tout le reste — un script, une console `psql`, une future
+application. Seul le second tient pour de bon, et la mutation qui le retire
+n'est attrapée que par le test qui passe par SQL direct.
+
+### 22 — Sept variantes, huit formes en base
+
+`TemporalValue` a sept variantes. Le tableau de correspondance en a **huit** :
+`YearRange` porte une fin **nullable**, et « depuis 1994 » est une période
+sans fin connue. Le premier jet écrivait `l.OccurredEndYear!.Value` et aurait
+levé une exception sur la première période ouverte — ou, avec un `?? StartYear`
+bien intentionné, l'aurait silencieusement refermée sur elle-même.
+
+> **Règle** — compter les formes de **stockage**, pas les types. Un type
+> dont un champ est optionnel en vaut deux, et c'est le second qu'aucun
+> exemple ne montre.
+
+**Une troncature mesurée plutôt que découverte.** PostgreSQL stocke
+`timestamptz` à la **microseconde** ; `DateTime` compte en centaines de
+nanosecondes. Les ticks ne survivent donc pas à l'aller-retour. Sans test, on
+l'aurait trouvé sur un départage de tri inexplicable — le critère 2 de la
+cascade de départage lit précisément `RecordedAt`. Un test l'énonce
+désormais.
+
+> **Règle** — pour toute donnée qui traverse une frontière de stockage,
+> écrire un test qui **constate la perte de précision** plutôt qu'un test qui
+> vérifie l'égalité sur une valeur ronde. Une valeur ronde traverse tout.

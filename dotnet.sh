@@ -10,7 +10,12 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 mkdir -p "$ROOT/.dotnet-home"
+# --network host : les tests parlent à PostgreSQL sur 127.0.0.1:5433, celui
+# que docker-compose expose. Sans cela, le conteneur du SDK est sur le réseau
+# bridge et la base est injoignable — les tests de persistance échoueraient
+# pour une raison qui n'a rien à voir avec le code.
 exec docker run --rm -t \
+  --network host \
   --user "$(id -u):$(id -g)" \
   -v "$ROOT:/work" -w /work \
   -v "$ROOT/.dotnet-home:/home/app" \
