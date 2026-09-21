@@ -2,6 +2,7 @@ using DigitalTwin.Api.Health;
 using DigitalTwin.Api.Persistence;
 using DigitalTwin.Api.Reference;
 using DigitalTwin.Api.Selection;
+using DigitalTwin.Api.Timeline;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,6 +51,7 @@ app.Services.GetRequiredService<ReferenceCatalogSource>();
 app.MapHealth();
 app.MapReference();
 app.MapDeclarations();
+app.MapTimeline();
 app.Run();
 
 /// <summary>

@@ -1047,3 +1047,44 @@ milieu d'une requête. Les tests passaient. Elles sont désormais créées
 > **Règle** — un rappel qui doit attendre de l'asynchrone est le signe que
 > l'ordre des étapes est faux, pas qu'il faut bloquer. Faire d'abord ce qui
 > attend, passer le résultat ensuite.
+
+### 30 — Le test miroir : comparer la sortie de l'API à celle du domaine
+
+L'endpoint de timeline ne doit rien ordonner : tout vit dans
+`TimelineSorter`, que 387 tests du domaine valident. Le risque n'est pas
+qu'il trie mal, c'est qu'il trie **un peu** — un `OrderBy` ajouté pour
+« stabiliser » l'affichage, et la divergence s'installe sans que rien ne la
+signale.
+
+Le test qui l'interdit ne réécrit pas l'ordre attendu : il appelle
+`TimelineSorter.Sort` sur les mêmes événements et compare. Il vaut pour
+n'importe quel jeu de données, et il échoue le jour où l'API se met à décider
+quelque chose.
+
+> **Règle** — quand une couche doit se contenter de rendre ce qu'une autre
+> calcule, l'écrire comme un test : *sortie de la couche = sortie de la
+> source*, sur des données non triviales. Réécrire l'attendu à la main
+> testerait le résultat, pas l'absence de logique.
+
+**Une valeur résolue pour être placée doit rester rendue telle qu'elle a été
+déclarée.** Une mutation a montré qu'aucun test ne rendait un moment daté par
+l'âge : l'écran aurait pu afficher « 1994 » au lieu de « vers mes 12 ans »
+sans que rien ne bronche. L'horizon **résout** l'âge pour le situer sur
+l'axe ; il ne le **remplace** pas. Et si l'année de naissance était corrigée,
+l'année affichée changerait — ce que personne n'a déclaré.
+
+> **Règle** — quand une donnée est transformée pour un calcul, vérifier qu'un
+> test la rend encore sous sa forme d'origine. Les deux usages se ressemblent
+> assez pour que l'un remplace l'autre par inadvertance.
+
+**Une acceptation que j'avais écrite trop large.** L'item annonçait « les
+huit cas de validation rejoués à travers l'API ». Deux seulement portent sur
+l'ordre — le parcours de trente ans (§7.1) et le recalcul par l'année de
+naissance. Les six autres testent la possession, la redirection d'identifiant
+ou la déduplication, et les faire passer par `/timeline` n'aurait rien
+prouvé.
+
+> **Règle** — quand une acceptation écrite d'avance se révèle plus large que
+> ce qu'elle mesure, la corriger dans le journal plutôt que de forcer des
+> tests qui ne prouvent rien. Un test artificiel coûte deux fois : il ne
+> protège pas, et il fait croire qu'il protège.
