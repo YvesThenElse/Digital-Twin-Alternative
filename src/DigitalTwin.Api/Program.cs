@@ -1,18 +1,28 @@
 using DigitalTwin.Api.Health;
 using DigitalTwin.Api.Persistence;
 using DigitalTwin.Api.Reference;
+using DigitalTwin.Api.Selection;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// La chaîne de connexion vient de la configuration, avec un défaut qui
-// correspond au docker-compose du dépôt : `docker compose up` puis
-// `./dotnet.sh run` doivent suffire, sans variable à exporter.
-var connexion = builder.Configuration.GetConnectionString("Postgres")
-    ?? "Host=localhost;Port=5433;Database=digitaltwin;Username=digitaltwin;Password=digitaltwin";
+// ⚠️ La chaîne de connexion se lit DANS LES FABRIQUES, jamais ici.
+//
+// Les sources de configuration ajoutées par l'hôte de test ne sont versées
+// qu'au moment du `Build()`. Lire `GetConnectionString` à cette ligne rendait
+// le défaut — la base de développement — quoi que le test demande, et les
+// tests de déclaration s'écrasaient sur une base sans schéma. La même faute
+// avait déjà été commise sur le chemin du dataset.
+static string Connexion(IServiceProvider sp)
+    => sp.GetRequiredService<IConfiguration>().GetConnectionString("Postgres")
+       // Défaut aligné sur le docker-compose du dépôt : `docker compose up`
+       // puis `./dotnet.sh run` suffisent, sans variable à exporter.
+       ?? "Host=localhost;Port=5433;Database=digitaltwin;"
+          + "Username=digitaltwin;Password=digitaltwin";
 
-builder.Services.AddSingleton<IDatabaseProbe>(new PostgresProbe(connexion));
-builder.Services.AddDbContext<PlayerEventDbContext>(o => o.UseNpgsql(connexion));
+builder.Services.AddSingleton<IDatabaseProbe>(sp => new PostgresProbe(Connexion(sp)));
+builder.Services.AddDbContext<PlayerEventDbContext>(
+    (sp, o) => o.UseNpgsql(Connexion(sp)));
 builder.Services.AddScoped<EventStore>();
 
 // L'enregistrement est paresseux, la vérification ne l'est pas.
@@ -39,6 +49,7 @@ app.Services.GetRequiredService<ReferenceCatalogSource>();
 
 app.MapHealth();
 app.MapReference();
+app.MapDeclarations();
 app.Run();
 
 /// <summary>

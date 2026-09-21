@@ -140,9 +140,23 @@ public sealed record PlayerEvent : ISortableMoment
     public PlayerEvent SupersededBy(string correctionEventId) =>
         this with { SupersededByEventId = correctionEventId };
 
+    /// <summary>
+    /// Le lot de saisie dont cet événement provient.
+    ///
+    /// <para>Deux usages, et le second n'est pas un détour : <b>douze titres
+    /// cochés d'un coup forment un épisode</b>, pas douze points identiques
+    /// (§4.4) — <c>TimelineSorter</c> s'en sert pour les regrouper. Et
+    /// rejouer un lot déjà enregistré ne doit rien dupliquer.</para>
+    ///
+    /// <para><c>null</c> pour un événement saisi seul : il ne forme pas un
+    /// épisode à lui tout seul.</para>
+    /// </summary>
+    public string? BatchId { get; init; }
+
     // --- contrat de tri (item 05) ---------------------------------------
     string? ISortableMoment.SubjectId => Target.Id;
     string? ISortableMoment.Kind => Type;
+    string? ISortableMoment.BatchId => BatchId;
 
     /// <summary>Exposé pour la lecture ; le tri passe par l'interface.</summary>
     public string SubjectId => Target.Id;

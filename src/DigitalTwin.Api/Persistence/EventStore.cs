@@ -22,6 +22,18 @@ public sealed class EventStore(PlayerEventDbContext db)
     }
 
     /// <summary>
+    /// Ce lot a-t-il déjà été enregistré ?
+    ///
+    /// <para>L'idempotence porte sur le LOT, pas sur une unicité globale
+    /// (utilisateur, œuvre, type). Une telle unicité refuserait la correction
+    /// de §5.3, qui chaîne précisément un nouvel événement sur la même
+    /// cible.</para>
+    /// </summary>
+    public Task<bool> BatchExistsAsync(
+        string userId, string batchId, CancellationToken ct = default)
+        => db.PlayerEvents.AnyAsync(e => e.UserId == userId && e.BatchId == batchId, ct);
+
+    /// <summary>
     /// Tous les événements d'un utilisateur, dans l'ordre d'enregistrement.
     /// <b>Pas dans l'ordre vécu</b> : c'est <c>TimelineSorter</c> qui le
     /// détermine, et il a besoin de tout pour le faire.

@@ -38,6 +38,7 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
         e.Property(x => x.OccurredMargin).HasColumnName("occurred_margin");
         e.Property(x => x.OccurredAge).HasColumnName("occurred_age");
 
+        e.Property(x => x.BatchId).HasColumnName("batch_id");
         e.Property(x => x.RecordedAt).HasColumnName("recorded_at")
             .HasColumnType("timestamp with time zone").IsRequired();
         e.Property(x => x.SupersededByEventId).HasColumnName("superseded_by_event_id");
@@ -45,6 +46,8 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
         // Invariant 11 : joignable par UserId seul, donc purgeable.
         e.HasIndex(x => x.UserId);
         e.HasIndex(x => new { x.UserId, x.TargetId });
+        // Reconnaître un lot déjà enregistré, et regrouper un épisode.
+        e.HasIndex(x => new { x.UserId, x.BatchId });
     }
 
     /// <summary>

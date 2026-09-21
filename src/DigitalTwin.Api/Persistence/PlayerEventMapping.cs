@@ -32,6 +32,7 @@ public static class PlayerEventMapping
             TargetKind = e.Target.Kind,
             TargetId = e.Target.Id,
             RecordedAt = e.RecordedAt,
+            BatchId = e.BatchId,
             SupersededByEventId = e.SupersededByEventId,
         };
         Ecrire(e.OccurredAt, ligne);
@@ -80,7 +81,10 @@ public static class PlayerEventMapping
             Lire(l),
             // Npgsql rend un DateTime en Utc pour timestamptz ; on l'exige
             // plutôt que de le supposer.
-            DateTime.SpecifyKind(l.RecordedAt, DateTimeKind.Utc));
+            DateTime.SpecifyKind(l.RecordedAt, DateTimeKind.Utc))
+        {
+            BatchId = l.BatchId,
+        };
 
         return l.SupersededByEventId is null
             ? evenement

@@ -900,3 +900,55 @@ MODELE §3. La mutation le confirme : 0 échec avant, 3 après.
 > **Règle** — asserter contre une constante du code vérifie la cohérence, pas
 > la décision. Quand la valeur est un choix de produit, l'écrire en clair
 > dans le test, avec la raison.
+
+### 25 — La même faute, deux items plus tard, dans le même fichier
+
+L'item 02 avait établi que lire `builder.Configuration` **avant** `Build()`
+ignore les sources ajoutées par l'hôte de test. Le correctif n'avait porté
+que sur le chemin du dataset. La chaîne de connexion, trois lignes plus haut,
+était restée lue à la ligne d'enregistrement.
+
+Résultat : l'API des déclarations parlait à la base de **développement**, où
+aucune migration n'avait été appliquée. Dix tests sur seize rendaient 500.
+
+La règle que j'avais écrite — « lire la configuration dans une fabrique de
+service » — était juste et **trop étroite** : je l'avais appliquée au cas qui
+m'avait mordu, pas à la classe de cas. Le fichier contenait deux lectures
+anticipées ; je n'en avais corrigé qu'une.
+
+> **Règle** — quand une faute est corrigée, chercher ses **frères dans le
+> même fichier** avant de passer à autre chose. `grep` sur la forme fautive,
+> pas sur le symptôme.
+
+> **Règle** — préférer une règle qui interdit la forme à une règle qui
+> corrige l'occurrence : « aucune lecture de `builder.Configuration` avant
+> `Build()` » se vérifie ; « lire le chemin du dataset dans une fabrique » ne
+> protège que le chemin du dataset.
+
+**Ce qui l'a attrapée.** Les tests parlent à une vraie base. Un test qui
+aurait simulé le magasin d'événements serait passé — la chaîne de connexion
+n'aurait servi à rien — et la faute serait apparue au premier lancement
+réel.
+
+### 26 — Un champ que le modèle prévoit mais que personne ne remplit
+
+`ISortableMoment.BatchId` existait depuis l'item 05 de la Phase 0, avec son
+usage documenté : « douze titres cochés d'un coup forment **un épisode**, pas
+douze points identiques » (§4.4). `TimelineSorter` le lit. **Aucun producteur
+ne le posait** — il valait toujours `null`, et l'agrégation en épisodes ne
+s'était donc jamais déclenchée sur de vraies données.
+
+La sélection massive est ce producteur, et le même identifiant sert
+l'idempotence : rejouer un lot ne duplique rien.
+
+> **Règle** — un champ facultatif qu'aucun producteur ne remplit est du code
+> mort qui a l'air vivant. Quand on en écrit un « pour plus tard », noter
+> **qui** le remplira ; si la réponse est « on verra », il n'a pas sa place.
+
+**L'idempotence porte sur le lot, pas sur une unicité globale.** Interdire
+deux événements (utilisateur, œuvre, type) aurait paru plus simple et aurait
+refusé la correction de §5.3, qui chaîne précisément un nouvel événement sur
+la même cible.
+
+> **Règle** — avant de poser une contrainte d'unicité, vérifier qu'elle
+> n'interdit pas une opération que la spécification exige.

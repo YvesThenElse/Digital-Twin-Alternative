@@ -41,6 +41,13 @@ public sealed class PlayerEventRow
     public int? OccurredMargin { get; set; }
     public int? OccurredAge { get; set; }
 
+    /// <summary>
+    /// Le lot de saisie. Indexé avec <c>UserId</c> : c'est par lui qu'on
+    /// reconnaît un lot déjà enregistré, et par lui que la timeline regroupe
+    /// un épisode.
+    /// </summary>
+    public string? BatchId { get; set; }
+
     /// <summary>L'axe exact. <c>timestamptz</c> : jamais de date locale ici.</summary>
     public DateTime RecordedAt { get; set; }
 
