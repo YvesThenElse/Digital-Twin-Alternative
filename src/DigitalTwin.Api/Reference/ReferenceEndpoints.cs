@@ -2,8 +2,15 @@ using DigitalTwin.Domain.Reference;
 
 namespace DigitalTwin.Api.Reference;
 
-/// <summary>Une plateforme, telle que l'écran de choix de machine la lit.</summary>
-public sealed record PlatformView(string Id, string Name, bool RegionFree, int WorksCount);
+/// <summary>
+/// Une plateforme, telle que l'écran de choix de machine la lit.
+/// </summary>
+/// <param name="LaunchYear">
+/// L'écran de période s'en sert pour borner son curseur : proposer 1985 sur
+/// une Nintendo 64 ferait perdre du temps à tout le monde.
+/// </param>
+public sealed record PlatformView(
+    string Id, string Name, bool RegionFree, int? LaunchYear, int WorksCount);
 
 /// <summary>Une sortie, restreinte à la plateforme demandée.</summary>
 public sealed record ReleaseView(string? Region, string Date, string Precision, string Confidence);
@@ -24,11 +31,19 @@ public static class ReferenceEndpoints
         routes.MapGet("/platforms", (ReferenceCatalogSource source) =>
         {
             var d = source.Dataset;
-            // L'ordre est celui du dataset, qui suit les générations. Le
-            // conserver évite d'inventer un tri que la donnée ne porte pas.
-            return d.Platforms.Select(p => new PlatformView(
-                p.CanonicalId, p.Name, p.RegionFree,
-                d.Works.Count(w => w.Notability.ContainsKey(p.CanonicalId)))).ToList();
+            // Ordre CHRONOLOGIQUE, calculé depuis l'année de lancement.
+            //
+            // L'ordre du dataset ne l'est pas : la Super Nintendo (1990) y
+            // précède la Game Boy (1989), parce qu'il suit les familles et
+            // non les dates. Un joueur qui remonte le temps attend ses
+            // machines dans l'ordre où il les a connues.
+            return d.Platforms
+                .OrderBy(p => p.LaunchYear ?? int.MaxValue)
+                .ThenBy(p => p.Name, StringComparer.Ordinal)
+                .Select(p => new PlatformView(
+                    p.CanonicalId, p.Name, p.RegionFree, p.LaunchYear,
+                    d.Works.Count(w => w.Notability.ContainsKey(p.CanonicalId))))
+                .ToList();
         });
 
         routes.MapGet("/platforms/{platformId}/works",

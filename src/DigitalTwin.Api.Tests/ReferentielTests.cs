@@ -125,6 +125,46 @@ public class ReferentielTests
     }
 
     [Fact]
+    public async Task Les_plateformes_reviennent_dans_l_ordre_chronologique()
+    {
+        // L'ordre du dataset ne l'est pas : la Super Nintendo (1990) y précède
+        // la Game Boy (1989). Un joueur qui remonte le temps attend ses
+        // machines dans l'ordre où il les a connues.
+        using var usine = Usine();
+        var plateformes = await Lire(usine.CreateClient(), "/platforms");
+
+        var noms = plateformes.EnumerateArray()
+            .Select(p => p.GetProperty("name").GetString()).ToList();
+        var annees = plateformes.EnumerateArray()
+            .Select(p => p.GetProperty("launchYear").GetInt32()).ToList();
+
+        Assert.Equal(annees.Order(), annees);
+        Assert.Equal(
+            [
+                "Nintendo Entertainment System", "Game Boy",
+                "Super Nintendo Entertainment System", "PlayStation",
+                "Nintendo 64", "PlayStation 2", "Game Boy Advance",
+                "Nintendo Switch",
+            ],
+            noms);
+    }
+
+    [Fact]
+    public async Task Chaque_plateforme_expose_son_annee_de_lancement()
+    {
+        // L'écran de période s'en sert pour borner son curseur : proposer
+        // 1985 sur une Nintendo 64 ferait perdre du temps à tout le monde.
+        using var usine = Usine();
+        var plateformes = await Lire(usine.CreateClient(), "/platforms");
+
+        Assert.All(plateformes.EnumerateArray(), p =>
+            Assert.True(p.GetProperty("launchYear").GetInt32() > 1970));
+        Assert.Equal(1989, plateformes.EnumerateArray()
+            .Single(p => p.GetProperty("name").GetString() == "Game Boy")
+            .GetProperty("launchYear").GetInt32());
+    }
+
+    [Fact]
     public async Task Une_plateforme_sans_zonage_se_declare_comme_telle()
     {
         // L'écran doit pouvoir dire « mondiale » plutôt que « région

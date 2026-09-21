@@ -869,3 +869,34 @@ machine, et notre plateforme « NES » couvre déjà la Famicom.
 > **Règle** — vérifier que la sonde d'une mutation observe bien l'artefact
 > que la mutation modifie. Une sonde qui regarde ailleurs rend « survivante »
 > une mutation tuée.
+
+### 24 — Un ordre qui paraît naturel n'est pas l'ordre demandé
+
+L'item demandait les plateformes « dans l'ordre chronologique de
+génération ». Elles sortaient déjà dans un ordre qui *paraît* juste — NES,
+Super Nintendo, Game Boy, Game Boy Advance, Nintendo 64, PlayStation… — parce
+que c'est celui du dataset, qui suit les **familles**.
+
+Ce n'est pas l'ordre chronologique : la Super Nintendo (1990) y précède la
+Game Boy (1989), et la Game Boy Advance (2001) la Nintendo 64 (1996). Un
+joueur qui remonte le temps attend ses machines dans l'ordre où il les a
+connues.
+
+Rien ne l'aurait signalé : la liste est plausible, et le seul moyen de voir
+la faute était de comparer aux années — qui n'existaient dans le dataset que
+depuis l'item précédent.
+
+> **Règle** — quand une exigence porte sur un **ordre**, l'exprimer comme un
+> tri sur une donnée, jamais comme « l'ordre dans lequel les choses
+> arrivent ». Un ordre implicite est juste par accident, et le jour où il
+> cesse de l'être, il reste plausible.
+
+**Un test qui s'appuie sur la constante ne pinne pas la valeur.**
+`Assert.Equal(PeriodInput.MargeParDefaut, valeur.Margin)` passe quelle que
+soit la marge par défaut — y compris 1, qui n'est plus « vers ». Le test
+assure désormais **aussi** la valeur, 2, celle de l'exemple « 1994 ± 2 » de
+MODELE §3. La mutation le confirme : 0 échec avant, 3 après.
+
+> **Règle** — asserter contre une constante du code vérifie la cohérence, pas
+> la décision. Quand la valeur est un choix de produit, l'écrire en clair
+> dans le test, avec la raison.
