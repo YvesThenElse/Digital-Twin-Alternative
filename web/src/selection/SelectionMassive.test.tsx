@@ -5,9 +5,9 @@ import { SelectionMassive } from "./SelectionMassive";
 import type { Oeuvre } from "./types";
 
 const oeuvres: Oeuvre[] = [
-  { id: "w1", titre: "Super Mario World", rang: 1, annee: 1990, regions: ["PAL"], statutRegional: {} },
-  { id: "w2", titre: "A Link to the Past", rang: 2, annee: 1991, regions: ["PAL"], statutRegional: {} },
-  { id: "w3", titre: "Chrono Trigger", rang: 3, annee: 1995, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" } },
+  { id: "w1", titre: "Super Mario World", rang: 1, sortie: { kind: "Year", year: 1990 }, regions: ["PAL"], statutRegional: {} },
+  { id: "w2", titre: "A Link to the Past", rang: 2, sortie: { kind: "Year", year: 1991 }, regions: ["PAL"], statutRegional: {} },
+  { id: "w3", titre: "Chrono Trigger", rang: 3, sortie: { kind: "Year", year: 1995 }, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" } },
 ];
 
 function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {}) {
@@ -105,7 +105,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     monter({
       oeuvres: [
-        { id: "x", titre: "Sans date", rang: 1, annee: null, regions: [], statutRegional: {} },
+        { id: "x", titre: "Sans date", rang: 1, sortie: null, regions: [], statutRegional: {} },
       ],
     });
 
@@ -122,9 +122,9 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     // dans l'ordre d'arrivée ferait dépendre l'écran de l'API.
     monter({
       oeuvres: [
-        { id: "c", titre: "Troisième", rang: 3, annee: 1995, regions: [], statutRegional: {} },
-        { id: "a", titre: "Premier", rang: 1, annee: 1990, regions: [], statutRegional: {} },
-        { id: "b", titre: "Deuxième", rang: 2, annee: 1992, regions: [], statutRegional: {} },
+        { id: "c", titre: "Troisième", rang: 3, sortie: { kind: "Year", year: 1995 }, regions: [], statutRegional: {} },
+        { id: "a", titre: "Premier", rang: 1, sortie: { kind: "Year", year: 1990 }, regions: [], statutRegional: {} },
+        { id: "b", titre: "Deuxième", rang: 2, sortie: { kind: "Year", year: 1992 }, regions: [], statutRegional: {} },
       ],
     });
 
@@ -144,6 +144,80 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     expect(lignes()[0]).toHaveAttribute("aria-pressed", "false");
     await utilisateur.click(lignes()[0]);
     expect(lignes()[0]).toHaveAttribute("aria-pressed", "true");
+  });
+
+  // ------------------------------------------ l'incertitude, à l'écran
+
+  it.each([
+    {
+      nom: "au jour",
+      sortie: { kind: "ExactDate" as const, date: "1994-03-15" },
+      texte: "15 mars 1994",
+      forme: "point-plein",
+    },
+    {
+      nom: "au mois",
+      sortie: { kind: "Month" as const, year: 1994, month: 3 },
+      texte: "mars 1994",
+      forme: "point",
+    },
+    {
+      nom: "à l'année",
+      sortie: { kind: "Year" as const, year: 1994 },
+      texte: "1994",
+      forme: "point-creux",
+    },
+  ])("affiche une sortie datée $nom avec sa propre précision", ({ sortie, texte, forme }) => {
+    monter({
+      oeuvres: [{ id: "x", titre: "Un jeu", rang: 1, sortie, regions: [], statutRegional: {} }],
+    });
+
+    const date = screen.getByText(texte);
+    expect(date).toHaveAttribute("data-forme", forme);
+  });
+
+  it("n'affiche jamais une sortie datée à l'année comme une date au jour", () => {
+    // LE point de l'item. 31 sorties du dataset ne sont datées qu'à l'année :
+    // les rendre « 1er janvier 1994 » affirmerait un jour que la source ne
+    // donne pas, et le joueur corrigerait une date que personne n'a écrite.
+    monter({
+      oeuvres: [
+        {
+          id: "x", titre: "Un jeu", rang: 1,
+          sortie: { kind: "Year", year: 1994 },
+          regions: [], statutRegional: {},
+        },
+      ],
+    });
+
+    const ligne = lignes()[0];
+    expect(ligne).toHaveTextContent("1994");
+    expect(ligne).not.toHaveTextContent(/janvier|1er/);
+  });
+
+  it("distingue à l'œil une sortie à l'année d'une sortie au jour", () => {
+    // Même si les deux tombent sur 1994. Sans la forme, la liste laisserait
+    // croire que toutes les dates se valent.
+    monter({
+      oeuvres: [
+        { id: "j", titre: "Au jour", rang: 1, sortie: { kind: "ExactDate", date: "1994-03-15" }, regions: [], statutRegional: {} },
+        { id: "a", titre: "À l'année", rang: 2, sortie: { kind: "Year", year: 1994 }, regions: [], statutRegional: {} },
+      ],
+    });
+
+    expect(screen.getByText("15 mars 1994")).toHaveAttribute("data-forme", "point-plein");
+    expect(screen.getByText("1994")).toHaveAttribute("data-forme", "point-creux");
+  });
+
+  it("dit qu'une sortie n'est pas datée, plutôt que de laisser un blanc", () => {
+    // Un tiret ou une case vide se lit comme un défaut d'affichage. Le dire
+    // en toutes lettres distingue « on ne sait pas » de « il manque quelque
+    // chose ».
+    monter({
+      oeuvres: [{ id: "x", titre: "Un jeu", rang: 1, sortie: null, regions: [], statutRegional: {} }],
+    });
+
+    expect(screen.getByText("date inconnue")).toHaveAttribute("data-forme", "aucune");
   });
 
   // ---------------------------------------------------- l'envoi, en arrière-plan

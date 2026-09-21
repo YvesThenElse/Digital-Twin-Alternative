@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { BandeDEpoque } from "./BandeDEpoque";
+import { forme, libelle } from "../temporel/valeur";
 import { construireBande } from "./bande";
 import type { Oeuvre } from "./types";
 
@@ -72,7 +73,13 @@ export function SelectionMassive({ oeuvres, envoyer, recharger }: Props) {
                 onClick={() => basculer(oeuvre.id)}
               >
                 <span>{oeuvre.titre}</span>
-                <span>{oeuvre.annee ?? "—"}</span>
+                {/* La date porte SA granularité : une année seule ne s'affiche
+                    pas comme une date au jour. 31 sorties du dataset ne sont
+                    datées qu'à l'année, et les rendre exactes affirmerait un
+                    jour que la source ne donne pas. */}
+                <span data-forme={oeuvre.sortie ? forme(oeuvre.sortie) : "aucune"}>
+                  {oeuvre.sortie ? libelle(oeuvre.sortie) : "date inconnue"}
+                </span>
               </button>
             </li>
           );

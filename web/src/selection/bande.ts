@@ -1,3 +1,4 @@
+import { anneeDe } from "../temporel/valeur";
 import type { Oeuvre } from "./types";
 
 export type Tranche = { annee: number; compte: number };
@@ -39,7 +40,7 @@ export function construireBande(oeuvres: Oeuvre[], declarees: Set<string>): Band
     .filter((o): o is Oeuvre => o !== undefined);
 
   const annees = retenues
-    .map((o) => o.annee)
+    .map((o) => (o.sortie === null ? null : anneeDe(o.sortie)))
     .filter((a): a is number => a !== null);
 
   if (annees.length === 0) {

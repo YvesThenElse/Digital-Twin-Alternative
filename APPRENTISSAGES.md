@@ -1126,3 +1126,46 @@ chemins sont bien couverts, vérifié en mutant le second séparément.
 > multiples** de la fonction mutée et se demander par laquelle chaque test
 > passe. Un retour anticipé est une deuxième implémentation qui ne se voit
 > pas.
+
+### 32 — Mes prédictions de mutation se trompent toujours de la même façon
+
+Quatre écarts sur neuf mutations, et **aucun ne dénonçait le code**. Deux
+causes, toutes deux des miennes :
+
+| Mutation | Prévu | Obtenu | Pourquoi |
+|---|---|---|---|
+| année rendue au jour | 4 | 7 | j'avais oublié deux tests d'écran qui comparent le texte d'une ligne, lequel **contient** l'année |
+| toutes les formes pleines | 8 | 10 | même cause |
+| période ouverte refermée | 2 | 1 | j'ai compté deux **assertions** d'un même test |
+| « vers 1994 » → « 1994 » | 2 | 1 | idem, et une assertion ne mordait pas |
+
+La deuxième cause a déjà sa règle, écrite à la Phase 0 : *compter les cas
+exécutés, un test vaut 1 quel que soit son nombre d'assertions*. Je l'ai
+violée à nouveau. La première est nouvelle et plus insidieuse : un test qui
+n'a rien à voir avec la valeur mutée échoue quand même, parce qu'il compare
+un texte **dans lequel** elle apparaît.
+
+> **Règle** — avant d'annoncer un nombre d'échecs, `grep` la valeur mutée
+> dans **tous** les fichiers de test, y compris ceux d'une autre couche. Une
+> énumération de mémoire trouve les tests qui portent sur le sujet, jamais
+> ceux qui le contiennent par accident.
+
+**Une assertion qui n'interdisait pas ce qu'elle prétendait interdire.** Le
+test des trois interdits vérifiait que « vers 1994 » ne contenait pas de nom
+de mois — ce qui reste vrai si on le rend « 1994 ». L'interdit ne porte pas
+sur le mois : il porte sur la **perte du « vers »**. Corrigé, la mutation
+passe de 1 à 2 échecs.
+
+> **Règle** — écrire l'assertion négative à partir de la faute qu'on craint,
+> pas à partir de la forme qu'on connaît. « Pas de mois » et « toujours
+> approximatif » se ressemblent et ne protègent pas la même chose.
+
+**Et un remplacement global qui a abîmé un test.** Migrer `annee: 1995` vers
+une valeur temporelle a aussi réécrit `{ annee: 1995, compte: 1 }`, qui
+décrit une **tranche** de bande et non une œuvre. Le test a échoué
+immédiatement, donc sans dégât — mais c'est la troisième fois qu'un `replace`
+non ancré touche autre chose que sa cible.
+
+> **Règle** — un remplacement par expression régulière sur plusieurs fichiers
+> doit être précédé du décompte de ses occurrences **et** de la lecture de
+> celles qu'on n'attendait pas.
