@@ -62,6 +62,22 @@ export const MESSAGES = {
   "mois.11": "novembre",
   "mois.12": "décembre",
 
+  // --- le parcours (E01 → E02 → E03) -------------------------------------
+  "parcours.titre": "Reconstruire mon histoire",
+  "parcours.choisirMachine": "Sur quelle console ?",
+  "parcours.choisirPeriode": "Vers quand y avez-vous joué ?",
+  "parcours.periodeAnnee": "Une année",
+  "parcours.periodePeriode": "Plutôt une période",
+  "parcours.periodeInconnue": "Je ne sais plus",
+  "parcours.commencer": "Voir les jeux",
+  "parcours.retour": "Changer de console",
+  "parcours.voirTimeline": "Voir ma timeline",
+  "parcours.chargement": "Chargement…",
+  "parcours.machine": "{machine} · {region}",
+  "timeline.titre": "Ma timeline",
+  "timeline.vide": "Rien de déclaré pour l'instant.",
+  "timeline.moments": "{n} moment(s) sur l'axe",
+
   // --- les régions (§3.4) ------------------------------------------------
   // Le nom, jamais le code : « PAL » ne dit rien à un joueur.
   "region.PAL": "Europe",

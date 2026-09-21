@@ -13,17 +13,10 @@ public static class DeclarationEndpoints
             EventStore magasin,
             CancellationToken ct) =>
         {
-            // Reconnaître le lot AVANT de traduire : un renvoi ne doit ni
-            // dupliquer, ni échouer, ni coûter la validation complète.
-            if (await magasin.BatchExistsAsync(lot.UserId, lot.BatchId, ct))
-            {
-                return Results.Ok(new
-                {
-                    batchId = lot.BatchId,
-                    created = 0,
-                    alreadyRecorded = true,
-                });
-            }
+            // Les cibles DÉJÀ dans ce lot. Un lot se remplit au fil des
+            // gestes : on retire ce qui y est, on garde le reste. Rejeter le
+            // lot entier ne conservait que la première déclaration.
+            var dejaLa = await magasin.BatchTargetsAsync(lot.UserId, lot.BatchId, ct);
 
             var d = source.Dataset;
 
@@ -60,16 +53,33 @@ public static class DeclarationEndpoints
                 return Results.BadRequest(new { error = refus.Message });
             }
 
-            await magasin.AppendAsync(evenements!, ct);
+            // Le filtrage a lieu APRÈS la traduction : une entrée fautive
+            // doit être refusée même si sa cible est déjà dans le lot,
+            // sinon un renvoi masquerait la faute.
+            var nouveaux = evenements!
+                .Where(e => !dejaLa.Contains(e.Target.Id))
+                .ToList();
+
+            // Pas de retour anticipé quand il n'y a rien de nouveau à écrire :
+            // un lot de « jamais joué » ne produit AUCUN événement, et
+            // s'arrêter là sauterait l'écriture des jugements. Le test l'a
+            // attrapé immédiatement.
+            var evenementsAEcrire = nouveaux;
+            if (evenementsAEcrire.Count > 0)
+            {
+                await magasin.AppendAsync(evenementsAEcrire, ct);
+            }
             var jugements = await magasin.ApplyDeclarationsAsync(lot.UserId, declarations!, ct);
 
             return Results.Ok(new
             {
                 batchId = lot.BatchId,
-                created = evenements!.Count,
+                created = evenementsAEcrire.Count,
                 declarationsRecorded = jugements,
-                alreadyRecorded = false,
-                eventIds = evenements.Select(e => e.Id).ToList(),
+                // « Déjà enregistré » ne vaut que si le lot portait des
+                // événements ET que tous étaient déjà là.
+                alreadyRecorded = evenements!.Count > 0 && evenementsAEcrire.Count == 0,
+                eventIds = evenementsAEcrire.Select(e => e.Id).ToList(),
             });
         });
 

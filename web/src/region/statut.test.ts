@@ -10,6 +10,7 @@ const oeuvre = (
   titre: "Un jeu",
   rang: 1,
   sortie: { kind: "Year", year: 1994 },
+  couverture: null,
   regions,
   statutRegional,
 });

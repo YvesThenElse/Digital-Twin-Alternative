@@ -1313,3 +1313,65 @@ affaiblir la règle plutôt que le détecteur.
 n'a bougé** : ils assertent la marque de l'état — le mot « inconnue »,
 l'absence de « jamais », la présence de « Europe » — et non la phrase. C'est
 la correction faite à l'item 11 qui a payé ici.
+
+### 38 — Le parcours de bout en bout a trouvé ce qu'aucun test d'API ne pouvait voir
+
+Le front envoie **chaque ligne dès qu'elle est cochée**, sous le même
+identifiant de lot, pour que la timeline les regroupe en un épisode (§4.4).
+L'API, elle, traitait un lot connu comme « déjà enregistré ». Résultat :
+**une seule des trente déclarations était conservée.**
+
+Aucun test d'API ne pouvait le voir. Tous envoyaient le lot complet en un
+appel — parce que c'est ainsi qu'on écrit un test d'API, et que le découpage
+réel des envois est une décision du client. L'idempotence porte désormais sur
+le couple **(lot, cible)** : un lot se remplit au fil des gestes, et seul un
+renvoi de la même ligne ne crée rien.
+
+> **Règle** — un test d'intégration qui construit lui-même la requête teste
+> le contrat, jamais l'usage. Quand deux couches se partagent une décision —
+> ici « qu'est-ce qu'un lot » —, seul un parcours réel montre qu'elles ne
+> l'ont pas comprise pareil.
+
+### 39 — Le parcours passait sur les restes des exécutions précédentes
+
+Première version du test : « la timeline contient des moments ». Une mutation
+qui supprimait complètement l'envoi des déclarations **ne cassait rien** — la
+base contenait encore les événements des essais antérieurs, sous le même
+utilisateur en dur.
+
+Deux corrections, et les deux comptent : un **profil vierge par exécution**,
+et l'assertion du **nombre exact** — trente titres cochés font trente
+moments. « Il y a des moments » ne dit rien ; « il y en a trente » dit que
+rien ne s'est perdu en chemin et qu'on ne lit pas le profil d'un autre.
+
+> **Règle** — un test de bout en bout doit partir d'un état qu'il a lui-même
+> créé. Un état partagé le fait passer pour des raisons qui n'ont rien à voir
+> avec ce qu'il vérifie, et c'est invisible tant que tout va bien.
+
+> **Règle** — asserter un **compte exact** plutôt qu'une présence. « Il y a
+> quelque chose » est vrai de presque tous les états faux.
+
+### 40 — Le typage n'était jamais vérifié
+
+`./web.sh test` lançait Vitest, qui **transpile sans contrôler les types**.
+Sept erreurs réelles dormaient dans une suite à 120 tests verts : un module
+Node introuvable, des paramètres implicitement `any`, un champ obligatoire
+absent de trois fabriques de test. Seule la construction, exigée par le
+parcours de bout en bout, les a vues.
+
+Le typage fait désormais partie de la vérification du front.
+
+> **Règle** — une suite verte ne dit rien de ce que le lanceur de tests ne
+> regarde pas. Vérifier explicitement ce qui n'est vérifié qu'à la
+> construction : types, assemblage, dépendances.
+
+**Deux dérives de version, du même genre.** `@playwright/test` en `^1.49.0`
+avait glissé en 1.63 pendant que l'image Docker restait en 1.49 — Playwright
+refuse alors de démarrer. Le script lit maintenant la version dans
+`package.json` plutôt que de l'écrire deux fois. Et Vitest 2 avec Vite 6
+faisait installer une **copie imbriquée** de Vite : deux jeux de types
+incompatibles pour un même paquet, et des greffons soudain invalides.
+
+> **Règle** — quand une version est écrite à deux endroits, l'un des deux
+> doit la LIRE dans l'autre. Deux sources finissent toujours par diverger, et
+> la panne qui en résulte ne ressemble jamais à sa cause.

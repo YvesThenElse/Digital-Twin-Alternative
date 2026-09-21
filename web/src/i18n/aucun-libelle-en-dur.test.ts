@@ -77,8 +77,8 @@ function libellesEnDur(chemin: string): Faute[] {
 
   // Les commentaires sont du texte pour les humains, mais pas de l'interface.
   const sansCommentaires = source
-    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "))
-    .replace(/(^|[^:])\/\/[^\n]*/g, (m) => m.replace(/[^\n]/g, " "));
+    .replace(/\/\*[\s\S]*?\*\//g, (m: string) => m.replace(/[^\n]/g, " "))
+    .replace(/(^|[^:])\/\/[^\n]*/g, (m: string) => m.replace(/[^\n]/g, " "));
 
   for (const m of sansCommentaires.matchAll(ATTRIBUTS_VISIBLES)) {
     if (DU_TEXTE.test(m[3])) {

@@ -230,7 +230,9 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
   const lignePour = (titre: string) =>
     lignes().find((l) => l.textContent?.includes(titre))!;
 
-  it.each([
+  type PartielRegion = Pick<Oeuvre, "couverture" | "regions" | "statutRegional">;
+
+  it.each<{ nom: string; oeuvre: PartielRegion; statut: string; texte: RegExp }>([
     { nom: "sorti", oeuvre: { couverture: null, regions: ["PAL"], statutRegional: {} }, statut: "sorti", texte: /Sorti en Europe/ },
     { nom: "jamais sorti", oeuvre: { couverture: null, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" as const } }, statut: "jamais-sorti", texte: /Jamais sorti en Europe/ },
     { nom: "inconnu", oeuvre: { couverture: null, regions: ["NTSC-U"], statutRegional: {} }, statut: "inconnu", texte: /inconnue/ },

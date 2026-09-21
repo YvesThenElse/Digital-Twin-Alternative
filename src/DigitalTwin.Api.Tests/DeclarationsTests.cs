@@ -119,6 +119,58 @@ public class DeclarationsTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task Un_lot_se_remplit_geste_apres_geste_sans_perdre_les_suivants()
+    {
+        // LE défaut trouvé par le parcours de bout en bout. Le front envoie
+        // chaque ligne dès qu'elle est cochée, sous le MÊME identifiant de
+        // lot, pour que la timeline les regroupe en un épisode (§4.4).
+        // Traiter un lot connu comme « déjà enregistré » ne gardait que la
+        // PREMIÈRE des trente déclarations.
+        //
+        // Aucun test d'API ne pouvait le voir : ils envoyaient tous le lot
+        // complet en un seul appel.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        foreach (var oeuvre in oeuvres.Take(5))
+        {
+            var reponse = await client.PostAsJsonAsync("/declarations", Lot(
+                "bat_progressif", "usr_progressif", plateforme,
+                [new { workId = oeuvre }]));
+            Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
+        }
+
+        var journal = await Journal("usr_progressif");
+        Assert.Equal(5, journal.Count);
+        Assert.All(journal, e => Assert.Equal("bat_progressif", e.BatchId));
+    }
+
+    [Fact]
+    public async Task Renvoyer_une_ligne_deja_dans_le_lot_ne_la_duplique_pas()
+    {
+        // L'idempotence porte sur le couple (lot, cible) : un renvoi de la
+        // même ligne ne crée rien, mais une ligne NOUVELLE du même lot passe.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+        var lot = Lot("bat_renvoi", "usr_renvoi", plateforme,
+            [new { workId = oeuvres[0] }]);
+
+        await client.PostAsJsonAsync("/declarations", lot);
+        var seconde = await client.PostAsJsonAsync("/declarations", lot);
+
+        var corps = await seconde.Content.ReadFromJsonAsync<JsonElement>();
+        Assert.Equal(0, corps.GetProperty("created").GetInt32());
+        Assert.True(corps.GetProperty("alreadyRecorded").GetBoolean());
+
+        // …et la ligne suivante du même lot passe bien.
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_renvoi", "usr_renvoi", plateforme, [new { workId = oeuvres[1] }]));
+        Assert.Equal(2, (await Journal("usr_renvoi")).Count);
+    }
+
+    [Fact]
     public async Task Tous_les_evenements_d_un_lot_en_portent_l_identifiant()
     {
         // §4.4 : douze titres cochés d'un coup forment UN épisode, pas douze

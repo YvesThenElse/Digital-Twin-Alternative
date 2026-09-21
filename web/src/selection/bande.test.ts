@@ -7,6 +7,7 @@ const oeuvre = (id: string, annee: number | null): Oeuvre => ({
   titre: `Jeu ${id}`,
   rang: 1,
   sortie: annee === null ? null : { kind: "Year", year: annee },
+  couverture: null,
   regions: [],
   statutRegional: {},
 });

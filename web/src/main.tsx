@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { EtatDuService } from "./EtatDuService";
+import { App } from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <EtatDuService etat={undefined} />
+    <App />
   </StrictMode>,
 );

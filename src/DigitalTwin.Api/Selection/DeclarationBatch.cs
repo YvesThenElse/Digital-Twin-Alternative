@@ -205,7 +205,7 @@ public static class DeclarationTranslator
             foreach (var type in types)
             {
                 evenements.Add(new PlayerEvent(
-                    Identifiant(lot.BatchId, evenements.Count),
+                    Identifiant(lot.BatchId, cible.Id, type),
                     lot.UserId, type,
                     cible,
                     quand, enregistreA)
@@ -277,11 +277,19 @@ public static class DeclarationTranslator
     }
 
     /// <summary>
-    /// Déterministe au sein d'un lot : rejouer le même lot produirait les
-    /// mêmes identifiants. L'idempotence ne s'y appuie pas — elle reconnaît
-    /// le lot — mais deux envois concurrents se heurteraient alors à la clé
-    /// primaire plutôt que de créer des doublons.
+    /// Déterministe pour un triplet (lot, cible, type).
+    ///
+    /// <para><b>Pas un rang</b> : un lot se remplit en plusieurs appels, et
+    /// deux appels commençant à zéro produiraient deux fois le même
+    /// identifiant. Dériver de la cible et du type rend l'identifiant stable
+    /// quel que soit le découpage des envois — deux envois concurrents se
+    /// heurtent alors à la clé primaire plutôt que de créer des doublons.
+    /// </para>
     /// </summary>
-    private static string Identifiant(string batchId, int rang)
-        => $"evt_{batchId}_{rang:D4}";
+    private static string Identifiant(string batchId, string cibleId, string type)
+    {
+        var empreinte = System.Security.Cryptography.SHA256.HashData(
+            System.Text.Encoding.UTF8.GetBytes($"{batchId}|{cibleId}|{type}"));
+        return "evt_" + Convert.ToHexString(empreinte)[..24];
+    }
 }

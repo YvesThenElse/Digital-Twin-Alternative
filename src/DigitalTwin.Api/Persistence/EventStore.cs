@@ -23,16 +23,31 @@ public sealed class EventStore(PlayerEventDbContext db)
     }
 
     /// <summary>
-    /// Ce lot a-t-il déjà été enregistré ?
+    /// Les cibles déjà enregistrées dans ce lot.
     ///
-    /// <para>L'idempotence porte sur le LOT, pas sur une unicité globale
-    /// (utilisateur, œuvre, type). Une telle unicité refuserait la correction
-    /// de §5.3, qui chaîne précisément un nouvel événement sur la même
-    /// cible.</para>
+    /// <para><b>L'idempotence porte sur le couple (lot, cible)</b>, et non
+    /// sur le lot seul. Un lot est un <i>épisode</i> au sens de §4.4 — douze
+    /// titres cochés d'un coup —, et il se remplit au fil des gestes : le
+    /// front envoie chaque ligne dès qu'elle est cochée, sous le même
+    /// identifiant, pour que la timeline les regroupe.</para>
+    ///
+    /// <para>Traiter un lot connu comme « déjà enregistré » ne gardait donc
+    /// que la PREMIÈRE déclaration des trente. Le parcours de bout en bout
+    /// l'a trouvé ; aucun test d'API ne pouvait le voir, parce qu'ils
+    /// envoyaient toujours le lot complet en un appel.</para>
+    ///
+    /// <para>Ce n'est pas une unicité globale (utilisateur, œuvre, type) :
+    /// celle-là refuserait la correction de §5.3, qui chaîne un nouvel
+    /// événement sur la même cible — dans un AUTRE lot.</para>
     /// </summary>
-    public Task<bool> BatchExistsAsync(
+    public async Task<IReadOnlySet<string>> BatchTargetsAsync(
         string userId, string batchId, CancellationToken ct = default)
-        => db.PlayerEvents.AnyAsync(e => e.UserId == userId && e.BatchId == batchId, ct);
+        => (await db.PlayerEvents.AsNoTracking()
+                .Where(e => e.UserId == userId && e.BatchId == batchId)
+                .Select(e => e.TargetId)
+                .Distinct()
+                .ToListAsync(ct))
+            .ToHashSet(StringComparer.Ordinal);
 
     /// <summary>
     /// Tous les événements d'un utilisateur, dans l'ordre d'enregistrement.
