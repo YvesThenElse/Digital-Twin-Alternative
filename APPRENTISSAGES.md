@@ -1541,3 +1541,34 @@ frappes**, et c'est ce qui les a rendus sensibles à un défaut que personne ne
 cherchait. Un test qui n'aurait tapé qu'un caractère serait resté vert.
 Voisin de [[12]] : ce qu'un test rend visible dépend moins de ce qu'il
 affirme que de la **longueur du chemin** qu'il fait parcourir.
+
+### 47 — Exécuter un document, plutôt que le relire
+
+Le protocole de test contient cinq requêtes SQL. Je les ai **exécutées
+contre le schéma réel** avant de publier le document, plutôt que de les
+relire.
+
+La deuxième rendait `0` sur la colonne « plateformes ». Le lot portait la
+machine, l'API la validait, et l'événement ne la gardait pas : la table des
+jugements n'est écrite que pour la passe 2, et un tap « joué » n'y laisse
+rien. Relue, la requête était **impeccable** — elle joignait les bonnes
+tables sur les bonnes clés. Elle ne pouvait simplement rien trouver.
+
+Ce qui rend ce cas coûteux n'est pas le trou lui-même mais **où** il était :
+dans l'instrument de mesure d'une porte de décision. Un indicateur engagé à
+75 % aurait été rapporté à 0 %, et le verdict aurait porté sur le produit.
+
+**La règle** : tout document qui contient des commandes — requêtes,
+procédures, scripts de vérification — se **lance** avant d'être publié.
+Écrire une requête est un raisonnement sur un schéma qu'on croit connaître ;
+l'exécuter est la seule façon d'interroger le schéma qui existe.
+
+Le corollaire vaut pour la suite : une fois le test commencé, **ces
+requêtes ne doivent plus changer**. Une requête corrigée en cours de route
+redéfinit l'indicateur après avoir vu le résultat — exactement ce que §22.2
+interdit pour les seuils.
+
+Prolonge [[45]] d'un cran : là, un chemin de code n'était gardé que par le
+parcours ; ici, une mesure n'était gardée par **rien du tout**, parce
+qu'un document n'a pas de suite de tests. L'exécuter est ce qui s'en
+rapproche le plus.
