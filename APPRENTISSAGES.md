@@ -351,3 +351,34 @@ mentionnent pas reçoit moins de soin, même à rang égal dans le modèle.
 > **Règle** — après avoir traité les vecteurs d'un item, énumérer les règles
 > **symétriques** du modèle qu'aucun vecteur ne couvre, et leur donner le même
 > niveau de test. Les vecteurs sont un échantillon, pas la spécification.
+
+### 11 — Un invariant d'exclusion doit être réversible
+
+L'invariant 8 dit que `NeverPlayed` exclut toute autre déclaration. Lu
+littéralement, déclarer « j'ai adoré » après « jamais joué » serait un refus
+— ce que l'invariant 10 interdit formellement.
+
+Les deux ne se contredisent pas : l'exclusion porte sur l'**état final**, pas
+sur la **séquence des gestes**. Déclarer un affect lève donc `NeverPlayed`,
+et c'est une correction, pas une faute. Même chose pour le préféré unique :
+en désigner un second rétrograde le premier plutôt que de refuser le second.
+
+> **Règle** — devant un invariant d'exclusion, écrire le test de la
+> **correction** avant celui de l'exclusion : « A exclut B » doit se lire
+> « déclarer B lève A », jamais « déclarer B est refusé ».
+
+### 11 bis — Assertionner les ancrages de l'outillage de mutation
+
+Deuxième fois qu'un motif de mutation ne s'ancre pas — une fois en double
+occurrence, une fois par formatage divergent. Les deux fois le script a
+**refusé de muter** et affiché le compte trouvé, ce qui a rendu le problème
+visible aussitôt.
+
+Sans cette garde, `replace()` aurait muté zéro fois, le test aurait affiché
+« 0 échec », et j'en aurais conclu à un trou de couverture inexistant. Un faux
+négatif dans l'outillage de vérification est indétectable par construction :
+rien ne vérifie le vérificateur.
+
+> **Règle** — asserter `count(ancrage) == 1` avant toute substitution dans un
+> script de mutation, et afficher le compte quand elle échoue. L'outillage de
+> contrôle mérite la discipline qu'il impose au code.
