@@ -1,4 +1,5 @@
 import type { Oeuvre, Plateforme } from "../selection/types";
+import type { EntreeTimeline, MomentTimeline } from "../timeline/types";
 import type { ValeurTemporelle } from "../temporel/valeur";
 
 /**
@@ -115,8 +116,7 @@ export const client = {
     }),
 
   timeline: (userId: string) =>
-    lire<{
-      entries: { isEpisode: boolean; moments: { id: string; targetId: string }[] }[];
-      undated: { id: string }[];
-    }>(`/timeline/${userId}`),
+    lire<{ entries: EntreeTimeline[]; undated: MomentTimeline[] }>(
+      `/timeline/${userId}`,
+    ),
 };

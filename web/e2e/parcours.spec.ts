@@ -88,19 +88,27 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // --- 5. la timeline ----------------------------------------------------
   await toucher(page.getByRole("button", { name: "Voir ma timeline" }).click());
 
-  // Le NOMBRE EXACT, et non « il y a des moments ». Trente titres cochés
-  // produisent trente `StartedGame` : un compte plus faible dirait que des
-  // déclarations se sont perdues en chemin, un compte plus fort qu'on lit le
-  // profil de quelqu'un d'autre.
-  await expect(page.getByTestId("timeline-compte"))
-    .toContainText(`${TITRES_A_COCHER} moment`);
+  // Les trente titres ont été cochés d'un seul passage, sur une même
+  // période : ils forment UN épisode (§4.4), pas trente moments empilés.
+  // L'axe le montre replié — c'est précisément ce que l'agrégation sert.
+  const axe = page.getByTestId("axe");
+  await expect(axe).toHaveAttribute("data-entrees", "1");
+  const entree = axe.locator("> li");
+  await expect(entree).toHaveAttribute("data-moments", String(TITRES_A_COCHER));
+
+  // Déplié, le joueur retrouve ses trente titres. Le NOMBRE EXACT, et non
+  // « il y a des moments » : un compte plus faible dirait que des
+  // déclarations se sont perdues, un compte plus fort qu'on lit le profil de
+  // quelqu'un d'autre.
+  await toucher(page.getByRole("button", { name: /Déplier/ }).click());
+  await expect(page.getByTestId("moment-titre")).toHaveCount(TITRES_A_COCHER);
 
   // --- le KPI de §22.3 ---------------------------------------------------
   //
   // Un geste par titre, plus l'amorce (machine, période), la note et le
   // passage à la timeline. Dépasser ce budget signifierait qu'un geste s'est
   // glissé quelque part — et c'est exactement ce que le test doit voir.
-  const budget = TITRES_A_COCHER + 5;
+  const budget = TITRES_A_COCHER + 6;
   expect(gestes, `${gestes} gestes pour ${TITRES_A_COCHER} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

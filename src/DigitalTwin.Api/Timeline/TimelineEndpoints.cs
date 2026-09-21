@@ -1,4 +1,5 @@
 using DigitalTwin.Api.Persistence;
+using DigitalTwin.Api.Reference;
 using DigitalTwin.Domain.Player;
 using DigitalTwin.Domain.Temporal;
 
@@ -22,9 +23,13 @@ public sealed record TemporalView(
     int? Margin = null,
     int? Age = null);
 
+/// <param name="TargetLabel">
+/// Le titre lisible. L'écran ne peut pas le résoudre : il n'a chargé qu'une
+/// plateforme, et la timeline les traverse toutes.
+/// </param>
 public sealed record MomentView(
     string Id, string Type, string TargetKind, string TargetId,
-    string Confidence, TemporalView OccurredAt);
+    string TargetLabel, string Confidence, TemporalView OccurredAt);
 
 public sealed record IntervalView(string Start, string End);
 
@@ -44,9 +49,27 @@ public static class TimelineEndpoints
     public static IEndpointRouteBuilder MapTimeline(this IEndpointRouteBuilder routes)
     {
         routes.MapGet("/timeline/{userId}", async (
-            string userId, int? birthYear, EventStore magasin, CancellationToken ct) =>
+            string userId, int? birthYear, EventStore magasin,
+            ReferenceCatalogSource source, CancellationToken ct) =>
         {
             var journal = await magasin.ReadAsync(userId, ct);
+
+            // Les titres, résolus UNE FOIS pour tout le rendu : une recherche
+            // par moment ferait 221 comparaisons par ligne affichée.
+            var titres = source.Dataset.Works.ToDictionary(
+                w => w.CanonicalId, w => w.Title, StringComparer.Ordinal);
+            var revendications = (await magasin.ReadClaimsAsync(userId, ct))
+                .ToDictionary(c => c.Id, c => c.Title, StringComparer.Ordinal);
+
+            string Libelle(PlayerEvent e) => e.Target.Kind switch
+            {
+                "unresolvedClaim" => revendications.GetValueOrDefault(e.Target.Id)
+                                     ?? "Titre saisi, introuvable",
+                _ => titres.GetValueOrDefault(e.Target.Id)
+                     // Montrer l'identifiant serait faire remonter le modèle
+                     // dans l'écran : mieux vaut dire qu'on ne sait pas.
+                     ?? "Œuvre inconnue du référentiel",
+            };
 
             // L'horizon se construit À LA LECTURE, avec l'année de naissance
             // du moment. C'est ce qui permet de la renseigner plus tard et de
@@ -68,8 +91,8 @@ public static class TimelineEndpoints
                     new IntervalView(
                         e.Interval.Start.ToString("yyyy-MM-dd"),
                         e.Interval.End.ToString("yyyy-MM-dd")),
-                    [.. e.Moments.Select(Voir)]))],
-                [.. tri.Undated.Select(Voir)],
+                    [.. e.Moments.Select(m => Voir(m, Libelle(m)))]))],
+                [.. tri.Undated.Select(m => Voir(m, Libelle(m)))],
                 [.. tri.Warnings.Select(w => new WarningView(
                     w.ExpectedEarlierId, w.ExpectedLaterId, w.Message))]));
         });
@@ -77,8 +100,8 @@ public static class TimelineEndpoints
         return routes;
     }
 
-    private static MomentView Voir(PlayerEvent e)
-        => new(e.Id, e.Type, e.Target.Kind, e.Target.Id,
+    private static MomentView Voir(PlayerEvent e, string libelle)
+        => new(e.Id, e.Type, e.Target.Kind, e.Target.Id, libelle,
                e.Confidence.ToString(), Voir(e.OccurredAt));
 
     /// <summary>

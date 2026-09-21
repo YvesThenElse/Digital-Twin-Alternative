@@ -3,6 +3,8 @@ import { client } from "./api/client";
 import { dispositionPour, type Disposition } from "./disposition/epoque";
 import { t } from "./i18n/t";
 import { SelectionMassive } from "./selection/SelectionMassive";
+import { Timeline } from "./timeline/Timeline";
+import type { EntreeTimeline, MomentTimeline } from "./timeline/types";
 import type { Oeuvre, Plateforme } from "./selection/types";
 
 /**
@@ -54,7 +56,10 @@ export function App() {
   const [region, setRegion] = useState("PAL");
   const [periode, setPeriode] = useState<unknown>({ kind: "unknown" });
   const [oeuvres, setOeuvres] = useState<Oeuvre[]>([]);
-  const [momentsSurAxe, setMomentsSurAxe] = useState(0);
+  const [timeline, setTimeline] = useState<{
+    entries: EntreeTimeline[];
+    undated: MomentTimeline[];
+  }>({ entries: [], undated: [] });
   const disposition = useDisposition();
 
   useEffect(() => {
@@ -71,8 +76,7 @@ export function App() {
   }
 
   async function ouvrirTimeline() {
-    const rendu = await client.timeline(UTILISATEUR);
-    setMomentsSurAxe(rendu.entries.reduce((n, e) => n + e.moments.length, 0));
+    setTimeline(await client.timeline(UTILISATEUR));
     setEtape("timeline");
   }
 
@@ -141,14 +145,7 @@ export function App() {
       ) : null}
 
       {etape === "timeline" ? (
-        <section>
-          <h2>{t("timeline.titre")}</h2>
-          <p data-testid="timeline-compte">
-            {momentsSurAxe === 0
-              ? t("timeline.vide")
-              : t("timeline.moments", { n: momentsSurAxe })}
-          </p>
-        </section>
+        <Timeline entrees={timeline.entries} sansDate={timeline.undated} />
       ) : null}
     </main>
   );

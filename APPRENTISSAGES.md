@@ -1443,3 +1443,36 @@ un dossier temporaire, un manifeste annonçant un fichier absent.
 
 Et son pendant, écrit dans la foulée : sans un test qui exige qu'une jaquette
 présente **soit** annoncée, « ne rien annoncer jamais » passerait le premier.
+
+### 44 — Nommer une chose n'est pas la rendre
+
+La timeline pose sur chaque entrée `data-epoque="8 bits"` et la couleur de
+cette décennie. Les tests assèraient l'attribut. Retirer la couleur a donc
+**survécu** : l'attribut disait toujours « 8 bits », et rien ne regardait la
+peinture.
+
+Une entrée sans accent se rend **grise** au milieu d'un axe coloré. Le
+joueur ne la lit pas comme une décennie manquante : il la lit comme un
+défaut d'affichage — c'est-à-dire, une fois de plus, une donnée absente qui
+passe pour un fait et n'appelle aucune erreur.
+
+Le piège est propre aux crochets de test. Un `data-*` est **posé pour être
+lu par une assertion** ; il décrit l'intention du composant, il ne prouve
+pas que l'intention a produit quelque chose. Tant que les deux sortent de la
+même ligne de code, l'assertion sur l'attribut ressemble à une vérification
+et n'en est pas une.
+
+**La règle** : quand un attribut lisible par la machine accompagne l'effet
+visible qu'il décrit, asserter l'attribut **et** l'effet — sinon l'effet
+peut disparaître sans un seul test rouge.
+
+Et le partage de responsabilité qui rend l'assertion supportable : le
+composant est tenu d'**appliquer** la palette, `epoque.test.ts` est tenu de
+la **valider**. Réécrire les hexadécimaux dans le test de l'écran ne
+vérifierait rien de plus et casserait deux fichiers à chaque retouche de
+couleur.
+
+Voisin de [[43]] — un test vrai des deux côtés d'une mutation — mais la
+cause diffère : là, l'assertion portait sur un état que la mutation ne
+changeait pas ; ici, elle porte sur un **substitut** de ce qu'elle prétend
+vérifier.

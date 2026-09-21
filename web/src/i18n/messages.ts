@@ -75,8 +75,8 @@ export const MESSAGES = {
   "parcours.chargement": "Chargement…",
   "parcours.machine": "{machine} · {region}",
   "timeline.titre": "Ma timeline",
-  "timeline.vide": "Rien de déclaré pour l'instant.",
-  "timeline.moments": "{n} moment(s) sur l'axe",
+  "timeline.invitation": "Racontez votre première console.",
+  "timeline.deplier": "Déplier : {n} jeux déclarés ensemble",
 
   // --- les régions (§3.4) ------------------------------------------------
   // Le nom, jamais le code : « PAL » ne dit rien à un joueur.

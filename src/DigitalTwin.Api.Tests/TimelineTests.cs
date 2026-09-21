@@ -213,6 +213,51 @@ public class TimelineTests(PostgresFixture bdd)
         Assert.Equal(2, SurAxe(rendu).Count);
     }
 
+    // ------------------------------------------------------- les libellés
+
+    [Fact]
+    public async Task Chaque_moment_porte_le_titre_de_sa_cible()
+    {
+        // L'écran ne peut pas les résoudre lui-même : il n'a chargé qu'une
+        // plateforme, et la timeline les traverse toutes. Sans titre, E03
+        // afficherait des identifiants — ce qui n'est pas une timeline mais
+        // un vidage de table.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var plateformes = await client.GetFromJsonAsync<JsonElement>("/platforms");
+        var pf = plateformes[0].GetProperty("id").GetString()!;
+        var oeuvres = await client.GetFromJsonAsync<JsonElement>($"/platforms/{pf}/works");
+        var oeuvre = oeuvres[0];
+
+        var user = "usr_libelle";
+        await Semer(Ev("l1", user, PlayerEventType.StartedGame,
+                       oeuvre.GetProperty("id").GetString()!, new Year(1990)));
+
+        var rendu = await Timeline(client, user);
+        var moment = rendu.GetProperty("entries")[0].GetProperty("moments")[0];
+
+        Assert.Equal(oeuvre.GetProperty("title").GetString(),
+            moment.GetProperty("targetLabel").GetString());
+    }
+
+    [Fact]
+    public async Task Une_cible_introuvable_porte_un_libelle_et_non_son_identifiant()
+    {
+        // Montrer « wrk_01M24BB8… » à un joueur n'est pas un défaut
+        // d'affichage : c'est le modèle qui remonte dans l'écran. Mieux vaut
+        // dire qu'on ne sait pas.
+        var user = "usr_orphelin_tl";
+        await Semer(Ev("o1", user, PlayerEventType.StartedGame, "wrk_disparu", new Year(1990)));
+
+        using var usine = Usine();
+        var rendu = await Timeline(usine.CreateClient(), user);
+        var moment = rendu.GetProperty("entries")[0].GetProperty("moments")[0];
+
+        var libelle = moment.GetProperty("targetLabel").GetString()!;
+        Assert.DoesNotContain("wrk_disparu", libelle, StringComparison.Ordinal);
+        Assert.NotEmpty(libelle);
+    }
+
     // ------------------------------------------------------- les épisodes
 
     [Fact]
