@@ -29,6 +29,27 @@ public sealed record DatasetLoadResult(
     /// d'un tiers et aurait fait recurer une absence qui est déjà la bonne
     /// réponse.</para>
     /// </summary>
+    /// <summary>
+    /// Ce qu'on sait de cette œuvre dans cette région, sur cette plateforme.
+    ///
+    /// <para>La réponse se lit à deux endroits : une sortie listée vaut
+    /// <see cref="RegionAvailability.Released"/> ; à défaut, la table des
+    /// statuts. Sans rien des deux, <see cref="RegionAvailability.Unknown"/>
+    /// — <b>jamais</b> <c>NotReleased</c>. Une absence de donnée n'est pas
+    /// une non-sortie, et c'est l'erreur qui retirerait au testeur un jeu
+    /// qu'il a possédé.</para>
+    /// </summary>
+    public RegionAvailability AvailabilityIn(string workId, string platformId, string region)
+    {
+        if (Releases.Any(r => r.WorkId == workId && r.PlatformId == platformId
+                              && r.Region == region))
+        {
+            return RegionAvailability.Released;
+        }
+        var oeuvre = Works.FirstOrDefault(w => w.CanonicalId == workId);
+        return oeuvre?.DeclaredStatusIn(platformId, region) ?? RegionAvailability.Unknown;
+    }
+
     public IReadOnlyList<DatasetRelease> ReleasesMissingRegion
     {
         get
@@ -121,9 +142,11 @@ public static class DatasetLoader
             {
                 rangs[rang.Name] = rang.Value.GetInt32();
             }
+            var statuts = LireStatutsRegionaux(w);
             oeuvres.Add(new Work(workId, w.GetProperty("title").GetString()!)
             {
                 Notability = rangs,
+                RegionStatus = statuts,
             });
 
             var plateformesDeLOeuvre = new HashSet<string>(StringComparer.Ordinal);
@@ -155,6 +178,7 @@ public static class DatasetLoader
             }
 
             VerifierNotoriete(workId, rangs, plateformesDeLOeuvre, violations);
+            VerifierStatutsRegionaux(workId, statuts, sorties, violations);
         }
 
         var redirections = LireRedirections(racine, vus, violations);
@@ -188,6 +212,62 @@ public static class DatasetLoader
             violations.Add(new DatasetViolation(
                 "notabilite", workId,
                 $"« {workId} » est classée sur « {orpheline} » où elle ne sort pas."));
+        }
+    }
+
+    /// <summary>
+    /// Lit <c>region_status</c> : les régions <b>sans sortie</b>, et ce qu'on
+    /// en sait. Une valeur inconnue du vocabulaire devient
+    /// <see cref="RegionAvailability.Unknown"/> — jamais <c>NotReleased</c> :
+    /// en cas de doute, on ne retire rien au joueur.
+    /// </summary>
+    private static Dictionary<string, IReadOnlyDictionary<string, RegionAvailability>>
+        LireStatutsRegionaux(JsonElement w)
+    {
+        var sortie = new Dictionary<string, IReadOnlyDictionary<string, RegionAvailability>>(
+            StringComparer.Ordinal);
+        if (!w.TryGetProperty("region_status", out var table)) return sortie;
+
+        foreach (var plateforme in table.EnumerateObject())
+        {
+            var regions = new Dictionary<string, RegionAvailability>(StringComparer.Ordinal);
+            foreach (var region in plateforme.Value.EnumerateObject())
+            {
+                regions[region.Name] = region.Value.GetString() == "absent"
+                    ? RegionAvailability.NotReleased
+                    : RegionAvailability.Unknown;
+            }
+            sortie[plateforme.Name] = regions;
+        }
+        return sortie;
+    }
+
+    /// <summary>
+    /// <b>La table ne porte que les régions sans sortie.</b> Y trouver une
+    /// région qui en a une est une contradiction : deux réponses opposées à
+    /// la même question, et rien ne dit laquelle l'emporte.
+    /// </summary>
+    private static void VerifierStatutsRegionaux(
+        string workId,
+        Dictionary<string, IReadOnlyDictionary<string, RegionAvailability>> statuts,
+        List<DatasetRelease> sorties,
+        List<DatasetViolation> violations)
+    {
+        foreach (var (plateforme, regions) in statuts)
+        {
+            foreach (var region in regions.Keys)
+            {
+                var contredite = sorties.Any(
+                    r => r.WorkId == workId && r.PlatformId == plateforme
+                         && r.Region == region);
+                if (contredite)
+                {
+                    violations.Add(new DatasetViolation(
+                        "region", workId,
+                        $"« {workId} » déclare un statut pour « {region} » sur " +
+                        $"« {plateforme} » alors qu'une sortie y est listée."));
+                }
+            }
         }
     }
 

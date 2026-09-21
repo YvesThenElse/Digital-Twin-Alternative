@@ -5,6 +5,8 @@ préfixé + ULID, provenance sur chaque donnée, et Confidence qui porte ce qui
 n'a pas été vérifié plutôt que de le taire.
 """
 import hashlib, json, os, sys
+
+from region_arbitration import REGION_ARBITRATION
 import fields
 from curated import PLATFORMS
 
@@ -68,6 +70,38 @@ def _charger_registre(qids):
                   ensure_ascii=False, sort_keys=True)
         print("  registre : %d œuvre(s) ajoutée(s)" % len(nouveaux))
     return seqs
+
+
+SANS_ZONAGE = {"switch"}
+
+_ARBITRAGES_UTILISES = set()
+_REGIONS = ("NTSC-J", "NTSC-U", "PAL")
+
+
+def _statut_regional(platform_key, titre, regions_connues, platform_cid):
+    """Le statut des regions SANS sortie connue, pour cette plateforme.
+
+    « absent » est une affirmation positive, arbitree a la main et motivee ;
+    tout le reste est « inconnu ». Une region qui a une sortie ne figure pas
+    ici : son statut est dit par la sortie elle-meme.
+    """
+    # Sur une machine sans zonage, la question ne se pose pas : il n y a pas
+    # de region a etablir. Mario Kart 8 Deluxe y recevait « PAL : inconnu »,
+    # ce qui laissait croire a une dette de curation inexistante.
+    if platform_key in SANS_ZONAGE or "WORLDWIDE" in regions_connues:
+        return {}
+    statut = {}
+    for region in _REGIONS:
+        if region in regions_connues:
+            continue
+        cle = (platform_key, titre, region)
+        verdict = REGION_ARBITRATION.get(cle)
+        if verdict:
+            _ARBITRAGES_UTILISES.add(cle)
+            statut[region] = "absent"
+        else:
+            statut[region] = "inconnu"
+    return {platform_cid: statut} if statut else {}
 
 
 def first_year(dates):
@@ -178,6 +212,11 @@ def build(entry, raw, platform_ids, platform_qid, seq, wp=None):
     releases.sort(key=lambda r: (r["date"], r["region"] or ""))
     regions = [r for r in releases if r["region"]]
 
+    titre = raw["labels"].get("en") or entry["title"]
+    statut = _statut_regional(entry["platform"], titre,
+                              {r["region"] for r in regions},
+                              platform_ids[entry["platform"]])
+
     return {
         "canonical_id": work_id,
         "title": raw["labels"].get("en") or entry["title"],
@@ -195,6 +234,11 @@ def build(entry, raw, platform_ids, platform_qid, seq, wp=None):
         # devient la norme dès la PS1. Bubble Bobble le montrait déjà —
         # 19e sur Game Boy, 22e sur NES.
         "notability": {platform_ids[entry["platform"]]: entry["notability"]},
+        # Trois etats et non deux : sortie connue, non-sortie ETABLIE, ou
+        # rien d etabli. Sans le troisieme, le silence d une source passe
+        # pour une absence — or l infobox anglophone sous-declare les
+        # sorties japonaises des jeux occidentaux.
+        "region_status": statut,
         "releases": releases,
         "provenance": {"source": "wikidata", "license": "CC0",
                        "external_id": raw["qid"],
@@ -253,6 +297,7 @@ def fusionner(works):
         for autre in absorbes:
             redirections[autre["canonical_id"]] = survivant["canonical_id"]
             survivant["notability"].update(autre["notability"])
+            survivant["region_status"].update(autre.get("region_status") or {})
             for r in autre["releases"]:
                 r["work"] = survivant["canonical_id"]
                 survivant["releases"].append(r)
@@ -295,7 +340,6 @@ def main():
     # sortie qui n'y porte pas de région est **mondiale**, pas incomplète.
     # Ce n'est pas « toute sortie y est mondiale » — un titre peut rester
     # exclusif au Japon et le déclarer.
-    SANS_ZONAGE = {"switch"}
     platforms = [{"canonical_id": platform_ids[k], "key": k, "name": name,
                   "region_free": k in SANS_ZONAGE,
                   "provenance": {"source": "wikidata", "external_id": q,
@@ -326,6 +370,13 @@ def main():
     works = [build(e, raw[e["qid"]], platform_ids, PLATFORMS[e["platform"]][0],
                    seqs["%s|%s" % (e["qid"], e["platform"])], wpd.get(e["qid"]))
              for e in resolved if e["qid"] in raw]
+
+    inutilises = set(REGION_ARBITRATION) - _ARBITRAGES_UTILISES
+    if inutilises:
+        # Une cle qui ne correspond a rien ne fait RIEN, et en silence. C est
+        # exactement la classe de defaut qui a coute le plus cher a ce projet.
+        sys.exit("arbitrages de region jamais appliques (titre ou plateforme "
+                 "errone ?) :\n  " + "\n  ".join(repr(k) for k in sorted(inutilises)))
 
     works, redirections = fusionner(works)
 

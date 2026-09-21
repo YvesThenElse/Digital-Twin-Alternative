@@ -62,6 +62,24 @@ Les corriger a ajouté **29 sorties régionales** et fait passer la couverture r
 
 **Et 91 sorties ont été retirées.** Une date sans région n'est désormais conservée que si aucune autre n'en porte. Elle servait de repli quand rien d'autre n'existait ; depuis que les dates régionales sont là, elle décrit la même sortie avec moins d'information — « Gradius · ? · 1986 » à côté de « Gradius · Japon · 25 avril 1986 ». Il en reste **une** : Pokémon Yellow, dont l'article n'a pas de champ `released`.
 
+## Ce que le dataset sait dire, et ce qu'il refuse de dire
+
+Restaient 57 couples (œuvre, plateforme, région) qu'aucune source autorisée n'atteste. **Le silence n'y est pas une preuve d'absence**, et le biais est mesuré :
+
+> L'infobox anglophone liste Banjo-Kazooie, Crash Bandicoot et Grand Theft Auto III en NA/EU seulement. **Les trois sont sortis au Japon.** Conclure « pas de sortie japonaise » de leur silence aurait retiré ces jeux à un testeur japonais.
+
+Le champ `region_status` porte donc **trois états** et non deux, par (œuvre, plateforme, région) :
+
+| Valeur | Sens | Comment on l'obtient |
+|---|---|---|
+| *(absent du champ)* | une sortie est attestée | la sortie elle-même |
+| `absent` | **non-sortie établie** | arbitrage manuel motivé, [`calibration/region_arbitration.py`](../calibration/region_arbitration.py) |
+| `inconnu` | rien d'établi | le défaut — et il ne glisse jamais vers `absent` |
+
+**22 non-sorties établies, 35 régions laissées inconnues.** Les 22 sont des jugements de domaine et non des citations : Chrono Trigger et Final Fantasy VI jamais parus en Europe sur Super Nintendo, Mother 3 et Rhythm Tengoku jamais localisés, Terranigma sorti au Japon et en Europe mais pas en Amérique. Chacun porte sa raison dans le fichier d'arbitrage, pour être relu un par un. **Un `absent` qu'on ne saurait pas justifier doit redevenir `inconnu`.**
+
+L'émetteur échoue si un arbitrage n'est appliqué à rien : une clé mal orthographiée ne ferait rien, en silence — la classe de défaut qui a coûté le plus cher à ce projet.
+
 ## ⚠️ Ce que ce dataset ne peut PAS dire
 
 **Il ne distingue pas « pas de sortie PAL » de « sortie PAL non renseignée ».**

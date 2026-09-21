@@ -98,7 +98,9 @@ Quatre principes guident le découpage :
 >
 > **663 → 590, et c'est un gain.** L'analyseur d'infobox ne reconnaissait ni `{{vgr}}`, ni `{{vgrelease new}}`, ni les conteneurs `{{ubl}}` — qu'il supprimait avec leur contenu —, ni les codes de région combinés « NA/PAL », ni les dates écrites « 22 May 2000 ». Vingt-deux articles sur vingt-trois portaient l'information ; c'est l'extraction qui échouait, en silence. Les corriger a ajouté 29 sorties régionales et permis d'en retirer 91 : la date non qualifiée servait de repli quand rien d'autre n'existait, et produisait depuis un **doublon dégradé** — « Gradius · ? · 1986 » à côté de « Gradius · Japon · 25 avril 1986 », pour une seule et même sortie.
 
-> ⚠️ Et un point que la source ne peut pas trancher : elle **ne distingue pas « pas de sortie PAL » de « sortie PAL non renseignée »**. Les deux réponses cassent la reconnaissance en sens inverse — retirer un jeu que le testeur a possédé, ou lui en proposer un qu'il n'a jamais pu voir. C'est un arbitrage de curation, pas un défaut d'outillage.
+> ✅ **Ce point est clos structurellement** (21 septembre 2026). Le dataset distinguait mal « pas de sortie PAL » de « sortie PAL non renseignée » — deux réponses qui cassent la reconnaissance en sens inverse. Le champ `region_status` porte désormais **trois états** : sortie attestée, non-sortie **établie** et motivée, ou rien d'établi. 22 non-sorties sont arbitrées, 35 régions restent explicitement inconnues.
+>
+> ⚠️ Et la mesure qui justifie cette prudence : l'infobox anglophone liste Banjo-Kazooie, Crash Bandicoot et Grand Theft Auto III en NA/EU seulement, alors que **les trois sont sortis au Japon**. Le silence d'une source n'est pas une preuve d'absence, et le biais a une direction.
 
 On ne cherche pas encore à avoir une base exhaustive. Pour le POC, un dataset de référence de **100 à 300 jeux** répartis sur un cœur de plateformes — **NES, SNES, Game Boy/GBA, N64, PS1, PS2 + Switch** — suffit largement ; on l'étend ensuite si la validation passe. À cette taille, une curation manuelle est réaliste (voir décision du cadrage).
 
@@ -140,7 +142,7 @@ la Phase 0 :
 
 | Reste | Nature | Bloquant pour |
 |---|---|---|
-| **57 arbitrages de région** — des couples (œuvre, plateforme, région) qu'aucune source n'atteste (27 NTSC-J, 22 PAL, 8 NTSC-U) | curation | l'affichage des dates par région ; gênant au test de Phase 2 pour un joueur PAL |
+| **35 régions non établies** — sur les 57 qu'aucune source n'attestait, 22 ont été arbitrées en non-sorties motivées ; les 35 autres restent `inconnu`, ce que le dataset sait désormais dire | curation | rien ne bloque : l'incertitude est portée et affichable |
 | **1 sortie sans aucune région** : Pokémon Yellow sur Game Boy, dont l'article n'a pas de champ `released` | curation | marginal |
 | **40 œuvres sans date au jour** | curation | rien : l'incertitude est affichée, c'est la décision prise |
 | **`NOTABILITE.md` en attente d'annotation** | décision humaine | le réordonnancement déplace les `CanonicalId` — rien ne doit toucher à l'ordre avant |

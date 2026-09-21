@@ -73,7 +73,15 @@ def main():
     A("| `≈` | à l'année seulement |")
     A("| `∅` | aucune date |")
     A("| régions | celles attestées ; `—` = aucune |")
+    A("| ~~région~~ | **non-sortie établie** — arbitrée à la main, motivée dans "
+      "`calibration/region_arbitration.py` |")
     A("| `img` | jaquette acquise |")
+    A("")
+    A("> Une région qui n'apparaît **ni** en clair **ni** barrée n'est pas une "
+      "non-sortie : elle n'est pas établie. Le silence d'une source ne prouve "
+      "rien — l'infobox anglophone omet les sorties japonaises de Crash "
+      "Bandicoot, de Banjo-Kazooie et de Grand Theft Auto III, qui ont "
+      "pourtant toutes eu lieu.")
     A("")
 
     for pid in pids:
@@ -91,6 +99,10 @@ def main():
             ici = [r for r in w["releases"] if r["platform"] == pid]
             f, _ = flag_date(ici)
             regs = sorted({r["region"] for r in ici if r.get("region")})
+            # Une non-sortie ETABLIE se montre, barree : elle n est pas une
+            # lacune a combler mais un fait a afficher au joueur.
+            statut = (w.get("region_status") or {}).get(pid, {})
+            regs += ["~~%s~~" % r for r in sorted(statut) if statut[r] == "absent"]
             img = "img" if w["canonical_id"] in manifeste else ""
             A("| %d | %s | %s | %s | %s |"
               % (rang, w["title"], f, " ".join(regs) or "—", img))

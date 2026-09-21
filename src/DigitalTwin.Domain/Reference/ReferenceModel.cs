@@ -6,6 +6,30 @@ namespace DigitalTwin.Domain.Reference;
 /// </summary>
 public enum WorkRelationKind { Remake, Remaster, Prequel, Sequel, Spinoff, SameSeries }
 
+/// <summary>
+/// Ce qu'on sait d'une sortie dans une région donnée. <b>Trois états, pas
+/// deux.</b>
+///
+/// <para>Le silence d'une source n'est pas une preuve d'absence : l'infobox
+/// anglophone omet les sorties japonaises de Crash Bandicoot, de
+/// Banjo-Kazooie et de Grand Theft Auto III, qui ont pourtant toutes eu
+/// lieu. Confondre <see cref="Unknown"/> et <see cref="NotReleased"/>
+/// retirerait un jeu que le testeur a possédé ; les confondre dans l'autre
+/// sens lui en proposerait un qu'il n'a jamais pu voir. Les deux cassent la
+/// reconnaissance, en sens inverse.</para>
+/// </summary>
+public enum RegionAvailability
+{
+    /// <summary>Une sortie est attestée dans cette région.</summary>
+    Released,
+
+    /// <summary>Non-sortie <b>établie</b>, arbitrée à la main et motivée.</summary>
+    NotReleased,
+
+    /// <summary>Rien d'établi. C'est le défaut, et il ne doit jamais glisser vers les autres.</summary>
+    Unknown,
+}
+
 /// <summary>Une plateforme, avec sa génération.</summary>
 public sealed record Platform(string CanonicalId, string Name)
 {
@@ -52,6 +76,30 @@ public sealed record Work(string CanonicalId, string Title)
     /// </summary>
     public int? NotabilityOn(string platformId)
         => Notability.TryGetValue(platformId, out var rang) ? rang : null;
+
+    /// <summary>
+    /// Le statut des régions <b>sans sortie</b>, par plateforme. Une région
+    /// qui n'y figure pas a une sortie : son statut est dit par la sortie
+    /// elle-même.
+    /// </summary>
+    public IReadOnlyDictionary<string, IReadOnlyDictionary<string, RegionAvailability>>
+        RegionStatus
+    { get; init; } = new Dictionary<string, IReadOnlyDictionary<string, RegionAvailability>>(
+        StringComparer.Ordinal);
+
+    /// <summary>
+    /// Ce que la table dit de cette région, <b>sans regarder les sorties</b>.
+    /// <c>null</c> si elle n'en dit rien.
+    ///
+    /// <para>Ce n'est pas la réponse complète : une région absente de la
+    /// table peut avoir une sortie ou n'être simplement pas renseignée.
+    /// Utiliser <see cref="DatasetLoadResult.AvailabilityIn"/>, qui voit les
+    /// deux.</para>
+    /// </summary>
+    public RegionAvailability? DeclaredStatusIn(string platformId, string region)
+        => RegionStatus.TryGetValue(platformId, out var regions)
+           && regions.TryGetValue(region, out var statut)
+            ? statut : null;
 
     /// <summary>
     /// Identifiants externes rattachés à cette œuvre. C'est ce qui permet à

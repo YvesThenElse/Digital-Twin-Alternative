@@ -84,7 +84,8 @@ public class DatasetLoaderTests
         string confidence = "high",
         string secondeOeuvre = "wrk_zelda",
         string? notabilite = null,
-        string redirects = "{}")
+        string redirects = "{}",
+        string statutRegional = "{}")
     {
         // Par défaut, l'œuvre est classée sur la plateforme où elle sort.
         notabilite ??= $$"""{"{{releasePlatform}}": 1}""";
@@ -100,6 +101,7 @@ public class DatasetLoaderTests
           "works": [
             {"canonical_id": "{{workId}}", "title": "Super Mario Bros.",
              "notability": {{notabilite}},
+             "region_status": {{statutRegional}},
              "releases": [
                {"canonical_id": "{{releaseId}}", "platform": "{{releasePlatform}}",
                 "region": "EU", "date": "1987-05-15",
@@ -246,6 +248,72 @@ public class DatasetLoaderTests
                 "date": "2017", "precision": "year", "confidence": "low"}]}]
         }
         """;
+
+    // ------------------------------------------------- disponibilité régionale
+
+    [Fact]
+    public void Une_region_avec_une_sortie_est_disponible()
+    {
+        var resultat = DatasetLoader.Load(Squelette());
+
+        Assert.Equal(RegionAvailability.Released,
+            resultat.AvailabilityIn("wrk_mario", "plt_nes", "EU"));
+    }
+
+    [Fact]
+    public void Une_non_sortie_etablie_se_distingue_d_une_region_non_renseignee()
+    {
+        // C'est LE point : « jamais sorti en Europe » et « on ne sait pas »
+        // cassent la reconnaissance en sens inverse. Les confondre retirerait
+        // un jeu que le testeur a possédé, ou lui en proposerait un qu'il n'a
+        // jamais pu voir.
+        var resultat = DatasetLoader.Load(Squelette(
+            statutRegional: """{"plt_nes": {"NTSC-J": "absent", "PAL": "inconnu"}}"""));
+
+        Assert.Equal(RegionAvailability.NotReleased,
+            resultat.AvailabilityIn("wrk_mario", "plt_nes", "NTSC-J"));
+        Assert.Equal(RegionAvailability.Unknown,
+            resultat.AvailabilityIn("wrk_mario", "plt_nes", "PAL"));
+    }
+
+    [Fact]
+    public void Une_region_sans_statut_ni_sortie_est_inconnue_et_non_absente()
+    {
+        // Le défaut ne doit jamais être « absent » : le silence d'une source
+        // n'est pas une preuve de non-sortie. L'infobox anglophone omet les
+        // sorties japonaises de Crash Bandicoot et de Banjo-Kazooie.
+        var resultat = DatasetLoader.Load(Squelette());
+
+        Assert.Equal(RegionAvailability.Unknown,
+            resultat.AvailabilityIn("wrk_mario", "plt_nes", "NTSC-J"));
+    }
+
+    [Fact]
+    public void Un_statut_regional_contredisant_une_sortie_est_signale()
+    {
+        // « pas sorti en Europe » alors qu'une sortie européenne est listée.
+        var resultat = DatasetLoader.Load(Squelette(
+            statutRegional: """{"plt_nes": {"EU": "absent"}}"""));
+
+        var violation = Assert.Single(
+            resultat.Violations.Where(v => v.Rule == "region"));
+        Assert.Equal("wrk_mario", violation.EntryId);
+        Assert.Contains("EU", violation.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Le_dataset_reel_etablit_vingt_deux_non_sorties()
+    {
+        var oeuvres = DatasetLoader.Load(LireDatasetReel()).Works;
+
+        var absentes = oeuvres.Sum(w => w.RegionStatus
+            .Sum(p => p.Value.Count(r => r.Value == RegionAvailability.NotReleased)));
+        var inconnues = oeuvres.Sum(w => w.RegionStatus
+            .Sum(p => p.Value.Count(r => r.Value == RegionAvailability.Unknown)));
+
+        Assert.Equal(22, absentes);
+        Assert.Equal(35, inconnues);
+    }
 
     // -------------------------------------------------------- redirections
 

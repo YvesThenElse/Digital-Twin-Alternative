@@ -624,3 +624,47 @@ avant de remplacer quoi que ce soit.
 > nouvelle sortie sur l'intégralité du corpus, et justifier chaque
 > différence. Les onze cas réparés se voient ; les deux cassés ne se voient
 > que là.
+
+### 18 — Le silence d'une source a une direction
+
+Après correction de l'analyseur, 57 couples (œuvre, plateforme, région)
+restaient sans sortie attestée. La tentation était de les lire comme des
+non-sorties : la liste ressemblait à ce qu'on attend — Chrono Trigger sans
+PAL, Mother 3 sans localisation.
+
+Trois vérifications l'ont démentie. L'infobox anglophone liste
+
+| Titre | Ce qu'elle dit | La réalité |
+|---|---|---|
+| Banjo-Kazooie | NA, EU, AU | sorti au Japon en décembre 1998 |
+| Crash Bandicoot | NA, EU | sorti au Japon en décembre 1996 |
+| Grand Theft Auto III | NA, PAL | sorti au Japon en 2003 |
+
+**Le biais n'est pas aléatoire, il a une direction** : une source anglophone
+sous-déclare les sorties japonaises des jeux occidentaux. Sur 57 arbitrages,
+27 portaient précisément sur NTSC-J. Les trancher en bloc aurait retiré à un
+testeur japonais des jeux qu'il a possédés — et l'erreur aurait été invisible
+tant qu'aucun testeur japonais n'aurait été reçu.
+
+> **Règle** — avant de conclure d'un silence, vérifier si ce silence est
+> réparti au hasard. Un manque corrélé à la langue, à la région ou à l'époque
+> de la source est un biais, pas un échantillon.
+
+> **Règle** — quand une liste de manques « ressemble à ce qu'on attendait »,
+> s'en méfier davantage, pas moins. La plausibilité d'un résultat est ce qui
+> empêche de le vérifier.
+
+**La réponse n'est pas de deviner mieux, c'est d'avoir trois états.** Le
+dataset porte désormais, par (œuvre, plateforme, région) : sortie attestée,
+non-sortie **établie et motivée**, ou rien d'établi. 22 arbitrées, 35
+laissées inconnues. Le défaut est `inconnu` et ne glisse jamais vers
+`absent`.
+
+> **Règle** — quand deux erreurs opposées coûtent cher, ne pas choisir la
+> moins chère : ajouter l'état qui permet de ne pas choisir. Un booléen qui
+> doit répondre à une question à trois réponses ment la moitié du temps.
+
+**Et ce qui rend l'arbitrage relisible** : chaque non-sortie porte sa raison,
+et l'émetteur **échoue** si un arbitrage n'est appliqué à rien. Une clé mal
+orthographiée ne ferait rien, en silence — exactement la classe de défaut qui
+a coûté le plus cher à ce projet. Vérifié en injectant « Chrono Triger ».

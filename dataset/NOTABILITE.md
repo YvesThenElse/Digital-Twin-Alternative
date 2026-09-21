@@ -17,7 +17,10 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | `≈` | à l'année seulement |
 | `∅` | aucune date |
 | régions | celles attestées ; `—` = aucune |
+| ~~région~~ | **non-sortie établie** — arbitrée à la main, motivée dans `calibration/region_arbitration.py` |
 | `img` | jaquette acquise |
+
+> Une région qui n'apparaît **ni** en clair **ni** barrée n'est pas une non-sortie : elle n'est pas établie. Le silence d'une source ne prouve rien — l'infobox anglophone omet les sorties japonaises de Crash Bandicoot, de Banjo-Kazooie et de Grand Theft Auto III, qui ont pourtant toutes eu lieu.
 
 
 ## Nintendo Entertainment System — 34 titres
@@ -31,8 +34,8 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 5 | Mega Man 2 | ✓ | NTSC-J NTSC-U PAL | img |
 | 6 | Castlevania | ✓ | NTSC-J NTSC-U PAL | img |
 | 7 | Contra | ✓ | NTSC-J NTSC-U PAL | img |
-| 8 | Final Fantasy | ✓ | NTSC-J NTSC-U | img |
-| 9 | Dragon Quest | ✓ | NTSC-J NTSC-U | img |
+| 8 | Final Fantasy | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
+| 9 | Dragon Quest | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
 | 10 | Punch-Out!! | ✓ | NTSC-J NTSC-U PAL | img |
 | 11 | Kirby's Adventure | ✓ | NTSC-J NTSC-U PAL | img |
 | 12 | Ninja Gaiden | ✓ | NTSC-J NTSC-U PAL | img |
@@ -45,14 +48,14 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 19 | Kid Icarus | ✓ | NTSC-J NTSC-U PAL | img |
 | 20 | Gradius | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | Double Dragon | ✓ | NTSC-J NTSC-U PAL | img |
-| 22 | Bubble Bobble | ✓ | NTSC-J NTSC-U PAL |  |
+| 22 | Bubble Bobble | ✓ | NTSC-J NTSC-U PAL | img |
 | 23 | DuckTales | ✓ | NTSC-J NTSC-U PAL | img |
 | 24 | Battletoads | ✓ | NTSC-J NTSC-U PAL | img |
 | 25 | Blaster Master | ✓ | NTSC-J NTSC-U PAL | img |
 | 26 | River City Ransom | ✓ | NTSC-J NTSC-U PAL | img |
 | 27 | Adventure Island | ✓ | NTSC-J NTSC-U PAL | img |
 | 28 | Faxanadu | ✓ | NTSC-J NTSC-U PAL | img |
-| 29 | StarTropics | ✓ | NTSC-U PAL | img |
+| 29 | StarTropics | ✓ | NTSC-U PAL ~~NTSC-J~~ | img |
 | 30 | Teenage Mutant Ninja Turtles | ✓ | NTSC-J NTSC-U PAL | img |
 | 31 | Duck Hunt | ✓ | NTSC-J NTSC-U PAL | img |
 | 32 | Balloon Fight | ✓ | NTSC-J NTSC-U PAL | img |
@@ -66,30 +69,30 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 1 | Super Mario World | ✓ | NTSC-J NTSC-U PAL | img |
 | 2 | The Legend of Zelda: A Link to the Past | ✓ | NTSC-J NTSC-U PAL | img |
 | 3 | Super Metroid | ✓ | NTSC-J NTSC-U PAL | img |
-| 4 | Chrono Trigger | ✓ | NTSC-J NTSC-U | img |
+| 4 | Chrono Trigger | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
 | 5 | Donkey Kong Country | ✓ | NTSC-J NTSC-U PAL | img |
-| 6 | Final Fantasy VI | ✓ | NTSC-J NTSC-U | img |
+| 6 | Final Fantasy VI | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
 | 7 | Super Mario Kart | ✓ | NTSC-J NTSC-U PAL | img |
 | 8 | Street Fighter II | ✓ | NTSC-J NTSC-U PAL | img |
 | 9 | Secret of Mana | ✓ | NTSC-J NTSC-U PAL | img |
 | 10 | Super Castlevania IV | ✓ | NTSC-J NTSC-U PAL | img |
 | 11 | Mega Man X | ✓ | NTSC-J NTSC-U PAL | img |
 | 12 | Star Fox | ✓ | NTSC-J NTSC-U PAL | img |
-| 13 | Earthbound | ✓ | NTSC-J NTSC-U | img |
+| 13 | Earthbound | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
 | 14 | Super Mario World 2: Yoshi's Island | ✓ | NTSC-J NTSC-U PAL | img |
 | 15 | F-Zero | ✓ | NTSC-J NTSC-U PAL | img |
 | 16 | Super Punch-Out!! | ✓ | NTSC-J NTSC-U PAL | img |
 | 17 | Donkey Kong Country 2: Diddy's Kong Quest | ✓ | NTSC-J NTSC-U PAL | img |
 | 18 | Contra III: The Alien Wars | ✓ | NTSC-J NTSC-U PAL | img |
-| 19 | Terranigma | ✓ | NTSC-J PAL | img |
+| 19 | Terranigma | ✓ | NTSC-J PAL ~~NTSC-U~~ | img |
 | 20 | Illusion of Gaia | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | ActRaiser | ✓ | NTSC-J NTSC-U PAL | img |
 | 22 | Super Bomberman | ✓ | NTSC-J NTSC-U PAL | img |
 | 23 | Kirby Super Star | ✓ | NTSC-J NTSC-U PAL | img |
-| 24 | Final Fantasy IV | ✓ | NTSC-J NTSC-U | img |
+| 24 | Final Fantasy IV | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
 | 25 | Super Ghouls 'n Ghosts | ✓ | NTSC-J NTSC-U PAL | img |
 | 26 | Tetris Attack | ✓ | NTSC-J NTSC-U PAL | img |
-| 27 | Zombies Ate My Neighbors | ✓ | NTSC-U PAL | img |
+| 27 | Zombies Ate My Neighbors | ✓ | NTSC-U PAL ~~NTSC-J~~ | img |
 | 28 | Pilotwings | ✓ | NTSC-J NTSC-U PAL | img |
 | 29 | Super Tennis | ✓ | NTSC-J NTSC-U PAL | img |
 | 30 | The Lion King | ✓ | NTSC-U PAL | img |
@@ -117,10 +120,10 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 12 | Final Fantasy Adventure | ✓ | NTSC-J NTSC-U PAL | img |
 | 13 | Mega Man: Dr. Wily's Revenge | ✓ | NTSC-J NTSC-U PAL | img |
 | 14 | Gargoyle's Quest | ✓ | NTSC-J NTSC-U PAL | img |
-| 15 | Kid Icarus: Of Myths and Monsters | ✓ | NTSC-U PAL | img |
+| 15 | Kid Icarus: Of Myths and Monsters | ✓ | NTSC-U PAL ~~NTSC-J~~ | img |
 | 17 | Dr. Mario | ✓ | NTSC-J NTSC-U PAL | img |
 | 18 | Tetris 2 | ✓ | NTSC-J NTSC-U PAL | img |
-| 19 | Bubble Bobble | ✓ | NTSC-J |  |
+| 19 | Bubble Bobble | ✓ | NTSC-J | img |
 | 20 | Solar Striker | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | Balloon Kid | ✓ | NTSC-J NTSC-U PAL | img |
 | 22 | Kirby's Dream Land 2 | ✓ | NTSC-J NTSC-U PAL | img |
@@ -152,9 +155,9 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 19 | Advance Wars 2: Black Hole Rising | ✓ | NTSC-J NTSC-U PAL | img |
 | 20 | Golden Sun: The Lost Age | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | Drill Dozer | ✓ | NTSC-J NTSC-U | img |
-| 22 | Rhythm Tengoku | ✓ | NTSC-J | img |
+| 22 | Rhythm Tengoku | ✓ | NTSC-J ~~NTSC-U~~ ~~PAL~~ | img |
 | 23 | Sonic Advance | ✓ | NTSC-J NTSC-U PAL | img |
-| 24 | Mother 3 | ✓ | NTSC-J | img |
+| 24 | Mother 3 | ✓ | NTSC-J ~~NTSC-U~~ ~~PAL~~ | img |
 | 25 | The Legend of Zelda: A Link to the Past and Four Swords | ✓ | NTSC-J NTSC-U PAL | img |
 
 ## Nintendo 64 — 25 titres
@@ -172,7 +175,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 9 | Star Fox 64 | ✓ | NTSC-J NTSC-U PAL | img |
 | 10 | Donkey Kong 64 | ✓ | NTSC-J NTSC-U PAL | img |
 | 11 | Paper Mario | ✓ | NTSC-J NTSC-U PAL | img |
-| 12 | Conker's Bad Fur Day | ✓ | NTSC-U PAL | img |
+| 12 | Conker's Bad Fur Day | ✓ | NTSC-U PAL ~~NTSC-J~~ | img |
 | 13 | F-Zero X | ✓ | NTSC-J NTSC-U PAL | img |
 | 14 | Diddy Kong Racing | ✓ | NTSC-J NTSC-U PAL | img |
 | 15 | Wave Race 64 | ✓ | NTSC-J NTSC-U PAL | img |
@@ -184,8 +187,8 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 21 | 1080° Snowboarding | ✓ | NTSC-J NTSC-U PAL | img |
 | 22 | Yoshi's Story | ✓ | NTSC-J NTSC-U PAL | img |
 | 23 | Turok: Dinosaur Hunter | ✓ | NTSC-U PAL | img |
-| 24 | Sin and Punishment | ✓ | NTSC-J | img |
-| 25 | Ogre Battle 64: Person of Lordly Caliber | ✓ | NTSC-J NTSC-U | img |
+| 24 | Sin and Punishment | ✓ | NTSC-J ~~NTSC-U~~ ~~PAL~~ | img |
+| 25 | Ogre Battle 64: Person of Lordly Caliber | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
 
 ## PlayStation — 30 titres
 
@@ -206,9 +209,9 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 13 | Final Fantasy IX | ✓ | NTSC-J NTSC-U PAL | img |
 | 14 | Gran Turismo 2 | ✓ | NTSC-J NTSC-U PAL | img |
 | 15 | Crash Bandicoot 2: Cortex Strikes Back | ✓ | NTSC-U PAL | img |
-| 16 | Chrono Cross | ✓ | NTSC-J NTSC-U | img |
-| 17 | Xenogears | ✓ | NTSC-J NTSC-U | img |
-| 18 | Parasite Eve | ✓ | NTSC-J NTSC-U | img |
+| 16 | Chrono Cross | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
+| 17 | Xenogears | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
+| 18 | Parasite Eve | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
 | 19 | Vagrant Story | ✓ | NTSC-J NTSC-U PAL | img |
 | 20 | Suikoden II | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | Tony Hawk's Pro Skater | ✓ | NTSC-U PAL | img |
@@ -249,7 +252,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 21 | Tekken 5 | ✓ | NTSC-J NTSC-U PAL | img |
 | 22 | Guitar Hero | ✓ | NTSC-U PAL | img |
 | 23 | SSX Tricky | ✓ | NTSC-U PAL | img |
-| 24 | Katamari Damacy | ✓ | NTSC-J NTSC-U | img |
+| 24 | Katamari Damacy | ✓ | NTSC-J NTSC-U ~~PAL~~ | img |
 | 25 | Dragon Quest VIII | ✓ | NTSC-J NTSC-U PAL | img |
 
 ## Nintendo Switch — 25 titres
