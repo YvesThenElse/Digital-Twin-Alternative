@@ -1,6 +1,8 @@
 # Dataset POC
 
-> Produit le **20 septembre 2026**. 222 œuvres, 706 sorties, 8 plateformes.
+> Produit les **20 et 21 septembre 2026**. 222 œuvres, 663 sorties, 8 plateformes. Licence **CC BY-SA 4.0**.
+>
+> Ses invariants sont vérifiés par du code — `DigitalTwin.Domain.Reference.DatasetLoader` — et non par relecture : unicité des identifiants, préfixe conforme au type, plateforme existante, et précision jamais supérieure à ce que la confiance soutient.
 >
 > Périmètre voulu par [PHASING.md](../PHASING.md) §3 : 100 à 300 jeux sur NES, SNES, Game Boy/GBA, N64, PS1, PS2 et Switch, curés à la main. **Ne pas l'étendre « tant qu'on y est ».**
 
@@ -30,6 +32,8 @@ La première version de ce dataset prenait **toutes** les dates de publication d
 | Donkey Kong Country · PAL | 2014 *(Wii U)* | **1994** |
 
 La source portait pourtant l'information : **le qualificateur de plateforme est sur la déclaration de date**. L'émetteur ne retient désormais que les dates rattachées à la plateforme curée, et 706 « sorties » tombent à **408** — les 298 disparues étaient des rééditions sur d'autres machines.
+
+Le complément Wikipédia a ensuite ramené le total à **663 sorties** réellement rattachées à leur plateforme, dont 559 avec région. Le solde net par rapport aux 706 d'origine est donc de **−43**, mais aucune des 663 n'est une réédition prise pour une sortie d'origine.
 
 ## ⚠️ Ce que ce dataset ne peut PAS dire
 

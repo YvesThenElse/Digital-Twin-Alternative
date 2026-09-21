@@ -90,9 +90,11 @@ Letterboxd distingue **« vu »** (sans date) du **journal** (avec date exacte).
 
 ## 4. Ce que le benchmark change
 
-### 4.1 §2.3 est à réécrire
+### 4.1 §2.3 était à réécrire
 
-La formulation actuelle — « aucun de ces produits ne traite correctement la combinaison suivante » — est **défendable sur la combinaison et fausse item par item**. Elle donne une fausse assurance :
+> ✅ **Fait le 21 septembre 2026.** [SPECIFICATION.md](./SPECIFICATION.md) §2.3 porte désormais la sélection massive en tête (§2.3.0), le tableau de verdicts ci-dessous (§2.3.1), la jointure réellement vacante (§2.3.2), le caractère copiable du type (§2.3.3) et la réserve sur la demande (§2.3.4). Ce qui suit est le constat d'origine, conservé.
+
+La formulation de la v1 — « aucun de ces produits ne traite correctement la combinaison suivante » — est **défendable sur la combinaison et fausse item par item**. Elle donne une fausse assurance :
 
 | # | Revendication | Verdict |
 |---|---|---|

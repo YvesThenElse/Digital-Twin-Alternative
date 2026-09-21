@@ -101,7 +101,7 @@ python3 analyze.py sample.json strata.json
 
 > ⚠️ **Ces scripts ne sont pas du code produit.** Ce sont des outils de mesure jetables, en Python parce que c'était le plus court chemin vers le chiffre. Ils ne préjugent d'aucun choix technique — la pile reste .NET 10 et React ([PHASING.md](../PHASING.md) §4).
 >
-> Ils n'interrogent que **Wikidata**, seule source autorisée par [VERIFICATION-JURIDIQUE.md](../VERIFICATION-JURIDIQUE.md) §5, et sous licence CC0 — la règle « aucun script ne parcourt une source tierce » est respectée.
+> Ils n'interrogent que **Wikidata** (CC0) et **Wikipédia** (CC BY-SA 4.0), les deux seules sources autorisées par [VERIFICATION-JURIDIQUE.md](../VERIFICATION-JURIDIQUE.md) §5 — la règle « aucun script ne parcourt une source tierce » est respectée. Les scripts Wikipédia (`wp_dates.py`, `fetch_covers.py`) sont postérieurs à la correction du 21 septembre ; les autres sont antérieurs et n'interrogeaient que Wikidata.
 
 ## Données
 

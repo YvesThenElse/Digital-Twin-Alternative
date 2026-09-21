@@ -55,17 +55,56 @@ La v1 ne contenait aucune analyse concurrentielle. C'est le principal angle mort
 > ✅ **Fait** — [BENCHMARK-CONCURRENTIEL.md](./BENCHMARK-CONCURRENTIEL.md), 20 septembre 2026. Le tableau ci-dessus est confirmé dans ses catégories. Les périmètres évoluant vite, le document de benchmark porte la date de vérification et la liste de ce qui reste à contrôler.
 
 ### 2.3 Différenciateur revendiqué
-> ⚠️ **Cette formulation est à réviser** ([BENCHMARK-CONCURRENTIEL.md](./BENCHMARK-CONCURRENTIEL.md) §4.1). Elle est vraie de la **combinaison** et fausse **item par item** : seul le point 2 est réellement vacant. Le point 3 est occupé par des produits meilleurs que nous sur ce seul point (VGCollect, GameEye), le point 1 par Backloggd, le point 5 sur un an par les rétrospectives.
->
-> Surtout, l'écart le plus large constaté ne figure pas dans la liste : **aucun produit ne propose de sélection massive par plateforme et par période** (§24.3). C'est un avantage de geste, pas de modèle, et il doit devenir le point 0 de cette liste.
 
-Aucun de ces produits ne traite correctement, à notre connaissance, la combinaison suivante — qui constitue le pari du projet :
+> ✅ **Réécrit le 21 septembre 2026**, après [BENCHMARK-CONCURRENTIEL.md](./BENCHMARK-CONCURRENTIEL.md) (20 septembre). La v1 affirmait qu'aucun produit ne traitait « correctement la combinaison suivante », puis listait cinq points. C'était défendable sur la combinaison et **faux point par point** — et cette formulation a servi à décider. Ce qui suit dit ce qui est occupé, ce qui est vacant, et ce qui reste à prouver.
 
-1. **Reconstruction rétroactive sur plusieurs décennies**, y compris la période pré-numérique où aucune donnée n'existe ;
-2. **Incertitude temporelle assumée** (§7) plutôt que des dates inventées ou absentes ;
-3. **Granularité d'édition** : le même titre possédé plusieurs fois, sur plusieurs supports, à plusieurs époques (§6) ;
-4. **Séparation possession / expérience** (§4.2) ;
-5. **Restitution narrative** : la timeline, pas la liste.
+#### 2.3.0 Le différenciateur principal est un geste, pas un modèle
+
+> **La sélection massive par plateforme et par période** : console → période approximative → cocher *joué / terminé / possédé* (§24.3).
+
+C'est l'écart le plus large constaté sur le panel. **Tous les produits examinés saisissent titre par titre, par recherche.** Aucun ne propose d'entrer trente jeux en trois minutes.
+
+Il ne figurait dans aucune des cinq revendications de la v1, alors que §24 le désigne déjà comme « la caractéristique majeure du produit ». §2 et §24 ne se parlaient pas, et c'est §2 qui sert à arbitrer. Il est désormais **en tête**, et c'est lui qui gouverne les priorités de la Phase 1.
+
+Conséquence : reconstruire une histoire de trente ans n'est pas un problème de modèle de données, c'est un problème de **débit de saisie**. Un modèle temporel parfait derrière un formulaire titre-par-titre ne se distingue de rien.
+
+#### 2.3.1 État des cinq revendications de la v1
+
+| # | Revendication | Verdict |
+|---|---|---|
+| 1 | Reconstruction rétroactive sur plusieurs décennies | **Occupé.** Backloggd et les catalogueurs le permettent. Ce qui manque partout, c'est de le faire *vite* — voir §2.3.0 |
+| 2 | Incertitude temporelle assumée (§7) | **Vacant.** Le seul point qu'aucun acteur du panel n'aborde. Voir la réserve en §2.3.4 |
+| 3 | Granularité d'édition (§6) | **Occupé, et mieux.** VGCollect et GameEye sont des produits dédiés à cela. Ce n'est pas un terrain d'attaque |
+| 4 | Séparation possession / expérience (§4.2) | **Partiellement occupé.** Existe partout comme étiquette, nulle part comme deux axes indépendants |
+| 5 | Restitution narrative — la timeline, pas la liste | **Occupé sur un an** (Steam Replay, rétrospectives annuelles). **Vacant sur trente** |
+
+Ces cinq points restent des **exigences du produit**. Ils cessent d'être des arguments de différenciation pris isolément.
+
+#### 2.3.2 Ce qui est réellement vacant
+
+Le pari tient sur la **jointure**, plus étroite que ce qu'annonçait la v1 :
+
+> Les catalogueurs ont l'objet sans le vécu. Les journaux ont le vécu sans l'objet. **Personne n'a le temps long** — ni l'un ni l'autre ne reconstitue trente ans, parce que ni l'un ni l'autre n'a de réponse à « je ne me souviens pas de la date ».
+
+C'est la conjonction de §2.3.0 (le débit), du point 2 (l'incertitude) et du point 5 sur trente ans (la restitution) qui constitue le projet. Séparément, chacun des trois a un titulaire ou un substitut acceptable.
+
+#### 2.3.3 Ce que le modèle ne protège pas
+
+`TemporalValue` est une bonne idée et **une idée copiable en une itération**. Ajouter « année approximative » à un journal qui a déjà les utilisateurs, le référentiel et le flux de saisie représente quelques semaines de travail.
+
+Ce qui ne se copie pas en une itération : le flux de saisie massive complet, le référentiel curé avec notoriété et région ([COUT-DE-CURATION.md](./COUT-DE-CURATION.md) : 6 mois à 3,5 ans-personne pour 30 000 entrées), et les parcours que les utilisateurs auront eux-mêmes produits.
+
+> **La défense est l'accumulation, pas le type.** Conséquence directe sur la discipline de phases : atteindre la Phase 2 a plus de valeur que perfectionner le modèle.
+
+#### 2.3.4 Ce qui reste à prouver
+
+Le point 2 est vacant. **Rien ne dit qu'il est vacant parce que personne n'y a pensé.** La réponse binaire « date exacte ou rien » est bon marché et satisfait peut-être la majorité des gens — auquel cas l'incertitude temporelle est un coût, pas un avantage.
+
+C'est testable en Phase 2, et la question à poser n'est pas « aimez-vous les bandes d'incertitude » mais :
+
+> **« Auriez-vous préféré simplement cocher *joué*, sans date ? »**
+
+Si la réponse majoritaire est oui, la conséquence est de **simplifier la saisie**, pas de mieux expliquer le modèle. Cela rejoint la porte dure de la Phase 2.
 
 ### 2.4 Tension centrale à assumer
 Le différenciateur du produit et sa principale difficulté sont **la même chose** : la période la plus intéressante à reconstruire (avant ~2010) est précisément celle pour laquelle aucun import automatique n'existe. Tout le travail de réduction de friction (§24) porte donc sur de la saisie assistée, pas sur de l'import. Voir aussi la limite documentée des imports en Phase 4 de [PHASING.md](./PHASING.md).

@@ -2,7 +2,7 @@
 
 > Livrable de la [Phase 0](./PHASING.md) §3, en réponse à [SPECIFICATION.md](./SPECIFICATION.md) §18.6 — « ce coût doit être évalué explicitement en Phase 0, car il conditionne à la fois le calendrier et le modèle économique ».
 >
-> Il s'appuie sur [VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md), qui ferme la question des sources : **Wikidata (CC0) est la seule source réutilisable**, ce qui déplace tout le coût vers la vérification et l'enrichissement.
+> Il s'appuie sur [VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md), qui ferme la question des sources : **deux sources sont réutilisables sans accord** — Wikidata (CC0) et Wikipédia (CC BY-SA 4.0) — ce qui déplace tout le coût vers la vérification et l'enrichissement. *(La première version de ce document n'en comptait qu'une : Wikipédia avait été écartée sans être examinée. L'ajouter réduit l'enrichissement à produire, pas la vérification à faire.)*
 
 ---
 

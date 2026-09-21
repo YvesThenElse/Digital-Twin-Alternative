@@ -2,7 +2,9 @@
 
 > Livrable de la [Phase 0](./PHASING.md) §3, en réponse à [SPECIFICATION.md](./SPECIFICATION.md) §19.1 — « vérifier les CGU **avant** tout import, pas après ».
 >
-> **Vérifié le 20 septembre 2026.** Deux résultats commandent la suite : **une seule source de métadonnées est réutilisable sans accord** (Wikidata, CC0), et **la voie « sources ouvertes » retenue pour les jaquettes n'existe pas** — Wikimedia Commons n'héberge pas de jaquettes.
+> **Vérifié le 20 septembre 2026, corrigé le 21.** Deux résultats commandent la suite : **deux sources de métadonnées sont réutilisables sans accord** — Wikidata (CC0) et Wikipédia (CC BY-SA 4.0, avec attribution et partage à l'identique) — et **la voie « sources ouvertes » retenue pour les jaquettes n'existe pas** : Wikimedia Commons n'héberge pas de jaquettes.
+>
+> ⚠️ La première version de ce document ne retenait que Wikidata. Wikipédia avait été écartée avec les bases commerciales, sur un motif — l'interdiction de redistribution — qui ne lui est pas applicable. Voir l'encart de §2.
 
 ---
 
