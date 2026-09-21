@@ -1243,3 +1243,34 @@ impardonnable sur le seul contenu du produit qui ne soit pas régénérable.
 > irremplaçable, les stocker séparément. Le couplage qui paraît naturel dans
 > le modèle mental — « la note appartient à la déclaration » — détruit la
 > donnée coûteuse quand la donnée bon marché change.
+
+### 36 — L'unité couvrait ce que l'écran ne vérifiait pas
+
+Retirer le titre de la tuile composée cassait deux tests **du composant
+Tuile**, et aucun de l'écran. Or c'est à l'écran que la faute compte : une
+grille d'aplats colorés sans texte se lit comme une série d'images qui n'ont
+pas chargé — exactement le « trou » que l'item interdit.
+
+Le test d'intégration vérifiait le type de tuile et son format, pas son
+contenu. Il passait donc sur une tuile vide, qui a le bon type et le bon
+format.
+
+> **Règle** — quand un test unitaire couvre une propriété *visible*, se
+> demander si l'écran qui l'assemble la vérifie aussi. L'unité prouve que le
+> composant sait la produire ; seule l'intégration prouve qu'il est utilisé de
+> façon à la montrer.
+
+**Une décision de conception, prise sur la foi d'une mesure déjà faite.** La
+grille desktop n'est justifiée que là où de vraies jaquettes existent : « une
+tuile générée est du texte sur un fond coloré, donc on la lit au lieu de la
+reconnaître ». Avec 218 jaquettes sur 221, la condition est remplie — et la
+tuile composée reste le socle permanent, pas un repli d'erreur.
+
+C'est pourquoi un manifeste de jaquettes absent donne **silencieusement** un
+catalogue tout en tuiles composées, là où un dataset absent empêche le
+démarrage. Le premier est un état valide du produit, le second non.
+
+> **Règle** — avant de faire échouer fort sur une donnée manquante, se
+> demander si son absence décrit un **état valide du produit**. Échouer sur
+> un défaut prévu par la conception est aussi faux que passer sous silence
+> une donnée corrompue.

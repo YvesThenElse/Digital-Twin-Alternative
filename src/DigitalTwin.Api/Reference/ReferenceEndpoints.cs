@@ -19,10 +19,15 @@ public sealed record ReleaseView(string? Region, string Date, string Precision, 
 /// Une œuvre vue depuis <b>une</b> plateforme : son rang y est propre, et ses
 /// sorties comme son statut régional n'y décrivent que cette machine.
 /// </summary>
+/// <param name="CoverUrl">
+/// <c>null</c> quand aucune jaquette n'existe — l'écran compose alors une
+/// tuile, qui est le socle permanent de §19.2 et non un repli d'erreur.
+/// </param>
 public sealed record WorkView(
     string Id, string Title, int Notability,
     IReadOnlyList<ReleaseView> Releases,
-    IReadOnlyDictionary<string, string> RegionStatus);
+    IReadOnlyDictionary<string, string> RegionStatus,
+    string? CoverUrl);
 
 public static class ReferenceEndpoints
 {
@@ -71,7 +76,9 @@ public static class ReferenceEndpoints
                         .Where(r => r.WorkId == w.CanonicalId && r.PlatformId == platformId)
                         .OrderBy(r => r.Date)
                         .Select(r => new ReleaseView(r.Region, r.Date, r.Precision, r.Confidence))],
-                    Statuts(w, platformId)))
+                    Statuts(w, platformId),
+                    source.WorksWithCover.Contains(w.CanonicalId)
+                        ? $"/covers/{w.CanonicalId}" : null))
                 .ToList();
 
             return Results.Ok(oeuvres);

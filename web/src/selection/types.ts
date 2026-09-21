@@ -15,6 +15,11 @@ export type Oeuvre = {
    * quand aucune date n'est exploitable.
    */
   sortie: ValeurTemporelle | null;
+  /**
+   * L'URL de la jaquette, ou `null`. Trois œuvres sur 221 n'en auront
+   * jamais : la tuile générée est alors la réponse, pas un trou.
+   */
+  couverture: string | null;
   regions: string[];
   /** Les trois états de §3.4 : absent de la table = sortie attestée. */
   statutRegional: Record<string, "notReleased" | "unknown">;

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using DigitalTwin.Domain.Reference;
 
 namespace DigitalTwin.Api.Reference;
@@ -20,6 +21,17 @@ public sealed class ReferenceCatalogSource
 {
     public DatasetLoadResult Dataset { get; }
 
+    /// <summary>
+    /// Les œuvres pour lesquelles une jaquette existe.
+    ///
+    /// <para>Un manifeste absent donne un catalogue <b>sans aucune
+    /// jaquette</b>, et c'est délibérément silencieux : §19.2 fait de la
+    /// tuile générée le socle permanent, pas un repli d'erreur. Tout
+    /// afficher en tuiles composées reste un état valide du produit — à la
+    /// différence d'un dataset manquant, qui ne l'est pas.</para>
+    /// </summary>
+    public IReadOnlySet<string> WorksWithCover { get; }
+
     public ReferenceCatalogSource(string chemin)
     {
         if (!File.Exists(chemin))
@@ -30,6 +42,8 @@ public sealed class ReferenceCatalogSource
         }
 
         Dataset = DatasetLoader.Load(File.ReadAllText(chemin));
+
+        WorksWithCover = LireManifeste(chemin);
 
         if (!Dataset.IsValid)
         {
@@ -44,6 +58,21 @@ public sealed class ReferenceCatalogSource
                 $"Référentiel fautif ({Dataset.Violations.Count} anomalie(s)) dans "
                 + $"« {chemin} » :\n  {anomalies}{reste}");
         }
+    }
+
+    /// <summary>
+    /// Le manifeste des jaquettes, s'il est là. Il vit à côté du dataset.
+    /// </summary>
+    private static IReadOnlySet<string> LireManifeste(string cheminDataset)
+    {
+        var manifeste = Path.Combine(
+            Path.GetDirectoryName(cheminDataset) ?? ".", "covers", "MANIFEST.json");
+        if (!File.Exists(manifeste)) return new HashSet<string>(StringComparer.Ordinal);
+
+        using var doc = JsonDocument.Parse(File.ReadAllText(manifeste));
+        return doc.RootElement.EnumerateObject()
+            .Select(e => e.Name)
+            .ToHashSet(StringComparer.Ordinal);
     }
 
     /// <summary>

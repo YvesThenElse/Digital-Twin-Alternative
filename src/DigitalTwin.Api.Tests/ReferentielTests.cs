@@ -191,6 +191,42 @@ public class ReferentielTests
             StringComparison.Ordinal);
     }
 
+    // ------------------------------------------------------------ jaquettes
+
+    [Fact]
+    public async Task Les_oeuvres_avec_jaquette_en_portent_l_adresse()
+    {
+        // 218 des 221 œuvres en ont une. Sans cette adresse, l'écran ne peut
+        // pas choisir entre la jaquette et la tuile composée — et la grille
+        // desktop, qui repose sur la reconnaissance sans lecture, perdrait sa
+        // justification.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var snes = await IdPlateforme(client, "Super Nintendo Entertainment System");
+
+        var oeuvres = await Lire(client, $"/platforms/{snes}/works");
+        var avec = oeuvres.EnumerateArray()
+            .Count(w => w.GetProperty("coverUrl").ValueKind != JsonValueKind.Null);
+
+        Assert.True(avec >= 30, $"seulement {avec} jaquettes sur 35 titres Super Nintendo");
+    }
+
+    [Fact]
+    public async Task Une_oeuvre_sans_jaquette_rend_null_et_non_une_adresse_morte()
+    {
+        // Une URL qui ne mène nulle part produirait une image cassée dans la
+        // grille — pire qu'un trou, parce que ça ressemble à une panne.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var snes = await IdPlateforme(client, "Super Nintendo Entertainment System");
+
+        var oeuvres = await Lire(client, $"/platforms/{snes}/works");
+        var simCity = oeuvres.EnumerateArray()
+            .Single(w => w.GetProperty("title").GetString() == "Sim City");
+
+        Assert.Equal(JsonValueKind.Null, simCity.GetProperty("coverUrl").ValueKind);
+    }
+
     // --------------------------------------------------------------- œuvres
 
     [Fact]

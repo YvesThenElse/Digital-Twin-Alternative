@@ -5,9 +5,9 @@ import { SelectionMassive } from "./SelectionMassive";
 import type { Oeuvre } from "./types";
 
 const oeuvres: Oeuvre[] = [
-  { id: "w1", titre: "Super Mario World", rang: 1, sortie: { kind: "Year", year: 1990 }, regions: ["PAL"], statutRegional: {} },
-  { id: "w2", titre: "A Link to the Past", rang: 2, sortie: { kind: "Year", year: 1991 }, regions: ["PAL"], statutRegional: {} },
-  { id: "w3", titre: "Chrono Trigger", rang: 3, sortie: { kind: "Year", year: 1995 }, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" } },
+  { id: "w1", titre: "Super Mario World", rang: 1, sortie: { kind: "Year", year: 1990 }, couverture: null, regions: ["PAL"], statutRegional: {} },
+  { id: "w2", titre: "A Link to the Past", rang: 2, sortie: { kind: "Year", year: 1991 }, couverture: null, regions: ["PAL"], statutRegional: {} },
+  { id: "w3", titre: "Chrono Trigger", rang: 3, sortie: { kind: "Year", year: 1995 }, couverture: null, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" } },
 ];
 
 function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {}) {
@@ -18,6 +18,7 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
     <SelectionMassive
       oeuvres={oeuvres}
       region="PAL"
+      disposition="liste"
       envoyer={envoyer}
       ecrireSouvenir={ecrireSouvenir}
       recharger={recharger}
@@ -108,7 +109,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     monter({
       oeuvres: [
-        { id: "x", titre: "Sans date", rang: 1, sortie: null, regions: [], statutRegional: {} },
+        { id: "x", titre: "Sans date", rang: 1, sortie: null, couverture: null, regions: [], statutRegional: {} },
       ],
     });
 
@@ -125,9 +126,9 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     // dans l'ordre d'arrivée ferait dépendre l'écran de l'API.
     monter({
       oeuvres: [
-        { id: "c", titre: "Troisième", rang: 3, sortie: { kind: "Year", year: 1995 }, regions: [], statutRegional: {} },
-        { id: "a", titre: "Premier", rang: 1, sortie: { kind: "Year", year: 1990 }, regions: [], statutRegional: {} },
-        { id: "b", titre: "Deuxième", rang: 2, sortie: { kind: "Year", year: 1992 }, regions: [], statutRegional: {} },
+        { id: "c", titre: "Troisième", rang: 3, sortie: { kind: "Year", year: 1995 }, couverture: null, regions: [], statutRegional: {} },
+        { id: "a", titre: "Premier", rang: 1, sortie: { kind: "Year", year: 1990 }, couverture: null, regions: [], statutRegional: {} },
+        { id: "b", titre: "Deuxième", rang: 2, sortie: { kind: "Year", year: 1992 }, couverture: null, regions: [], statutRegional: {} },
       ],
     });
 
@@ -173,7 +174,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     },
   ])("affiche une sortie datée $nom avec sa propre précision", ({ sortie, texte, forme }) => {
     monter({
-      oeuvres: [{ id: "x", titre: "Un jeu", rang: 1, sortie, regions: [], statutRegional: {} }],
+      oeuvres: [{ id: "x", titre: "Un jeu", rang: 1, sortie, couverture: null, regions: [], statutRegional: {} }],
     });
 
     const date = screen.getByText(texte);
@@ -189,7 +190,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
         {
           id: "x", titre: "Un jeu", rang: 1,
           sortie: { kind: "Year", year: 1994 },
-          regions: [], statutRegional: {},
+          couverture: null, regions: [], statutRegional: {},
         },
       ],
     });
@@ -204,8 +205,8 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     // croire que toutes les dates se valent.
     monter({
       oeuvres: [
-        { id: "j", titre: "Au jour", rang: 1, sortie: { kind: "ExactDate", date: "1994-03-15" }, regions: [], statutRegional: {} },
-        { id: "a", titre: "À l'année", rang: 2, sortie: { kind: "Year", year: 1994 }, regions: [], statutRegional: {} },
+        { id: "j", titre: "Au jour", rang: 1, sortie: { kind: "ExactDate", date: "1994-03-15" }, couverture: null, regions: [], statutRegional: {} },
+        { id: "a", titre: "À l'année", rang: 2, sortie: { kind: "Year", year: 1994 }, couverture: null, regions: [], statutRegional: {} },
       ],
     });
 
@@ -218,7 +219,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     // en toutes lettres distingue « on ne sait pas » de « il manque quelque
     // chose ».
     monter({
-      oeuvres: [{ id: "x", titre: "Un jeu", rang: 1, sortie: null, regions: [], statutRegional: {} }],
+      oeuvres: [{ id: "x", titre: "Un jeu", rang: 1, sortie: null, couverture: null, regions: [], statutRegional: {} }],
     });
 
     expect(screen.getByText("date inconnue")).toHaveAttribute("data-forme", "aucune");
@@ -230,10 +231,10 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     lignes().find((l) => l.textContent?.includes(titre))!;
 
   it.each([
-    { nom: "sorti", oeuvre: { regions: ["PAL"], statutRegional: {} }, statut: "sorti", texte: /Sorti en Europe/ },
-    { nom: "jamais sorti", oeuvre: { regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" as const } }, statut: "jamais-sorti", texte: /Jamais sorti en Europe/ },
-    { nom: "inconnu", oeuvre: { regions: ["NTSC-U"], statutRegional: {} }, statut: "inconnu", texte: /inconnue/ },
-    { nom: "mondiale", oeuvre: { regions: ["WORLDWIDE"], statutRegional: {} }, statut: "mondiale", texte: /mondiale/ },
+    { nom: "sorti", oeuvre: { couverture: null, regions: ["PAL"], statutRegional: {} }, statut: "sorti", texte: /Sorti en Europe/ },
+    { nom: "jamais sorti", oeuvre: { couverture: null, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" as const } }, statut: "jamais-sorti", texte: /Jamais sorti en Europe/ },
+    { nom: "inconnu", oeuvre: { couverture: null, regions: ["NTSC-U"], statutRegional: {} }, statut: "inconnu", texte: /inconnue/ },
+    { nom: "mondiale", oeuvre: { couverture: null, regions: ["WORLDWIDE"], statutRegional: {} }, statut: "mondiale", texte: /mondiale/ },
   ])("affiche « $nom » distinctement sur la ligne", ({ oeuvre: partiel, statut, texte }) => {
     monter({
       oeuvres: [{
@@ -254,10 +255,10 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     // contraste.
     monter({
       oeuvres: [
-        { id: "a", titre: "Sorti", rang: 1, sortie: null, regions: ["PAL"], statutRegional: {} },
-        { id: "b", titre: "Jamais", rang: 2, sortie: null, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" } },
-        { id: "c", titre: "Inconnu", rang: 3, sortie: null, regions: ["NTSC-U"], statutRegional: {} },
-        { id: "d", titre: "Monde", rang: 4, sortie: null, regions: ["WORLDWIDE"], statutRegional: {} },
+        { id: "a", titre: "Sorti", rang: 1, sortie: null, couverture: null, regions: ["PAL"], statutRegional: {} },
+        { id: "b", titre: "Jamais", rang: 2, sortie: null, couverture: null, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" } },
+        { id: "c", titre: "Inconnu", rang: 3, sortie: null, couverture: null, regions: ["NTSC-U"], statutRegional: {} },
+        { id: "d", titre: "Monde", rang: 4, sortie: null, couverture: null, regions: ["WORLDWIDE"], statutRegional: {} },
       ],
     });
 
@@ -285,7 +286,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const oeuvre = {
       id: "x", titre: "Chrono Trigger", rang: 1,
       sortie: { kind: "Year" as const, year: 1995 },
-      regions: ["NTSC-J", "NTSC-U"],
+      couverture: null, regions: ["NTSC-J", "NTSC-U"],
       statutRegional: { PAL: "notReleased" as const },
     };
 
@@ -295,6 +296,86 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     rendu.unmount();
     monter({ oeuvres: [oeuvre], region: "NTSC-J" });
     expect(screen.getByText(/Sorti en Japon/)).toBeInTheDocument();
+  });
+
+  // ---------------------------- deux dispositions, pas une étirée (§6)
+
+  const liste = () => screen.getByRole("list");
+
+  it("balaye du TEXTE en liste : pas de tuile sur mobile", () => {
+    // « On balaye une liste sur téléphone, une grille sur écran large. »
+    // Mettre des vignettes dans la liste dense volerait la place du titre,
+    // qui est ce que l'œil cherche.
+    const { rendu } = monter({ disposition: "liste" });
+
+    expect(liste()).toHaveAttribute("data-disposition", "liste");
+    expect(rendu.container.querySelector("[data-tuile]")).toBeNull();
+  });
+
+  it("tient la hauteur de ligne de 56 px en liste", () => {
+    // La densité vient du nombre d'éléments visibles, jamais de la
+    // compression des cibles : 56 px de ligne pour une cible ≥ 44 px.
+    monter({ disposition: "liste" });
+
+    const items = liste().querySelectorAll("li");
+    expect(items).toHaveLength(3);
+    for (const item of items) expect(item).toHaveAttribute("data-hauteur", "56");
+  });
+
+  it("balaye des IMAGES en grille : une tuile par jeu", () => {
+    const { rendu } = monter({ disposition: "grille" });
+
+    expect(liste()).toHaveAttribute("data-disposition", "grille");
+    expect(rendu.container.querySelectorAll("[data-tuile]")).toHaveLength(3);
+  });
+
+  it("ne contraint pas la hauteur en grille", () => {
+    // La grille n'est pas une liste étirée : imposer 56 px y écraserait la
+    // tuile, dont le format 3:4 est ce qui rend la grille régulière.
+    monter({ disposition: "grille" });
+
+    for (const item of liste().querySelectorAll("li")) {
+      expect(item).not.toHaveAttribute("data-hauteur");
+    }
+  });
+
+  it("compose une tuile pour un jeu sans jaquette, jamais un trou", () => {
+    // Trois œuvres sur 221 n'en auront jamais. Un vide dans la grille se
+    // lirait comme un défaut de chargement.
+    const { rendu } = monter({
+      disposition: "grille",
+      oeuvres: [
+        { id: "a", titre: "Avec", rang: 1, sortie: { kind: "Year", year: 1990 }, couverture: "/a.png", regions: [], statutRegional: {} },
+        { id: "b", titre: "Sans", rang: 2, sortie: { kind: "Year", year: 1990 }, couverture: null, regions: [], statutRegional: {} },
+      ],
+    });
+
+    const tuiles = [...rendu.container.querySelectorAll("[data-tuile]")];
+    expect(tuiles.map((t) => t.getAttribute("data-tuile"))).toEqual(["jaquette", "generee"]);
+    // Les deux gardent le même format : la grille ne paraît pas rapiécée.
+    expect(tuiles.every((t) => t.getAttribute("data-ratio") === "3:4")).toBe(true);
+
+    // Et la composée MONTRE son titre. Un aplat de couleur sans texte serait
+    // exactement le trou que cet item interdit — l'œil le lirait comme une
+    // image qui n'a pas chargé.
+    const composee = tuiles[1];
+    expect(composee.querySelector('[data-role="titre-tuile"]')?.textContent).toBe("Sans");
+    expect((composee as HTMLElement).style.backgroundColor).not.toBe("");
+  });
+
+  it("garde la cellule entière comme cible dans les deux dispositions", async () => {
+    // Le budget d'un tap par jeu ne dépend pas de l'écran.
+    const utilisateur = userEvent.setup();
+    const { rendu } = monter({ disposition: "grille" });
+
+    await utilisateur.click(lignes()[0]);
+
+    expect(bande()).toHaveAttribute("data-total", "1");
+    rendu.unmount();
+
+    monter({ disposition: "liste" });
+    await utilisateur.click(lignes()[0]);
+    expect(bande()).toHaveAttribute("data-total", "1");
   });
 
   // ------------------------------------------------ le souvenir (§9)

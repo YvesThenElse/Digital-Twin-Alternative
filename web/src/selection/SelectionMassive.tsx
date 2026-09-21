@@ -2,7 +2,9 @@ import { useMemo, useRef, useState } from "react";
 import { BandeDEpoque } from "./BandeDEpoque";
 import { StatutRegional } from "../region/StatutRegional";
 import { statutRegion } from "../region/statut";
-import { forme, libelle } from "../temporel/valeur";
+import { Tuile } from "../disposition/Tuile";
+import type { Disposition } from "../disposition/epoque";
+import { anneeDe, forme, libelle } from "../temporel/valeur";
 import { construireBande } from "./bande";
 import type { Oeuvre } from "./types";
 
@@ -21,6 +23,12 @@ type Props = {
    * ce choix visible.
    */
   region: string;
+  /**
+   * La stratégie de lecture. **Pas une largeur** : le composant ne décide pas
+   * du point de rupture, `dispositionPour` le fait, et le parent l'observe.
+   * Deux stratégies, jamais une disposition étirée (§6).
+   */
+  disposition: Disposition;
   envoyer: (lot: LotDeclaration) => Promise<void>;
   /**
    * Enregistre un souvenir. Requis, sans valeur par défaut : un rappel
@@ -44,7 +52,7 @@ type Props = {
  * affichage optimiste.
  */
 export function SelectionMassive({
-  oeuvres, region, envoyer, ecrireSouvenir, recharger,
+  oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger,
 }: Props) {
   const [declarees, setDeclarees] = useState<Set<string>>(new Set());
   const [erreur, setErreur] = useState<string | null>(null);
@@ -91,21 +99,31 @@ export function SelectionMassive({
 
   return (
     <section>
-      <ul>
+      <ul data-disposition={disposition}>
         {ordonnees.map((oeuvre) => {
           const declare = declarees.has(oeuvre.id);
+          const enGrille = disposition === "grille";
           return (
-            <li key={oeuvre.id}>
-              {/* La LIGNE ENTIÈRE est la cible : quatre cibles de 44 px
-                  occuperaient 200 px et ne laisseraient que 143 px de titre
-                  sur un écran de 375 px — sur l'écran dont toute la mécanique
-                  repose sur la reconnaissance. */}
+            <li key={oeuvre.id} data-hauteur={enGrille ? undefined : 56}>
+              {/* La CELLULE ENTIÈRE est la cible, en liste comme en grille :
+                  quatre cibles de 44 px occuperaient 200 px et ne laisseraient
+                  que 143 px de titre sur un écran de 375 px — sur l'écran dont
+                  toute la mécanique repose sur la reconnaissance. */}
               <button
                 type="button"
                 aria-pressed={declare}
                 aria-label={declare ? `Déclaré : ${oeuvre.titre}` : `Déclarer : ${oeuvre.titre}`}
                 onClick={() => basculer(oeuvre.id)}
               >
+                {/* La grille balaye des IMAGES, la liste balaye du TEXTE :
+                    deux stratégies de lecture, pas une disposition étirée. */}
+                {enGrille ? (
+                  <Tuile
+                    titre={oeuvre.titre}
+                    annee={oeuvre.sortie ? anneeDe(oeuvre.sortie) : null}
+                    couverture={oeuvre.couverture}
+                  />
+                ) : null}
                 <span>{oeuvre.titre}</span>
                 {/* La date porte SA granularité : une année seule ne s'affiche
                     pas comme une date au jour. 31 sorties du dataset ne sont
