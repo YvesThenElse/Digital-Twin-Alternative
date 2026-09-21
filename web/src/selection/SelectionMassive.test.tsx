@@ -12,17 +12,19 @@ const oeuvres: Oeuvre[] = [
 
 function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {}) {
   const envoyer = vi.fn().mockResolvedValue(undefined);
+  const ecrireSouvenir = vi.fn().mockResolvedValue(undefined);
   const recharger = vi.fn();
   const rendu = render(
     <SelectionMassive
       oeuvres={oeuvres}
       region="PAL"
       envoyer={envoyer}
+      ecrireSouvenir={ecrireSouvenir}
       recharger={recharger}
       {...surcharge}
     />,
   );
-  return { envoyer, recharger, rendu };
+  return { envoyer, ecrireSouvenir, recharger, rendu };
 }
 
 const bande = () => screen.getByTestId("bande-epoque");
@@ -293,6 +295,83 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     rendu.unmount();
     monter({ oeuvres: [oeuvre], region: "NTSC-J" });
     expect(screen.getByText(/Sorti en Japon/)).toBeInTheDocument();
+  });
+
+  // ------------------------------------------------ le souvenir (§9)
+
+  const souvenirDe = (titre: string) =>
+    within(lignePour(titre).closest("li")!).queryByRole("textbox");
+
+  it("ne propose pas d'écrire un souvenir sur une ligne non déclarée", async () => {
+    // L'écran le plus dense du produit : une zone de texte par ligne non
+    // cochée occuperait la place et suggérerait un travail à faire.
+    monter();
+
+    expect(souvenirDe("Super Mario World")).toBeNull();
+  });
+
+  it("propose d'écrire un souvenir dès qu'une ligne est déclarée", async () => {
+    // « Sans quitter la sélection » : le champ apparaît sur place. Ouvrir un
+    // écran pour une phrase casserait le rythme de la saisie.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+
+    expect(souvenirDe("Super Mario World")).toBeInTheDocument();
+  });
+
+  it("enregistre le souvenir saisi, sans quitter l'écran", async () => {
+    const utilisateur = userEvent.setup();
+    const { ecrireSouvenir } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    const champ = souvenirDe("Super Mario World")!;
+    await utilisateur.type(champ, "Noël 1992, chez ma grand-mère.");
+    await utilisateur.tab();
+
+    expect(ecrireSouvenir).toHaveBeenCalledWith("w1", "Noël 1992, chez ma grand-mère.");
+  });
+
+  it("n'enregistre rien quand le champ reste vide", async () => {
+    // §9 est un complément, jamais un passage obligé : exiger une phrase par
+    // jeu détruirait le budget d'un tap par ligne.
+    const utilisateur = userEvent.setup();
+    const { ecrireSouvenir } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(souvenirDe("Super Mario World")!);
+    await utilisateur.tab();
+
+    expect(ecrireSouvenir).not.toHaveBeenCalled();
+  });
+
+  it("garde le texte à l'écran après l'enregistrement", async () => {
+    // Le voir disparaître ferait croire à une perte — sur le contenu le plus
+    // précieux du produit, et le seul qui ne soit pas régénérable.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.type(souvenirDe("Super Mario World")!, "Une phrase.");
+    await utilisateur.tab();
+
+    expect(souvenirDe("Super Mario World")).toHaveValue("Une phrase.");
+  });
+
+  it("décocher une ligne ne détruit pas le souvenir déjà écrit", async () => {
+    // Se tromper de ligne est le geste le plus fréquent de cet écran. Perdre
+    // une phrase à cause d'un tap mal placé serait impardonnable.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.type(souvenirDe("Super Mario World")!, "Une phrase.");
+    await utilisateur.tab();
+    await utilisateur.click(lignes()[0]); // on décoche
+    await utilisateur.click(lignes()[0]); // on recoche
+
+    expect(souvenirDe("Super Mario World")).toHaveValue("Une phrase.");
   });
 
   // ---------------------------------------------------- l'envoi, en arrière-plan

@@ -83,7 +83,12 @@ public sealed class EventStore(PlayerEventDbContext db)
             .Where(d => d.UserId == userId).ExecuteDeleteAsync(ct);
         var revendications = await db.UnresolvedClaims
             .Where(c => c.UserId == userId).ExecuteDeleteAsync(ct);
-        return evenements + declarations + revendications;
+        // La table la plus sensible : un souvenir est la donnée la plus
+        // personnelle du produit. L'oublier ici serait le manquement le plus
+        // grave au droit à l'effacement.
+        var souvenirs = await db.Memories
+            .Where(m => m.UserId == userId).ExecuteDeleteAsync(ct);
+        return evenements + declarations + revendications + souvenirs;
     }
 
     /// <summary>
@@ -140,6 +145,44 @@ public sealed class EventStore(PlayerEventDbContext db)
         await db.SaveChangesAsync(ct);
         return aAppliquer.Count;
     }
+
+    /// <summary>
+    /// Écrit ou révise le souvenir attaché à une cible.
+    ///
+    /// <para>Un souvenir par cible (§9.2) : en empiler deux ferait un fil de
+    /// discussion avec soi-même, et l'écran ne saurait lequel montrer. La
+    /// révision est donc une écriture en place — c'est une déclaration, pas
+    /// un événement.</para>
+    /// </summary>
+    public async Task UpsertMemoryAsync(
+        string userId, string targetKind, string targetId, string texte,
+        CancellationToken ct = default)
+    {
+        var ligne = await db.Memories.FirstOrDefaultAsync(
+            m => m.UserId == userId && m.TargetKind == targetKind
+                 && m.TargetId == targetId, ct);
+
+        if (ligne is null)
+        {
+            ligne = new MemoryRow
+            {
+                UserId = userId, TargetKind = targetKind, TargetId = targetId,
+            };
+            db.Memories.Add(ligne);
+        }
+
+        ligne.Text = texte;
+        // La date d'ÉCRITURE, jamais celle du fait raconté : celle-là vit
+        // dans l'événement que le souvenir accompagne.
+        ligne.UpdatedAt = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct);
+    }
+
+    public async Task<IReadOnlyList<MemoryRow>> ReadMemoriesAsync(
+        string userId, CancellationToken ct = default)
+        => await db.Memories.AsNoTracking()
+            .Where(m => m.UserId == userId)
+            .OrderBy(m => m.TargetId).ToListAsync(ct);
 
     /// <summary>
     /// L'identifiant de la revendication portant ce titre, en la créant si

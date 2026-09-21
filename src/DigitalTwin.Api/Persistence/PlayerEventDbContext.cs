@@ -16,6 +16,11 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
     public DbSet<PlayerEventRow> PlayerEvents => Set<PlayerEventRow>();
 
     /// <summary>
+    /// Les souvenirs — le seul contenu du produit qui ne soit pas généré (§9).
+    /// </summary>
+    public DbSet<MemoryRow> Memories => Set<MemoryRow>();
+
+    /// <summary>
     /// Les titres saisis librement, faute de fiche au référentiel (§3.5).
     /// </summary>
     public DbSet<UnresolvedClaimRow> UnresolvedClaims => Set<UnresolvedClaimRow>();
@@ -89,6 +94,19 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
         // de priorisation compterait des doublons, et le profil afficherait
         // deux fois le même jeu.
         u.HasIndex(x => new { x.UserId, x.NormalizedTitle, x.PlatformId }).IsUnique();
+
+        var m = b.Entity<MemoryRow>();
+        m.ToTable("memories");
+        // Un souvenir par cible : le réviser est normal, en empiler deux sur
+        // le même jeu ferait un fil de discussion que §9.2 ne demande pas.
+        m.HasKey(x => new { x.UserId, x.TargetKind, x.TargetId });
+        m.Property(x => x.UserId).HasColumnName("user_id").IsRequired();
+        m.Property(x => x.TargetKind).HasColumnName("target_kind").IsRequired();
+        m.Property(x => x.TargetId).HasColumnName("target_id").IsRequired();
+        m.Property(x => x.Text).HasColumnName("text").IsRequired();
+        m.Property(x => x.UpdatedAt).HasColumnName("updated_at")
+            .HasColumnType("timestamp with time zone").IsRequired();
+        m.HasIndex(x => x.UserId);
     }
 
     /// <summary>

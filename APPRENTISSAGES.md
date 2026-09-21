@@ -1213,3 +1213,33 @@ par `data-statut` — l'attribut qui existe exactement pour ça.
 unité, toutes de la même famille : assertions comptées pour des tests, ou
 tests oubliés parce qu'ils touchent le sujet de biais. La règle existe depuis
 la Phase 0 ; ce n'est pas la règle qui manque.
+
+### 35 — Une mutation peut être vide sans qu'on le voie
+
+Pour vérifier que décocher une ligne ne détruit pas le souvenir déjà écrit,
+j'ai muté la valeur du champ en `declare ? souvenir : ""`. Zéro échec — et ce
+n'était pas un trou de couverture : le champ **ne se rend que si `declare`
+est vrai**. La condition était toujours vérifiée, la mutation ne changeait
+rien.
+
+Une mutation qui ne modifie aucun comportement observable ressemble
+exactement à une mutation que les tests laissent passer. J'aurais pu en
+conclure à une faiblesse et ajouter un test inutile.
+
+> **Règle** — avant de conclure d'une mutation survivante, vérifier qu'elle
+> est **atteignable dans un état où elle diffère**. Une substitution à
+> l'intérieur d'une branche dont la condition est déjà garantie ne teste
+> rien.
+
+Rejouée à l'endroit qui compte — effacer le souvenir au décochage —, elle tue
+bien un test.
+
+**Ce qui a guidé la conception ici.** Les souvenirs vivent **hors** de
+l'ensemble des déclarations. Se tromper de ligne est le geste le plus
+fréquent de cet écran, et perdre une phrase à cause d'un tap mal placé serait
+impardonnable sur le seul contenu du produit qui ne soit pas régénérable.
+
+> **Règle** — quand deux états sont liés à l'écran mais que l'un est
+> irremplaçable, les stocker séparément. Le couplage qui paraît naturel dans
+> le modèle mental — « la note appartient à la déclaration » — détruit la
+> donnée coûteuse quand la donnée bon marché change.

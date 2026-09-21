@@ -23,6 +23,11 @@ type Props = {
   region: string;
   envoyer: (lot: LotDeclaration) => Promise<void>;
   /**
+   * Enregistre un souvenir. Requis, sans valeur par défaut : un rappel
+   * facultatif absent rendrait le champ muet sans que rien ne le signale.
+   */
+  ecrireSouvenir: (workId: string, texte: string) => Promise<void>;
+  /**
    * Recharger la liste. **Ne doit jamais être appelé en réponse à un clic** :
    * un aller-retour par ligne ruinerait le budget d'un tap par jeu.
    */
@@ -38,9 +43,17 @@ type Props = {
  * on ne défait rien — voir son travail s'effacer est le pire scénario d'un
  * affichage optimiste.
  */
-export function SelectionMassive({ oeuvres, region, envoyer, recharger }: Props) {
+export function SelectionMassive({
+  oeuvres, region, envoyer, ecrireSouvenir, recharger,
+}: Props) {
   const [declarees, setDeclarees] = useState<Set<string>>(new Set());
   const [erreur, setErreur] = useState<string | null>(null);
+
+  // Les souvenirs vivent HORS de l'ensemble des déclarations : décocher une
+  // ligne ne doit pas détruire une phrase. Se tromper de ligne est le geste
+  // le plus fréquent de cet écran, et perdre du texte à cause d'un tap mal
+  // placé serait impardonnable sur le seul contenu non régénérable.
+  const [souvenirs, setSouvenirs] = useState<Record<string, string>>({});
 
   // Le lot est le PASSAGE sur l'écran, pas le geste : douze titres cochés
   // d'un coup forment un épisode (§4.4), pas douze points identiques.
@@ -60,6 +73,17 @@ export function SelectionMassive({ oeuvres, region, envoyer, recharger }: Props)
 
     envoyer({ batchId: lot.current, entries: [{ workId: id }] }).catch(() => {
       setErreur("Une déclaration n'a pas pu être enregistrée. Elle reste affichée ; réessayez plus tard.");
+    });
+  }
+
+  function enregistrerSouvenir(id: string) {
+    const texte = (souvenirs[id] ?? "").trim();
+    // Rien à garder : un souvenir vide occuperait une place à l'écran et
+    // ferait croire à une phrase écrite.
+    if (texte.length === 0) return;
+
+    ecrireSouvenir(id, texte).catch(() => {
+      setErreur("Un souvenir n'a pas pu être enregistré. Il reste affiché ; réessayez plus tard.");
     });
   }
 
@@ -92,6 +116,21 @@ export function SelectionMassive({ oeuvres, region, envoyer, recharger }: Props)
                 </span>
                 <StatutRegional statut={statutRegion(oeuvre, region)} region={region} />
               </button>
+
+              {/* Le champ n'apparaît qu'une fois la ligne déclarée : une zone
+                  de texte par ligne non cochée occuperait la place de l'écran
+                  le plus dense du produit et suggérerait un travail à faire.
+                  §9 est un COMPLÉMENT, jamais un passage obligé. */}
+              {declare ? (
+                <textarea
+                  aria-label={`Un souvenir sur ${oeuvre.titre} ?`}
+                  value={souvenirs[oeuvre.id] ?? ""}
+                  onChange={(e) =>
+                    setSouvenirs((s) => ({ ...s, [oeuvre.id]: e.target.value }))
+                  }
+                  onBlur={() => enregistrerSouvenir(oeuvre.id)}
+                />
+              ) : null}
             </li>
           );
         })}
