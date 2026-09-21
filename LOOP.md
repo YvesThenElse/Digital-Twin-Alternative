@@ -62,6 +62,26 @@ Arrête la boucle, en expliquant pourquoi, dès que l'une est vraie :
 - le même item a échoué deux itérations de suite ;
 - une décision te manque et aucune interprétation raisonnable ne la remplace.
 
+### En t'arrêtant, pose des questions à choix multiple
+
+**Toujours `AskUserQuestion`, jamais une question ouverte en fin de message.**
+
+Une question ouverte oblige à reconstruire le contexte et à rédiger la
+réponse ; un choix multiple rend une décision à prendre. Un arrêt de boucle
+porte presque toujours plusieurs arbitrages indépendants — c'est exactement
+la forme que cet outil sert.
+
+- Regroupe les arbitrages en cours en **1 à 4 questions**, pas une par
+  message.
+- Mets l'option recommandée **en premier**, suffixée « (recommandé) », et
+  donne la raison du conseil dans sa description.
+- Décris la **conséquence** de chaque option — le coût, ce qu'elle débloque,
+  ce qu'elle ferme —, pas seulement son intitulé.
+- Une question par décision réellement indépendante. Ne transforme pas une
+  décision unique en quatre variantes.
+- **Livre d'abord tout ce qui ne dépend pas de la réponse.** La question
+  arrive quand elle bloque, pas quand elle se présente.
+
 ## Ce que l'expérience de ce dépôt a montré
 
 > Ce qui suit est le socle. `APPRENTISSAGES.md` le prolonge, et c'est lui
