@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="DigitalTwin.Api/DigitalTwin.Api.csproj" />
+  <Project Path="DigitalTwin.Api.Tests/DigitalTwin.Api.Tests.csproj" />
   <Project Path="DigitalTwin.Domain.Tests/DigitalTwin.Domain.Tests.csproj" />
   <Project Path="DigitalTwin.Domain/DigitalTwin.Domain.csproj" />
 </Solution>

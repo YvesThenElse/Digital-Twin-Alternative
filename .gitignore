@@ -11,3 +11,6 @@ dataset/covers/*
 .dotnet-home/
 bin/
 obj/
+.npm-home/
+web/node_modules/
+web/dist/

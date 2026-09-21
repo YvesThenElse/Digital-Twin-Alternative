@@ -1,0 +1,32 @@
+# Développement local : PostgreSQL seul (PHASING §4).
+#
+#   docker compose up -d      puis   ./dotnet.sh run --project src/DigitalTwin.Api
+#
+# Le port hôte est 5433 et non 5432 : une base installée sur la machine ne
+# doit pas décider silencieusement contre quoi l'application tourne.
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: digitaltwin-postgres
+    environment:
+      POSTGRES_DB: digitaltwin
+      POSTGRES_USER: digitaltwin
+      POSTGRES_PASSWORD: digitaltwin
+      # Les données du joueur sont datées et comparées : un fuseau implicite
+      # côté serveur ferait diverger les dates entre la base et le domaine.
+      TZ: UTC
+      PGTZ: UTC
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      # `pg_isready` répond avant que la base ne serve : on interroge donc
+      # vraiment, comme le fait la sonde de l'API.
+      test: ["CMD-SHELL", "psql -U digitaltwin -d digitaltwin -c 'SELECT 1' || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  postgres-data:

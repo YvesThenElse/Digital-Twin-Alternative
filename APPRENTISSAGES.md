@@ -668,3 +668,52 @@ laissées inconnues. Le défaut est `inconnu` et ne glisse jamais vers
 et l'émetteur **échoue** si un arbitrage n'est appliqué à rien. Une clé mal
 orthographiée ne ferait rien, en silence — exactement la classe de défaut qui
 a coûté le plus cher à ce projet. Vérifié en injectant « Chrono Triger ».
+
+### 19 — `dotnet test` sur une solution n'exécute qu'un projet de test
+
+Après avoir ajouté `DigitalTwin.Api.Tests`, `./test.sh` a affiché :
+
+```
+Passed!  - Failed: 0, Passed: 5, Total: 5 - DigitalTwin.Api.Tests.dll
+```
+
+Cinq tests. Les **382 du domaine n'ont pas été exécutés**, et rien ne l'a
+signalé — la ligne discrète « A total of 1 test files matched the specified
+pattern » est le seul indice, au milieu de la sortie de compilation. Les deux
+projets avaient pourtant été construits.
+
+Sans la curiosité d'avoir compté, la boucle aurait continué des itérations
+durant avec une commande de vérification qui ne vérifiait plus qu'un huitième
+de la suite, en rendant `0` à chaque fois.
+
+> **Règle** — après tout changement de l'outillage de test, **compter les
+> tests exécutés** et comparer au total attendu. Un `Passed!` ne dit rien du
+> périmètre couvert ; il ne parle que de ce qui a tourné.
+
+> **Règle** — préférer une boucle explicite sur les projets à une commande
+> qui « découvre » : la découverte silencieuse est la découverte qui échoue
+> en silence. `test.sh` refuse désormais de rendre 0 si elle ne trouve aucun
+> projet de test.
+
+**Le même motif, encore.** C'est la sixième fois dans ce dépôt qu'un manque
+se présente comme un succès : table de régions incomplète, identifiants
+instables, rééditions prises pour des sorties, API des jaquettes qui exclut
+le non-libre, analyseur d'infobox muet — et maintenant l'exécuteur de tests.
+Aucune n'a levé d'exception.
+
+**Un test qui mentait, aussi.** Côté front, `not.toHaveTextContent(/disponible/i)`
+échouait sur « Service **indisponible** » : le mot interdit est contenu dans
+le mot attendu. L'assertion était fausse, pas le code. Le composant porte
+désormais un `data-etat` lisible par la machine, et le test vérifie l'état
+puis la phrase exacte.
+
+> **Règle** — ne jamais asserter l'absence d'un mot qui est le préfixe ou le
+> radical d'un autre mot légitime. Asserter sur un attribut d'état, ou sur la
+> phrase entière.
+
+**Ce que la mutation a révélé en survivant.** Remplacer `SELECT version()`
+par `SELECT 1` dans la sonde réelle ne casse aucun test : `PostgresProbe`
+n'est couvert que par son interface. Vérifié à la main contre une vraie base
+— 200, puis 503 avec « 57P01: terminating connection due to administrator
+command » une fois la base éteinte, puis 200 de nouveau sans redémarrer
+l'API. **À automatiser à l'item 03**, qui ouvre une vraie connexion.

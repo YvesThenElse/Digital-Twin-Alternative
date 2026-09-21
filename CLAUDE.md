@@ -4,9 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository status
 
-This repository contains **no product code** — design documents, plus throwaway measurement scripts under `calibration/`. There is no build, no test suite and no package manifest. Do not invent build/test commands; when the first product code lands, replace this section with the real ones.
+Product code landed on 21 Sept 2026. Two commands, both containerised — **neither the .NET SDK nor Node is installed on the machine**:
 
-`calibration/` holds Python scripts that queried Wikidata to measure curation cost. They are instruments, not architecture — they imply nothing about the stack, which stays .NET 10 + React.
+| Command | What it does |
+|---|---|
+| `./test.sh` | builds `src/DigitalTwin.slnx`, then runs **each** `src/*.Tests` project |
+| `./web.sh test` | runs the Vitest suite under `web/` |
+| `./dotnet.sh <args>` | any `dotnet` command, in `mcr.microsoft.com/dotnet/sdk:10.0` |
+| `docker compose up -d` | PostgreSQL 17 on host port **5433** (not 5432 — a locally installed Postgres must not silently decide what the app talks to) |
+
+⚠️ **`test.sh` loops over the test projects on purpose.** `dotnet test src/DigitalTwin.slnx` runs only **one** of them and still prints `Passed!` — when `DigitalTwin.Api.Tests` was added, the domain's 382 tests silently stopped running. Never replace the loop with a solution-level `dotnet test`.
+
+`calibration/` holds Python scripts that build and measure the dataset against Wikidata and Wikipédia. They are instruments, not architecture — they imply nothing about the stack. Three of them are offline checks to run after touching the pipeline: `test_id_stability.py` (invariant 9 under three perturbations), `test_wp_parser.py` (eleven real infobox cases, on cached wikitext), and `emit_notabilite.py` (regenerates `dataset/NOTABILITE.md`, which must never be hand-edited).
 
 - `SPECIFICATION.md` (v2) — functional/product spec (cahier des charges), written in French. Sections numbered §1–§25, continuous.
 - `PHASING.md` (v2) — implementation plan derived from the spec: 8 sequential phases (0–7) with explicit exit gates. It supersedes the spec wherever the two disagree (e.g. .NET version).
@@ -14,7 +23,7 @@ This repository contains **no product code** — design documents, plus throwawa
 - `ORDONNANCEMENT-TEMPOREL.md` — **authoritative on comparing, sorting, grouping and querying `TemporalValue`s**. Interval normal form, the seven retained relations, the deterministic tie-break cascade, the no-date drawer, strict/permissive queries and three-valued dated projections. Eleven test vectors. `MODELE-DE-DOMAINE.md` §3 stays normative on the type itself.
 - `BENCHMARK-CONCURRENTIEL.md` — competitive benchmark, verified 20 Sept 2026. Supersedes the spec's §2.3 claims.
 - `VERIFICATION-JURIDIQUE.md` — source-by-source licence verification, 20 Sept 2026. Supersedes the spec's §19.2 route 1.
-- `dataset/` — the POC dataset itself (222 works, 408 releases, 8 platforms, CC0 from Wikidata). Read its `README.md` before touching it — especially the two caveats: only **47%** of works have a date actually tied to their platform, and the data **cannot distinguish "no PAL release" from "PAL release not recorded"** (Mother 3 genuinely never shipped in Europe; Tekken 3 obviously did). CanonicalIds are stable across regeneration, but reordering the curated list moves them.
+- `dataset/` — the POC dataset itself (221 works, 592 releases, 8 platforms, **CC BY-SA 4.0**: Wikidata CC0 + Wikipédia CC BY-SA). Read its `README.md` before touching it. Two of its early caveats are now closed: region coverage reached **99% of releases** after the infobox parser was fixed, and `region_status` carries **three states** — released / established non-release (22, hand-arbitrated with reasons) / unknown (33). Never collapse the last two: the English infobox omits the Japanese releases of Crash Bandicoot, Banjo-Kazooie and GTA III, which all happened. CanonicalIds are stable across regeneration **and across reordering** since the id registry was decoupled from the notability rank.
 
   One failure mode bit three times in one day here, so assume it will again: **missing or incomplete data reads as fact and never raises an error** — an unmapped region qualifier, randomly-minted ids, re-releases taken for original releases. All three produced normal-looking numbers. All three were caught by reading rows, never by reading aggregates.
 - `COUT-DE-CURATION.md` — curation cost model, and the calibration measured on 30 real entries (`calibration/`). Headline: unattended resolution against Wikidata picks the wrong game **5 times in 15**, always a sequel of the requested title; region-qualified dates exist for **43%** of entries; cover images for **7%**. Automation produces candidates, it never closes an entry.

@@ -30,7 +30,7 @@ React + TypeScript (Vite), TanStack Query, PostgreSQL 17+.
 
 ## Socle
 
-- [ ] **01 — Squelette de la solution.** Ajouter `DigitalTwin.Api` (API minimale .NET 10) et `DigitalTwin.Api.Tests` à `src/DigitalTwin.slnx`, un `docker-compose.yml` avec PostgreSQL 17, et `web/` (Vite + React + TypeScript). *Acceptation : `./test.sh` exécute les tests du domaine ET de l'API ; `./web.sh test` exécute ceux du front ; l'API répond sur un point de santé qui **inclut l'état de la base** — un point de santé vert alors que la base est tombée ne sert à rien.*
+- [x] **01 — Squelette de la solution.** Ajouter `DigitalTwin.Api` (API minimale .NET 10) et `DigitalTwin.Api.Tests` à `src/DigitalTwin.slnx`, un `docker-compose.yml` avec PostgreSQL 17, et `web/` (Vite + React + TypeScript). *Acceptation : `./test.sh` exécute les tests du domaine ET de l'API ; `./web.sh test` exécute ceux du front ; l'API répond sur un point de santé qui **inclut l'état de la base** — un point de santé vert alors que la base est tombée ne sert à rien.*
 
 - [ ] **02 — Le référentiel au démarrage.** Charger `dataset/poc.json` via `DatasetLoader` à l'amorçage, et **refuser de démarrer** si le dataset porte une violation, en nommant l'entrée fautive. Exposer `GET /platforms` et `GET /platforms/{id}/works`. *Acceptation : les œuvres reviennent ordonnées par `notability` **de cette plateforme** ; Bubble Bobble apparaît sur Game Boy et sur NES avec deux rangs différents ; un dataset corrompu empêche le démarrage avec un message nommant l'entrée.*
 
@@ -75,3 +75,5 @@ React + TypeScript (Vite), TanStack Query, PostgreSQL 17+.
 ## Journal
 
 Une ligne par item terminé, ajoutée dans le commit qui le clôt.
+
+- **01** — `DigitalTwin.Api` (API minimale) et `DigitalTwin.Api.Tests` ajoutés, `docker-compose.yml` (PostgreSQL 17, port hôte 5433), `web/` (Vite + React + TS + Vitest), `web.sh` sur le modèle de `dotnet.sh`. Point de santé qui interroge vraiment la base : 200, 503 avec la cause nommée quand elle tombe, 200 de nouveau à la reprise — vérifié contre une vraie base. **`dotnet test` sur la solution n'exécutait qu'un projet de test sur deux, en affichant `Passed!`** : `test.sh` boucle désormais sur chaque projet et refuse de rendre 0 si la découverte est vide. 387 tests .NET, 4 tests front, 7 mutations conformes dont la survivante voulue.
