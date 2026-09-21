@@ -25,6 +25,20 @@ const TITRE_ABSENT = "Le jeu de mon cousin, jamais retrouvé le nom";
 /** Ce qu'on écrit sur le titre saisi — le contenu que §9 rend irremplaçable. */
 const SOUVENIR_LIBRE = "Jamais retrouvé le nom, mais le dragon était bleu.";
 
+/**
+ * La période saisie, et ce qu'elle doit donner à lire.
+ *
+ * Le tiret est un TIRET DEMI-CADRATIN, celui que rend `libelle` : écrire un
+ * trait d'union ici ferait passer l'assertion pour une faute de rendu.
+ */
+// Volontairement DIFFÉRENTES des constantes que le bouchon envoyait
+// (1993-1997) : avec celles-ci, une régression vers la valeur figée aurait
+// satisfait l'assertion, et le test aurait gardé un défaut qu'il prétend
+// surveiller.
+const DEBUT = 1992;
+const FIN = 1996;
+const PERIODE_LUE = `${DEBUT}\u2013${FIN}`;
+
 /** Trente titres cochés, plus celui qui manquait. */
 const MOMENTS_ATTENDUS = TITRES_A_COCHER + 1;
 
@@ -49,8 +63,20 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   );
 
   // --- 2. la période -----------------------------------------------------
+  //
+  // Elle est CHOISIE, bornes comprises. L'écran a longtemps envoyé 1995 quoi
+  // qu'on fasse : tous les jeux d'un profil portaient la même année, que
+  // personne n'avait donnée. Le parcours saisit donc les deux bornes à la
+  // main — le pire cas en gestes — et vérifie plus bas que ce sont bien
+  // celles-là qui arrivent sur l'axe.
   await expect(page.getByRole("heading", { name: /quand/i })).toBeVisible();
   await toucher(page.getByRole("button", { name: "Plutôt une période" }).click());
+  await toucher(page.getByRole("spinbutton", { name: "Année de début" }).fill(String(DEBUT)));
+  await toucher(page.getByRole("spinbutton", { name: "Année de fin" }).fill(String(FIN)));
+  await toucher(page.getByRole("button", { name: "Voir les jeux" }).click());
+
+  // Le contexte de saisie (E02 repère A) annonce ce qui sera attaché.
+  await expect(page.getByTestId("contexte")).toContainText(PERIODE_LUE);
 
   // --- 3. cocher ---------------------------------------------------------
   const lignes = page.getByRole("button", { name: /^Déclarer : / });
@@ -167,6 +193,12 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await expect(page.getByTestId("moment-titre").filter({ hasText: TITRE_ABSENT }))
     .toHaveCount(1);
 
+  // Et la date lue est CELLE QU'ON A SAISIE. C'est le défaut signalé depuis
+  // un téléphone : la timeline montrait une année que l'utilisateur n'avait
+  // jamais donnée. Une assertion sur « il y a une date » n'aurait rien vu.
+  await expect(page.getByText(PERIODE_LUE).first()).toBeVisible();
+  await expect(page.getByText(PERIODE_LUE)).toHaveCount(MOMENTS_ATTENDUS);
+
   // --- le KPI de §22.3 ---------------------------------------------------
   //
   // Un geste par titre, plus l'amorce (machine, période), les deux notes, le
@@ -175,7 +207,10 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // cas se répète, et un troisième geste par titre manquant sortirait du
   // budget « un tap par jeu ». Dépasser signifierait qu'un geste s'est
   // glissé quelque part, et c'est exactement ce que le test doit voir.
-  const budget = TITRES_A_COCHER + 10;
+  // Trois gestes de plus qu'avant, tous dans le choix de période : saisir
+  // deux bornes puis valider. C'est le PIRE cas — les valeurs proposées sont
+  // déduites de la machine, et les accepter ne coûte qu'un appui.
+  const budget = TITRES_A_COCHER + 13;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

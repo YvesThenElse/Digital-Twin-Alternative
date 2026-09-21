@@ -1608,3 +1608,33 @@ Rien de tout cela n'a été trouvé en relisant. **Ça a été trouvé en jouant
 protocole**, comme [[47]] l'a été en exécutant ses requêtes. Le dénominateur
 commun tient en une phrase : un mode opératoire non répété est un mode
 opératoire non testé.
+
+### 49 — Un test dont les valeurs sont celles du défaut ne surveille rien
+
+L'écran de période envoyait `{from: 1993, to: 1997}` en dur. En le
+remplaçant par une vraie saisie, j'ai fait saisir **1993-1997** au parcours
+de bout en bout et vérifié que la timeline les affichait.
+
+Il est passé du premier coup. Il serait passé **aussi avec le bouchon** :
+les valeurs que je faisais saisir étaient exactement celles que le défaut
+produisait. Le test avait l'air de surveiller le défaut et l'aurait laissé
+revenir intact.
+
+C'est [[43]] vu d'un autre angle — un test vrai des deux côtés d'une
+mutation —, mais la cause est ici plus insidieuse : elle vient du **choix
+des données du test**, pas de son assertion. L'assertion était bonne. Le jeu
+d'essai la neutralisait.
+
+**La règle** : quand un test remplace une valeur figée, ses données doivent
+être **différentes de la valeur figée**. Sinon on ne teste pas le
+remplacement, on teste une coïncidence.
+
+Plus général : les données d'un test se choisissent contre le défaut qu'il
+surveille. Une valeur « naturelle » est souvent celle que le code fautif
+produisait — c'est pour cela qu'elle paraissait naturelle en l'écrivant.
+
+Corollaire de méthode : la vérification est mécanique et ne coûte rien —
+**réinjecter le défaut et exiger le rouge**. Je ne l'ai pas fait par
+scrupule mais parce que le vert immédiat est suspect ([[socle]] : « un test
+qui passe du premier coup mérite un doute »). C'est exactement ce que cette
+règle sert à attraper.

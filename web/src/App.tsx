@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { client } from "./api/client";
 import { dispositionPour, type Disposition } from "./disposition/epoque";
 import { t } from "./i18n/t";
+import { ChoixPeriode } from "./periode/ChoixPeriode";
+import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
+import type { PeriodeChoisie } from "./periode/periode";
 import { SelectionMassive } from "./selection/SelectionMassive";
 import { Timeline } from "./timeline/Timeline";
 import type { EntreeTimeline, MomentTimeline } from "./timeline/types";
@@ -54,7 +57,10 @@ export function App() {
   const [plateformes, setPlateformes] = useState<Plateforme[]>([]);
   const [machine, setMachine] = useState<Plateforme | null>(null);
   const [region, setRegion] = useState("PAL");
-  const [periode, setPeriode] = useState<unknown>({ kind: "unknown" });
+  // La période est CHOISIE par l'utilisateur. Elle valait 1995 quoi qu'il
+  // fasse, et tous ses jeux portaient donc la même année, que personne
+  // n'avait donnée.
+  const [periode, setPeriode] = useState<PeriodeChoisie>({ kind: "unknown" });
   const [oeuvres, setOeuvres] = useState<Oeuvre[]>([]);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
@@ -101,25 +107,23 @@ export function App() {
       ) : null}
 
       {etape === "periode" && machine !== null ? (
-        <section>
-          <h2>{t("parcours.choisirPeriode")}</h2>
-          {/* Trois choix, pas sept : exposer l'énumération complète de
-              `TemporalValue` ferait remonter le modèle dans l'écran. */}
-          <button type="button" onClick={() => { setPeriode({ kind: "year", year: 1995 }); setEtape("selection"); }}>
-            {t("parcours.periodeAnnee")}
-          </button>
-          <button type="button" onClick={() => { setPeriode({ kind: "range", from: 1993, to: 1997 }); setEtape("selection"); }}>
-            {t("parcours.periodePeriode")}
-          </button>
-          <button type="button" onClick={() => { setPeriode({ kind: "unknown" }); setEtape("selection"); }}>
-            {t("parcours.periodeInconnue")}
-          </button>
-        </section>
+        <ChoixPeriode
+          machine={machine}
+          // L'horloge est lue ICI, une fois : le composant ne la lit pas
+          // lui-même, sans quoi ses tests dépendraient du jour.
+          anneeCourante={new Date().getFullYear()}
+          choisir={(choisie) => { setPeriode(choisie); setEtape("selection"); }}
+        />
       ) : null}
 
       {etape === "selection" && machine !== null ? (
         <section>
-          <h2>{t("parcours.machine", { machine: machine.nom, region })}</h2>
+          <ContexteDeSaisie
+            machine={machine.nom}
+            region={region}
+            periode={periode}
+            changer={() => setEtape("periode")}
+          />
           <SelectionMassive
             oeuvres={oeuvres}
             region={region}

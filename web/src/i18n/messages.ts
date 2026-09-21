@@ -76,6 +76,22 @@ export const MESSAGES = {
   "parcours.periodeAnnee": "Une année",
   "parcours.periodePeriode": "Plutôt une période",
   "parcours.periodeInconnue": "Je ne sais plus",
+
+  // Le choix de période. Une année impossible est refusée EN LE DISANT, et
+  // jamais corrigée en silence : une valeur qui change toute seule se lit
+  // comme une panne, pas comme une règle.
+  "periode.annee": "Année",
+  "periode.debut": "Année de début",
+  "periode.fin": "Année de fin",
+  "periode.precedente": "Année précédente",
+  "periode.suivante": "Année suivante",
+  "periode.avantLaMachine":
+    "La {machine} est sortie en {annee} : vous n'avez pas pu y jouer avant.",
+  "periode.aVenir": "{annee} n'est pas encore passée.",
+  "periode.finAvantDebut": "La fin ne peut pas précéder le début.",
+
+  "contexte.changer": "Changer la période",
+  "contexte.sApplique": "S'applique aux déclarations suivantes.",
   "parcours.commencer": "Voir les jeux",
   "parcours.retour": "Changer de console",
   "parcours.voirTimeline": "Voir ma timeline",
