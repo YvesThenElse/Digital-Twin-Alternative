@@ -1169,3 +1169,47 @@ non ancré touche autre chose que sa cible.
 > **Règle** — un remplacement par expression régulière sur plusieurs fichiers
 > doit être précédé du décompte de ses occurrences **et** de la lecture de
 > celles qu'on n'attendait pas.
+
+### 33 — « Ils diffèrent » n'est pas une assertion
+
+Le test censé garantir que « jamais sorti en Europe » ne se confond pas avec
+« sortie européenne inconnue » vérifiait que les deux libellés **ne sont pas
+égaux**. Une mutation rendant le premier par « Sortie Europe inconnue » y
+passait sans broncher : un mot d'écart suffit à satisfaire l'inégalité.
+
+Le test voisin — « quatre textes distincts » — passait pour la même raison.
+Deux formulations quasi identiques sont distinctes au sens de `Set`, et
+indiscernables à la lecture rapide d'une liste de trente-cinq lignes, qui est
+précisément l'usage.
+
+> **Règle** — asserter la **marque** de chaque état, pas leur différence.
+> « Le libellé de la non-sortie contient *jamais*, celui de l'inconnu ne le
+> contient pas » tient ; « les deux diffèrent » ne tient rien.
+
+Corrigé, la mutation passe de 3 à 4 échecs.
+
+### 34 — Deux tests couplés à ce qu'ils ne testent pas
+
+Ajouter l'indication régionale sur la ligne a cassé un test **d'ordre**, qui
+comparait le `textContent` entier de chaque ligne. L'ordre n'avait pas bougé ;
+le contenu, oui.
+
+Et le nouveau test cherchait son indication par le texte — `/sorti|inconnue/`
+— ce qui attrapait aussi le titre « Sorti » et la date « date inconnue » de
+la même ligne.
+
+Les deux fautes sont la même : **viser large quand on peut viser juste**. Le
+premier se corrige en n'assertant que les titres, le second en sélectionnant
+par `data-statut` — l'attribut qui existe exactement pour ça.
+
+> **Règle** — ne jamais asserter le `textContent` d'un conteneur : il change
+> dès qu'on ajoute quoi que ce soit à l'intérieur, et le test échoue pour une
+> raison sans rapport avec ce qu'il protège.
+
+> **Règle** — chercher un élément par son rôle ou son attribut d'état, pas
+> par un motif de texte qui peut apparaître ailleurs dans le même bloc.
+
+**Et le comptage, encore.** Quatre prédictions fausses sur huit, toutes d'une
+unité, toutes de la même famille : assertions comptées pour des tests, ou
+tests oubliés parce qu'ils touchent le sujet de biais. La règle existe depuis
+la Phase 0 ; ce n'est pas la règle qui manque.

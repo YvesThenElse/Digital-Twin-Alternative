@@ -16,6 +16,7 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
   const rendu = render(
     <SelectionMassive
       oeuvres={oeuvres}
+      region="PAL"
       envoyer={envoyer}
       recharger={recharger}
       {...surcharge}
@@ -128,11 +129,12 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
       ],
     });
 
-    expect(lignes().map((l) => l.textContent)).toEqual([
-      "Premier1990",
-      "Deuxième1992",
-      "Troisième1995",
-    ]);
+    // On assert l'ORDRE DES TITRES, pas le texte entier de la ligne :
+    // comparer `textContent` couplait ce test à tout ce que la ligne affiche,
+    // et l'ajout de l'indication régionale l'a cassé sans que rien n'ait
+    // changé à l'ordre.
+    const titres = lignes().map((l) => within(l).getAllByText(/^(Premier|Deuxième|Troisième)$/)[0].textContent);
+    expect(titres).toEqual(["Premier", "Deuxième", "Troisième"]);
   });
 
   it("dit à la machine ce qui est déclaré, pas seulement à l'œil", async () => {
@@ -218,6 +220,79 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     });
 
     expect(screen.getByText("date inconnue")).toHaveAttribute("data-forme", "aucune");
+  });
+
+  // ------------------------------------------ la région, à l'écran (§3.4)
+
+  const lignePour = (titre: string) =>
+    lignes().find((l) => l.textContent?.includes(titre))!;
+
+  it.each([
+    { nom: "sorti", oeuvre: { regions: ["PAL"], statutRegional: {} }, statut: "sorti", texte: /Sorti en Europe/ },
+    { nom: "jamais sorti", oeuvre: { regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" as const } }, statut: "jamais-sorti", texte: /Jamais sorti en Europe/ },
+    { nom: "inconnu", oeuvre: { regions: ["NTSC-U"], statutRegional: {} }, statut: "inconnu", texte: /inconnue/ },
+    { nom: "mondiale", oeuvre: { regions: ["WORLDWIDE"], statutRegional: {} }, statut: "mondiale", texte: /mondiale/ },
+  ])("affiche « $nom » distinctement sur la ligne", ({ oeuvre: partiel, statut, texte }) => {
+    monter({
+      oeuvres: [{
+        id: "x", titre: "Un jeu", rang: 1,
+        sortie: { kind: "Year", year: 1994 },
+        ...partiel,
+      }],
+    });
+
+    const indication = screen.getByText(texte);
+    expect(indication).toHaveAttribute("data-statut", statut);
+    expect(indication).toHaveAttribute("data-region", "PAL");
+  });
+
+  it("aucun des quatre états ne se rend par l'absence d'indication", () => {
+    // LE point de l'item. Un état muet serait indistinguable d'un défaut
+    // d'affichage, et les trois autres perdraient le sens que leur donne le
+    // contraste.
+    monter({
+      oeuvres: [
+        { id: "a", titre: "Sorti", rang: 1, sortie: null, regions: ["PAL"], statutRegional: {} },
+        { id: "b", titre: "Jamais", rang: 2, sortie: null, regions: ["NTSC-J"], statutRegional: { PAL: "notReleased" } },
+        { id: "c", titre: "Inconnu", rang: 3, sortie: null, regions: ["NTSC-U"], statutRegional: {} },
+        { id: "d", titre: "Monde", rang: 4, sortie: null, regions: ["WORLDWIDE"], statutRegional: {} },
+      ],
+    });
+
+    // Sélection par l'ATTRIBUT et non par le texte : chercher /sorti/ dans la
+    // ligne attrape aussi le titre « Sorti » et la date « date inconnue ».
+    // C'est exactement ce pour quoi `data-statut` existe.
+    const statuts = ["Sorti", "Jamais", "Inconnu", "Monde"].map((titre) => {
+      const indication = lignePour(titre).querySelector("[data-statut]")!;
+      return {
+        etat: indication.getAttribute("data-statut"),
+        texte: indication.textContent?.trim() ?? "",
+      };
+    });
+
+    // Quatre états distincts, quatre textes distincts, aucun vide.
+    expect(new Set(statuts.map((s) => s.etat)).size).toBe(4);
+    expect(new Set(statuts.map((s) => s.texte)).size).toBe(4);
+    for (const s of statuts) expect(s.texte.length).toBeGreaterThan(0);
+  });
+
+  it("suit la région de l'écran, pas une région par défaut", () => {
+    // La décision « international dès le départ » interdit de traiter une
+    // région comme le repli des autres. Le même jeu se lit différemment selon
+    // l'écran depuis lequel on le regarde.
+    const oeuvre = {
+      id: "x", titre: "Chrono Trigger", rang: 1,
+      sortie: { kind: "Year" as const, year: 1995 },
+      regions: ["NTSC-J", "NTSC-U"],
+      statutRegional: { PAL: "notReleased" as const },
+    };
+
+    const { rendu } = monter({ oeuvres: [oeuvre], region: "PAL" });
+    expect(screen.getByText(/Jamais sorti en Europe/)).toBeInTheDocument();
+
+    rendu.unmount();
+    monter({ oeuvres: [oeuvre], region: "NTSC-J" });
+    expect(screen.getByText(/Sorti en Japon/)).toBeInTheDocument();
   });
 
   // ---------------------------------------------------- l'envoi, en arrière-plan

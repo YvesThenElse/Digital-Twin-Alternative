@@ -1,5 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { BandeDEpoque } from "./BandeDEpoque";
+import { StatutRegional } from "../region/StatutRegional";
+import { statutRegion } from "../region/statut";
 import { forme, libelle } from "../temporel/valeur";
 import { construireBande } from "./bande";
 import type { Oeuvre } from "./types";
@@ -11,6 +13,14 @@ export type LotDeclaration = {
 
 type Props = {
   oeuvres: Oeuvre[];
+  /**
+   * La région de l'écran (E02 repère A : « Super Nintendo · PAL »).
+   *
+   * Requise, sans valeur par défaut : un défaut choisirait en silence le
+   * marché d'un joueur, et la décision « international dès le départ » rend
+   * ce choix visible.
+   */
+  region: string;
   envoyer: (lot: LotDeclaration) => Promise<void>;
   /**
    * Recharger la liste. **Ne doit jamais être appelé en réponse à un clic** :
@@ -28,7 +38,7 @@ type Props = {
  * on ne défait rien — voir son travail s'effacer est le pire scénario d'un
  * affichage optimiste.
  */
-export function SelectionMassive({ oeuvres, envoyer, recharger }: Props) {
+export function SelectionMassive({ oeuvres, region, envoyer, recharger }: Props) {
   const [declarees, setDeclarees] = useState<Set<string>>(new Set());
   const [erreur, setErreur] = useState<string | null>(null);
 
@@ -80,6 +90,7 @@ export function SelectionMassive({ oeuvres, envoyer, recharger }: Props) {
                 <span data-forme={oeuvre.sortie ? forme(oeuvre.sortie) : "aucune"}>
                   {oeuvre.sortie ? libelle(oeuvre.sortie) : "date inconnue"}
                 </span>
+                <StatutRegional statut={statutRegion(oeuvre, region)} region={region} />
               </button>
             </li>
           );
