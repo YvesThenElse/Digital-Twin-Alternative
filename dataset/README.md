@@ -2,7 +2,7 @@
 
 > Produit les **20 et 21 septembre 2026**. 221 œuvres, 590 sorties, 8 plateformes. Licence **CC BY-SA 4.0**.
 >
-> **Couverture** : région sur 588 des 590 sorties (99 %) ; date au jour sur 95 % des œuvres.
+> **Couverture** : région sur 590 des 592 sorties (99 %) ; date au jour sur 95 % des œuvres ; **218 jaquettes sur 221**.
 >
 > Ses invariants sont vérifiés par du code — `DigitalTwin.Domain.Reference.DatasetLoader` — et non par relecture : unicité des identifiants, préfixe conforme au type, plateforme existante, précision jamais supérieure à ce que la confiance soutient, classement couvrant exactement les plateformes où l'œuvre sort, et table de redirection sans impasse ni boucle.
 
@@ -76,7 +76,7 @@ Le champ `region_status` porte donc **trois états** et non deux, par (œuvre, p
 | `absent` | **non-sortie établie** | arbitrage manuel motivé, [`calibration/region_arbitration.py`](../calibration/region_arbitration.py) |
 | `inconnu` | rien d'établi | le défaut — et il ne glisse jamais vers `absent` |
 
-**22 non-sorties établies, 35 régions laissées inconnues.** Les 22 sont des jugements de domaine et non des citations : Chrono Trigger et Final Fantasy VI jamais parus en Europe sur Super Nintendo, Mother 3 et Rhythm Tengoku jamais localisés, Terranigma sorti au Japon et en Europe mais pas en Amérique. Chacun porte sa raison dans le fichier d'arbitrage, pour être relu un par un. **Un `absent` qu'on ne saurait pas justifier doit redevenir `inconnu`.**
+**22 non-sorties établies, 33 régions laissées inconnues.** Les 22 sont des jugements de domaine et non des citations : Chrono Trigger et Final Fantasy VI jamais parus en Europe sur Super Nintendo, Mother 3 et Rhythm Tengoku jamais localisés, Terranigma sorti au Japon et en Europe mais pas en Amérique. Chacun porte sa raison dans le fichier d'arbitrage, pour être relu un par un. **Un `absent` qu'on ne saurait pas justifier doit redevenir `inconnu`.**
 
 L'émetteur échoue si un arbitrage n'est appliqué à rien : une clé mal orthographiée ne ferait rien, en silence — la classe de défaut qui a coûté le plus cher à ce projet.
 

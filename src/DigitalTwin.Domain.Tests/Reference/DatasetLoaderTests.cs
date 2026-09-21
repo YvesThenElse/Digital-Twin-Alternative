@@ -41,7 +41,7 @@ public class DatasetLoaderTests
 
         Assert.Equal(8, resultat.Platforms.Count);
         Assert.Equal(221, resultat.Works.Count);
-        Assert.Equal(590, resultat.Releases.Count);
+        Assert.Equal(592, resultat.Releases.Count);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class DatasetLoaderTests
             .Concat(resultat.Releases.Select(r => r.CanonicalId))
             .ToList();
 
-        Assert.Equal(819, tous.Count);
+        Assert.Equal(821, tous.Count);
         Assert.Equal(tous.Count, tous.Distinct(StringComparer.Ordinal).Count());
     }
 
@@ -312,7 +312,7 @@ public class DatasetLoaderTests
             .Sum(p => p.Value.Count(r => r.Value == RegionAvailability.Unknown)));
 
         Assert.Equal(22, absentes);
-        Assert.Equal(35, inconnues);
+        Assert.Equal(33, inconnues);
     }
 
     // -------------------------------------------------------- redirections

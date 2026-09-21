@@ -143,7 +143,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 7 | Mario Kart: Super Circuit | ✓ | NTSC-J NTSC-U PAL | img |
 | 8 | Castlevania: Aria of Sorrow | ✓ | NTSC-J NTSC-U PAL | img |
 | 9 | Metroid: Zero Mission | ✓ | NTSC-J NTSC-U PAL | img |
-| 10 | Super Mario Advance | ≈ | NTSC-J |  |
+| 10 | Super Mario Advance | ✓ | NTSC-J NTSC-U PAL | img |
 | 11 | Pokémon FireRed and LeafGreen | ✓ | NTSC-J NTSC-U PAL | img |
 | 12 | Mario & Luigi: Superstar Saga | ✓ | NTSC-J NTSC-U PAL | img |
 | 13 | WarioWare, Inc.: Mega Microgames! | ✓ | NTSC-J NTSC-U PAL | img |

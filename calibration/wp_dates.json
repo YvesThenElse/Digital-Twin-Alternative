@@ -3376,6 +3376,25 @@
    }
   }
  },
+ "Q3312351": {
+  "platform": "gba",
+  "title": "Super Mario Advance",
+  "article": "https://en.wikipedia.org/wiki/Super_Mario_Advance",
+  "regions": {
+   "NTSC-J": {
+    "date": "2001-03-21",
+    "precision": "day"
+   },
+   "NTSC-U": {
+    "date": "2001-06-11",
+    "precision": "day"
+   },
+   "PAL": {
+    "date": "2001-06-22",
+    "precision": "day"
+   }
+  }
+ },
  "Q2081510": {
   "platform": "gba",
   "title": "Sonic Advance",

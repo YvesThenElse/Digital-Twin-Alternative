@@ -3253,5 +3253,20 @@
   "licence": "Fair use",
   "regime": "non_free",
   "description_url": "https://en.wikipedia.org/wiki/File:Bubble_bobble.jpg"
+ },
+ "wrk_01M24BB8SH3VZQJRHA7P4GW2J2": {
+  "work": "wrk_01M24BB8SH3VZQJRHA7P4GW2J2",
+  "title": "Super Mario Advance",
+  "external_id": "Q3312351",
+  "file": "wrk_01M24BB8SH3VZQJRHA7P4GW2J2.jpg",
+  "bytes": 132361,
+  "width": 512,
+  "height": 512,
+  "source_url": "https://upload.wikimedia.org/wikipedia/en/d/d8/Super_Mario_Advance_cover_art.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+  "source_file": "Super Mario Advance cover art.jpg",
+  "source_article": "https://en.wikipedia.org/wiki/Super_Mario_Advance",
+  "licence": "Fair use",
+  "regime": "non_free",
+  "description_url": "https://en.wikipedia.org/wiki/File:Super_Mario_Advance_cover_art.jpg"
  }
 }

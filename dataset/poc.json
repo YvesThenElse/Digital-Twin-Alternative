@@ -19085,12 +19085,7 @@
    "notability": {
     "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 10
    },
-   "region_status": {
-    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": {
-     "NTSC-U": "inconnu",
-     "PAL": "inconnu"
-    }
-   },
+   "region_status": {},
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SH101GRCSQ563M6KP1",
@@ -19106,6 +19101,36 @@
       "place_qid": "Q17",
       "basis": "unqualified",
       "raw_date": "2001-03-21"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8SHR11ZS3KCJXTQT40J",
+     "work": "wrk_01M24BB8SH3VZQJRHA7P4GW2J2",
+     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
+     "region": "NTSC-U",
+     "date": "2001-06-11",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Super_Mario_Advance",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8SH29PK39MCMSFX02K9",
+     "work": "wrk_01M24BB8SH3VZQJRHA7P4GW2J2",
+     "platform": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
+     "region": "PAL",
+     "date": "2001-06-22",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Super_Mario_Advance",
+      "basis": "infobox_released"
      }
     }
    ],

@@ -94,7 +94,9 @@ Quatre principes guident le découpage :
 >
 > **706 → 663** : les 43 sorties retirées étaient des **rééditions prises pour des sorties d'origine**. Le dataset annonçait Super Mario Bros. en PAL 2011 et Ocarina of Time en PAL 2003. Les déclarations de date sont désormais filtrées sur la plateforme qu'elles qualifient.
 >
-> **Couverture au 21 septembre** : région sur **99 % des sorties** (588 / 590) et **99 % des œuvres** ; date au jour sur **95 % des œuvres** (542 sorties au jour, 17 au mois, 31 à l'année seule) ; **217 jaquettes sur 221**, chacune avec son URL source, son article et son régime de licence conservés.
+> **Couverture au 21 septembre** : région sur **99 % des sorties** (588 / 590) et **99 % des œuvres** ; date au jour sur **95 % des œuvres** (542 sorties au jour, 17 au mois, 31 à l'année seule) ; **218 jaquettes sur 221**, chacune avec son URL source, son article et son régime de licence conservés.
+>
+> **Les trois manquantes sont des refus assumés.** Le lien Wikidata de « Mario Kart 8 Deluxe » et de « Pokémon Yellow » vise une **section** d'un article plus large : suivre la redirection aurait donné la jaquette de Mario Kart 8 sur Wii U et celle de Pokémon Rouge/Bleu. « Sim City » désigne l'entité « version Super Nintendo de 1991 », qui n'a pas d'article ; l'article parent porte la boîte PC de 1989. Les trois auront une tuile générée (§19.2).
 >
 > **663 → 590, et c'est un gain.** L'analyseur d'infobox ne reconnaissait ni `{{vgr}}`, ni `{{vgrelease new}}`, ni les conteneurs `{{ubl}}` — qu'il supprimait avec leur contenu —, ni les codes de région combinés « NA/PAL », ni les dates écrites « 22 May 2000 ». Vingt-deux articles sur vingt-trois portaient l'information ; c'est l'extraction qui échouait, en silence. Les corriger a ajouté 29 sorties régionales et permis d'en retirer 91 : la date non qualifiée servait de repli quand rien d'autre n'existait, et produisait depuis un **doublon dégradé** — « Gradius · ? · 1986 » à côté de « Gradius · Japon · 25 avril 1986 », pour une seule et même sortie.
 
@@ -142,7 +144,7 @@ la Phase 0 :
 
 | Reste | Nature | Bloquant pour |
 |---|---|---|
-| **35 régions non établies** — sur les 57 qu'aucune source n'attestait, 22 ont été arbitrées en non-sorties motivées ; les 35 autres restent `inconnu`, ce que le dataset sait désormais dire | curation | rien ne bloque : l'incertitude est portée et affichable |
+| **33 régions non établies**, dont 27 NTSC-J — sur les 57 qu'aucune source n'attestait, 22 ont été arbitrées en non-sorties motivées | curation | **décidé le 21 septembre : on les laisse `inconnu` pour le POC.** La Wikipédia japonaise les porterait, mais son infobox a un autre format : un second analyseur serait une seconde source d'échecs silencieux, pour une valeur qui n'apparaîtra qu'à l'internationalisation réelle |
 | **1 sortie sans aucune région** : Pokémon Yellow sur Game Boy, dont l'article n'a pas de champ `released` | curation | marginal |
 | **40 œuvres sans date au jour** | curation | rien : l'incertitude est affichée, c'est la décision prise |
 | **`NOTABILITE.md` en attente d'annotation** | décision humaine | le réordonnancement déplace les `CanonicalId` — rien ne doit toucher à l'ordre avant |
