@@ -227,6 +227,71 @@ Trois exigences complémentaires issues de la révision de conception :
 
 > Au moins un utilisateur test reconstruit une partie significative de son histoire avec un effort faible et déclare trouver le résultat intéressant (premières mesures des KPI définis en Phase 0).
 
+### Bilan — 21 septembre 2026
+
+> **Le geste central fonctionne de bout en bout. Le POC n'est pas en état d'être montré à un testeur.**
+
+Les deux propositions tiennent ensemble, et les confondre ferait perdre la
+Phase 2 pour une raison qui n'a rien à voir avec le produit.
+
+#### Ce qui fonctionne, et qui est vérifié
+
+Un parcours réel — console, période, trente titres cochés, un souvenir, la
+timeline — est joué par **un test Playwright sur les deux dispositions**, en
+2,5 secondes. Il part d'un profil vierge, compte les gestes (**35 pour 30
+titres**, le KPI de §22.3) et vérifie le nombre exact de moments.
+
+| Livré | État |
+|---|---|
+| Sélection massive par plateforme et période (§24.3) | écran + API |
+| Restitution immédiate pendant la saisie (§24.4) | la bande d'époque grandit à chaque tap, sans rechargement |
+| Score de notoriété par plateforme (§3.3) | API, ordonne l'écran |
+| Région et non-sortie, **quatre** états (§3.4) | écran + API |
+| Incertitude temporelle affichée (§7.3) | les sept granularités, rendu normalisé |
+| Souvenir minimal (§9) | écran + API |
+| Deux dispositions, pas une étirée (§21.2) | liste sous 1024, grille au-delà |
+| Journal en ajout seul, deux axes (§5) | PostgreSQL, déclencheur SQL |
+| Aucun libellé en dur (§20) | un test lit les sources et échoue |
+
+**509 tests .NET, 120 tests front, 1 parcours × 2 dispositions.**
+
+#### Ce qui manque, et pourquoi le POC n'est pas montrable
+
+| Manque | Conséquence pour un test de Phase 2 |
+|---|---|
+| **Les jaquettes ne sont pas servies.** L'API annonce `/covers/{id}` ; aucun point d'entrée ne les rend | La grille desktop afficherait **218 images cassées** — or la reconnaissance est la mécanique centrale de E02 (§19.2). **Bloquant** |
+| **E03 n'existe pas.** La timeline se résume à un compte de moments | Le testeur ne voit pas son histoire ; c'est pourtant ce qui doit produire « ça me ressemble ». **Bloquant** |
+| **La passe 2 n'est pas à l'écran.** L'API accepte achèvement et provenance, aucun écran ne les propose | Le profil reste binaire : joué ou rien. Perte de richesse, pas de blocage |
+| **« Jamais joué » n'est pas à l'écran** (§24.3) | L'information positive la plus simple à donner est inaccessible |
+| **Le jeu absent du référentiel n'est pas saisissable** (§3.5) | Sur 221 titres, le cas est permanent : le testeur s'arrêtera au premier titre manquant. **Bloquant** |
+| Recherche, statistiques, page de profil (§4) | Hors du périmètre livré ; leur absence se voit |
+| `ZoneSansDate` est écrit et testé, **monté nulle part** | Symptôme du manque d'E03, pas un défaut en soi |
+
+#### Ce que le loupe de l'itération dit de la méthode
+
+Deux de ces manques n'ont été trouvés qu'en **faisant l'inventaire**, pas par
+les tests :
+
+- l'URL de jaquette est annoncée et ne résout pas. Le test de l'item 13
+  vérifiait qu'elle vaut `null` quand il n'y a pas de jaquette ; **jamais
+  qu'elle résout quand il y en a une**. Playwright, lui, n'échoue pas sur une
+  image cassée ;
+- un composant écrit, testé, et monté nulle part.
+
+> Les deux appartiennent à la même famille que les défauts recensés tout au
+> long de ce dépôt : **ce qui manque ne lève pas d'erreur**.
+
+#### Décision
+
+La Phase 2 ne peut pas s'ouvrir. Trois manques sont bloquants — les
+jaquettes, l'écran de timeline, la saisie d'un titre absent — et chacun
+ferait mesurer autre chose que ce que la porte veut mesurer. Un testeur
+devant 218 images cassées ne juge pas la reconstruction de son histoire, il
+juge une application en panne.
+
+Le reste — passe 2, « jamais joué », recherche, statistiques, profil — est
+une perte de richesse, pas un obstacle.
+
 ## 5. Phase 2 — Validation utilisateur
 
 **Durée : 2 à 4 semaines.**

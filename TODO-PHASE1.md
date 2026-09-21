@@ -70,7 +70,18 @@ React + TypeScript (Vite), TanStack Query, PostgreSQL 17+.
 
 - [x] **15 — Le parcours de bout en bout.** Playwright, **un seul test** : choisir une console, une période, cocher trente titres, voir la timeline se remplir, ajouter une note. *Acceptation : il passe sur la grille desktop et sur la liste mobile ; il mesure le nombre de gestes, qui est le KPI de §22.3.*
 
-- [ ] **16 — Bilan.** Mettre à jour [PHASING.md](./PHASING.md) §4 : ce qui est livré, ce qui ne l'est pas, et si le POC est en état d'être montré à un testeur. *Acceptation : le fichier dit la vérité, y compris si le POC n'est pas présentable.*
+- [x] **16 — Bilan.** Mettre à jour [PHASING.md](./PHASING.md) §4 : ce qui est livré, ce qui ne l'est pas, et si le POC est en état d'être montré à un testeur. *Acceptation : le fichier dit la vérité, y compris si le POC n'est pas présentable.*
+
+## Ce que le bilan a fait apparaître
+
+Trois manques **bloquent** le test de Phase 2. Ils ont été inscrits ici parce
+qu'un bilan qui constate sans ouvrir de travail n'est qu'un constat.
+
+- [ ] **17 — Servir les jaquettes.** L'API annonce `/covers/{id}` et personne ne les rend : la grille desktop afficherait 218 images cassées, alors que la reconnaissance est la mécanique centrale de E02. *Acceptation : un test vérifie qu'une URL annoncée **résout** — l'item 13 ne vérifiait que le cas `null` —, et le parcours de bout en bout échoue si une image de la grille ne charge pas.*
+
+- [ ] **18 — L'écran de timeline (E03).** La timeline se résume à un compte de moments ; le testeur ne voit pas son histoire, qui est pourtant ce qui doit produire « ça me ressemble ». *Acceptation : l'axe montre les moments avec leur forme temporelle, la zone sans date est montée, et le parcours de bout en bout y lit ses trente titres.*
+
+- [ ] **19 — Saisir un titre absent.** Sur 221 titres, le cas est permanent (§3.5) ; l'API l'accepte, aucun écran ne le propose. *Acceptation : le testeur ajoute un titre libre sans quitter la sélection, et il apparaît dans sa timeline comme les autres.*
 
 ---
 
@@ -109,3 +120,5 @@ Une ligne par item terminé, ajoutée dans le commit qui le clôt.
 - **14** — Un test **lit les sources** et échoue en nommant fichier, ligne et texte dès qu'une chaîne visible est écrite dans un composant. Il détecte le texte JSX et les attributs lus par un humain ou un lecteur d'écran, et il se prouve lui-même sur un composant témoin fautif — un garde-fou qui ne trouve jamais rien passerait pour vert le jour venu. Tous les libellés vivent dans un catalogue unique ; une clé inconnue **échoue** au lieu de s'afficher, un paramètre manquant laisse le gabarit visible, et un libellé mort est signalé. Le français reste la seule langue livrée, et c'est désormais un **choix** et non une contrainte du code. **Trois faux positifs crédibles** — générique, flèche, comparaison — ont été corrigés dans le détecteur plutôt que contournés par des exceptions ; et une mutation a montré que l'exclusion du catalogue lui-même **ne servait à rien** : retirée. 507 tests .NET, **120 tests front**, 8 mutations.
 
 - **15** — L'application est **assemblée** — machine, période, sélection, timeline — et un **seul** test Playwright joue le parcours du critère de sortie sur les deux dispositions, en 2,5 s chacune. Il part d'un **profil vierge**, compte les gestes (35 pour 30 titres, le KPI de §22.3) et assert le **nombre exact** de moments. **Il a trouvé un défaut qu'aucun test d'API ne pouvait voir** : le front envoie chaque ligne sous le même identifiant de lot pour former un épisode (§4.4), et l'API traitait un lot connu comme « déjà enregistré » — une seule des trente déclarations survivait. L'idempotence porte désormais sur le couple (lot, cible). Deux autres trous comblés en chemin : le parcours passait d'abord **sur les restes** des exécutions précédentes, et `./web.sh test` ne vérifiait **jamais les types** — sept erreurs réelles dormaient dans une suite verte. 509 tests .NET, 120 tests front, **1 parcours × 2 dispositions**, 4 mutations dont 2 survivantes comblées.
+
+- **16** — Bilan écrit dans PHASING.md §4. **Le geste central fonctionne de bout en bout ; le POC n'est pas en état d'être montré à un testeur** — et les deux propositions tiennent ensemble. Trois manques bloquent : les jaquettes annoncées mais non servies (218 images cassées sur la grille), l'écran de timeline inexistant, et la saisie d'un titre absent. **Deux de ces manques n'ont été trouvés qu'en faisant l'inventaire** : le test de l'item 13 vérifiait que l'URL de jaquette vaut `null` quand il n'y a pas de jaquette, jamais qu'elle résout quand il y en a une — et Playwright n'échoue pas sur une image cassée. Inscrits aux items 17 à 19 : un bilan qui constate sans ouvrir de travail n'est qu'un constat.

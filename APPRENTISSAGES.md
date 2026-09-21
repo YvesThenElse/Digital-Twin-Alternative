@@ -1375,3 +1375,36 @@ incompatibles pour un même paquet, et des greffons soudain invalides.
 > **Règle** — quand une version est écrite à deux endroits, l'un des deux
 > doit la LIRE dans l'autre. Deux sources finissent toujours par diverger, et
 > la panne qui en résulte ne ressemble jamais à sa cause.
+
+### 41 — Deux manques trouvés en faisant l'inventaire, pas par les tests
+
+Le bilan de Phase 1 a demandé de lister ce qui est livré. L'exercice a
+trouvé deux choses qu'aucune des 629 assertions ne voyait :
+
+**Une URL annoncée qui ne résout pas.** L'API rend `coverUrl = /covers/{id}`
+pour 218 œuvres ; aucun point d'entrée ne sert ce chemin. La grille desktop
+afficherait 218 images cassées — et la reconnaissance est la mécanique
+centrale de l'écran.
+
+Le test de l'item 13 vérifiait que `coverUrl` vaut `null` **quand il n'y a
+pas de jaquette**. Il ne vérifiait jamais qu'elle résout quand il y en a
+une. Et le parcours de bout en bout ne pouvait pas le voir : un navigateur
+n'échoue pas sur une image cassée.
+
+> **Règle** — quand une API rend une **adresse**, tester qu'elle résout, pas
+> seulement qu'elle est bien formée ou absente au bon moment. Une URL est une
+> promesse ; le test doit la tenir.
+
+**Un composant écrit, testé, monté nulle part.** `ZoneSansDate` a trois tests
+et aucun écran ne l'utilise. Il est correct et sans effet — la même famille
+que le champ `BatchId` qu'aucun producteur ne remplissait, et que
+l'exclusion qui n'excluait rien.
+
+> **Règle** — faire périodiquement l'inventaire de ce qui est **atteignable
+> depuis la racine** : points d'entrée servis, composants montés, champs
+> écrits. Une suite verte ne dit rien de ce qui n'est relié à rien.
+
+**Et un bilan n'est un bilan que s'il ouvre du travail.** Les trois manques
+bloquants sont devenus des items. Constater sans inscrire aurait produit un
+document juste et sans effet — ce qui est la forme la plus discrète de
+l'inutilité.
