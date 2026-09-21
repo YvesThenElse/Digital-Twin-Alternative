@@ -19,6 +19,7 @@
    "canonical_id": "plt_01M24BB8G14JH196A6SSC386J6",
    "key": "nes",
    "name": "Nintendo Entertainment System",
+   "launch_year": 1983,
    "region_free": false,
    "provenance": {
     "source": "wikidata",
@@ -30,6 +31,7 @@
    "canonical_id": "plt_01M24BB8G2HM7T8EEFA2TT8J0W",
    "key": "snes",
    "name": "Super Nintendo Entertainment System",
+   "launch_year": 1990,
    "region_free": false,
    "provenance": {
     "source": "wikidata",
@@ -41,6 +43,7 @@
    "canonical_id": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
    "key": "gb",
    "name": "Game Boy",
+   "launch_year": 1989,
    "region_free": false,
    "provenance": {
     "source": "wikidata",
@@ -52,6 +55,7 @@
    "canonical_id": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
    "key": "gba",
    "name": "Game Boy Advance",
+   "launch_year": 2001,
    "region_free": false,
    "provenance": {
     "source": "wikidata",
@@ -63,6 +67,7 @@
    "canonical_id": "plt_01M24BB8G57BD537WJ4RDJGAF6",
    "key": "n64",
    "name": "Nintendo 64",
+   "launch_year": 1996,
    "region_free": false,
    "provenance": {
     "source": "wikidata",
@@ -74,6 +79,7 @@
    "canonical_id": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
    "key": "ps1",
    "name": "PlayStation",
+   "launch_year": 1994,
    "region_free": false,
    "provenance": {
     "source": "wikidata",
@@ -85,6 +91,7 @@
    "canonical_id": "plt_01M24BB8G7FKG3VSAS60HE192X",
    "key": "ps2",
    "name": "PlayStation 2",
+   "launch_year": 2000,
    "region_free": false,
    "provenance": {
     "source": "wikidata",
@@ -96,6 +103,7 @@
    "canonical_id": "plt_01M24BB8G80Q8YN18MV658NPGH",
    "key": "switch",
    "name": "Nintendo Switch",
+   "launch_year": 2017,
    "region_free": true,
    "provenance": {
     "source": "wikidata",
@@ -7274,7 +7282,6 @@
    },
    "region_status": {
     "plt_01M24BB8G3VNG6F5RXF04QW3NA": {
-     "NTSC-U": "inconnu",
      "PAL": "inconnu"
     }
    },
@@ -7343,12 +7350,27 @@
      }
     },
     {
-     "canonical_id": "rel_01M24BB8NB9CT4GJQNDV2TFNGT",
+     "canonical_id": "rel_01M24BB8NBAE5GW9M4A3ZC6KBT",
      "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
      "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
      "region": "NTSC-J",
-     "date": "1987-10-30",
+     "date": "1990-12-07",
      "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Bubble_Bobble_(video_game)",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8NBXH4C6P4D3V9G8QEA",
+     "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
+     "platform": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
+     "region": "NTSC-U",
+     "date": "1991-03",
+     "precision": "month",
      "confidence": "medium",
      "provenance": {
       "source": "wikipedia",

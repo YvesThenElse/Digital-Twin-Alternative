@@ -41,7 +41,7 @@ public class DatasetLoaderTests
 
         Assert.Equal(8, resultat.Platforms.Count);
         Assert.Equal(221, resultat.Works.Count);
-        Assert.Equal(592, resultat.Releases.Count);
+        Assert.Equal(593, resultat.Releases.Count);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class DatasetLoaderTests
             .Concat(resultat.Releases.Select(r => r.CanonicalId))
             .ToList();
 
-        Assert.Equal(821, tous.Count);
+        Assert.Equal(822, tous.Count);
         Assert.Equal(tous.Count, tous.Distinct(StringComparer.Ordinal).Count());
     }
 
@@ -85,7 +85,9 @@ public class DatasetLoaderTests
         string secondeOeuvre = "wrk_zelda",
         string? notabilite = null,
         string redirects = "{}",
-        string statutRegional = "{}")
+        string statutRegional = "{}",
+        string date = "1987-05-15",
+        string anneeLancement = "1983")
     {
         // Par défaut, l'œuvre est classée sur la plateforme où elle sort.
         notabilite ??= $$"""{"{{releasePlatform}}": 1}""";
@@ -96,15 +98,17 @@ public class DatasetLoaderTests
           "sources": [],
           "redirects": {{redirects}},
           "platforms": [
-            {"canonical_id": "{{platformId}}", "name": "NES", "region_free": false},
-            {"canonical_id": "plt_switch", "name": "Switch", "region_free": true}],
+            {"canonical_id": "{{platformId}}", "name": "NES", "region_free": false,
+             "launch_year": {{anneeLancement}}},
+            {"canonical_id": "plt_switch", "name": "Switch", "region_free": true,
+             "launch_year": 2017}],
           "works": [
             {"canonical_id": "{{workId}}", "title": "Super Mario Bros.",
              "notability": {{notabilite}},
              "region_status": {{statutRegional}},
              "releases": [
                {"canonical_id": "{{releaseId}}", "platform": "{{releasePlatform}}",
-                "region": "EU", "date": "1987-05-15",
+                "region": "EU", "date": "{{date}}",
                 "precision": "{{precision}}", "confidence": "{{confidence}}"}]},
             {"canonical_id": "{{secondeOeuvre}}", "title": "Zelda",
              "notability": {},
@@ -236,8 +240,8 @@ public class DatasetLoaderTests
         {
           "dataset_version": "0.1.0", "license": "x", "sources": [], "redirects": {},
           "platforms": [
-            {"canonical_id": "plt_nes", "name": "NES", "region_free": false},
-            {"canonical_id": "plt_switch", "name": "Switch", "region_free": true}],
+            {"canonical_id": "plt_nes", "name": "NES", "region_free": false, "launch_year": 1983},
+            {"canonical_id": "plt_switch", "name": "Switch", "region_free": true, "launch_year": 2017}],
           "works": [
             {"canonical_id": "wrk_a", "title": "A",
              "notability": {"plt_nes": 1, "plt_switch": 1},
@@ -312,7 +316,7 @@ public class DatasetLoaderTests
             .Sum(p => p.Value.Count(r => r.Value == RegionAvailability.Unknown)));
 
         Assert.Equal(22, absentes);
-        Assert.Equal(33, inconnues);
+        Assert.Equal(32, inconnues);
     }
 
     // -------------------------------------------------------- redirections
@@ -390,6 +394,66 @@ public class DatasetLoaderTests
 
         Assert.Empty(resultat.Violations);
         Assert.Equal("wrk_zelda", resultat.Redirects["wrk_ancien"]);
+    }
+
+    // ---------------------------------------- une sortie ne précède pas sa machine
+
+    [Fact]
+    public void Une_sortie_anterieure_au_lancement_de_sa_machine_est_signalee()
+    {
+        // Bubble Bobble sur Game Boy portait la date Famicom du 30 octobre
+        // 1987 ; la Game Boy est sortie en 1989. Une seule sortie sur 592, et
+        // elle n'aurait jamais levé d'erreur.
+        var resultat = DatasetLoader.Load(Squelette(date: "1980-05-15"));
+
+        var violation = Assert.Single(resultat.Violations.Where(v => v.Rule == "anachronisme"));
+        Assert.Equal("rel_mario_eu", violation.EntryId);
+        Assert.Contains("1980", violation.Message, StringComparison.Ordinal);
+        Assert.Contains("1983", violation.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Une_sortie_l_annee_meme_du_lancement_est_acceptee()
+    {
+        // La borne est inclusive : un jeu de lancement sort l'année de la
+        // machine, et c'est fréquent parmi les titres les mieux classés.
+        Assert.Empty(DatasetLoader.Load(Squelette(date: "1983-07-15")).Violations);
+    }
+
+    [Fact]
+    public void Une_plateforme_sans_annee_de_lancement_est_signalee()
+    {
+        // LE garde-fou. Sans année, le contrôle ci-dessus ne s'applique à
+        // rien — et une vérification qui ne vérifie rien rend vert.
+        var resultat = DatasetLoader.Load(Squelette(anneeLancement: "null"));
+
+        var violation = Assert.Single(resultat.Violations.Where(v => v.Rule == "plateforme"));
+        Assert.Equal("plt_nes", violation.EntryId);
+        Assert.Contains("lancement", violation.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Chaque_plateforme_reelle_porte_son_annee_de_lancement()
+    {
+        var plateformes = DatasetLoader.Load(LireDatasetReel()).Platforms;
+
+        Assert.Equal(8, plateformes.Count);
+        Assert.All(plateformes, p => Assert.NotNull(p.LaunchYear));
+        Assert.Equal(1989, plateformes.Single(p => p.Name == "Game Boy").LaunchYear);
+    }
+
+    [Fact]
+    public void Aucune_sortie_reelle_ne_precede_sa_machine()
+    {
+        var resultat = DatasetLoader.Load(LireDatasetReel());
+        var lancement = resultat.Platforms.ToDictionary(p => p.CanonicalId, p => p.LaunchYear);
+
+        var anachronismes = resultat.Releases
+            .Where(r => int.Parse(r.Date[..4]) < lancement[r.PlatformId])
+            .Select(r => $"{r.CanonicalId} ({r.Date})")
+            .ToList();
+
+        Assert.Empty(anachronismes);
     }
 
     // ------------------------------------------------- précision vs confiance

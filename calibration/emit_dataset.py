@@ -335,16 +335,19 @@ def main():
         print("  (champs relus depuis le cache)")
 
     platform_ids = {k: cid("plt", q, _PLATFORM_BASE + i)
-                    for i, (k, (q, _)) in enumerate(PLATFORMS.items())}
+                    for i, (k, (q, _, _annee)) in enumerate(PLATFORMS.items())}
     # Une machine sans zonage n'impose aucune restriction régionale : une
     # sortie qui n'y porte pas de région est **mondiale**, pas incomplète.
     # Ce n'est pas « toute sortie y est mondiale » — un titre peut rester
     # exclusif au Japon et le déclarer.
     platforms = [{"canonical_id": platform_ids[k], "key": k, "name": name,
+                  # Une sortie ne peut pas précéder sa machine : l'annee de
+                  # lancement rend l'invariant verifiable par le chargeur.
+                  "launch_year": annee,
                   "region_free": k in SANS_ZONAGE,
                   "provenance": {"source": "wikidata", "external_id": q,
                                  "license": "CC0"}}
-                 for k, (q, name) in PLATFORMS.items()]
+                 for k, (q, name, annee) in PLATFORMS.items()]
 
     try:
         wpd = json.load(open("wp_dates.json"))
@@ -368,7 +371,7 @@ def main():
     seqs = _charger_registre(["%s|%s" % (e["qid"], e["platform"])
                               for e in resolved if e["qid"] in raw])
     works = [build(e, raw[e["qid"]], platform_ids, PLATFORMS[e["platform"]][0],
-                   seqs["%s|%s" % (e["qid"], e["platform"])], wpd.get(e["qid"]))
+                   seqs["%s|%s" % (e["qid"], e["platform"])], wpd.get("%s|%s" % (e["qid"], e["platform"])))
              for e in resolved if e["qid"] in raw]
 
     inutilises = set(REGION_ARBITRATION) - _ARBITRAGES_UTILISES

@@ -11,15 +11,22 @@ World. Une entrée dont l'année ne concorde pas est signalée, jamais retenue
 en silence.
 """
 
+# (QID, nom, année de lancement MONDIALE LA PLUS PRÉCOCE).
+#
+# L'année de lancement sert d'invariant : une sortie ne peut pas précéder la
+# machine sur laquelle elle paraît. On retient donc la PREMIÈRE parution, au
+# Japon le plus souvent — une borne plus tardive rejetterait de vraies
+# sorties japonaises. La Famicom est comptée comme NES, et son lecteur de
+# disquettes avec elle : le modèle ne les distingue pas.
 PLATFORMS = {
-    "nes":    ("Q172742",   "Nintendo Entertainment System"),
-    "snes":   ("Q183259",   "Super Nintendo Entertainment System"),
-    "gb":     ("Q186437",   "Game Boy"),
-    "gba":    ("Q188642",   "Game Boy Advance"),
-    "n64":    ("Q184839",   "Nintendo 64"),
-    "ps1":    ("Q10677",    "PlayStation"),
-    "ps2":    ("Q10680",    "PlayStation 2"),
-    "switch": ("Q19610114", "Nintendo Switch"),
+    "nes":    ("Q172742",   "Nintendo Entertainment System",     1983),
+    "snes":   ("Q183259",   "Super Nintendo Entertainment System", 1990),
+    "gb":     ("Q186437",   "Game Boy",                          1989),
+    "gba":    ("Q188642",   "Game Boy Advance",                  2001),
+    "n64":    ("Q184839",   "Nintendo 64",                       1996),
+    "ps1":    ("Q10677",    "PlayStation",                       1994),
+    "ps2":    ("Q10680",    "PlayStation 2",                     2000),
+    "switch": ("Q19610114", "Nintendo Switch",                   2017),
 }
 
 CURATED = {

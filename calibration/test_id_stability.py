@@ -39,10 +39,13 @@ def build_all(resolved, raw, seqs, wpd):
     Wikipédia ne sont pas construites et le test ne couvre que 630 des 885
     identifiants — en le disant « OK »."""
     pids = {k: E.cid("plt", q, E._PLATFORM_BASE + i)
-            for i, (k, (q, _)) in enumerate(PLATFORMS.items())}
+            for i, (k, (q, _, _annee)) in enumerate(PLATFORMS.items())}
     return {key(e): E.build(e, raw[e["qid"]], pids,
                             PLATFORMS[e["platform"]][0], seqs[key(e)],
-                            wpd.get(e["qid"]))
+                            # Même clé composite que l'émetteur : indexer sur
+                            # le QID seul donnerait à deux plateformes les
+                            # dates d'une seule.
+                            wpd.get(key(e)))
             for e in resolved if e["qid"] in raw}
 
 

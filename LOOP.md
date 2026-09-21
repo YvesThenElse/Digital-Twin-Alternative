@@ -117,7 +117,7 @@ n'est plus le cas.
   capture : cocher un titre modifie la timeline sans rechargement. C'est
   §24.4, et c'est vérifiable.
 - **Un écran qui « marche » sur un jeu de données parfait ne prouve rien.**
-  Le dataset porte 31 sorties datées à l'année seule, 33 régions inconnues et
+  Le dataset porte 31 sorties datées à l'année seule, 32 régions inconnues et
   22 non-sorties établies. Ce sont les cas à mettre à l'écran en premier, pas
   en dernier.
 

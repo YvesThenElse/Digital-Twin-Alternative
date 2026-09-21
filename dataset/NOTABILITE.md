@@ -123,7 +123,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 15 | Kid Icarus: Of Myths and Monsters | ✓ | NTSC-U PAL ~~NTSC-J~~ | img |
 | 17 | Dr. Mario | ✓ | NTSC-J NTSC-U PAL | img |
 | 18 | Tetris 2 | ✓ | NTSC-J NTSC-U PAL | img |
-| 19 | Bubble Bobble | ✓ | NTSC-J | img |
+| 19 | Bubble Bobble | ✓ | NTSC-J NTSC-U | img |
 | 20 | Solar Striker | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | Balloon Kid | ✓ | NTSC-J NTSC-U PAL | img |
 | 22 | Kirby's Dream Land 2 | ✓ | NTSC-J NTSC-U PAL | img |

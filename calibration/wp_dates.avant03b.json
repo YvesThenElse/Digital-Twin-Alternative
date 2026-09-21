@@ -1,5 +1,5 @@
 {
- "Q12395|nes": {
+ "Q12395": {
   "platform": "nes",
   "title": "The Legend of Zelda",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda_(video_game)",
@@ -7,18 +7,10 @@
    "NTSC-J": {
     "date": "1986-02-21",
     "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1987-08-22",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "1987-11-15",
-    "precision": "day"
    }
   }
  },
- "Q639619|nes": {
+ "Q639619": {
   "platform": "nes",
   "title": "Super Mario Bros. 3",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Bros._3",
@@ -37,7 +29,7 @@
    }
   }
  },
- "Q2530723|nes": {
+ "Q2530723": {
   "platform": "nes",
   "title": "Metroid",
   "article": "https://en.wikipedia.org/wiki/Metroid_(video_game)",
@@ -45,18 +37,10 @@
    "NTSC-J": {
     "date": "1986-08-06",
     "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1987-08",
-    "precision": "month"
-   },
-   "PAL": {
-    "date": "1988-01-15",
-    "precision": "day"
    }
   }
  },
- "Q2014882|nes": {
+ "Q2014882": {
   "platform": "nes",
   "title": "Mega Man 2",
   "article": "https://en.wikipedia.org/wiki/Mega_Man_2",
@@ -75,7 +59,7 @@
    }
   }
  },
- "Q1043375|nes": {
+ "Q1043375": {
   "platform": "nes",
   "title": "Castlevania",
   "article": "https://en.wikipedia.org/wiki/Castlevania_(1986_video_game)",
@@ -83,18 +67,10 @@
    "NTSC-J": {
     "date": "1986-09-26",
     "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1987-04-30",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "1988-11",
-    "precision": "month"
    }
   }
  },
- "Q849328|nes": {
+ "Q849328": {
   "platform": "nes",
   "title": "Contra",
   "article": "https://en.wikipedia.org/wiki/Contra_(video_game)",
@@ -113,7 +89,7 @@
    }
   }
  },
- "Q2705496|nes": {
+ "Q2705496": {
   "platform": "nes",
   "title": "Punch-Out!!",
   "article": "https://en.wikipedia.org/wiki/Punch-Out!!_(1987_video_game)",
@@ -132,7 +108,7 @@
    }
   }
  },
- "Q1154059|nes": {
+ "Q1154059": {
   "platform": "nes",
   "title": "Kirby's Adventure",
   "article": "https://en.wikipedia.org/wiki/Kirby's_Adventure",
@@ -151,7 +127,7 @@
    }
   }
  },
- "Q2658381|nes": {
+ "Q2658381": {
   "platform": "nes",
   "title": "Ninja Gaiden",
   "article": "https://en.wikipedia.org/wiki/Ninja_Gaiden_(NES_video_game)",
@@ -170,7 +146,7 @@
    }
   }
  },
- "Q187339|nes": {
+ "Q187339": {
   "platform": "nes",
   "title": "Zelda II: The Adventure of Link",
   "article": "https://en.wikipedia.org/wiki/Zelda_II:_The_Adventure_of_Link",
@@ -178,18 +154,10 @@
    "NTSC-J": {
     "date": "1987-01-14",
     "precision": "day"
-   },
-   "PAL": {
-    "date": "1988-09-26",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1988-12-01",
-    "precision": "day"
    }
   }
  },
- "Q854479|nes": {
+ "Q854479": {
   "platform": "nes",
   "title": "Super Mario Bros. 2",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Bros._2",
@@ -197,18 +165,10 @@
    "NTSC-J": {
     "date": "1987-07-10",
     "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1988-10-09",
-    "precision": "day"
-   },
-   "PAL": {
-    "date": "1989-04-28",
-    "precision": "day"
    }
   }
  },
- "Q2014874|nes": {
+ "Q2014874": {
   "platform": "nes",
   "title": "Mega Man 3",
   "article": "https://en.wikipedia.org/wiki/Mega_Man_3",
@@ -227,7 +187,7 @@
    }
   }
  },
- "Q2321818|nes": {
+ "Q2321818": {
   "platform": "nes",
   "title": "Castlevania III: Dracula's Curse",
   "article": "https://en.wikipedia.org/wiki/Castlevania_III:_Dracula's_Curse",
@@ -246,7 +206,7 @@
    }
   }
  },
- "Q146124|nes": {
+ "Q146124": {
   "platform": "nes",
   "title": "Excitebike",
   "article": "https://en.wikipedia.org/wiki/Excitebike",
@@ -265,7 +225,7 @@
    }
   }
  },
- "Q1142493|nes": {
+ "Q1142493": {
   "platform": "nes",
   "title": "Kid Icarus",
   "article": "https://en.wikipedia.org/wiki/Kid_Icarus",
@@ -273,18 +233,10 @@
    "NTSC-J": {
     "date": "1986-12-19",
     "precision": "day"
-   },
-   "PAL": {
-    "date": "1987-02-15",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1987-07",
-    "precision": "month"
    }
   }
  },
- "Q1324646|nes": {
+ "Q1324646": {
   "platform": "nes",
   "title": "Gradius",
   "article": "https://en.wikipedia.org/wiki/Gradius_(video_game)",
@@ -303,7 +255,7 @@
    }
   }
  },
- "Q698705|nes": {
+ "Q698705": {
   "platform": "nes",
   "title": "Double Dragon",
   "article": "https://en.wikipedia.org/wiki/Double_Dragon_(video_game)",
@@ -322,7 +274,7 @@
    }
   }
  },
- "Q933328|nes": {
+ "Q933328": {
   "platform": "nes",
   "title": "DuckTales",
   "article": "https://en.wikipedia.org/wiki/DuckTales_(video_game)",
@@ -341,7 +293,7 @@
    }
   }
  },
- "Q597781|nes": {
+ "Q597781": {
   "platform": "nes",
   "title": "Battletoads",
   "article": "https://en.wikipedia.org/wiki/Battletoads_(1991_video_game)",
@@ -360,7 +312,7 @@
    }
   }
  },
- "Q2364724|nes": {
+ "Q2364724": {
   "platform": "nes",
   "title": "Blaster Master",
   "article": "https://en.wikipedia.org/wiki/Blaster_Master_(video_game)",
@@ -379,7 +331,7 @@
    }
   }
  },
- "Q1194412|nes": {
+ "Q1194412": {
   "platform": "nes",
   "title": "River City Ransom",
   "article": "https://en.wikipedia.org/wiki/River_City_Ransom",
@@ -398,7 +350,7 @@
    }
   }
  },
- "Q568489|nes": {
+ "Q568489": {
   "platform": "nes",
   "title": "Adventure Island",
   "article": "https://en.wikipedia.org/wiki/Adventure_Island_(video_game)",
@@ -417,7 +369,7 @@
    }
   }
  },
- "Q1398972|nes": {
+ "Q1398972": {
   "platform": "nes",
   "title": "Faxanadu",
   "article": "https://en.wikipedia.org/wiki/Faxanadu",
@@ -436,7 +388,7 @@
    }
   }
  },
- "Q2252902|nes": {
+ "Q2252902": {
   "platform": "nes",
   "title": "StarTropics",
   "article": "https://en.wikipedia.org/wiki/StarTropics",
@@ -451,7 +403,7 @@
    }
   }
  },
- "Q2172154|nes": {
+ "Q2172154": {
   "platform": "nes",
   "title": "Teenage Mutant Ninja Turtles",
   "article": "https://en.wikipedia.org/wiki/Teenage_Mutant_Ninja_Turtles_(NES_video_game)",
@@ -459,14 +411,10 @@
    "NTSC-J": {
     "date": "1989-05-12",
     "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1989-06",
-    "precision": "month"
    }
   }
  },
- "Q764069|nes": {
+ "Q764069": {
   "platform": "nes",
   "title": "Duck Hunt",
   "article": "https://en.wikipedia.org/wiki/Duck_Hunt",
@@ -485,7 +433,7 @@
    }
   }
  },
- "Q1201014|nes": {
+ "Q1201014": {
   "platform": "nes",
   "title": "Balloon Fight",
   "article": "https://en.wikipedia.org/wiki/Balloon_Fight",
@@ -504,7 +452,7 @@
    }
   }
  },
- "Q1658492|nes": {
+ "Q1658492": {
   "platform": "nes",
   "title": "Ninja Gaiden II: The Dark Sword of Chaos",
   "article": "https://en.wikipedia.org/wiki/Ninja_Gaiden_II:_The_Dark_Sword_of_Chaos",
@@ -523,7 +471,7 @@
    }
   }
  },
- "Q853143|snes": {
+ "Q853143": {
   "platform": "snes",
   "title": "Super Mario World",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_World",
@@ -542,7 +490,7 @@
    }
   }
  },
- "Q370055|snes": {
+ "Q370055": {
   "platform": "snes",
   "title": "The Legend of Zelda: A Link to the Past",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_A_Link_to_the_Past",
@@ -561,7 +509,7 @@
    }
   }
  },
- "Q1194825|snes": {
+ "Q1194825": {
   "platform": "snes",
   "title": "Super Metroid",
   "article": "https://en.wikipedia.org/wiki/Super_Metroid",
@@ -580,7 +528,7 @@
    }
   }
  },
- "Q761815|snes": {
+ "Q761815": {
   "platform": "snes",
   "title": "Chrono Trigger",
   "article": "https://en.wikipedia.org/wiki/Chrono_Trigger",
@@ -595,7 +543,7 @@
    }
   }
  },
- "Q535940|snes": {
+ "Q535940": {
   "platform": "snes",
   "title": "Final Fantasy VI",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_VI",
@@ -610,7 +558,7 @@
    }
   }
  },
- "Q1061560|snes": {
+ "Q1061560": {
   "platform": "snes",
   "title": "Super Mario Kart",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Kart",
@@ -629,7 +577,7 @@
    }
   }
  },
- "Q1800173|snes": {
+ "Q1800173": {
   "platform": "snes",
   "title": "Secret of Mana",
   "article": "https://en.wikipedia.org/wiki/Secret_of_Mana",
@@ -648,7 +596,7 @@
    }
   }
  },
- "Q389254|snes": {
+ "Q389254": {
   "platform": "snes",
   "title": "Super Castlevania IV",
   "article": "https://en.wikipedia.org/wiki/Super_Castlevania_IV",
@@ -667,7 +615,7 @@
    }
   }
  },
- "Q2529000|snes": {
+ "Q2529000": {
   "platform": "snes",
   "title": "Earthbound",
   "article": "https://en.wikipedia.org/wiki/EarthBound",
@@ -682,7 +630,7 @@
    }
   }
  },
- "Q1045765|snes": {
+ "Q1045765": {
   "platform": "snes",
   "title": "Super Mario World 2: Yoshi's Island",
   "article": "https://en.wikipedia.org/wiki/Yoshi's_Island",
@@ -701,7 +649,7 @@
    }
   }
  },
- "Q1198491|snes": {
+ "Q1198491": {
   "platform": "snes",
   "title": "F-Zero",
   "article": "https://en.wikipedia.org/wiki/F-Zero_(video_game)",
@@ -720,7 +668,7 @@
    }
   }
  },
- "Q2002093|snes": {
+ "Q2002093": {
   "platform": "snes",
   "title": "Super Punch-Out!!",
   "article": "https://en.wikipedia.org/wiki/Super_Punch-Out!!",
@@ -739,7 +687,7 @@
    }
   }
  },
- "Q1072051|snes": {
+ "Q1072051": {
   "platform": "snes",
   "title": "Donkey Kong Country 2: Diddy's Kong Quest",
   "article": "https://en.wikipedia.org/wiki/Donkey_Kong_Country_2",
@@ -758,7 +706,7 @@
    }
   }
  },
- "Q1368099|snes": {
+ "Q1368099": {
   "platform": "snes",
   "title": "Contra III: The Alien Wars",
   "article": "https://en.wikipedia.org/wiki/Contra_III:_The_Alien_Wars",
@@ -777,7 +725,7 @@
    }
   }
  },
- "Q1197149|snes": {
+ "Q1197149": {
   "platform": "snes",
   "title": "Terranigma",
   "article": "https://en.wikipedia.org/wiki/Terranigma",
@@ -792,7 +740,7 @@
    }
   }
  },
- "Q1658920|snes": {
+ "Q1658920": {
   "platform": "snes",
   "title": "Illusion of Gaia",
   "article": "https://en.wikipedia.org/wiki/Illusion_of_Gaia",
@@ -811,7 +759,7 @@
    }
   }
  },
- "Q343033|snes": {
+ "Q343033": {
   "platform": "snes",
   "title": "ActRaiser",
   "article": "https://en.wikipedia.org/wiki/ActRaiser",
@@ -830,7 +778,7 @@
    }
   }
  },
- "Q1871848|snes": {
+ "Q1871848": {
   "platform": "snes",
   "title": "Kirby Super Star",
   "article": "https://en.wikipedia.org/wiki/Kirby_Super_Star",
@@ -849,7 +797,7 @@
    }
   }
  },
- "Q911226|snes": {
+ "Q911226": {
   "platform": "snes",
   "title": "Final Fantasy IV",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_IV",
@@ -864,7 +812,7 @@
    }
   }
  },
- "Q275122|snes": {
+ "Q275122": {
   "platform": "snes",
   "title": "Super Ghouls 'n Ghosts",
   "article": "https://en.wikipedia.org/wiki/Super_Ghouls_'n_Ghosts",
@@ -883,7 +831,7 @@
    }
   }
  },
- "Q2316943|snes": {
+ "Q2316943": {
   "platform": "snes",
   "title": "Tetris Attack",
   "article": "https://en.wikipedia.org/wiki/Tetris_Attack",
@@ -902,7 +850,7 @@
    }
   }
  },
- "Q219804|snes": {
+ "Q219804": {
   "platform": "snes",
   "title": "Zombies Ate My Neighbors",
   "article": "https://en.wikipedia.org/wiki/Zombies_Ate_My_Neighbors",
@@ -917,7 +865,7 @@
    }
   }
  },
- "Q1305295|snes": {
+ "Q1305295": {
   "platform": "snes",
   "title": "Pilotwings",
   "article": "https://en.wikipedia.org/wiki/Pilotwings_(video_game)",
@@ -936,7 +884,7 @@
    }
   }
  },
- "Q2756952|snes": {
+ "Q2756952": {
   "platform": "snes",
   "title": "Super Tennis",
   "article": "https://en.wikipedia.org/wiki/Super_Tennis",
@@ -955,7 +903,7 @@
    }
   }
  },
- "Q2829467|snes": {
+ "Q2829467": {
   "platform": "snes",
   "title": "Aladdin",
   "article": "https://en.wikipedia.org/wiki/Disney's_Aladdin_(SNES_video_game)",
@@ -974,7 +922,7 @@
    }
   }
  },
- "Q7146181|snes": {
+ "Q7146181": {
   "platform": "snes",
   "title": "Harvest Moon",
   "article": "https://en.wikipedia.org/wiki/Harvest_Moon_(video_game)",
@@ -993,7 +941,7 @@
    }
   }
  },
- "Q2637335|snes": {
+ "Q2637335": {
   "platform": "snes",
   "title": "Lufia & the Fortress of Doom",
   "article": "https://en.wikipedia.org/wiki/Lufia_&_the_Fortress_of_Doom",
@@ -1008,7 +956,7 @@
    }
   }
  },
- "Q3519191|gb": {
+ "Q3519191": {
   "platform": "gb",
   "title": "Tetris",
   "article": "https://en.wikipedia.org/wiki/Tetris_(Game_Boy_video_game)",
@@ -1027,7 +975,7 @@
    }
   }
  },
- "Q1060323|gb": {
+ "Q1060323": {
   "platform": "gb",
   "title": "The Legend of Zelda: Link's Awakening",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Link's_Awakening",
@@ -1046,7 +994,7 @@
    }
   }
  },
- "Q647249|gb": {
+ "Q647249": {
   "platform": "gb",
   "title": "Super Mario Land",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Land",
@@ -1065,7 +1013,7 @@
    }
   }
  },
- "Q596392|gb": {
+ "Q596392": {
   "platform": "gb",
   "title": "Super Mario Land 2: 6 Golden Coins",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Land_2:_6_Golden_Coins",
@@ -1084,7 +1032,7 @@
    }
   }
  },
- "Q1154044|gb": {
+ "Q1154044": {
   "platform": "gb",
   "title": "Kirby's Dream Land",
   "article": "https://en.wikipedia.org/wiki/Kirby's_Dream_Land",
@@ -1103,7 +1051,7 @@
    }
   }
  },
- "Q2471454|gb": {
+ "Q2471454": {
   "platform": "gb",
   "title": "Metroid II: Return of Samus",
   "article": "https://en.wikipedia.org/wiki/Metroid_II:_Return_of_Samus",
@@ -1122,7 +1070,7 @@
    }
   }
  },
- "Q1634866|gb": {
+ "Q1634866": {
   "platform": "gb",
   "title": "Wario Land: Super Mario Land 3",
   "article": "https://en.wikipedia.org/wiki/Wario_Land:_Super_Mario_Land_3",
@@ -1141,7 +1089,7 @@
    }
   }
  },
- "Q2563041|gb": {
+ "Q2563041": {
   "platform": "gb",
   "title": "Castlevania: The Adventure",
   "article": "https://en.wikipedia.org/wiki/Castlevania:_The_Adventure",
@@ -1160,7 +1108,7 @@
    }
   }
  },
- "Q2333557|gb": {
+ "Q2333557": {
   "platform": "gb",
   "title": "Final Fantasy Adventure",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_Adventure",
@@ -1179,7 +1127,7 @@
    }
   }
  },
- "Q2987019|gb": {
+ "Q2987019": {
   "platform": "gb",
   "title": "Mega Man: Dr. Wily's Revenge",
   "article": "https://en.wikipedia.org/wiki/Mega_Man:_Dr._Wily's_Revenge",
@@ -1198,7 +1146,7 @@
    }
   }
  },
- "Q971188|gb": {
+ "Q971188": {
   "platform": "gb",
   "title": "Gargoyle's Quest",
   "article": "https://en.wikipedia.org/wiki/Gargoyle's_Quest",
@@ -1217,7 +1165,7 @@
    }
   }
  },
- "Q2565757|gb": {
+ "Q2565757": {
   "platform": "gb",
   "title": "Kid Icarus: Of Myths and Monsters",
   "article": "https://en.wikipedia.org/wiki/Kid_Icarus:_Of_Myths_and_Monsters",
@@ -1232,7 +1180,7 @@
    }
   }
  },
- "Q1198580|gb": {
+ "Q1198580": {
   "platform": "gb",
   "title": "Dr. Mario",
   "article": "https://en.wikipedia.org/wiki/Dr._Mario",
@@ -1251,7 +1199,7 @@
    }
   }
  },
- "Q11319329|gb": {
+ "Q11319329": {
   "platform": "gb",
   "title": "Tetris 2",
   "article": "https://en.wikipedia.org/wiki/Tetris_2_(1993_video_game)",
@@ -1270,22 +1218,18 @@
    }
   }
  },
- "Q88759|gb": {
-  "platform": "gb",
+ "Q88759": {
+  "platform": "nes",
   "title": "Bubble Bobble",
   "article": "https://en.wikipedia.org/wiki/Bubble_Bobble_(video_game)",
   "regions": {
    "NTSC-J": {
-    "date": "1990-12-07",
+    "date": "1987-10-30",
     "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1991-03",
-    "precision": "month"
    }
   }
  },
- "Q3489226|gb": {
+ "Q3489226": {
   "platform": "gb",
   "title": "Solar Striker",
   "article": "https://en.wikipedia.org/wiki/Solar_Striker",
@@ -1304,7 +1248,7 @@
    }
   }
  },
- "Q2881381|gb": {
+ "Q2881381": {
   "platform": "gb",
   "title": "Balloon Kid",
   "article": "https://en.wikipedia.org/wiki/Balloon_Kid",
@@ -1323,7 +1267,7 @@
    }
   }
  },
- "Q2273753|gb": {
+ "Q2273753": {
   "platform": "gb",
   "title": "Kirby's Dream Land 2",
   "article": "https://en.wikipedia.org/wiki/Kirby's_Dream_Land_2",
@@ -1342,7 +1286,7 @@
    }
   }
  },
- "Q6141895|gb": {
+ "Q6141895": {
   "platform": "gb",
   "title": "Mole Mania",
   "article": "https://en.wikipedia.org/wiki/Mole_Mania",
@@ -1361,7 +1305,7 @@
    }
   }
  },
- "Q721822|gba": {
+ "Q721822": {
   "platform": "gba",
   "title": "Pokémon Ruby and Sapphire",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Ruby_and_Sapphire",
@@ -1380,7 +1324,7 @@
    }
   }
  },
- "Q474798|gba": {
+ "Q474798": {
   "platform": "gba",
   "title": "The Legend of Zelda: The Minish Cap",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_The_Minish_Cap",
@@ -1399,7 +1343,7 @@
    }
   }
  },
- "Q2478949|gba": {
+ "Q2478949": {
   "platform": "gba",
   "title": "Metroid Fusion",
   "article": "https://en.wikipedia.org/wiki/Metroid_Fusion",
@@ -1418,7 +1362,7 @@
    }
   }
  },
- "Q953229|gba": {
+ "Q953229": {
   "platform": "gba",
   "title": "Advance Wars",
   "article": "https://en.wikipedia.org/wiki/Advance_Wars",
@@ -1437,7 +1381,7 @@
    }
   }
  },
- "Q2068675|gba": {
+ "Q2068675": {
   "platform": "gba",
   "title": "Mario Kart: Super Circuit",
   "article": "https://en.wikipedia.org/wiki/Mario_Kart:_Super_Circuit",
@@ -1456,7 +1400,7 @@
    }
   }
  },
- "Q2291309|gba": {
+ "Q2291309": {
   "platform": "gba",
   "title": "Castlevania: Aria of Sorrow",
   "article": "https://en.wikipedia.org/wiki/Castlevania:_Aria_of_Sorrow",
@@ -1475,7 +1419,7 @@
    }
   }
  },
- "Q2012171|gba": {
+ "Q2012171": {
   "platform": "gba",
   "title": "Metroid: Zero Mission",
   "article": "https://en.wikipedia.org/wiki/Metroid:_Zero_Mission",
@@ -1494,7 +1438,7 @@
    }
   }
  },
- "Q609063|gba": {
+ "Q609063": {
   "platform": "gba",
   "title": "Pokémon FireRed and LeafGreen",
   "article": "https://en.wikipedia.org/wiki/Pokémon_FireRed_and_LeafGreen",
@@ -1513,7 +1457,7 @@
    }
   }
  },
- "Q1797550|gba": {
+ "Q1797550": {
   "platform": "gba",
   "title": "Mario & Luigi: Superstar Saga",
   "article": "https://en.wikipedia.org/wiki/Mario_&_Luigi:_Superstar_Saga",
@@ -1532,7 +1476,7 @@
    }
   }
  },
- "Q1195267|gba": {
+ "Q1195267": {
   "platform": "gba",
   "title": "WarioWare, Inc.: Mega Microgames!",
   "article": "https://en.wikipedia.org/wiki/WarioWare,_Inc.:_Mega_Microgames!",
@@ -1551,7 +1495,7 @@
    }
   }
  },
- "Q751268|gba": {
+ "Q751268": {
   "platform": "gba",
   "title": "Astro Boy: Omega Factor",
   "article": "https://en.wikipedia.org/wiki/Astro_Boy:_Omega_Factor",
@@ -1570,7 +1514,7 @@
    }
   }
  },
- "Q1072868|gba": {
+ "Q1072868": {
   "platform": "gba",
   "title": "Final Fantasy Tactics Advance",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_Tactics_Advance",
@@ -1589,7 +1533,7 @@
    }
   }
  },
- "Q2045645|gba": {
+ "Q2045645": {
   "platform": "gba",
   "title": "Pokémon Emerald",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Emerald",
@@ -1608,7 +1552,7 @@
    }
   }
  },
- "Q2306443|gba": {
+ "Q2306443": {
   "platform": "gba",
   "title": "Kirby & the Amazing Mirror",
   "article": "https://en.wikipedia.org/wiki/Kirby_&_the_Amazing_Mirror",
@@ -1627,7 +1571,7 @@
    }
   }
  },
- "Q2562228|gba": {
+ "Q2562228": {
   "platform": "gba",
   "title": "Castlevania: Circle of the Moon",
   "article": "https://en.wikipedia.org/wiki/Castlevania:_Circle_of_the_Moon",
@@ -1646,7 +1590,7 @@
    }
   }
  },
- "Q2569478|gba": {
+ "Q2569478": {
   "platform": "gba",
   "title": "Advance Wars 2: Black Hole Rising",
   "article": "https://en.wikipedia.org/wiki/Advance_Wars_2:_Black_Hole_Rising",
@@ -1665,7 +1609,7 @@
    }
   }
  },
- "Q2342264|gba": {
+ "Q2342264": {
   "platform": "gba",
   "title": "Golden Sun: The Lost Age",
   "article": "https://en.wikipedia.org/wiki/Golden_Sun:_The_Lost_Age",
@@ -1684,7 +1628,7 @@
    }
   }
  },
- "Q5307541|gba": {
+ "Q5307541": {
   "platform": "gba",
   "title": "Drill Dozer",
   "article": "https://en.wikipedia.org/wiki/Drill_Dozer",
@@ -1699,7 +1643,7 @@
    }
   }
  },
- "Q3108764|gba": {
+ "Q3108764": {
   "platform": "gba",
   "title": "Rhythm Tengoku",
   "article": "https://en.wikipedia.org/wiki/Rhythm_Tengoku",
@@ -1710,7 +1654,7 @@
    }
   }
  },
- "Q2383167|gba": {
+ "Q2383167": {
   "platform": "gba",
   "title": "Mother 3",
   "article": "https://en.wikipedia.org/wiki/Mother_3",
@@ -1721,7 +1665,7 @@
    }
   }
  },
- "Q1358804|gba": {
+ "Q1358804": {
   "platform": "gba",
   "title": "The Legend of Zelda: A Link to the Past and Four Swords",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_A_Link_to_the_Past_and_Four_Swords",
@@ -1740,7 +1684,7 @@
    }
   }
  },
- "Q216995|n64": {
+ "Q216995": {
   "platform": "n64",
   "title": "Super Mario 64",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_64",
@@ -1759,7 +1703,7 @@
    }
   }
  },
- "Q213911|n64": {
+ "Q213911": {
   "platform": "n64",
   "title": "The Legend of Zelda: Ocarina of Time",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Ocarina_of_Time",
@@ -1778,7 +1722,7 @@
    }
   }
  },
- "Q369086|n64": {
+ "Q369086": {
   "platform": "n64",
   "title": "GoldenEye 007",
   "article": "https://en.wikipedia.org/wiki/GoldenEye_007",
@@ -1797,7 +1741,7 @@
    }
   }
  },
- "Q1046604|n64": {
+ "Q1046604": {
   "platform": "n64",
   "title": "Mario Kart 64",
   "article": "https://en.wikipedia.org/wiki/Mario_Kart_64",
@@ -1816,7 +1760,7 @@
    }
   }
  },
- "Q870981|n64": {
+ "Q870981": {
   "platform": "n64",
   "title": "Super Smash Bros.",
   "article": "https://en.wikipedia.org/wiki/Super_Smash_Bros._(video_game)",
@@ -1835,7 +1779,7 @@
    }
   }
  },
- "Q732943|n64": {
+ "Q732943": {
   "platform": "n64",
   "title": "The Legend of Zelda: Majora's Mask",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Majora's_Mask",
@@ -1854,7 +1798,7 @@
    }
   }
  },
- "Q129000|n64": {
+ "Q129000": {
   "platform": "n64",
   "title": "Banjo-Kazooie",
   "article": "https://en.wikipedia.org/wiki/Banjo-Kazooie_(video_game)",
@@ -1869,7 +1813,7 @@
    }
   }
  },
- "Q1408723|n64": {
+ "Q1408723": {
   "platform": "n64",
   "title": "Perfect Dark",
   "article": "https://en.wikipedia.org/wiki/Perfect_Dark",
@@ -1884,7 +1828,7 @@
    }
   }
  },
- "Q1141963|n64": {
+ "Q1141963": {
   "platform": "n64",
   "title": "Star Fox 64",
   "article": "https://en.wikipedia.org/wiki/Star_Fox_64",
@@ -1903,7 +1847,7 @@
    }
   }
  },
- "Q774773|n64": {
+ "Q774773": {
   "platform": "n64",
   "title": "Donkey Kong 64",
   "article": "https://en.wikipedia.org/wiki/Donkey_Kong_64",
@@ -1922,7 +1866,7 @@
    }
   }
  },
- "Q149998|n64": {
+ "Q149998": {
   "platform": "n64",
   "title": "Paper Mario",
   "article": "https://en.wikipedia.org/wiki/Paper_Mario_(video_game)",
@@ -1941,7 +1885,7 @@
    }
   }
  },
- "Q841712|n64": {
+ "Q841712": {
   "platform": "n64",
   "title": "Conker's Bad Fur Day",
   "article": "https://en.wikipedia.org/wiki/Conker's_Bad_Fur_Day",
@@ -1956,7 +1900,7 @@
    }
   }
  },
- "Q2609497|n64": {
+ "Q2609497": {
   "platform": "n64",
   "title": "F-Zero X",
   "article": "https://en.wikipedia.org/wiki/F-Zero_X",
@@ -1975,7 +1919,7 @@
    }
   }
  },
- "Q545072|n64": {
+ "Q545072": {
   "platform": "n64",
   "title": "Diddy Kong Racing",
   "article": "https://en.wikipedia.org/wiki/Diddy_Kong_Racing",
@@ -1994,7 +1938,7 @@
    }
   }
  },
- "Q3142278|n64": {
+ "Q3142278": {
   "platform": "n64",
   "title": "Wave Race 64",
   "article": "https://en.wikipedia.org/wiki/Wave_Race_64",
@@ -2013,7 +1957,7 @@
    }
   }
  },
- "Q1705294|n64": {
+ "Q1705294": {
   "platform": "n64",
   "title": "Pokémon Snap",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Snap",
@@ -2032,7 +1976,7 @@
    }
   }
  },
- "Q2034425|n64": {
+ "Q2034425": {
   "platform": "n64",
   "title": "Pokémon Stadium",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Stadium",
@@ -2051,7 +1995,7 @@
    }
   }
  },
- "Q806598|n64": {
+ "Q806598": {
   "platform": "n64",
   "title": "Banjo-Tooie",
   "article": "https://en.wikipedia.org/wiki/Banjo-Tooie",
@@ -2070,7 +2014,7 @@
    }
   }
  },
- "Q2397985|n64": {
+ "Q2397985": {
   "platform": "n64",
   "title": "Mario Tennis",
   "article": "https://en.wikipedia.org/wiki/Mario_Tennis",
@@ -2089,7 +2033,7 @@
    }
   }
  },
- "Q168615|n64": {
+ "Q168615": {
   "platform": "n64",
   "title": "1080° Snowboarding",
   "article": "https://en.wikipedia.org/wiki/1080°_Snowboarding",
@@ -2108,7 +2052,7 @@
    }
   }
  },
- "Q2337280|n64": {
+ "Q2337280": {
   "platform": "n64",
   "title": "Yoshi's Story",
   "article": "https://en.wikipedia.org/wiki/Yoshi's_Story",
@@ -2127,7 +2071,7 @@
    }
   }
  },
- "Q2431467|n64": {
+ "Q2431467": {
   "platform": "n64",
   "title": "Turok: Dinosaur Hunter",
   "article": "https://en.wikipedia.org/wiki/Turok:_Dinosaur_Hunter",
@@ -2142,7 +2086,7 @@
    }
   }
  },
- "Q3099600|n64": {
+ "Q3099600": {
   "platform": "n64",
   "title": "Sin and Punishment",
   "article": "https://en.wikipedia.org/wiki/Sin_and_Punishment",
@@ -2153,7 +2097,7 @@
    }
   }
  },
- "Q2295559|n64": {
+ "Q2295559": {
   "platform": "n64",
   "title": "Ogre Battle 64: Person of Lordly Caliber",
   "article": "https://en.wikipedia.org/wiki/Ogre_Battle_64",
@@ -2168,7 +2112,7 @@
    }
   }
  },
- "Q214232|ps1": {
+ "Q214232": {
   "platform": "ps1",
   "title": "Final Fantasy VII",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_VII",
@@ -2187,7 +2131,7 @@
    }
   }
  },
- "Q6582527|ps1": {
+ "Q6582527": {
   "platform": "ps1",
   "title": "Metal Gear Solid",
   "article": "https://en.wikipedia.org/wiki/Metal_Gear_Solid_(video_game)",
@@ -2206,7 +2150,7 @@
    }
   }
  },
- "Q1248594|ps1": {
+ "Q1248594": {
   "platform": "ps1",
   "title": "Resident Evil",
   "article": "https://en.wikipedia.org/wiki/Resident_Evil_(1996_video_game)",
@@ -2225,7 +2169,7 @@
    }
   }
  },
- "Q944320|ps1": {
+ "Q944320": {
   "platform": "ps1",
   "title": "Gran Turismo",
   "article": "https://en.wikipedia.org/wiki/Gran_Turismo_(1997_video_game)",
@@ -2244,7 +2188,7 @@
    }
   }
  },
- "Q1062106|ps1": {
+ "Q1062106": {
   "platform": "ps1",
   "title": "Tekken 3",
   "article": "https://en.wikipedia.org/wiki/Tekken_3",
@@ -2263,7 +2207,7 @@
    }
   }
  },
- "Q245006|ps1": {
+ "Q245006": {
   "platform": "ps1",
   "title": "Final Fantasy VIII",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_VIII",
@@ -2282,7 +2226,7 @@
    }
   }
  },
- "Q753164|ps1": {
+ "Q753164": {
   "platform": "ps1",
   "title": "Silent Hill",
   "article": "https://en.wikipedia.org/wiki/Silent_Hill_(video_game)",
@@ -2301,7 +2245,7 @@
    }
   }
  },
- "Q2007022|ps1": {
+ "Q2007022": {
   "platform": "ps1",
   "title": "Castlevania: Symphony of the Night",
   "article": "https://en.wikipedia.org/wiki/Castlevania:_Symphony_of_the_Night",
@@ -2320,7 +2264,7 @@
    }
   }
  },
- "Q733992|ps1": {
+ "Q733992": {
   "platform": "ps1",
   "title": "Resident Evil 2",
   "article": "https://en.wikipedia.org/wiki/Resident_Evil_2",
@@ -2339,7 +2283,7 @@
    }
   }
  },
- "Q474573|ps1": {
+ "Q474573": {
   "platform": "ps1",
   "title": "Final Fantasy IX",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_IX",
@@ -2358,7 +2302,7 @@
    }
   }
  },
- "Q980535|ps1": {
+ "Q980535": {
   "platform": "ps1",
   "title": "Gran Turismo 2",
   "article": "https://en.wikipedia.org/wiki/Gran_Turismo_2",
@@ -2377,7 +2321,7 @@
    }
   }
  },
- "Q569822|ps1": {
+ "Q569822": {
   "platform": "ps1",
   "title": "Crash Bandicoot 2: Cortex Strikes Back",
   "article": "https://en.wikipedia.org/wiki/Crash_Bandicoot_2:_Cortex_Strikes_Back",
@@ -2392,7 +2336,7 @@
    }
   }
  },
- "Q1088142|ps1": {
+ "Q1088142": {
   "platform": "ps1",
   "title": "Chrono Cross",
   "article": "https://en.wikipedia.org/wiki/Chrono_Cross",
@@ -2407,7 +2351,7 @@
    }
   }
  },
- "Q583360|ps1": {
+ "Q583360": {
   "platform": "ps1",
   "title": "Xenogears",
   "article": "https://en.wikipedia.org/wiki/Xenogears",
@@ -2422,7 +2366,7 @@
    }
   }
  },
- "Q1536626|ps1": {
+ "Q1536626": {
   "platform": "ps1",
   "title": "Vagrant Story",
   "article": "https://en.wikipedia.org/wiki/Vagrant_Story",
@@ -2441,7 +2385,7 @@
    }
   }
  },
- "Q3503174|ps1": {
+ "Q3503174": {
   "platform": "ps1",
   "title": "Suikoden II",
   "article": "https://en.wikipedia.org/wiki/Suikoden_II",
@@ -2460,7 +2404,7 @@
    }
   }
  },
- "Q2293778|ps1": {
+ "Q2293778": {
   "platform": "ps1",
   "title": "Driver",
   "article": "https://en.wikipedia.org/wiki/Driver_(video_game)",
@@ -2475,7 +2419,7 @@
    }
   }
  },
- "Q286205|ps1": {
+ "Q286205": {
   "platform": "ps1",
   "title": "Wipeout",
   "article": "https://en.wikipedia.org/wiki/Wipeout_(video_game)",
@@ -2490,7 +2434,7 @@
    }
   }
  },
- "Q15087581|ps1": {
+ "Q15087581": {
   "platform": "ps1",
   "title": "Ridge Racer",
   "article": "https://en.wikipedia.org/wiki/Ridge_Racer_(1993_video_game)",
@@ -2509,7 +2453,7 @@
    }
   }
  },
- "Q589359|ps1": {
+ "Q589359": {
   "platform": "ps1",
   "title": "Tekken 2",
   "article": "https://en.wikipedia.org/wiki/Tekken_2",
@@ -2528,7 +2472,7 @@
    }
   }
  },
- "Q960773|ps1": {
+ "Q960773": {
   "platform": "ps1",
   "title": "Ape Escape",
   "article": "https://en.wikipedia.org/wiki/Ape_Escape_(video_game)",
@@ -2543,7 +2487,7 @@
    }
   }
  },
- "Q2164073|ps1": {
+ "Q2164073": {
   "platform": "ps1",
   "title": "Um Jammer Lammy",
   "article": "https://en.wikipedia.org/wiki/Um_Jammer_Lammy",
@@ -2562,7 +2506,7 @@
    }
   }
  },
- "Q1340462|ps1": {
+ "Q1340462": {
   "platform": "ps1",
   "title": "PaRappa the Rapper",
   "article": "https://en.wikipedia.org/wiki/PaRappa_the_Rapper",
@@ -2581,7 +2525,7 @@
    }
   }
  },
- "Q1064350|ps1": {
+ "Q1064350": {
   "platform": "ps1",
   "title": "Oddworld: Abe's Oddysee",
   "article": "https://en.wikipedia.org/wiki/Oddworld:_Abe's_Oddysee",
@@ -2596,7 +2540,7 @@
    }
   }
  },
- "Q83265|ps2": {
+ "Q83265": {
   "platform": "ps2",
   "title": "Grand Theft Auto: San Andreas",
   "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_San_Andreas",
@@ -2611,7 +2555,7 @@
    }
   }
  },
- "Q846051|ps2": {
+ "Q846051": {
   "platform": "ps2",
   "title": "Shadow of the Colossus",
   "article": "https://en.wikipedia.org/wiki/Shadow_of_the_Colossus",
@@ -2630,7 +2574,7 @@
    }
   }
  },
- "Q1324448|ps2": {
+ "Q1324448": {
   "platform": "ps2",
   "title": "Ico",
   "article": "https://en.wikipedia.org/wiki/Ico",
@@ -2649,7 +2593,7 @@
    }
   }
  },
- "Q247935|ps2": {
+ "Q247935": {
   "platform": "ps2",
   "title": "Metal Gear Solid 3: Snake Eater",
   "article": "https://en.wikipedia.org/wiki/Metal_Gear_Solid_3:_Snake_Eater",
@@ -2668,7 +2612,7 @@
    }
   }
  },
- "Q149106|ps2": {
+ "Q149106": {
   "platform": "ps2",
   "title": "Grand Theft Auto III",
   "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto_III",
@@ -2683,7 +2627,7 @@
    }
   }
  },
- "Q94671|ps2": {
+ "Q94671": {
   "platform": "ps2",
   "title": "Grand Theft Auto: Vice City",
   "article": "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_Vice_City",
@@ -2698,7 +2642,7 @@
    }
   }
  },
- "Q817369|ps2": {
+ "Q817369": {
   "platform": "ps2",
   "title": "God of War",
   "article": "https://en.wikipedia.org/wiki/God_of_War_(2005_video_game)",
@@ -2713,7 +2657,7 @@
    }
   }
  },
- "Q975773|ps2": {
+ "Q975773": {
   "platform": "ps2",
   "title": "Gran Turismo 3: A-Spec",
   "article": "https://en.wikipedia.org/wiki/Gran_Turismo_3:_A-Spec",
@@ -2732,7 +2676,7 @@
    }
   }
  },
- "Q907226|ps2": {
+ "Q907226": {
   "platform": "ps2",
   "title": "Metal Gear Solid 2: Sons of Liberty",
   "article": "https://en.wikipedia.org/wiki/Metal_Gear_Solid_2:_Sons_of_Liberty",
@@ -2751,7 +2695,7 @@
    }
   }
  },
- "Q840889|ps2": {
+ "Q840889": {
   "platform": "ps2",
   "title": "Devil May Cry",
   "article": "https://en.wikipedia.org/wiki/Devil_May_Cry_(video_game)",
@@ -2770,7 +2714,7 @@
    }
   }
  },
- "Q385184|ps2": {
+ "Q385184": {
   "platform": "ps2",
   "title": "Ōkami",
   "article": "https://en.wikipedia.org/wiki/Ōkami",
@@ -2789,7 +2733,7 @@
    }
   }
  },
- "Q568609|ps2": {
+ "Q568609": {
   "platform": "ps2",
   "title": "Persona 4",
   "article": "https://en.wikipedia.org/wiki/Persona_4",
@@ -2808,7 +2752,7 @@
    }
   }
  },
- "Q910889|ps2": {
+ "Q910889": {
   "platform": "ps2",
   "title": "Persona 3",
   "article": "https://en.wikipedia.org/wiki/Persona_3",
@@ -2827,7 +2771,7 @@
    }
   }
  },
- "Q275950|ps2": {
+ "Q275950": {
   "platform": "ps2",
   "title": "Resident Evil 4",
   "article": "https://en.wikipedia.org/wiki/Resident_Evil_4",
@@ -2846,7 +2790,7 @@
    }
   }
  },
- "Q752835|ps2": {
+ "Q752835": {
   "platform": "ps2",
   "title": "Silent Hill 2",
   "article": "https://en.wikipedia.org/wiki/Silent_Hill_2",
@@ -2865,7 +2809,7 @@
    }
   }
  },
- "Q1784103|ps2": {
+ "Q1784103": {
   "platform": "ps2",
   "title": "Jak and Daxter: The Precursor Legacy",
   "article": "https://en.wikipedia.org/wiki/Jak_and_Daxter:_The_Precursor_Legacy",
@@ -2880,7 +2824,7 @@
    }
   }
  },
- "Q2079604|ps2": {
+ "Q2079604": {
   "platform": "ps2",
   "title": "Burnout 3: Takedown",
   "article": "https://en.wikipedia.org/wiki/Burnout_3:_Takedown",
@@ -2895,7 +2839,7 @@
    }
   }
  },
- "Q1052488|ps2": {
+ "Q1052488": {
   "platform": "ps2",
   "title": "Tekken 5",
   "article": "https://en.wikipedia.org/wiki/Tekken_5",
@@ -2914,7 +2858,7 @@
    }
   }
  },
- "Q2377020|ps2": {
+ "Q2377020": {
   "platform": "ps2",
   "title": "SSX Tricky",
   "article": "https://en.wikipedia.org/wiki/SSX_Tricky",
@@ -2929,7 +2873,7 @@
    }
   }
  },
- "Q1206519|ps2": {
+ "Q1206519": {
   "platform": "ps2",
   "title": "Katamari Damacy",
   "article": "https://en.wikipedia.org/wiki/Katamari_Damacy",
@@ -2944,7 +2888,7 @@
    }
   }
  },
- "Q1948338|ps2": {
+ "Q1948338": {
   "platform": "ps2",
   "title": "Dragon Quest VIII",
   "article": "https://en.wikipedia.org/wiki/Dragon_Quest_VIII",
@@ -2963,7 +2907,7 @@
    }
   }
  },
- "Q17185964|switch": {
+ "Q17185964": {
   "platform": "switch",
   "title": "The Legend of Zelda: Breath of the Wild",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Breath_of_the_Wild",
@@ -2974,7 +2918,7 @@
    }
   }
  },
- "Q28234671|switch": {
+ "Q28234671": {
   "platform": "switch",
   "title": "Super Mario Odyssey",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Odyssey",
@@ -2985,7 +2929,7 @@
    }
   }
  },
- "Q64566657|switch": {
+ "Q64566657": {
   "platform": "switch",
   "title": "Animal Crossing: New Horizons",
   "article": "https://en.wikipedia.org/wiki/Animal_Crossing:_New_Horizons",
@@ -2996,7 +2940,7 @@
    }
   }
  },
- "Q54093632|switch": {
+ "Q54093632": {
   "platform": "switch",
   "title": "Super Smash Bros. Ultimate",
   "article": "https://en.wikipedia.org/wiki/Super_Smash_Bros._Ultimate",
@@ -3007,7 +2951,7 @@
    }
   }
  },
- "Q64577191|switch": {
+ "Q64577191": {
   "platform": "switch",
   "title": "The Legend of Zelda: Tears of the Kingdom",
   "article": "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Tears_of_the_Kingdom",
@@ -3018,7 +2962,7 @@
    }
   }
  },
- "Q28129061|switch": {
+ "Q28129061": {
   "platform": "switch",
   "title": "Splatoon 2",
   "article": "https://en.wikipedia.org/wiki/Splatoon_2",
@@ -3029,7 +2973,7 @@
    }
   }
  },
- "Q61831178|switch": {
+ "Q61831178": {
   "platform": "switch",
   "title": "Super Mario Maker 2",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Maker_2",
@@ -3040,7 +2984,7 @@
    }
   }
  },
- "Q61897498|switch": {
+ "Q61897498": {
   "platform": "switch",
   "title": "Pokémon Sword and Shield",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Sword_and_Shield",
@@ -3051,7 +2995,7 @@
    }
   }
  },
- "Q17006956|switch": {
+ "Q17006956": {
   "platform": "switch",
   "title": "Metroid Dread",
   "article": "https://en.wikipedia.org/wiki/Metroid_Dread",
@@ -3062,7 +3006,7 @@
    }
   }
  },
- "Q54960673|switch": {
+ "Q54960673": {
   "platform": "switch",
   "title": "Fire Emblem: Three Houses",
   "article": "https://en.wikipedia.org/wiki/Fire_Emblem:_Three_Houses",
@@ -3073,7 +3017,7 @@
    }
   }
  },
- "Q29300592|switch": {
+ "Q29300592": {
   "platform": "switch",
   "title": "Hollow Knight",
   "article": "https://en.wikipedia.org/wiki/Hollow_Knight",
@@ -3084,7 +3028,7 @@
    }
   }
  },
- "Q23013817|switch": {
+ "Q23013817": {
   "platform": "switch",
   "title": "Stardew Valley",
   "article": "https://en.wikipedia.org/wiki/Stardew_Valley",
@@ -3095,7 +3039,7 @@
    }
   }
  },
- "Q28451532|switch": {
+ "Q28451532": {
   "platform": "switch",
   "title": "Celeste",
   "article": "https://en.wikipedia.org/wiki/Celeste_(video_game)",
@@ -3106,7 +3050,7 @@
    }
   }
  },
- "Q59756366|switch": {
+ "Q59756366": {
   "platform": "switch",
   "title": "Hades",
   "article": "https://en.wikipedia.org/wiki/Hades_(video_game)",
@@ -3117,7 +3061,7 @@
    }
   }
  },
- "Q56641109|switch": {
+ "Q56641109": {
   "platform": "switch",
   "title": "Luigi's Mansion 3",
   "article": "https://en.wikipedia.org/wiki/Luigi's_Mansion_3",
@@ -3128,7 +3072,7 @@
    }
   }
  },
- "Q54936079|switch": {
+ "Q54936079": {
   "platform": "switch",
   "title": "Super Mario Party",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Party",
@@ -3139,7 +3083,7 @@
    }
   }
  },
- "Q105552720|switch": {
+ "Q105552720": {
   "platform": "switch",
   "title": "Splatoon 3",
   "article": "https://en.wikipedia.org/wiki/Splatoon_3",
@@ -3150,7 +3094,7 @@
    }
   }
  },
- "Q105688771|switch": {
+ "Q105688771": {
   "platform": "switch",
   "title": "Pokémon Legends: Arceus",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Legends:_Arceus",
@@ -3161,7 +3105,7 @@
    }
   }
  },
- "Q69557147|switch": {
+ "Q69557147": {
   "platform": "switch",
   "title": "Ring Fit Adventure",
   "article": "https://en.wikipedia.org/wiki/Ring_Fit_Adventure",
@@ -3172,7 +3116,7 @@
    }
   }
  },
- "Q44997696|switch": {
+ "Q44997696": {
   "platform": "switch",
   "title": "Bayonetta 3",
   "article": "https://en.wikipedia.org/wiki/Bayonetta_3",
@@ -3183,7 +3127,7 @@
    }
   }
  },
- "Q61727129|switch": {
+ "Q61727129": {
   "platform": "switch",
   "title": "Astral Chain",
   "article": "https://en.wikipedia.org/wiki/Astral_Chain",
@@ -3194,7 +3138,7 @@
    }
   }
  },
- "Q108670544|switch": {
+ "Q108670544": {
   "platform": "switch",
   "title": "Kirby and the Forgotten Land",
   "article": "https://en.wikipedia.org/wiki/Kirby_and_the_Forgotten_Land",
@@ -3205,7 +3149,7 @@
    }
   }
  },
- "Q113956704|switch": {
+ "Q113956704": {
   "platform": "switch",
   "title": "Pikmin 4",
   "article": "https://en.wikipedia.org/wiki/Pikmin_4",
@@ -3216,7 +3160,7 @@
    }
   }
  },
- "Q11168|nes": {
+ "Q11168": {
   "platform": "nes",
   "title": "Super Mario Bros.",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Bros.",
@@ -3235,7 +3179,7 @@
    }
   }
  },
- "Q1415970|nes": {
+ "Q1415970": {
   "platform": "nes",
   "title": "Final Fantasy",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_(video_game)",
@@ -3250,7 +3194,7 @@
    }
   }
  },
- "Q2313869|nes": {
+ "Q2313869": {
   "platform": "nes",
   "title": "Dragon Quest",
   "article": "https://en.wikipedia.org/wiki/Dragon_Quest_(video_game)",
@@ -3265,26 +3209,7 @@
    }
   }
  },
- "Q88759|nes": {
-  "platform": "nes",
-  "title": "Bubble Bobble",
-  "article": "https://en.wikipedia.org/wiki/Bubble_Bobble_(video_game)",
-  "regions": {
-   "NTSC-J": {
-    "date": "1987-10-30",
-    "precision": "day"
-   },
-   "NTSC-U": {
-    "date": "1988-11",
-    "precision": "month"
-   },
-   "PAL": {
-    "date": "1990",
-    "precision": "year"
-   }
-  }
- },
- "Q6586317|nes": {
+ "Q6586317": {
   "platform": "nes",
   "title": "Mega Man",
   "article": "https://en.wikipedia.org/wiki/Mega_Man_(1987_video_game)",
@@ -3303,7 +3228,7 @@
    }
   }
  },
- "Q518987|snes": {
+ "Q518987": {
   "platform": "snes",
   "title": "Donkey Kong Country",
   "article": "https://en.wikipedia.org/wiki/Donkey_Kong_Country",
@@ -3322,7 +3247,7 @@
    }
   }
  },
- "Q1133204|snes": {
+ "Q1133204": {
   "platform": "snes",
   "title": "Street Fighter II",
   "article": "https://en.wikipedia.org/wiki/Street_Fighter_II",
@@ -3341,7 +3266,7 @@
    }
   }
  },
- "Q1196400|snes": {
+ "Q1196400": {
   "platform": "snes",
   "title": "Mega Man X",
   "article": "https://en.wikipedia.org/wiki/Mega_Man_X_(video_game)",
@@ -3360,7 +3285,7 @@
    }
   }
  },
- "Q1326889|snes": {
+ "Q1326889": {
   "platform": "snes",
   "title": "Star Fox",
   "article": "https://en.wikipedia.org/wiki/Star_Fox_(1993_video_game)",
@@ -3379,7 +3304,7 @@
    }
   }
  },
- "Q2702756|snes": {
+ "Q2702756": {
   "platform": "snes",
   "title": "Super Bomberman",
   "article": "https://en.wikipedia.org/wiki/Super_Bomberman",
@@ -3398,7 +3323,7 @@
    }
   }
  },
- "Q2532658|snes": {
+ "Q2532658": {
   "platform": "snes",
   "title": "Breath of Fire",
   "article": "https://en.wikipedia.org/wiki/Breath_of_Fire_(video_game)",
@@ -3413,7 +3338,7 @@
    }
   }
  },
- "Q2564684|gb": {
+ "Q2564684": {
   "platform": "gb",
   "title": "Donkey Kong",
   "article": "https://en.wikipedia.org/wiki/Donkey_Kong_(1994_video_game)",
@@ -3432,7 +3357,7 @@
    }
   }
  },
- "Q1545555|gba": {
+ "Q1545555": {
   "platform": "gba",
   "title": "Golden Sun",
   "article": "https://en.wikipedia.org/wiki/Golden_Sun_(video_game)",
@@ -3451,7 +3376,7 @@
    }
   }
  },
- "Q3312351|gba": {
+ "Q3312351": {
   "platform": "gba",
   "title": "Super Mario Advance",
   "article": "https://en.wikipedia.org/wiki/Super_Mario_Advance",
@@ -3470,7 +3395,7 @@
    }
   }
  },
- "Q2081510|gba": {
+ "Q2081510": {
   "platform": "gba",
   "title": "Sonic Advance",
   "article": "https://en.wikipedia.org/wiki/Sonic_Advance",
@@ -3489,7 +3414,7 @@
    }
   }
  },
- "Q6507722|n64": {
+ "Q6507722": {
   "platform": "n64",
   "title": "Mario Party",
   "article": "https://en.wikipedia.org/wiki/Mario_Party_(video_game)",
@@ -3508,7 +3433,7 @@
    }
   }
  },
- "Q719176|ps1": {
+ "Q719176": {
   "platform": "ps1",
   "title": "Crash Bandicoot",
   "article": "https://en.wikipedia.org/wiki/Crash_Bandicoot_(video_game)",
@@ -3523,7 +3448,7 @@
    }
   }
  },
- "Q858391|ps1": {
+ "Q858391": {
   "platform": "ps1",
   "title": "Spyro the Dragon",
   "article": "https://en.wikipedia.org/wiki/Spyro_the_Dragon",
@@ -3538,7 +3463,7 @@
    }
   }
  },
- "Q317620|ps1": {
+ "Q317620": {
   "platform": "ps1",
   "title": "Tomb Raider",
   "article": "https://en.wikipedia.org/wiki/Tomb_Raider_(1996_video_game)",
@@ -3553,7 +3478,7 @@
    }
   }
  },
- "Q2165750|ps1": {
+ "Q2165750": {
   "platform": "ps1",
   "title": "Parasite Eve",
   "article": "https://en.wikipedia.org/wiki/Parasite_Eve_(video_game)",
@@ -3568,7 +3493,7 @@
    }
   }
  },
- "Q2264782|ps1": {
+ "Q2264782": {
   "platform": "ps1",
   "title": "Tony Hawk's Pro Skater",
   "article": "https://en.wikipedia.org/wiki/Tony_Hawk's_Pro_Skater",
@@ -3583,7 +3508,7 @@
    }
   }
  },
- "Q223381|ps2": {
+ "Q223381": {
   "platform": "ps2",
   "title": "Final Fantasy X",
   "article": "https://en.wikipedia.org/wiki/Final_Fantasy_X",
@@ -3602,7 +3527,7 @@
    }
   }
  },
- "Q225912|ps2": {
+ "Q225912": {
   "platform": "ps2",
   "title": "Kingdom Hearts",
   "article": "https://en.wikipedia.org/wiki/Kingdom_Hearts_(video_game)",
@@ -3621,7 +3546,7 @@
    }
   }
  },
- "Q170003|ps2": {
+ "Q170003": {
   "platform": "ps2",
   "title": "Ratchet & Clank",
   "article": "https://en.wikipedia.org/wiki/Ratchet_&_Clank_(2002_video_game)",
@@ -3636,7 +3561,7 @@
    }
   }
  },
- "Q116578|ps2": {
+ "Q116578": {
   "platform": "ps2",
   "title": "Guitar Hero",
   "article": "https://en.wikipedia.org/wiki/Guitar_Hero_(video_game)",
@@ -3651,7 +3576,7 @@
    }
   }
  },
- "Q28312052|switch": {
+ "Q28312052": {
   "platform": "switch",
   "title": "Xenoblade Chronicles 2",
   "article": "https://en.wikipedia.org/wiki/Xenoblade_Chronicles_2",
@@ -3662,7 +3587,7 @@
    }
   }
  },
- "Q637137|gb": {
+ "Q637137": {
   "platform": "gb",
   "title": "Pokémon Red and Blue",
   "article": "https://en.wikipedia.org/wiki/Pokémon_Red,_Blue,_and_Yellow",
@@ -3681,7 +3606,7 @@
    }
   }
  },
- "Q2758069|gb": {
+ "Q2758069": {
   "platform": "gb",
   "title": "Harvest Moon GB",
   "article": "https://en.wikipedia.org/wiki/Harvest_Moon_GB",
@@ -3696,7 +3621,7 @@
    }
   }
  },
- "Q150180|gba": {
+ "Q150180": {
   "platform": "gba",
   "title": "Fire Emblem: The Blazing Blade",
   "article": "https://en.wikipedia.org/wiki/Fire_Emblem:_The_Blazing_Blade",
@@ -3715,7 +3640,7 @@
    }
   }
  },
- "Q1069537|ps1": {
+ "Q1069537": {
   "platform": "ps1",
   "title": "Medal of Honor",
   "article": "https://en.wikipedia.org/wiki/Medal_of_Honor_(1999_video_game)",

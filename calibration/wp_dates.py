@@ -89,8 +89,25 @@ _SEGMENT = re.compile(r"'''(.+?)'''")
 # decoupe par supports EST decoupe, meme si aucun n est le notre : il faut
 # alors conclure « pas de sortie sur notre machine » et non « prends tout ».
 _AUTRES_PLATEFORMES = [
+    # Supports distincts dont le nom CONTIENT celui d une machine suivie :
+    # ils doivent gagner la rivalite, sinon ils sont absorbes par elle.
+    #
+    # ⚠️ « Famicom Disk System » N EN FAIT PAS PARTIE, et c est delibere. Le
+    # lecteur de disquettes est un PERIPHERIQUE de la Famicom, pas une autre
+    # machine ; notre plateforme « NES » couvre deja la Famicom. L y ajouter
+    # retirait les vraies sorties japonaises de Zelda (1986), Metroid, Zelda II
+    # et Kid Icarus, dont la premiere parution japonaise etait sur disquette —
+    # et rendait a Zelda la date de la reedition cartouche de 1994, qui n est
+    # le souvenir de personne.
+    # Variantes PlayStation : leur nom CONTIENT « playstation », donc sans
+    # elles la PS1 s'approprie la section PSP — Ape Escape y prenait la date
+    # de « On the Loose », 2005, pour un jeu de 1999.
+    "playstation portable", "playstation vita", "playstation tv",
+    "playstation classic", "playstation network",
+    "super game boy", "game boy color",
+    "game boy player", "new nintendo 3ds", "nintendo switch 2",
     "arcade", "vs. system", "wii u", "wii", "gamecube", "nintendo ds", "3ds",
-    "game boy color", "virtual console", "nintendo switch 2",
+    "virtual console",
     "xbox", "windows", "pc", "ms-dos", "dos", "macos", "mac os", "linux",
     "ios", "android", "steam", "mega drive", "genesis", "master system",
     "game gear", "saturn", "dreamcast", "playstation 3", "playstation 4",
@@ -205,8 +222,14 @@ def _est_plateforme(label):
             or any(n in bas for n in _AUTRES_PLATEFORMES))
 
 
-def _segment_for(field, platform_key):
-    """Isole la portion du champ qui concerne NOTRE plateforme.
+def _segments_for(field, platform_key):
+    """Isole TOUTES les portions du champ qui concernent notre plateforme.
+
+    Plusieurs, et non une seule : une même famille de machines peut avoir
+    plusieurs sections. « Famicom Disk System » et « NES » sont toutes deux
+    de la famille NES — la première porte la sortie japonaise de Zelda en
+    1986, la seconde la sortie américaine. N'en retenir qu'une perdait
+    l'autre, en silence.
 
     L'infobox liste les sorties support par support. Sans ce découpage, Super
     Mario Bros. récupérait la date européenne de la borne d'arcade (janvier
@@ -217,9 +240,10 @@ def _segment_for(field, platform_key):
     field = _normaliser_gras(field)
     heads = list(_SEGMENT.finditer(field))
     if not heads:
-        return field                      # un seul support : tout le champ
+        return [field]                    # un seul support : tout le champ
 
     wanted = dict(PLATFORM_NAMES)[platform_key]
+    trouves = []
     for i, h in enumerate(heads):
         label = h.group(1).strip().lower()
         mine = max((len(w) for w in wanted if w in label), default=0)
@@ -229,8 +253,15 @@ def _segment_for(field, platform_key):
         # plus long. Une comparaison booléenne ne suffisait pas : « nes » est
         # contenu dans « super nes », et la NES évinçait donc la Super NES de
         # son propre segment.
-        rival = max((len(n) for k, names in PLATFORM_NAMES if k != platform_key
-                     for n in names if n in label), default=0)
+        # La rivalite compte AUSSI les supports qu on ne suit pas. « Famicom
+        # Disk System » contient « famicom » : sans cela, la NES s appropriait
+        # la section du lecteur de disquettes, et Bubble Bobble heritait du
+        # 30 octobre 1987 au lieu de novembre 1988.
+        rival = max(
+            [len(n) for k, names in PLATFORM_NAMES if k != platform_key
+             for n in names if n in label]
+            + [len(n) for n in _AUTRES_PLATEFORMES if n in label],
+            default=0)
         if rival > mine:
             continue
         # Des plateformes enumerees cote a cote partagent la date qui suit la
@@ -241,18 +272,21 @@ def _segment_for(field, platform_key):
                and not re.search(r"\d", field[heads[j].end():heads[j + 1].start()])):
             j += 1
         end = heads[j + 1].start() if j + 1 < len(heads) else len(field)
-        return field[heads[j].end():end]
+        trouves.append(field[heads[j].end():end])
+
+    if trouves:
+        return trouves
 
     # Aucune tête ne désigne notre plateforme. Deux situations opposées, que
     # l'ancien code confondait en rendant None dans les deux cas :
     if any(_est_plateforme(h.group(1)) for h in heads):
         # …d'autres plateformes sont listées, pas la nôtre. C'est le fait
         # intéressant : Chrono Trigger n'a pas de sortie PAL sur Super NES.
-        return None
+        return []
     # …aucune tête n'est une plateforme. Ce sont des noms d'éditions ou le
     # titre du jeu — « Final Mix », « International », « Balloon Kid » en
     # gras-italique. Le champ entier nous concerne.
-    return field
+    return [field]
 
 
 # Tout gabarit qui n'est PAS un vgrelease, et qui ne contient plus lui-même
@@ -295,10 +329,14 @@ def parse_released(wikitext, platform_key=None):
     # _unnest les supprimerait avec lui.
     field = _unnest(_deplier(m.group(1)))
 
+    # Plusieurs sections peuvent nous concerner : on les recolle avant
+    # d'analyser, pour que « le plus ancien gagne par région » s'applique à
+    # l'ensemble de la famille.
     if platform_key:
-        field = _segment_for(field, platform_key)
-        if field is None:
+        morceaux = _segments_for(field, platform_key)
+        if not morceaux:
             return {}
+        field = "\n".join(morceaux)
 
     out = {}
     for tpl in re.finditer(

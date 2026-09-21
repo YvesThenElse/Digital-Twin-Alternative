@@ -90,11 +90,13 @@ Quatre principes guident le découpage :
 
 ### Périmètre volontairement restreint
 
-> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit les 20 et 21 septembre 2026 : **221 œuvres, 590 sorties** sur les huit plateformes visées, `Notability` classée à la main, provenance portée sur chaque donnée, licence **CC BY-SA 4.0** (Wikidata CC0 + Wikipédia CC BY-SA). 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Ses invariants sont vérifiés par du code (`DatasetLoader`), pas par relecture.
+> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit les 20 et 21 septembre 2026 : **221 œuvres, 593 sorties** sur les huit plateformes visées, `Notability` classée à la main, provenance portée sur chaque donnée, licence **CC BY-SA 4.0** (Wikidata CC0 + Wikipédia CC BY-SA). 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Ses invariants sont vérifiés par du code (`DatasetLoader`), pas par relecture.
 >
 > **706 → 663** : les 43 sorties retirées étaient des **rééditions prises pour des sorties d'origine**. Le dataset annonçait Super Mario Bros. en PAL 2011 et Ocarina of Time en PAL 2003. Les déclarations de date sont désormais filtrées sur la plateforme qu'elles qualifient.
 >
-> **Couverture au 21 septembre** : région sur **99 % des sorties** (588 / 590) et **99 % des œuvres** ; date au jour sur **95 % des œuvres** (542 sorties au jour, 17 au mois, 31 à l'année seule) ; **218 jaquettes sur 221**, chacune avec son URL source, son article et son régime de licence conservés.
+> **Couverture au 21 septembre** : région sur **99 % des sorties** (591 / 593) ; date au jour sur **96 % des œuvres** (544 sorties au jour, 18 au mois, 31 à l'année seule) ; **218 jaquettes sur 221**, chacune avec son URL source, son article et son régime de licence conservés.
+>
+> Chaque plateforme porte son **année de lancement**, et aucune sortie ne la précède. L'invariant a été posé après qu'une date Famicom de 1987 se soit retrouvée attribuée à la Game Boy, sortie en 1989 — une sortie sur 592, qui n'aurait jamais levé d'erreur.
 >
 > **Les trois manquantes sont des refus assumés.** Le lien Wikidata de « Mario Kart 8 Deluxe » et de « Pokémon Yellow » vise une **section** d'un article plus large : suivre la redirection aurait donné la jaquette de Mario Kart 8 sur Wii U et celle de Pokémon Rouge/Bleu. « Sim City » désigne l'entité « version Super Nintendo de 1991 », qui n'a pas d'article ; l'article parent porte la boîte PC de 1989. Les trois auront une tuile générée (§19.2).
 >
@@ -144,7 +146,7 @@ la Phase 0 :
 
 | Reste | Nature | Bloquant pour |
 |---|---|---|
-| **33 régions non établies**, dont 27 NTSC-J — sur les 57 qu'aucune source n'attestait, 22 ont été arbitrées en non-sorties motivées | curation | **décidé le 21 septembre : on les laisse `inconnu` pour le POC.** La Wikipédia japonaise les porterait, mais son infobox a un autre format : un second analyseur serait une seconde source d'échecs silencieux, pour une valeur qui n'apparaîtra qu'à l'internationalisation réelle |
+| **32 régions non établies**, dont 27 NTSC-J — sur les 57 qu'aucune source n'attestait, 22 ont été arbitrées en non-sorties motivées | curation | **décidé le 21 septembre : on les laisse `inconnu` pour le POC.** La Wikipédia japonaise les porterait, mais son infobox a un autre format : un second analyseur serait une seconde source d'échecs silencieux, pour une valeur qui n'apparaîtra qu'à l'internationalisation réelle |
 | **1 sortie sans aucune région** : Pokémon Yellow sur Game Boy, dont l'article n'a pas de champ `released` | curation | marginal |
 | **40 œuvres sans date au jour** | curation | rien : l'incertitude est affichée, c'est la décision prise |
 | **`NOTABILITE.md` en attente d'annotation** | décision humaine | le réordonnancement déplace les `CanonicalId` — rien ne doit toucher à l'ordre avant |

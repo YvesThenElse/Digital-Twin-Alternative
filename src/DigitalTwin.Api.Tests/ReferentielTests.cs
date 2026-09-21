@@ -200,7 +200,9 @@ public class ReferentielTests
         var surGb = await Trouver(client, "Game Boy", "Bubble Bobble");
         var surNes = await Trouver(client, "Nintendo Entertainment System", "Bubble Bobble");
 
-        Assert.Equal(["NTSC-J"], Regions(surGb));
+        // La Game Boy a désormais SA propre sortie japonaise (décembre 1990)
+        // et sa sortie américaine, et non plus la date de la fiche NES.
+        Assert.Equal(["NTSC-J", "NTSC-U"], Regions(surGb));
         Assert.Equal(["NTSC-J", "NTSC-U", "PAL"], Regions(surNes));
     }
 

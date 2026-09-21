@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test du parseur d'infobox, sur les cas réels qui l'ont mis en défaut.
 
-Les wikitextes sont ceux de `wp_echecs.json`, mis en cache le 21 septembre
+Les wikitextes viennent de `wp_wikitextes.json`, mis en cache le 21 septembre
 2026 : le test ne dépend pas du réseau, et ne change pas de verdict parce
 qu'un contributeur a réécrit un article.
 
@@ -64,11 +64,26 @@ CAS = [
     ("Q1045765", "snes",
      {"NTSC-J": "1995-08-05", "NTSC-U": "1995-10-04"},
      "{{vgrelease new}} n'était pas reconnu comme modèle de sortie"),
+
+    # Bubble Bobble est curé sur DEUX machines, et son infobox liste dix-sept
+    # supports. Deux pièges s'y cachent.
+    # L'infobox liste « Famicom Disk System » ET « NES » : deux sections de la
+    # MÊME famille. N'en retenir qu'une perdait l'autre — la sortie japonaise
+    # sur disquette, ou les sorties américaine et européenne sur cartouche.
+    # Les trois régions doivent revenir ensemble.
+    ("Q88759", "nes",
+     {"NTSC-J": "1987-10-30", "NTSC-U": "1988-11", "PAL": "1990"},
+     "plusieurs sections d'une même famille de machines doivent être réunies"),
+
+    ("Q88759", "gb",
+     {"NTSC-J": "1990-12-07", "NTSC-U": "1991-03"},
+     "la Game Boy doit lire SA section, pas celle d'une autre machine du "
+     "même article"),
 ]
 
 
 def main():
-    cache = json.load(open("wp_echecs.json"))
+    cache = json.load(open("wp_wikitextes.json"))
     echecs = 0
     for qid, pf, attendu, defaut in CAS:
         e = cache[qid]

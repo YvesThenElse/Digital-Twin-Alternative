@@ -121,10 +121,25 @@ public static class DatasetLoader
         {
             var id = p.GetProperty("canonical_id").GetString()!;
             Enregistrer(id, "platform");
+            var lancement = p.TryGetProperty("launch_year", out var annee)
+                            && annee.ValueKind == JsonValueKind.Number
+                ? annee.GetInt32() : (int?)null;
+
+            if (lancement is null)
+            {
+                // Sans année, le contrôle d'anachronisme ne s'applique à
+                // rien — et une vérification qui ne vérifie rien rend vert.
+                violations.Add(new DatasetViolation(
+                    "plateforme", id,
+                    $"« {id} » n'a pas d'année de lancement : aucune sortie ne "
+                    + "peut donc être datée par rapport à elle."));
+            }
+
             plateformes.Add(new Platform(id, p.GetProperty("name").GetString()!)
             {
                 RegionFree = p.TryGetProperty("region_free", out var libre)
                              && libre.GetBoolean(),
+                LaunchYear = lancement,
             });
         }
 
@@ -166,7 +181,9 @@ public static class DatasetLoader
 
                 var precision = r.GetProperty("precision").GetString()!;
                 var confidence = r.GetProperty("confidence").GetString()!;
+                var date = r.GetProperty("date").GetString()!;
                 VerifierQualite(releaseId, precision, confidence, violations);
+                VerifierAnachronisme(releaseId, date, platformId, plateformes, violations);
 
                 if (!string.IsNullOrEmpty(platformId)) plateformesDeLOeuvre.Add(platformId);
 
@@ -174,7 +191,7 @@ public static class DatasetLoader
                     releaseId, workId, platformId ?? "",
                     r.GetProperty("region").ValueKind == JsonValueKind.Null
                         ? null : r.GetProperty("region").GetString(),
-                    r.GetProperty("date").GetString()!, precision, confidence));
+                    date, precision, confidence));
             }
 
             VerifierNotoriete(workId, rangs, plateformesDeLOeuvre, violations);
@@ -345,6 +362,33 @@ public static class DatasetLoader
                 courant = suivant;
             }
         }
+    }
+
+    /// <summary>
+    /// <b>Une sortie ne peut pas précéder la machine sur laquelle elle
+    /// paraît.</b>
+    ///
+    /// <para>La contrainte paraît triviale et elle a pourtant attrapé une
+    /// date Famicom de 1987 attribuée à la Game Boy, sortie en 1989 — une
+    /// sortie sur 592, qui n'aurait jamais levé d'erreur. C'est la borne que
+    /// les replis d'un analyseur de source ne peuvent pas franchir.</para>
+    ///
+    /// <para>La borne est <b>inclusive</b> : un jeu de lancement paraît
+    /// l'année de la machine, et c'est fréquent parmi les titres les mieux
+    /// classés.</para>
+    /// </summary>
+    private static void VerifierAnachronisme(
+        string id, string date, string? platformId,
+        List<Platform> plateformes, List<DatasetViolation> violations)
+    {
+        var plateforme = plateformes.FirstOrDefault(p => p.CanonicalId == platformId);
+        if (plateforme?.LaunchYear is not { } lancement) return;
+        if (!int.TryParse(date.AsSpan(0, 4), out var annee) || annee >= lancement) return;
+
+        violations.Add(new DatasetViolation(
+            "anachronisme", id,
+            $"« {id} » est daté de {annee} sur « {plateforme.Name} », "
+            + $"parue en {lancement}."));
     }
 
     /// <summary>

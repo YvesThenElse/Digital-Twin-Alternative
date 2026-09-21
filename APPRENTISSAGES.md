@@ -811,3 +811,61 @@ désormais.
 > **Règle** — pour toute donnée qui traverse une frontière de stockage,
 > écrire un test qui **constate la perte de précision** plutôt qu'un test qui
 > vérifie l'égalité sur une valeur ronde. Une valeur ronde traverse tout.
+
+### 23 — Une clé trop grossière fusionne deux choses, pour la deuxième fois
+
+`wp_dates.json` était indexé par **QID seul**, alors que l'analyse de
+l'infobox dépend de la **plateforme** — c'est elle qui choisit la section à
+lire. Bubble Bobble, curé sur Game Boy et sur NES, n'avait donc qu'une entrée
+— celle écrite en dernier — et la Game Boy héritait de l'analyse NES : une
+date du 30 octobre 1987 pour une machine sortie en 1989.
+
+C'est **exactement** la faute que le registre d'identifiants avait déjà
+connue à l'item 16, et elle s'est reproduite dans un autre fichier du même
+pipeline.
+
+> **Règle** — quand un traitement prend deux paramètres, son cache prend deux
+> paramètres. Indexer sur le premier seul ne perd rien tant qu'aucune entrée
+> ne partage sa valeur — et tout le jour où l'une le fait.
+
+**Deux sections d'une même famille doivent être réunies, pas départagées.**
+L'infobox de Bubble Bobble liste « Famicom Disk System » *et* « NES » : deux
+sections de la même famille de machines. Le découpage n'en retenait qu'une —
+la première trouvée — et perdait l'autre. Réunir les deux a rendu **15 dates
+américaines et européennes** à Zelda, Metroid, Castlevania, Zelda II,
+Super Mario Bros. 2 et Kid Icarus, dont la première parution japonaise était
+sur disquette.
+
+> **Règle** — quand un découpage choisit *une* portion, se demander ce qui se
+> passe s'il y en a plusieurs. « La première qui correspond » est un choix,
+> et il est rarement le bon.
+
+**Une correction plausible, et fausse.** Mon premier réflexe a été d'exclure
+le Famicom Disk System de la famille NES, puisque son nom contient
+« famicom ». La comparaison sur l'ensemble du corpus a montré que cela
+**retirait de vraies sorties japonaises** — Zelda passait de 1986 à la date
+de la réédition cartouche de 1994, qui n'est le souvenir de personne. Le
+lecteur de disquettes est un périphérique de la Famicom, pas une autre
+machine, et notre plateforme « NES » couvre déjà la Famicom.
+
+> **Règle** — comparer l'ancienne et la nouvelle sortie sur **tout** le
+> corpus avant d'adopter une correction d'extraction, même évidente. Ce qui
+> se voit alors, ce n'est pas ce qu'on a réparé, c'est ce qu'on a cassé.
+
+**Deux prédictions de mutation fausses, pour deux raisons différentes.**
+
+- Rendre la borne d'anachronisme exclusive : prévu 1, obtenu **17**. J'avais
+  raisonné sur le test unitaire et oublié que le dataset réel devient alors
+  invalide — l'API refuse de démarrer, et dix tests tombent avec.
+- Rétablir la clé grossière : prévu 1, obtenu **0**. Ma sonde comptait les
+  entrées du fichier *produit*, alors que la mutation portait sur son
+  *consommateur*. Rejouée avec la bonne sonde : 1, conforme — et c'est
+  précisément l'anachronisme de Bubble Bobble qui réapparaît.
+
+> **Règle** — avant d'annoncer un nombre d'échecs, se demander quels tests
+> lisent le **dataset réel** : ils transforment une violation locale en
+> échec de démarrage, donc en échec de tous les tests d'API.
+
+> **Règle** — vérifier que la sonde d'une mutation observe bien l'artefact
+> que la mutation modifie. Une sonde qui regarde ailleurs rend « survivante »
+> une mutation tuée.

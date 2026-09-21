@@ -43,6 +43,20 @@ public sealed record Platform(string CanonicalId, string Name)
     /// ressemblent dans les données et s'opposent dans le sens.</para>
     /// </summary>
     public bool RegionFree { get; init; }
+
+    /// <summary>
+    /// L'année de la <b>première</b> parution de la machine, toutes régions
+    /// confondues.
+    ///
+    /// <para>Elle sert d'invariant : une sortie ne peut pas précéder la
+    /// machine sur laquelle elle paraît. C'est la borne la plus précoce et
+    /// non la sortie occidentale — une borne plus tardive rejetterait de
+    /// vraies sorties japonaises.</para>
+    ///
+    /// <para><c>null</c> est une anomalie, pas une dispense : sans année, le
+    /// contrôle ne s'applique à rien et le dit vert.</para>
+    /// </summary>
+    public int? LaunchYear { get; init; }
 }
 
 /// <summary>
