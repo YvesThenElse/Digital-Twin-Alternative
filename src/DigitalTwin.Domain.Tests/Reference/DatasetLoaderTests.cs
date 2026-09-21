@@ -40,7 +40,7 @@ public class DatasetLoaderTests
         var resultat = DatasetLoader.Load(LireDatasetReel());
 
         Assert.Equal(8, resultat.Platforms.Count);
-        Assert.Equal(222, resultat.Works.Count);
+        Assert.Equal(221, resultat.Works.Count);
         Assert.Equal(663, resultat.Releases.Count);
     }
 
@@ -54,7 +54,7 @@ public class DatasetLoaderTests
             .Concat(resultat.Releases.Select(r => r.CanonicalId))
             .ToList();
 
-        Assert.Equal(893, tous.Count);
+        Assert.Equal(892, tous.Count);
         Assert.Equal(tous.Count, tous.Distinct(StringComparer.Ordinal).Count());
     }
 
@@ -82,24 +82,35 @@ public class DatasetLoaderTests
         string releasePlatform = "plt_nes",
         string precision = "day",
         string confidence = "high",
-        string secondeOeuvre = "wrk_zelda")
-        => $$"""
+        string secondeOeuvre = "wrk_zelda",
+        string? notabilite = null,
+        string redirects = "{}")
+    {
+        // Par défaut, l'œuvre est classée sur la plateforme où elle sort.
+        notabilite ??= $$"""{"{{releasePlatform}}": 1}""";
+        return $$"""
         {
           "dataset_version": "0.1.0",
           "license": "CC BY-SA 4.0",
           "sources": [],
-          "platforms": [{"canonical_id": "{{platformId}}", "name": "NES"}],
+          "redirects": {{redirects}},
+          "platforms": [
+            {"canonical_id": "{{platformId}}", "name": "NES", "region_free": false},
+            {"canonical_id": "plt_switch", "name": "Switch", "region_free": true}],
           "works": [
-            {"canonical_id": "{{workId}}", "title": "Super Mario Bros.", "notability": 1,
+            {"canonical_id": "{{workId}}", "title": "Super Mario Bros.",
+             "notability": {{notabilite}},
              "releases": [
                {"canonical_id": "{{releaseId}}", "platform": "{{releasePlatform}}",
                 "region": "EU", "date": "1987-05-15",
                 "precision": "{{precision}}", "confidence": "{{confidence}}"}]},
-            {"canonical_id": "{{secondeOeuvre}}", "title": "Zelda", "notability": 2,
+            {"canonical_id": "{{secondeOeuvre}}", "title": "Zelda",
+             "notability": {},
              "releases": []}
           ]
         }
         """;
+    }
 
     [Fact]
     public void Le_squelette_intact_est_valide()
@@ -145,10 +156,172 @@ public class DatasetLoaderTests
     {
         var resultat = DatasetLoader.Load(Squelette(releasePlatform: "plt_fantome"));
 
-        var violation = Assert.Single(resultat.Violations);
-        Assert.Equal("plateforme", violation.Rule);
+        var violation = Assert.Single(
+            resultat.Violations.Where(v => v.Rule == "plateforme"));
         Assert.Equal("rel_mario_eu", violation.EntryId);
         Assert.Contains("plt_fantome", violation.Message, StringComparison.Ordinal);
+    }
+
+    // ------------------------------------------------ notoriété par plateforme
+
+    [Fact]
+    public void La_notoriete_se_lit_par_plateforme()
+    {
+        var oeuvre = DatasetLoader.Load(Squelette()).Works
+            .Single(w => w.CanonicalId == "wrk_mario");
+
+        Assert.Equal(1, oeuvre.NotabilityOn("plt_nes"));
+        // Un rang absent n'est pas le rang 0 : le confondre placerait en tête
+        // ce qu'on n'a pas su classer.
+        Assert.Null(oeuvre.NotabilityOn("plt_switch"));
+    }
+
+    [Fact]
+    public void Une_oeuvre_non_classee_sur_une_plateforme_ou_elle_sort_est_signalee()
+    {
+        // Sans rang, E02 ne sait pas où la placer : elle disparaît de la
+        // liste sans que rien ne le dise.
+        var resultat = DatasetLoader.Load(Squelette(notabilite: "{}"));
+
+        var violation = Assert.Single(
+            resultat.Violations.Where(v => v.Rule == "notabilite"));
+        Assert.Equal("wrk_mario", violation.EntryId);
+        Assert.Contains("plt_nes", violation.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Un_rang_sur_une_plateforme_ou_l_oeuvre_ne_sort_pas_est_signale()
+    {
+        var resultat = DatasetLoader.Load(
+            Squelette(notabilite: """{"plt_nes": 1, "plt_switch": 4}"""));
+
+        var violation = Assert.Single(
+            resultat.Violations.Where(v => v.Rule == "notabilite"));
+        Assert.Equal("wrk_mario", violation.EntryId);
+        Assert.Contains("plt_switch", violation.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Une_oeuvre_sans_aucune_sortie_n_a_pas_besoin_d_un_rang()
+    {
+        // wrk_zelda n'a aucune sortie et aucune notoriété : c'est cohérent.
+        Assert.Empty(DatasetLoader.Load(Squelette()).Violations);
+    }
+
+    // ------------------------------------------------------------- zonage
+
+    [Fact]
+    public void Une_plateforme_sans_zonage_se_distingue_d_une_plateforme_zonee()
+    {
+        var resultat = DatasetLoader.Load(Squelette());
+
+        Assert.False(resultat.Platforms.Single(p => p.CanonicalId == "plt_nes").RegionFree);
+        Assert.True(resultat.Platforms.Single(p => p.CanonicalId == "plt_switch").RegionFree);
+    }
+
+    [Fact]
+    public void Une_sortie_sans_region_n_est_une_lacune_que_sur_une_machine_zonee()
+    {
+        // Les deux sorties sont dépourvues de région. Sur la NES c'est une
+        // lacune de curation ; sur la Switch c'est la bonne réponse.
+        var resultat = DatasetLoader.Load(DeuxSortiesSansRegion());
+
+        var lacune = Assert.Single(resultat.ReleasesMissingRegion);
+        Assert.Equal("rel_zonee", lacune.CanonicalId);
+    }
+
+    private static string DeuxSortiesSansRegion() => """
+        {
+          "dataset_version": "0.1.0", "license": "x", "sources": [], "redirects": {},
+          "platforms": [
+            {"canonical_id": "plt_nes", "name": "NES", "region_free": false},
+            {"canonical_id": "plt_switch", "name": "Switch", "region_free": true}],
+          "works": [
+            {"canonical_id": "wrk_a", "title": "A",
+             "notability": {"plt_nes": 1, "plt_switch": 1},
+             "releases": [
+               {"canonical_id": "rel_zonee", "platform": "plt_nes", "region": null,
+                "date": "1987", "precision": "year", "confidence": "low"},
+               {"canonical_id": "rel_libre", "platform": "plt_switch", "region": null,
+                "date": "2017", "precision": "year", "confidence": "low"}]}]
+        }
+        """;
+
+    // -------------------------------------------------------- redirections
+
+    [Fact]
+    public void Une_redirection_vers_une_oeuvre_inconnue_est_signalee()
+    {
+        var resultat = DatasetLoader.Load(
+            Squelette(redirects: """{"wrk_ancien": "wrk_disparu"}"""));
+
+        var violation = Assert.Single(
+            resultat.Violations.Where(v => v.Rule == "redirection"));
+        Assert.Equal("wrk_ancien", violation.EntryId);
+        Assert.Contains("wrk_disparu", violation.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Un_identifiant_a_la_fois_vivant_et_redirige_est_signale()
+    {
+        // §10.2 : un identifiant retiré de la circulation ne revient pas.
+        var resultat = DatasetLoader.Load(
+            Squelette(redirects: """{"wrk_mario": "wrk_zelda"}"""));
+
+        var violation = Assert.Single(
+            resultat.Violations.Where(v => v.Rule == "redirection"));
+        Assert.Equal("wrk_mario", violation.EntryId);
+    }
+
+    [Fact]
+    public void Une_chaine_de_redirections_est_acceptee()
+    {
+        // Le cas de validation n°7 exige qu'une redirection en chaîne se
+        // résolve. Elle doit donc pouvoir s'écrire : wrk_ancien pointe vers
+        // wrk_intermediaire, qui n'est plus une œuvre vivante mais une étape.
+        var resultat = DatasetLoader.Load(Squelette(redirects:
+            """{"wrk_ancien": "wrk_intermediaire", "wrk_intermediaire": "wrk_zelda"}"""));
+
+        Assert.Empty(resultat.Violations);
+        Assert.Equal("wrk_intermediaire", resultat.Redirects["wrk_ancien"]);
+        Assert.Equal("wrk_zelda", resultat.Redirects["wrk_intermediaire"]);
+    }
+
+    [Fact]
+    public void Une_chaine_dont_le_bout_n_existe_pas_est_signalee()
+    {
+        // La chaîne est admise, pas l'impasse : sans ce contrôle, autoriser
+        // les chaînes autoriserait n'importe quelle cible inconnue.
+        var resultat = DatasetLoader.Load(Squelette(redirects:
+            """{"wrk_ancien": "wrk_intermediaire", "wrk_intermediaire": "wrk_nulle_part"}"""));
+
+        var violation = Assert.Single(
+            resultat.Violations.Where(v => v.Rule == "redirection"));
+        Assert.Equal("wrk_intermediaire", violation.EntryId);
+        Assert.Contains("wrk_nulle_part", violation.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Une_chaine_qui_boucle_est_signalee()
+    {
+        // Chaque cible existe, et pourtant rien ne se résout — et le code qui
+        // suit la chaîne boucle indéfiniment.
+        var resultat = DatasetLoader.Load(Squelette(redirects:
+            """{"wrk_a": "wrk_b", "wrk_b": "wrk_a"}"""));
+
+        var boucles = resultat.Violations.Where(v => v.Rule == "redirection").ToList();
+        Assert.Equal(2, boucles.Count);
+        Assert.All(boucles, v => Assert.Contains("boucle", v.Message, StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Une_redirection_valide_est_exposee_telle_quelle()
+    {
+        var resultat = DatasetLoader.Load(
+            Squelette(redirects: """{"wrk_ancien": "wrk_zelda"}"""));
+
+        Assert.Empty(resultat.Violations);
+        Assert.Equal("wrk_zelda", resultat.Redirects["wrk_ancien"]);
     }
 
     // ------------------------------------------------- précision vs confiance

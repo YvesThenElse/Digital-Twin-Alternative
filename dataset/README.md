@@ -1,8 +1,16 @@
 # Dataset POC
 
-> Produit les **20 et 21 septembre 2026**. 222 œuvres, 663 sorties, 8 plateformes. Licence **CC BY-SA 4.0**.
+> Produit les **20 et 21 septembre 2026**. 221 œuvres, 663 sorties, 8 plateformes. Licence **CC BY-SA 4.0**.
 >
-> Ses invariants sont vérifiés par du code — `DigitalTwin.Domain.Reference.DatasetLoader` — et non par relecture : unicité des identifiants, préfixe conforme au type, plateforme existante, et précision jamais supérieure à ce que la confiance soutient.
+> Ses invariants sont vérifiés par du code — `DigitalTwin.Domain.Reference.DatasetLoader` — et non par relecture : unicité des identifiants, préfixe conforme au type, plateforme existante, précision jamais supérieure à ce que la confiance soutient, classement couvrant exactement les plateformes où l'œuvre sort, et table de redirection sans impasse ni boucle.
+
+## Trois décisions du 21 septembre 2026
+
+**`notability` est une carte plateforme → rang.** §3.3 demandait « un score par sortie » ; le modèle le portait sur l'œuvre. Invisible tant qu'aucun titre n'était curé sur deux machines — Bubble Bobble l'est, 19ᵉ sur Game Boy et 22ᵉ sur NES. L'ancien schéma forçait soit un rang faux, soit deux `Work` pour une seule œuvre.
+
+**Une œuvre, un identifiant externe.** Les deux fiches Bubble Bobble sont fusionnées : 222 œuvres deviennent **221**, sans perdre une seule sortie. L'identifiant absorbé entre dans `redirects`, qui n'est jamais purgée (§10.2).
+
+**`region_free` sur la plateforme.** La Switch n'a pas de zonage : une sortie sans région y est **mondiale**, pas incomplète. Ce n'est pas « toute sortie y est mondiale » — un titre peut rester exclusif au Japon et le déclarer. Sans cet attribut, 12 sorties correctes comptaient comme dette de curation au même titre qu'une NES sans région : la dette réelle est de **92 sorties**, pas 104.
 >
 > Périmètre voulu par [PHASING.md](../PHASING.md) §3 : 100 à 300 jeux sur NES, SNES, Game Boy/GBA, N64, PS1, PS2 et Switch, curés à la main. **Ne pas l'étendre « tant qu'on y est ».**
 

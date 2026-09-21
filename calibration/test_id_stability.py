@@ -47,12 +47,19 @@ def build_all(resolved, raw, seqs, wpd):
 
 
 def ids(built):
-    """Tous les identifiants émis, œuvres et sorties confondues."""
+    """Tous les identifiants émis, œuvres et sorties confondues, APRÈS fusion.
+
+    La fusion retire de la circulation l'identifiant absorbé — Bubble Bobble
+    n'a plus qu'une fiche. Comparer avant fusion compterait un identifiant qui
+    n'est pas publié, et le garde-fou de couverture échouerait à juste titre.
+    """
+    fusionnes, _ = E.fusionner(list(built.values()))
     out = {}
-    for k, w in built.items():
-        out[k] = w["canonical_id"]
+    for w in fusionnes:
+        q = w["provenance"]["external_id"]
+        out[q] = w["canonical_id"]
         for r in w["releases"]:
-            out["%s#%s" % (k, r["canonical_id"])] = r["canonical_id"]
+            out["%s#%s" % (q, r["canonical_id"])] = r["canonical_id"]
     return out
 
 

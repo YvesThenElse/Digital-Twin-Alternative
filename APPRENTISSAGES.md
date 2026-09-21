@@ -520,3 +520,48 @@ ailleurs. Vérifier avant de publier l'a rattrapé.
 
 > **Règle** — deux chiffres vrais placés côte à côte forment une affirmation
 > qui, elle, peut être fausse. Recalculer la phrase, pas les chiffres.
+
+### 16 — Trois arbitrages, et le cas unique qui révèle la règle générale
+
+Bubble Bobble était le **seul** titre curé sur deux machines, sur 222. Un cas
+sur 222 a mis au jour trois défauts, dont aucun ne lui était propre :
+
+1. **`notability` était un entier sur l'œuvre**, alors que §3.3 demandait
+   « un score par sortie ». `MODELE-DE-DOMAINE.md` avait glissé l'attribut sur
+   `Work` sans que la divergence se voie — elle ne devient visible qu'avec un
+   titre multiplateforme. Elle sera la norme dès la PS1.
+2. **Deux `Work` portaient le même identifiant externe**, ce que le cas de
+   validation n°8 interdit explicitement et qu'aucun test ne vérifiait sur le
+   dataset.
+3. **La partie basse du ULID ne dérivant que du QID**, les deux fiches ne
+   différaient que par leur rang. Découpler l'identifiant du rang — la
+   correction que je faisais par ailleurs — leur aurait donné des identifiants
+   **identiques**. Le défaut que je corrigeais masquait celui que j'allais
+   créer.
+
+> **Règle** — un cas unique dans un jeu de données n'est pas une exception à
+> traiter à part : c'est le seul endroit où une règle générale est encore
+> observable. Chercher ce qu'il révèle avant de chercher comment le ranger.
+
+> **Règle** — avant de retirer un mécanisme jugé inutile, chercher ce qu'il
+> garantit **par accident**. Le couplage identifiant/rang était faux, et il
+> était la seule chose qui séparait deux identifiants.
+
+**Ce que la spécification disait déjà.** §3.3 portait « par sortie » depuis
+le début. L'erreur n'était pas dans la décision produit mais dans sa
+transcription vers le modèle, un document plus loin. Personne n'avait relu
+les deux côte à côte.
+
+> **Règle** — quand le modèle et la spécification divergent, vérifier lequel
+> a raison avant de corriger. Ici la spécification avait raison, et corriger
+> le modèle n'a coûté qu'une migration ; l'inverse aurait figé l'erreur.
+
+**Un test a trouvé un défaut que six mutations conformes n'avaient pas vu.**
+La validation des redirections dépendait de **l'ordre des clés JSON** : une
+chaîne A → B → C déclarait B inexistant si A était contrôlé en premier. Les
+six mutations portaient sur des règles justes ; aucune n'interrogeait l'ordre
+d'évaluation. C'est le test de la chaîne — écrit parce qu'une mutation avait
+**survécu** — qui l'a révélé.
+
+> **Règle** — une mutation qui survit est une question, pas un satisfecit.
+> Écrire le test qu'elle réclame, même quand la suite est verte.

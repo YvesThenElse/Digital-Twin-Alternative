@@ -19,6 +19,7 @@
    "canonical_id": "plt_01M24BB8G14JH196A6SSC386J6",
    "key": "nes",
    "name": "Nintendo Entertainment System",
+   "region_free": false,
    "provenance": {
     "source": "wikidata",
     "external_id": "Q172742",
@@ -29,6 +30,7 @@
    "canonical_id": "plt_01M24BB8G2HM7T8EEFA2TT8J0W",
    "key": "snes",
    "name": "Super Nintendo Entertainment System",
+   "region_free": false,
    "provenance": {
     "source": "wikidata",
     "external_id": "Q183259",
@@ -39,6 +41,7 @@
    "canonical_id": "plt_01M24BB8G3VNG6F5RXF04QW3NA",
    "key": "gb",
    "name": "Game Boy",
+   "region_free": false,
    "provenance": {
     "source": "wikidata",
     "external_id": "Q186437",
@@ -49,6 +52,7 @@
    "canonical_id": "plt_01M24BB8G4T4DSAQZ5K6MGBKME",
    "key": "gba",
    "name": "Game Boy Advance",
+   "region_free": false,
    "provenance": {
     "source": "wikidata",
     "external_id": "Q188642",
@@ -59,6 +63,7 @@
    "canonical_id": "plt_01M24BB8G57BD537WJ4RDJGAF6",
    "key": "n64",
    "name": "Nintendo 64",
+   "region_free": false,
    "provenance": {
     "source": "wikidata",
     "external_id": "Q184839",
@@ -69,6 +74,7 @@
    "canonical_id": "plt_01M24BB8G626NRPKG5H7AY1P3Q",
    "key": "ps1",
    "name": "PlayStation",
+   "region_free": false,
    "provenance": {
     "source": "wikidata",
     "external_id": "Q10677",
@@ -79,6 +85,7 @@
    "canonical_id": "plt_01M24BB8G7FKG3VSAS60HE192X",
    "key": "ps2",
    "name": "PlayStation 2",
+   "region_free": false,
    "provenance": {
     "source": "wikidata",
     "external_id": "Q10680",
@@ -89,6 +96,7 @@
    "canonical_id": "plt_01M24BB8G80Q8YN18MV658NPGH",
    "key": "switch",
    "name": "Nintendo Switch",
+   "region_free": true,
    "provenance": {
     "source": "wikidata",
     "external_id": "Q19610114",
@@ -96,6 +104,9 @@
    }
   }
  ],
+ "redirects": {
+  "wrk_01M24BB8S5S0FJYXHYQQMTWJ9W": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W"
+ },
  "works": [
   {
    "canonical_id": "wrk_01M24BB8K4TQVDKFGCXW0HBMPG",
@@ -127,7 +138,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 1986,
    "platform_release_year": 1986,
-   "notability": 2,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 2
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8K4FCTV1AF32XMNBVR8",
@@ -232,7 +245,9 @@
    "series": "Q4802838",
    "first_release_year": 1988,
    "platform_release_year": 1988,
-   "notability": 3,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 3
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8K55FAAM7E7D0W97E87",
@@ -321,7 +336,9 @@
    "series": "Q12397",
    "first_release_year": 1986,
    "platform_release_year": 1986,
-   "notability": 4,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 4
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8K60TFMC3BPE7XZWTRH",
@@ -435,7 +452,9 @@
    "series": "Mega Man",
    "first_release_year": 1988,
    "platform_release_year": 1988,
-   "notability": 5,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 5
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8K7TP0PEMEV2BZR00PQ",
@@ -545,7 +564,9 @@
    "series": "Q2515184",
    "first_release_year": 1986,
    "platform_release_year": 1986,
-   "notability": 6,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 6
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8K8FG0WZ7ZTK9C9M04H",
@@ -636,7 +657,9 @@
    "series": "Q2995706",
    "first_release_year": 1987,
    "platform_release_year": 1988,
-   "notability": 7,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 7
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8K9PTR3HDQQW87ERSN0",
@@ -748,7 +771,9 @@
    "series": "Punch-Out!!",
    "first_release_year": 1987,
    "platform_release_year": 1987,
-   "notability": 10,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 10
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KABJGMAGBWS358RG1X",
@@ -830,7 +855,9 @@
    "series": "Q2569953",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 11,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 11
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KB1Z1YZQEZJ6VXBB37",
@@ -938,7 +965,9 @@
    "series": "Ninja Gaiden",
    "first_release_year": 1988,
    "platform_release_year": 1988,
-   "notability": 12,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 12
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KC2XVQ0YCEYH6NFS11",
@@ -1044,7 +1073,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 1987,
    "platform_release_year": 1987,
-   "notability": 13,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 13
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KDXCQPP3V96XA5VEC9",
@@ -1155,7 +1186,9 @@
    "series": "Q4802838",
    "first_release_year": 1988,
    "platform_release_year": 1988,
-   "notability": 14,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 14
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KEVWNYP86ZH9AFRDC6",
@@ -1300,7 +1333,9 @@
    "series": "Mega Man",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 15,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 15
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KFKRY9AEFY6TYP84GX",
@@ -1403,7 +1438,9 @@
    "series": "Q2515184",
    "first_release_year": 1989,
    "platform_release_year": 1989,
-   "notability": 16,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 16
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KGR57EVTWJHFXZCVGM",
@@ -1508,7 +1545,9 @@
    "series": "Excite",
    "first_release_year": 1984,
    "platform_release_year": 1984,
-   "notability": 17,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 17
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KHD1GQK6NKX5HQ6VYY",
@@ -1616,7 +1655,9 @@
    "series": null,
    "first_release_year": 1985,
    "platform_release_year": 1985,
-   "notability": 18,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 18
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KJJAB3GKR0JPKD35EF",
@@ -1708,7 +1749,9 @@
    "series": "Kid Icarus",
    "first_release_year": 1986,
    "platform_release_year": 1986,
-   "notability": 19,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 19
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KK2DFEKQYDVMPJ63AA",
@@ -1815,7 +1858,9 @@
    "series": "Q6582709",
    "first_release_year": 1985,
    "platform_release_year": 1986,
-   "notability": 20,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 20
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KMG6941NNW3MXDD3D6",
@@ -1923,7 +1968,9 @@
    "series": "Double Dragon",
    "first_release_year": 1987,
    "platform_release_year": 1988,
-   "notability": 21,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 21
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KN5STK1CCRDG750H8H",
@@ -2018,7 +2065,9 @@
    "series": null,
    "first_release_year": 1989,
    "platform_release_year": 1989,
-   "notability": 23,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 23
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KPHHNA65Q3P18BFQV4",
@@ -2110,7 +2159,9 @@
    "series": "Battletoads",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 24,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 24
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KQWRF5T0DT063T1PM7",
@@ -2200,7 +2251,9 @@
    "series": "Q5730147",
    "first_release_year": 1988,
    "platform_release_year": 1988,
-   "notability": 25,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 25
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KRA2FXSGWTSAZ9ZEPA",
@@ -2294,7 +2347,9 @@
    "series": null,
    "first_release_year": 1989,
    "platform_release_year": 1989,
-   "notability": 26,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 26
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KS2WP9929TXA1R401H",
@@ -2388,7 +2443,9 @@
    "series": "Q2825391",
    "first_release_year": 1986,
    "platform_release_year": 1986,
-   "notability": 27,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 27
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KTHKS3HFWTGVF95DCB",
@@ -2477,7 +2534,9 @@
    "series": "Dragon Slayer",
    "first_release_year": 1987,
    "platform_release_year": 1987,
-   "notability": 28,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 28
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KVARN38M2QP3T8VMB5",
@@ -2568,7 +2627,9 @@
    "series": "StarTropics",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 29,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 29
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KW3K9VJPXTVSHEVDA9",
@@ -2648,7 +2709,9 @@
    "series": "Teenage Mutant Ninja Turtles",
    "first_release_year": 1989,
    "platform_release_year": 1989,
-   "notability": 30,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 30
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KXSTX4M52CQMDDHNG8",
@@ -2738,7 +2801,9 @@
    "series": null,
    "first_release_year": 1984,
    "platform_release_year": 1984,
-   "notability": 31,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 31
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KYHNV8P16EDBMS97TA",
@@ -2832,7 +2897,9 @@
    "series": null,
    "first_release_year": 1984,
    "platform_release_year": 1985,
-   "notability": 32,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 32
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8KZVDEK0F3SNWK0V9VV",
@@ -2942,7 +3009,9 @@
    "series": "Ninja Gaiden",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 34,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 34
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M0KVHC5RQ0ANFX2PS0",
@@ -3038,7 +3107,9 @@
    "series": "Q4802838",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 1,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 1
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M12R89GAX77X0ARN5Q",
@@ -3193,7 +3264,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 2,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 2
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M26SRY8ZMHRC6MAMA1",
@@ -3289,7 +3362,9 @@
    "series": "Q12397",
    "first_release_year": 1994,
    "platform_release_year": 1994,
-   "notability": 3,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 3
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M37MN4Z386NSKJTYDY",
@@ -3384,7 +3459,9 @@
    "series": "Chrono",
    "first_release_year": 1995,
    "platform_release_year": 1995,
-   "notability": 4,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 4
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M4WTH5ECQX35Y22SX5",
@@ -3487,7 +3564,9 @@
    "series": "Q99416119",
    "first_release_year": 1994,
    "platform_release_year": 1994,
-   "notability": 6,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 6
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M51ZZ1G4W792MXY48F",
@@ -3561,7 +3640,9 @@
    "series": "Q188196",
    "first_release_year": 1992,
    "platform_release_year": 1992,
-   "notability": 7,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 7
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M6WRKFRDQ53FTZ43EZ",
@@ -3659,7 +3740,9 @@
    "series": "Mana",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 9,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 9
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M7KFF2MKWXVJT7YZFX",
@@ -3746,7 +3829,9 @@
    "series": "Q2515184",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 10,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 10
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M8DNCRTGC5F5VXJCEY",
@@ -3870,7 +3955,9 @@
    "series": "Q1780267",
    "first_release_year": 1994,
    "platform_release_year": 1994,
-   "notability": 13,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 13
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8M9H4D9F68FYT9NBGDR",
@@ -3967,7 +4054,9 @@
    "series": "Q4802838",
    "first_release_year": 1995,
    "platform_release_year": 1995,
-   "notability": 14,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 14
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MAXHSHJ0BA24C6ZK8V",
@@ -4074,7 +4163,9 @@
    "series": "F-Zero",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 15,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 15
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MBFHCXKAESVFAGJYYC",
@@ -4166,7 +4257,9 @@
    "series": "Punch-Out!!",
    "first_release_year": 1994,
    "platform_release_year": 1994,
-   "notability": 16,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 16
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MC31QVM5GKS9PGEGJN",
@@ -4262,7 +4355,9 @@
    "series": "Q662004",
    "first_release_year": 1995,
    "platform_release_year": 1995,
-   "notability": 17,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 17
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MD4B9T60FR84G2SJBS",
@@ -4376,7 +4471,9 @@
    "series": "Q2995706",
    "first_release_year": 1992,
    "platform_release_year": 1992,
-   "notability": 18,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 18
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MEM3K2RMQM0B6BW4FJ",
@@ -4471,7 +4568,9 @@
    "series": null,
    "first_release_year": 1995,
    "platform_release_year": 1995,
-   "notability": 19,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 19
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MFQ22W3CRTKGWZFFHW",
@@ -4552,7 +4651,9 @@
    "series": null,
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 20,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 20
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MGV5DVYS5H0XG5N4EE",
@@ -4648,7 +4749,9 @@
    "series": "ActRaiser",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 21,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 21
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MHGMGWN0H3KDENCSZS",
@@ -4743,7 +4846,9 @@
    "series": "Q2569953",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 23,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 23
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MJYB75J9GES8BNA958",
@@ -4852,7 +4957,9 @@
    "series": "Q99416119",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 24,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 24
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MK94KBMCZ6SVWSK4C8",
@@ -4926,7 +5033,9 @@
    "series": null,
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 25,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 25
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MM98KM0CVZ312QW3B6",
@@ -5017,7 +5126,9 @@
    "series": "Q71910",
    "first_release_year": 1995,
    "platform_release_year": 1995,
-   "notability": 26,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 26
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MNMJ1MVSXDVVNQVZ1D",
@@ -5105,7 +5216,9 @@
    "series": null,
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 27,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 27
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MPS7A97PA2C4CMC3BG",
@@ -5182,7 +5295,9 @@
    "series": "Q2480306",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 28,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 28
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MQFWCFA5N7DW6AQXE2",
@@ -5271,7 +5386,9 @@
    "series": null,
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 29,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 29
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MRTJG9K9Z5HHTPH1NX",
@@ -5359,7 +5476,9 @@
    "series": null,
    "first_release_year": 1994,
    "platform_release_year": 1994,
-   "notability": 30,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 30
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MSRVC3M0SC7WB3ARZ1",
@@ -5428,7 +5547,9 @@
    "series": "Q108370517",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 31,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 31
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MT96CZ5S4WFZHM3CH3",
@@ -5521,7 +5642,9 @@
    "series": "Story of Seasons",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 33,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 33
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MVMYZ090AK35YN1EAT",
@@ -5611,7 +5734,9 @@
    "series": "Lufia",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 35,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 35
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MWFZJ59MTTB0AZZ0ZM",
@@ -5687,7 +5812,9 @@
    "series": null,
    "first_release_year": 1989,
    "platform_release_year": 1989,
-   "notability": 1,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 1
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MXKJAK39R761KS80DG",
@@ -5788,7 +5915,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 3,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 3
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MYBD4665TNNFRR6A1G",
@@ -5896,7 +6025,9 @@
    "series": "Q4802838",
    "first_release_year": 1989,
    "platform_release_year": 1989,
-   "notability": 4,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 4
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8MZ4YZG4JBPC4VFH8BG",
@@ -6032,7 +6163,9 @@
    "series": "Q4802838",
    "first_release_year": 1992,
    "platform_release_year": 1992,
-   "notability": 5,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 5
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N05N3BBHFCXWB4A714",
@@ -6132,7 +6265,9 @@
    "series": "Q2569953",
    "first_release_year": 1992,
    "platform_release_year": 1992,
-   "notability": 6,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 6
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N1ZZK25QPPYHQ7GADA",
@@ -6243,7 +6378,9 @@
    "series": "Q12397",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 7,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 7
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N2PGGA9AGKD8QSA53B",
@@ -6343,7 +6480,9 @@
    "series": "Q9095556",
    "first_release_year": 1994,
    "platform_release_year": 1994,
-   "notability": 8,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 8
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N3EX63MZ4JEQFS7KY4",
@@ -6443,7 +6582,9 @@
    "series": "Q2515184",
    "first_release_year": 1989,
    "platform_release_year": 1989,
-   "notability": 11,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 11
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N469Q4JN002F1XKRGJ",
@@ -6559,7 +6700,9 @@
    "series": "Mana",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 12,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 12
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N513MXG36GV9XBQTAY",
@@ -6667,7 +6810,9 @@
    "series": "Mega Man",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 13,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 13
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N6E9VBXF9J59KV7WCM",
@@ -6774,7 +6919,9 @@
    "series": "Ghosts 'n Goblins",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 14,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 14
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N7FRRBD0D0DFGHS8ZM",
@@ -6858,7 +7005,9 @@
    "series": "Kid Icarus",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 15,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 15
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N824DNMG116352TVPA",
@@ -6952,7 +7101,9 @@
    "series": "Mario",
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 17,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 17
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8N95Y7DGEPZ6TDJ8666",
@@ -7042,7 +7193,9 @@
    "series": "Q71910",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 18,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 18
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NAAY6Y6WJSMYE82Z0K",
@@ -7133,8 +7286,74 @@
    "series": "Bubble Bobble",
    "first_release_year": 1986,
    "platform_release_year": 1987,
-   "notability": 19,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 19,
+    "plt_01M24BB8G14JH196A6SSC386J6": 22
+   },
    "releases": [
+    {
+     "canonical_id": "rel_01M24BB8S59CT4GJQNDV2TFNGT",
+     "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
+     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
+     "region": "NTSC-J",
+     "date": "1987-10-30",
+     "precision": "day",
+     "confidence": "medium",
+     "provenance": {
+      "source": "wikipedia",
+      "licence": "CC BY-SA 4.0",
+      "article": "https://en.wikipedia.org/wiki/Bubble_Bobble_(video_game)",
+      "basis": "infobox_released"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8S5EA1J4927S9JAZ72V",
+     "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
+     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
+     "region": "NTSC-U",
+     "date": "1988-11-01",
+     "precision": "day",
+     "confidence": "high",
+     "provenance": {
+      "source": "wikidata",
+      "external_id": "Q88759",
+      "place_qid": "Q49",
+      "basis": "platform_qualified",
+      "raw_date": "1988-11-01"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8S5448HA1EY2R2MHGE1",
+     "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
+     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
+     "region": "PAL",
+     "date": "1990-01-01",
+     "precision": "day",
+     "confidence": "high",
+     "provenance": {
+      "source": "wikidata",
+      "external_id": "Q88759",
+      "place_qid": "Q46",
+      "basis": "platform_qualified",
+      "raw_date": "1990-01-01"
+     }
+    },
+    {
+     "canonical_id": "rel_01M24BB8S53STRETQ993GJRPYD",
+     "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
+     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
+     "region": "PAL",
+     "date": "1990-10-26",
+     "precision": "day",
+     "confidence": "high",
+     "provenance": {
+      "source": "wikidata",
+      "external_id": "Q88759",
+      "place_qid": "Q34",
+      "basis": "platform_qualified",
+      "raw_date": "1990-10-26"
+     }
+    },
     {
      "canonical_id": "rel_01M24BB8NBP1A6EE62T18VAX04",
      "work": "wrk_01M24BB8NBS0FJYXHYQQMTWJ9W",
@@ -7208,7 +7427,9 @@
    "series": null,
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 20,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 20
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NCAH6WW3WCZZ6TDKST",
@@ -7316,7 +7537,9 @@
    "series": null,
    "first_release_year": 1990,
    "platform_release_year": 1990,
-   "notability": 21,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 21
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NDYWF3WRHZTVWNEWGQ",
@@ -7378,7 +7601,9 @@
    "series": "Q2569953",
    "first_release_year": 1995,
    "platform_release_year": 1995,
-   "notability": 22,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 22
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NE2GF3XSJQY33E6QZ2",
@@ -7483,7 +7708,9 @@
    "series": null,
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 24,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 24
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NFE3TQ4Z3B37PGDTMK",
@@ -7598,7 +7825,9 @@
    "series": "Pokémon",
    "first_release_year": 2002,
    "platform_release_year": 2002,
-   "notability": 1,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 1
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NG6949X3979AWSV9QW",
@@ -7691,7 +7920,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 2,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 2
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NHFXARF5FZFE6HZGWZ",
@@ -7796,7 +8027,9 @@
    "series": "Q12397",
    "first_release_year": 2002,
    "platform_release_year": 2002,
-   "notability": 3,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 3
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NJXJK4YXKB8HTXEHPV",
@@ -7885,7 +8118,9 @@
    "series": "Wars",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 4,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 4
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NKEBSS7VDYFEAKDQQ1",
@@ -7993,7 +8228,9 @@
    "series": "Q188196",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 7,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 7
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NM1S6B328QJBDE68SN",
@@ -8101,7 +8338,9 @@
    "series": "Q2515184",
    "first_release_year": 2003,
    "platform_release_year": 2003,
-   "notability": 8,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 8
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NNZPBH8CAY0MJEEVSP",
@@ -8205,7 +8444,9 @@
    "series": "Q12397",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 9,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 9
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NP5AB05V9HK56ZGNKF",
@@ -8320,7 +8561,9 @@
    "series": "Pokémon",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 11,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 11
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NQQYNT622EP6G4YJSK",
@@ -8432,7 +8675,9 @@
    "series": "Mario & Luigi",
    "first_release_year": 2003,
    "platform_release_year": 2003,
-   "notability": 12,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 12
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NRDME23XCRHH3QXSPC",
@@ -8550,7 +8795,9 @@
    "series": "WarioWare",
    "first_release_year": 2003,
    "platform_release_year": 2003,
-   "notability": 13,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 13
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NS789TMYQ2ZBPTVR3G",
@@ -8673,7 +8920,9 @@
    "series": null,
    "first_release_year": 2003,
    "platform_release_year": 2003,
-   "notability": 14,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 14
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NTTGBGQ1SS1YERH921",
@@ -8781,7 +9030,9 @@
    "series": "Final Fantasy Tactics",
    "first_release_year": 2003,
    "platform_release_year": 2003,
-   "notability": 15,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 15
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NVK87KDBFEA6Y6E5T8",
@@ -8889,7 +9140,9 @@
    "series": "Pokémon",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 16,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 16
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NW9368WG3NR702PG8D",
@@ -8981,7 +9234,9 @@
    "series": "Q2569953",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 17,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 17
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NX5R11MEH8QV4J85YC",
@@ -9087,7 +9342,9 @@
    "series": "Q2515184",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 18,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 18
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NYT3G4WKRM2E9CTNVQ",
@@ -9192,7 +9449,9 @@
    "series": "Wars",
    "first_release_year": 2003,
    "platform_release_year": 2003,
-   "notability": 19,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 19
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8NZ7GBZX5GZ56S10R9S",
@@ -9302,7 +9561,9 @@
    "series": "Golden Sun",
    "first_release_year": 2002,
    "platform_release_year": 2002,
-   "notability": 20,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 20
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P02P2KQWBK2XN161YM",
@@ -9405,7 +9666,9 @@
    "series": null,
    "first_release_year": 2005,
    "platform_release_year": 2005,
-   "notability": 21,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 21
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P1RNNFKXPKY05W1J7V",
@@ -9498,7 +9761,9 @@
    "series": "Rhythm Heaven",
    "first_release_year": 2006,
    "platform_release_year": 2006,
-   "notability": 22,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 22
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P28VXKYVRAJBX6X97H",
@@ -9573,7 +9838,9 @@
    "series": "Q1780267",
    "first_release_year": 2006,
    "platform_release_year": 2006,
-   "notability": 24,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 24
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P3MGQGRFZ31BPEA7EB",
@@ -9638,7 +9905,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 2002,
    "platform_release_year": 2002,
-   "notability": 25,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 25
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P4X9B2T2F7Q8NRNJ7G",
@@ -9779,7 +10048,9 @@
    "series": "Q4802838",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 1,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 1
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P5N1R7E9C0WPQ639AG",
@@ -9888,7 +10159,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 2,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 2
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P6NJNT12WVV5EQ56KJ",
@@ -10007,7 +10280,9 @@
    "series": "James Bond",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 3,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 3
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P7VDT76VK5J6SD7PRK",
@@ -10100,7 +10375,9 @@
    "series": "Q188196",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 4,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 4
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P80QPYW1GM0SA01N1Z",
@@ -10204,7 +10481,9 @@
    "series": "Super Smash Bros.",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 5,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 5
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8P9S9PW0763576BH4FW",
@@ -10303,7 +10582,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 2000,
    "platform_release_year": 2000,
-   "notability": 6,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 6
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PAEZC174BAG93YHQ51",
@@ -10413,7 +10694,9 @@
    "series": "Banjo-Kazooie",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 7,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 7
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PBDXRTYC9SDJFSZ3EV",
@@ -10502,7 +10785,9 @@
    "series": "Perfect Dark",
    "first_release_year": 2000,
    "platform_release_year": 2000,
-   "notability": 8,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 8
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PC5RPE9KSXQF1ECBYX",
@@ -10567,7 +10852,9 @@
    "series": "Star Fox",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 9,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 9
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PDMJMY3R0H6F7VERK4",
@@ -10663,7 +10950,9 @@
    "series": "Q662004",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 10,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 10
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PE3MKQPPY78Z09VF9V",
@@ -10773,7 +11062,9 @@
    "series": "Paper Mario",
    "first_release_year": 2000,
    "platform_release_year": 2000,
-   "notability": 11,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 11
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PFVG9AG6X309EZ8VBT",
@@ -10871,7 +11162,9 @@
    "series": "Conker",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 12,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 12
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PGD680CWZY4SDJYD0R",
@@ -10958,7 +11251,9 @@
    "series": "F-Zero",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 13,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 13
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PHZRM135R979HN87J2",
@@ -11048,7 +11343,9 @@
    "series": "Q662004",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 14,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 14
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PJZX8PDKD247RPFKJF",
@@ -11157,7 +11454,9 @@
    "series": "Q14758291",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 15,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 15
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PKENJK8GWA50XYE7Q1",
@@ -11247,7 +11546,9 @@
    "series": "Pokémon Snap",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 16,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 16
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PMFJDXYCZ6VGVMDZC7",
@@ -11353,7 +11654,9 @@
    "series": "Pokémon Stadium",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 17,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 17
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PN1B0H3F41XK83M33C",
@@ -11446,7 +11749,9 @@
    "series": "Banjo-Kazooie",
    "first_release_year": 2000,
    "platform_release_year": 2000,
-   "notability": 19,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 19
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PPZM0GBVCRPZMC9PC6",
@@ -11537,7 +11842,9 @@
    "series": "Mario Tennis",
    "first_release_year": 2000,
    "platform_release_year": 2000,
-   "notability": 20,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 20
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PQ4F76WAT3WCH3CX6N",
@@ -11641,7 +11948,9 @@
    "series": "1080°",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 21,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 21
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PRRHMZ7SRB91XFR9YM",
@@ -11730,7 +12039,9 @@
    "series": "Yoshi",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 22,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 22
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PSWR4J0CF73XZ41W54",
@@ -11832,7 +12143,9 @@
    "series": "Turok",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 23,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 23
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PTJ8KF2ED0KVDEG3EM",
@@ -11917,7 +12230,9 @@
    "series": "Q137434684",
    "first_release_year": 2000,
    "platform_release_year": 2000,
-   "notability": 24,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 24
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PV3SRJ3767D8K1XRBW",
@@ -11994,7 +12309,9 @@
    "series": "Ogre Battle",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 25,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 25
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PWEFEXDS2F5DXZC7XE",
@@ -12097,7 +12414,9 @@
    "series": "Q99416119",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 1,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 1
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PXNHF99723VCRSBVQV",
@@ -12194,7 +12513,9 @@
    "series": "Metal Gear",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 2,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 2
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PYH9NW8VMWZGRS367Q",
@@ -12305,7 +12626,9 @@
    "series": "Q109303478",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 3,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 3
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8PZ1RC6G2K1PW0NB069",
@@ -12405,7 +12728,9 @@
    "series": "Q652928",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 4,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 4
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q01P2QB72101KZD843",
@@ -12508,7 +12833,9 @@
    "series": "Tekken",
    "first_release_year": 1996,
    "platform_release_year": 1998,
-   "notability": 6,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 6
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q1CD11TK3D6SGCA05Q",
@@ -12604,7 +12931,9 @@
    "series": "Q99416119",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 7,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 7
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q2H8Q0E13BZA4SMN20",
@@ -12710,7 +13039,9 @@
    "series": "Silent Hill",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 8,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 8
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q3841SYX3FAAS23VJH",
@@ -12801,7 +13132,9 @@
    "series": "Q2515184",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 9,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 9
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q4629C3DN59B8152E2",
@@ -12915,7 +13248,9 @@
    "series": "Q109303478",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 10,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 10
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q5JMAER2KHT99PJS22",
@@ -13019,7 +13354,9 @@
    "series": "Q99416119",
    "first_release_year": 2000,
    "platform_release_year": 2000,
-   "notability": 13,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 13
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q6Q12J5BBZHGMXV8C0",
@@ -13123,7 +13460,9 @@
    "series": "Q652928",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 14,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 14
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q79EZ1KH1RG80DT015",
@@ -13212,7 +13551,9 @@
    "series": "Crash Bandicoot",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 15,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 15
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q88KAP6ZVK68D64TV6",
@@ -13303,7 +13644,9 @@
    "series": "Chrono",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 16,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 16
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8Q9T391A8WSYN0B18DC",
@@ -13378,7 +13721,9 @@
    "series": "Xeno",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 17,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 17
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QAT1FFQ9695J85PH7X",
@@ -13468,7 +13813,9 @@
    "series": null,
    "first_release_year": 2000,
    "platform_release_year": 2000,
-   "notability": 19,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 19
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QB47BCSFC3M913RWJW",
@@ -13577,7 +13924,9 @@
    "series": "Suikoden",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 20,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 20
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QC0F2W89E35BADYM5G",
@@ -13682,7 +14031,9 @@
    "series": "Q1770004",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 22,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 22
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QDCKV7H8QDNHKK0QTJ",
@@ -13753,7 +14104,9 @@
    "series": "Wipeout",
    "first_release_year": 1995,
    "platform_release_year": 1995,
-   "notability": 23,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 23
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QEM8MZY5ASK4XPH73H",
@@ -13844,7 +14197,9 @@
    "series": "Q389781",
    "first_release_year": 1993,
    "platform_release_year": 1994,
-   "notability": 24,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 24
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QF5F90THWW69DG84GA",
@@ -13935,7 +14290,9 @@
    "series": "Tekken",
    "first_release_year": 1995,
    "platform_release_year": 1995,
-   "notability": 25,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 25
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QG6YH2QENQ9EWSZ9HD",
@@ -14037,7 +14394,9 @@
    "series": "Ape Escape",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 27,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 27
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QH4T0ZT8XT3SCXA19G",
@@ -14129,7 +14488,9 @@
    "series": "PaRappa the Rapper",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 28,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 28
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QJ90K21XR1GT51PRWF",
@@ -14219,7 +14580,9 @@
    "series": "PaRappa the Rapper",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 29,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 29
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QKEH91JCPXAVMEF0NR",
@@ -14328,7 +14691,9 @@
    "series": "Oddworld",
    "first_release_year": 1997,
    "platform_release_year": 1997,
-   "notability": 30,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 30
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QM5TC8TQWN0BTZB0V0",
@@ -14389,7 +14754,9 @@
    "series": "Grand Theft Auto",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 1,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 1
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QNGC37A5GQ1Q7S91GC",
@@ -14478,7 +14845,9 @@
    "series": null,
    "first_release_year": 2005,
    "platform_release_year": 2005,
-   "notability": 2,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 2
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QPHHJ2Z34XDZ39SBD7",
@@ -14582,7 +14951,9 @@
    "series": null,
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 3,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 3
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QQ7FG1KDC85DYET8YR",
@@ -14695,7 +15066,9 @@
    "series": "Metal Gear Solid",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 5,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 5
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QR8F836SXY845BFG3M",
@@ -14803,7 +15176,9 @@
    "series": "Grand Theft Auto",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 6,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 6
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QSTRZQ320P7RM7503D",
@@ -14876,7 +15251,9 @@
    "series": "Grand Theft Auto",
    "first_release_year": 2002,
    "platform_release_year": 2002,
-   "notability": 7,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 7
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QT9T3A735EHX2JKCM2",
@@ -14969,7 +15346,9 @@
    "series": "Q390137",
    "first_release_year": 2005,
    "platform_release_year": 2005,
-   "notability": 8,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 8
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QVAB65MRN3NF8JD8V0",
@@ -15060,7 +15439,9 @@
    "series": "Q652928",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 10,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 10
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QW3GPMT6FVA3NZSZY7",
@@ -15180,7 +15561,9 @@
    "series": "Metal Gear",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 11,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 11
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QXDG27S32T9VBVWDE2",
@@ -15286,7 +15669,9 @@
    "series": "Q436567",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 12,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 12
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QY46N8HK6DKYWCVC06",
@@ -15393,7 +15778,9 @@
    "series": "Q108371256",
    "first_release_year": 2006,
    "platform_release_year": 2006,
-   "notability": 13,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 13
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8QZM8XQMEMX1S88N1MN",
@@ -15504,7 +15891,9 @@
    "series": "Persona",
    "first_release_year": 2008,
    "platform_release_year": 2008,
-   "notability": 14,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 14
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R0E0AJQPTHT4D5AT5W",
@@ -15608,7 +15997,9 @@
    "series": "Persona",
    "first_release_year": 2006,
    "platform_release_year": 2006,
-   "notability": 15,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 15
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R16Q4CQD1JZ8ZT4FW9",
@@ -15711,7 +16102,9 @@
    "series": "Q109303478",
    "first_release_year": 2005,
    "platform_release_year": 2005,
-   "notability": 16,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 16
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R2WM70MXCA7WWYEP8N",
@@ -15816,7 +16209,9 @@
    "series": "Silent Hill",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 17,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 17
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R3WSZS4NEFW4X1A3FE",
@@ -15911,7 +16306,9 @@
    "series": "Jak and Daxter",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 18,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 18
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R4GCED2N1ZJZ0C1A6P",
@@ -16000,7 +16397,9 @@
    "series": "Burnout",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 20,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 20
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R50XGFPW9E47B4EG3A",
@@ -16091,7 +16490,9 @@
    "series": "Tekken",
    "first_release_year": 2005,
    "platform_release_year": 2005,
-   "notability": 21,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 21
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R64B2NH2PWC8SF8J53",
@@ -16196,7 +16597,9 @@
    "series": "SSX",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 23,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 23
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R75Y9CCHK09FSWKNVJ",
@@ -16287,7 +16690,9 @@
    "series": "Katamari",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 24,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 24
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R8W0KJHSS6HTSC9K35",
@@ -16383,7 +16788,9 @@
    "series": "Dragon Quest",
    "first_release_year": 2004,
    "platform_release_year": 2004,
-   "notability": 25,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 25
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8R946DB1BA2X0948AX1",
@@ -16501,7 +16908,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 2017,
    "platform_release_year": 2017,
-   "notability": 1,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 1
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RAKZ3XR0CJTDZ50YDW",
@@ -16562,7 +16971,9 @@
    "series": "Q4802838",
    "first_release_year": 2017,
    "platform_release_year": 2017,
-   "notability": 2,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 2
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RBTPN1XVJY7PXTNSMN",
@@ -16629,7 +17040,9 @@
    "series": "Q188196",
    "first_release_year": 2017,
    "platform_release_year": 2017,
-   "notability": 3,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 3
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RCCQXYBKRQ1SH86VD4",
@@ -16698,7 +17111,9 @@
    "series": "Animal Crossing",
    "first_release_year": 2020,
    "platform_release_year": 2020,
-   "notability": 4,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 4
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RDC20RDDBCBREYS7EN",
@@ -16774,7 +17189,9 @@
    "series": "Super Smash Bros.",
    "first_release_year": 2018,
    "platform_release_year": 2018,
-   "notability": 5,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 5
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RE2MB7SXGP7KCD3NJ5",
@@ -16853,7 +17270,9 @@
    "series": "The Legend of Zelda",
    "first_release_year": 2022,
    "platform_release_year": 2023,
-   "notability": 6,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 6
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RFB6JRHJJW54X0WAQK",
@@ -16915,7 +17334,9 @@
    "series": "Splatoon",
    "first_release_year": 2017,
    "platform_release_year": 2017,
-   "notability": 7,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 7
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RGTP06R5C5ZQ80DJ03",
@@ -16980,7 +17401,9 @@
    "series": "Q4802838",
    "first_release_year": 2019,
    "platform_release_year": 2019,
-   "notability": 8,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 8
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RHP353KME3SFAGZ8AS",
@@ -17051,7 +17474,9 @@
    "series": "Pokémon",
    "first_release_year": 2019,
    "platform_release_year": 2019,
-   "notability": 9,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 9
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RJ58C2RNAGX6W42TEF",
@@ -17114,7 +17539,9 @@
    "series": "Q12397",
    "first_release_year": 2021,
    "platform_release_year": 2021,
-   "notability": 10,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 10
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RKHDG5YAAJG7MCF39T",
@@ -17185,7 +17612,9 @@
    "series": "Fire Emblem",
    "first_release_year": 2019,
    "platform_release_year": 2019,
-   "notability": 11,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 11
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RMVYAF8B988AJMHMJM",
@@ -17243,7 +17672,9 @@
    "series": "Q123017178",
    "first_release_year": 2017,
    "platform_release_year": 2018,
-   "notability": 13,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 13
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RNV9D6TD3WXVEQCN6B",
@@ -17299,7 +17730,9 @@
    "series": null,
    "first_release_year": 2016,
    "platform_release_year": 2017,
-   "notability": 14,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 14
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RP47W4F7RZ269NH1AT",
@@ -17359,7 +17792,9 @@
    "series": "Celeste",
    "first_release_year": 2018,
    "platform_release_year": 2018,
-   "notability": 15,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 15
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RQ3XMCPWPV1HHZDEYC",
@@ -17435,7 +17870,9 @@
    "series": "Q123017175",
    "first_release_year": 2018,
    "platform_release_year": 2020,
-   "notability": 16,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 16
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RRBCFN82F0XHYD7VB1",
@@ -17496,7 +17933,9 @@
    "series": "Q60172609",
    "first_release_year": 2019,
    "platform_release_year": 2019,
-   "notability": 17,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 17
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RSXK1M4BMXK7S9EAJ8",
@@ -17556,7 +17995,9 @@
    "series": "Mario Party",
    "first_release_year": 2018,
    "platform_release_year": 2018,
-   "notability": 18,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 18
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RT42CMCK46PYSQN3CH",
@@ -17615,7 +18056,9 @@
    "series": "Splatoon",
    "first_release_year": 2022,
    "platform_release_year": 2022,
-   "notability": 19,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 19
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RVS3SAZRDFQ6N7SKDS",
@@ -17685,7 +18128,9 @@
    "series": "Pokémon",
    "first_release_year": 2022,
    "platform_release_year": 2022,
-   "notability": 20,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 20
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RWQ35J7B0TYBYNB04P",
@@ -17742,7 +18187,9 @@
    "series": null,
    "first_release_year": 2019,
    "platform_release_year": 2019,
-   "notability": 21,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 21
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RXJZ3WRAWXKE8E8CZB",
@@ -17802,7 +18249,9 @@
    "series": "Bayonetta",
    "first_release_year": 2022,
    "platform_release_year": 2022,
-   "notability": 22,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 22
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RYKJF1J3KENJJY5PWG",
@@ -17865,7 +18314,9 @@
    "series": null,
    "first_release_year": 2019,
    "platform_release_year": 2019,
-   "notability": 23,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 23
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8RZQPQABV0KMHF8967J",
@@ -17924,7 +18375,9 @@
    "series": "Q2569953",
    "first_release_year": 2022,
    "platform_release_year": 2022,
-   "notability": 24,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 24
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S0W23A84062987HAAX",
@@ -17981,7 +18434,9 @@
    "series": "Pikmin",
    "first_release_year": 2023,
    "platform_release_year": 2023,
-   "notability": 25,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 25
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S1TH2KHWENRXQZZN38",
@@ -18055,7 +18510,9 @@
    "series": "Q4802838",
    "first_release_year": 1985,
    "platform_release_year": 1985,
-   "notability": 1,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 1
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S2V2YVS8T86FG0PAA1",
@@ -18193,7 +18650,9 @@
    "series": "Q99416119",
    "first_release_year": 1987,
    "platform_release_year": 1987,
-   "notability": 8,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 8
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S3CXN7G5Y2Y7NWSC46",
@@ -18273,7 +18732,9 @@
    "series": "Dragon Quest",
    "first_release_year": 1986,
    "platform_release_year": 1986,
-   "notability": 9,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 9
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S4BZPWQNPVCK4FGBRY",
@@ -18326,115 +18787,6 @@
    }
   },
   {
-   "canonical_id": "wrk_01M24BB8S5S0FJYXHYQQMTWJ9W",
-   "title": "Bubble Bobble",
-   "titles": {
-    "en": "Bubble Bobble",
-    "ja": "バブルボブル"
-   },
-   "aliases": [
-    "ja:アーケードアーカイブス バブルボブル",
-    "en:Super Bobble Bobble",
-    "en:Final Bubble Bobble",
-    "en:Arcade Archives: Bubble Bobble"
-   ],
-   "studio": [
-    "Taito"
-   ],
-   "publisher": [
-    "Taito",
-    "Romstar"
-   ],
-   "genre": [
-    "platformer"
-   ],
-   "series": "Bubble Bobble",
-   "first_release_year": 1986,
-   "platform_release_year": 1987,
-   "notability": 22,
-   "releases": [
-    {
-     "canonical_id": "rel_01M24BB8S59CT4GJQNDV2TFNGT",
-     "work": "wrk_01M24BB8S5S0FJYXHYQQMTWJ9W",
-     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
-     "region": "NTSC-J",
-     "date": "1987-10-30",
-     "precision": "day",
-     "confidence": "medium",
-     "provenance": {
-      "source": "wikipedia",
-      "licence": "CC BY-SA 4.0",
-      "article": "https://en.wikipedia.org/wiki/Bubble_Bobble_(video_game)",
-      "basis": "infobox_released"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8S5EA1J4927S9JAZ72V",
-     "work": "wrk_01M24BB8S5S0FJYXHYQQMTWJ9W",
-     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
-     "region": "NTSC-U",
-     "date": "1988-11-01",
-     "precision": "day",
-     "confidence": "high",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q88759",
-      "place_qid": "Q49",
-      "basis": "platform_qualified",
-      "raw_date": "1988-11-01"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8S5448HA1EY2R2MHGE1",
-     "work": "wrk_01M24BB8S5S0FJYXHYQQMTWJ9W",
-     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
-     "region": "PAL",
-     "date": "1990-01-01",
-     "precision": "day",
-     "confidence": "high",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q88759",
-      "place_qid": "Q46",
-      "basis": "platform_qualified",
-      "raw_date": "1990-01-01"
-     }
-    },
-    {
-     "canonical_id": "rel_01M24BB8S53STRETQ993GJRPYD",
-     "work": "wrk_01M24BB8S5S0FJYXHYQQMTWJ9W",
-     "platform": "plt_01M24BB8G14JH196A6SSC386J6",
-     "region": "PAL",
-     "date": "1990-10-26",
-     "precision": "day",
-     "confidence": "high",
-     "provenance": {
-      "source": "wikidata",
-      "external_id": "Q88759",
-      "place_qid": "Q34",
-      "basis": "platform_qualified",
-      "raw_date": "1990-10-26"
-     }
-    }
-   ],
-   "provenance": {
-    "source": "wikidata",
-    "license": "CC0",
-    "external_id": "Q88759",
-    "imported_at": "2026-09-20",
-    "dataset_version": "poc-2026-09-20"
-   },
-   "verification": {
-    "resolution": "exact_label",
-    "date_basis": "platform_qualified",
-    "curated_year": 1986,
-    "year_source_vs_curated": "match",
-    "region": "from_source",
-    "cover": "present",
-    "title_from": "source"
-   }
-  },
-  {
    "canonical_id": "wrk_01M24BB8S6VDCSTKXTAT2GWWC0",
    "title": "Mega Man",
    "titles": {
@@ -18463,7 +18815,9 @@
    "series": "Mega Man",
    "first_release_year": 1987,
    "platform_release_year": 1987,
-   "notability": 33,
+   "notability": {
+    "plt_01M24BB8G14JH196A6SSC386J6": 33
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S660W9ZQSAGV8SM6Q8",
@@ -18572,7 +18926,9 @@
    "series": "Q662004",
    "first_release_year": 1994,
    "platform_release_year": 1994,
-   "notability": 5,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 5
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S73KA0DZ5GP03X0YHT",
@@ -18706,7 +19062,9 @@
    "series": "Q288035",
    "first_release_year": 1991,
    "platform_release_year": 1992,
-   "notability": 8,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 8
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S84YF6RQ9A1BH51AVY",
@@ -18806,7 +19164,9 @@
    "series": "Mega Man X",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 11,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 11
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8S9P1519RX3Y67MC5BQ",
@@ -18905,7 +19265,9 @@
    "series": "Star Fox",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 12,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 12
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SAS9CVM7R1XD74MBAW",
@@ -18993,7 +19355,9 @@
    "series": "Q3444160",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 22,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 22
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SBRSNK0V1QQ61T7TPN",
@@ -19086,7 +19450,9 @@
    "series": "SimCity",
    "first_release_year": 1991,
    "platform_release_year": 1991,
-   "notability": 32,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 32
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SC2KQB5ZYFA36JC40M",
@@ -19149,7 +19515,9 @@
    "series": "Q904008",
    "first_release_year": 1993,
    "platform_release_year": 1993,
-   "notability": 34,
+   "notability": {
+    "plt_01M24BB8G2HM7T8EEFA2TT8J0W": 34
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SDPCBCCQ14E4JCG5BM",
@@ -19229,7 +19597,9 @@
    "series": "Donkey Kong",
    "first_release_year": 1994,
    "platform_release_year": 1994,
-   "notability": 9,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 9
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SE1JQQ76QSVD85VDKF",
@@ -19341,7 +19711,9 @@
    "series": "Pokémon",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 10,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 10
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SF43CMQSQJNH9SP1RD",
@@ -19398,7 +19770,9 @@
    "series": "Golden Sun",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 5,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 5
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SGD82S5AZ8N1HGDPVR",
@@ -19496,7 +19870,9 @@
    "series": "Q4802838",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 10,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 10
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SH101GRCSQ563M6KP1",
@@ -19558,7 +19934,9 @@
    "series": "Sonic Advance",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 23,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 23
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SJG1DJE3XTKA6Y00G0",
@@ -19667,7 +20045,9 @@
    "series": "Mario Party",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 18,
+   "notability": {
+    "plt_01M24BB8G57BD537WJ4RDJGAF6": 18
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SK51881EM5X83GBPFB",
@@ -19769,7 +20149,9 @@
    "series": "Crash Bandicoot",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 5,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 5
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SM3TCQ48189DEQRJ3C",
@@ -19845,7 +20227,9 @@
    "series": "Q927422",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 11,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 11
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SNB71R280MP7DG99B4",
@@ -19939,7 +20323,9 @@
    "series": "Tomb Raider",
    "first_release_year": 1996,
    "platform_release_year": 1996,
-   "notability": 12,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 12
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SP25QNGZJMS80SHD6K",
@@ -20028,7 +20414,9 @@
    "series": "Parasite Eve",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 18,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 18
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SQMYKRXE24JT08S0C8",
@@ -20120,7 +20508,9 @@
    "series": "Q1189289",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 21,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 21
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SRT99AKC8GGBC7Z8WY",
@@ -20221,7 +20611,9 @@
    "series": "Q99416119",
    "first_release_year": 2001,
    "platform_release_year": 2001,
-   "notability": 4,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 4
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SSQ92E325GX7RVQFCA",
@@ -20280,7 +20672,9 @@
    "series": "Kingdom Hearts",
    "first_release_year": 2002,
    "platform_release_year": 2002,
-   "notability": 9,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 9
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8ST45B2MGX0DVWVB3V6",
@@ -20341,7 +20735,9 @@
    "series": "Ratchet & Clank",
    "first_release_year": 2002,
    "platform_release_year": 2002,
-   "notability": 19,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 19
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SVPDHR6E1MM1JK48HK",
@@ -20414,7 +20810,9 @@
    "series": "Guitar Hero",
    "first_release_year": 2005,
    "platform_release_year": 2005,
-   "notability": 22,
+   "notability": {
+    "plt_01M24BB8G7FKG3VSAS60HE192X": 22
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SWYFRFZTG2RA9YQZVQ",
@@ -20493,7 +20891,9 @@
    "series": "Q58541191",
    "first_release_year": 2017,
    "platform_release_year": 2017,
-   "notability": 12,
+   "notability": {
+    "plt_01M24BB8G80Q8YN18MV658NPGH": 12
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SX37WNDX67GQESTGRC",
@@ -20574,7 +20974,9 @@
    "series": "Pokémon",
    "first_release_year": 1998,
    "platform_release_year": 1998,
-   "notability": 2,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 2
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SYHF775BQSV5NSVY07",
@@ -20631,7 +21033,9 @@
    "series": "Story of Seasons",
    "first_release_year": 2012,
    "platform_release_year": 1997,
-   "notability": 25,
+   "notability": {
+    "plt_01M24BB8G3VNG6F5RXF04QW3NA": 25
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8SZ04W850Q0P58GCFH0",
@@ -20730,7 +21134,9 @@
    "series": "Fire Emblem",
    "first_release_year": 2003,
    "platform_release_year": 2003,
-   "notability": 6,
+   "notability": {
+    "plt_01M24BB8G4T4DSAQZ5K6MGBKME": 6
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8T09MQWW9DT1B1AA4YG",
@@ -20833,7 +21239,9 @@
    "series": "Medal of Honor",
    "first_release_year": 1999,
    "platform_release_year": 1999,
-   "notability": 26,
+   "notability": {
+    "plt_01M24BB8G626NRPKG5H7AY1P3Q": 26
+   },
    "releases": [
     {
      "canonical_id": "rel_01M24BB8T1AVDQFCX224VSXK24",

@@ -15,9 +15,30 @@ public sealed record DatasetLoadResult(
     IReadOnlyList<Platform> Platforms,
     IReadOnlyList<Work> Works,
     IReadOnlyList<DatasetRelease> Releases,
+    IReadOnlyDictionary<string, string> Redirects,
     IReadOnlyList<DatasetViolation> Violations)
 {
     public bool IsValid => Violations.Count == 0;
+
+    /// <summary>
+    /// Les sorties sans région <b>sur une machine zonée</b> — la dette de
+    /// curation réelle.
+    ///
+    /// <para>Sur une machine sans zonage, l'absence de région signifie
+    /// « mondiale » et ne se cure pas. Les compter ensemble gonflait la dette
+    /// d'un tiers et aurait fait recurer une absence qui est déjà la bonne
+    /// réponse.</para>
+    /// </summary>
+    public IReadOnlyList<DatasetRelease> ReleasesMissingRegion
+    {
+        get
+        {
+            var libres = Platforms.Where(p => p.RegionFree)
+                .Select(p => p.CanonicalId).ToHashSet(StringComparer.Ordinal);
+            return [.. Releases.Where(r => string.IsNullOrEmpty(r.Region)
+                                           && !libres.Contains(r.PlatformId))];
+        }
+    }
 }
 
 /// <summary>Une sortie telle que le dataset la porte, avec sa qualité déclarée.</summary>
@@ -79,7 +100,11 @@ public static class DatasetLoader
         {
             var id = p.GetProperty("canonical_id").GetString()!;
             Enregistrer(id, "platform");
-            plateformes.Add(new Platform(id, p.GetProperty("name").GetString()!));
+            plateformes.Add(new Platform(id, p.GetProperty("name").GetString()!)
+            {
+                RegionFree = p.TryGetProperty("region_free", out var libre)
+                             && libre.GetBoolean(),
+            });
         }
 
         var idsPlateformes = plateformes.Select(p => p.CanonicalId).ToHashSet(StringComparer.Ordinal);
@@ -90,10 +115,18 @@ public static class DatasetLoader
         {
             var workId = w.GetProperty("canonical_id").GetString()!;
             Enregistrer(workId, "work");
+
+            var rangs = new Dictionary<string, int>(StringComparer.Ordinal);
+            foreach (var rang in w.GetProperty("notability").EnumerateObject())
+            {
+                rangs[rang.Name] = rang.Value.GetInt32();
+            }
             oeuvres.Add(new Work(workId, w.GetProperty("title").GetString()!)
             {
-                Notability = w.GetProperty("notability").GetInt32(),
+                Notability = rangs,
             });
+
+            var plateformesDeLOeuvre = new HashSet<string>(StringComparer.Ordinal);
 
             foreach (var r in w.GetProperty("releases").EnumerateArray())
             {
@@ -112,17 +145,126 @@ public static class DatasetLoader
                 var confidence = r.GetProperty("confidence").GetString()!;
                 VerifierQualite(releaseId, precision, confidence, violations);
 
+                if (!string.IsNullOrEmpty(platformId)) plateformesDeLOeuvre.Add(platformId);
+
                 sorties.Add(new DatasetRelease(
                     releaseId, workId, platformId ?? "",
                     r.GetProperty("region").ValueKind == JsonValueKind.Null
                         ? null : r.GetProperty("region").GetString(),
                     r.GetProperty("date").GetString()!, precision, confidence));
             }
+
+            VerifierNotoriete(workId, rangs, plateformesDeLOeuvre, violations);
         }
+
+        var redirections = LireRedirections(racine, vus, violations);
 
         return new DatasetLoadResult(
             racine.GetProperty("dataset_version").GetString()!,
-            plateformes, oeuvres, sorties, violations);
+            plateformes, oeuvres, sorties, redirections, violations);
+    }
+
+    /// <summary>
+    /// <b>Le classement couvre exactement les plateformes où l'œuvre sort.</b>
+    ///
+    /// Sans rang, E02 ne sait pas où placer le titre : il disparaît de la
+    /// liste sans que rien ne le signale — l'échec qui casse la
+    /// reconnaissance (§3.3). Un rang sur une plateforme où l'œuvre ne sort
+    /// pas est le symptôme inverse : un classement qui a survécu à la
+    /// disparition de sa sortie.
+    /// </summary>
+    private static void VerifierNotoriete(
+        string workId, Dictionary<string, int> rangs,
+        HashSet<string> plateformes, List<DatasetViolation> violations)
+    {
+        foreach (var manquante in plateformes.Where(p => !rangs.ContainsKey(p)))
+        {
+            violations.Add(new DatasetViolation(
+                "notabilite", workId,
+                $"« {workId} » sort sur « {manquante} » sans y être classée."));
+        }
+        foreach (var orpheline in rangs.Keys.Where(p => !plateformes.Contains(p)))
+        {
+            violations.Add(new DatasetViolation(
+                "notabilite", workId,
+                $"« {workId} » est classée sur « {orpheline} » où elle ne sort pas."));
+        }
+    }
+
+    /// <summary>
+    /// La table de redirection de §10.2, qui n'est jamais purgée.
+    ///
+    /// <para>Deux fautes la rendent inutile : pointer vers un identifiant qui
+    /// n'existe pas — l'export de l'utilisateur ne se résout plus — et
+    /// rediriger un identifiant encore vivant, qui ferait exister la même
+    /// œuvre sous deux adresses dont l'une mène ailleurs.</para>
+    /// </summary>
+    private static Dictionary<string, string> LireRedirections(
+        JsonElement racine, Dictionary<string, string> vus,
+        List<DatasetViolation> violations)
+    {
+        var redirections = new Dictionary<string, string>(StringComparer.Ordinal);
+        if (!racine.TryGetProperty("redirects", out var table)) return redirections;
+
+        // Deux passes, et non une. La table entière doit être connue avant de
+        // valider quoi que ce soit : une chaîne A → B → C écrite dans cet
+        // ordre voyait B « inexistant » au moment de contrôler A. Le verdict
+        // dépendait de l'ORDRE DES CLÉS JSON — vrai ou faux selon l'humeur du
+        // sérialiseur.
+        foreach (var lien in table.EnumerateObject())
+        {
+            redirections[lien.Name] = lien.Value.GetString()!;
+        }
+
+        foreach (var (depuis, cible) in redirections)
+        {
+            if (vus.ContainsKey(depuis))
+            {
+                violations.Add(new DatasetViolation(
+                    "redirection", depuis,
+                    $"« {depuis} » est redirigé alors qu'il désigne encore une entrée."));
+            }
+            if (!vus.ContainsKey(cible) && !redirections.ContainsKey(cible))
+            {
+                violations.Add(new DatasetViolation(
+                    "redirection", depuis,
+                    $"« {depuis} » redirige vers « {cible} », qui n'existe pas."));
+            }
+        }
+
+        DetecterCycles(redirections, vus, violations);
+        return redirections;
+    }
+
+    /// <summary>
+    /// Une chaîne de redirections doit <b>aboutir</b>.
+    ///
+    /// <para>A → B → A satisfait toutes les règles précédentes — chaque cible
+    /// existe — et ne résout rien. Pire, le code qui suit la chaîne pour
+    /// retrouver l'œuvre boucle indéfiniment. Le contrôle est ici parce que
+    /// c'est ici qu'on connaît la table entière.</para>
+    /// </summary>
+    private static void DetecterCycles(
+        Dictionary<string, string> redirections,
+        Dictionary<string, string> vus,
+        List<DatasetViolation> violations)
+    {
+        foreach (var depart in redirections.Keys)
+        {
+            var visites = new HashSet<string>(StringComparer.Ordinal) { depart };
+            var courant = depart;
+            while (redirections.TryGetValue(courant, out var suivant))
+            {
+                if (!visites.Add(suivant))
+                {
+                    violations.Add(new DatasetViolation(
+                        "redirection", depart,
+                        $"« {depart} » ouvre une chaîne qui boucle sur « {suivant} »."));
+                    break;
+                }
+                courant = suivant;
+            }
+        }
     }
 
     /// <summary>

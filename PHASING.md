@@ -90,7 +90,7 @@ Quatre principes guident le découpage :
 
 ### Périmètre volontairement restreint
 
-> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit les 20 et 21 septembre 2026 : **222 œuvres, 663 sorties** sur les huit plateformes visées, `Notability` classée à la main, provenance portée sur chaque donnée, licence **CC BY-SA 4.0** (Wikidata CC0 + Wikipédia CC BY-SA). 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Ses invariants sont vérifiés par du code (`DatasetLoader`), pas par relecture.
+> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit les 20 et 21 septembre 2026 : **221 œuvres, 663 sorties** sur les huit plateformes visées, `Notability` classée à la main, provenance portée sur chaque donnée, licence **CC BY-SA 4.0** (Wikidata CC0 + Wikipédia CC BY-SA). 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Ses invariants sont vérifiés par du code (`DatasetLoader`), pas par relecture.
 >
 > **706 → 663** : les 43 sorties retirées étaient des **rééditions prises pour des sorties d'origine**. Le dataset annonçait Super Mario Bros. en PAL 2011 et Ocarina of Time en PAL 2003. Les déclarations de date sont désormais filtrées sur la plateforme qu'elles qualifient.
 >
@@ -138,7 +138,7 @@ la Phase 0 :
 
 | Reste | Nature | Bloquant pour |
 |---|---|---|
-| **104 sorties sans région**, dont 18 œuvres qui n'en portent aucune | curation | rien en Phase 1 ; gênant au test de Phase 2 pour un joueur PAL |
+| **92 sorties sans région** sur machine zonée (les 12 autres sont sur Switch, sans zonage : l'absence y est la bonne réponse) | curation | rien en Phase 1 ; gênant au test de Phase 2 pour un joueur PAL |
 | **~400 arbitrages de région** impliqués par la cible « international dès le départ » | curation | l'affichage des dates par région |
 | **40 œuvres sans date au jour** | curation | rien : l'incertitude est affichée, c'est la décision prise |
 | **`NOTABILITE.md` en attente d'annotation** | décision humaine | le réordonnancement déplace les `CanonicalId` — rien ne doit toucher à l'ordre avant |

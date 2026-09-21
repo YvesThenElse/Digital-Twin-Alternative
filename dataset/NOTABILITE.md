@@ -1,6 +1,8 @@
 # Classement de notoriété
 
-> Les 222 œuvres du [dataset](./poc.json), dans l'ordre où **E02 les présentera**. Le rang 1 est le titre qu'un joueur de la plateforme cite en premier.
+> Les 221 œuvres du [dataset](./poc.json), dans l'ordre où **E02 les présentera**. Le rang 1 est le titre qu'un joueur de la plateforme cite en premier.
+
+> Le rang est **propre à la plateforme** : une œuvre sortie sur deux machines y figure deux fois, avec deux rangs. Bubble Bobble est 19<sup>e</sup> sur Game Boy et 22<sup>e</sup> sur NES.
 
 > ⚙️ **Fichier généré** — `python3 calibration/emit_notabilite.py`. Ne pas l'éditer à la main : il se régénère depuis `poc.json`. Pour changer un rang, changer `notability` dans la liste curée et réémettre. Depuis le 21 septembre 2026, **réordonner ne déplace plus aucun `CanonicalId`** (voir `calibration/id_seq.json`).
 
@@ -43,7 +45,7 @@ Ce classement n'a aucune source : c'est un jugement de domaine. §3.3 en fait un
 | 19 | Kid Icarus | ✓ | NTSC-J NTSC-U PAL | img |
 | 20 | Gradius | ✓ | NTSC-J NTSC-U PAL | img |
 | 21 | Double Dragon | ✓ | NTSC-J NTSC-U PAL | img |
-| 22 | Bubble Bobble | ✓ | NTSC-J NTSC-U PAL | img |
+| 22 | Bubble Bobble | ✓ | NTSC-J NTSC-U PAL |  |
 | 23 | DuckTales | ✓ | NTSC-J NTSC-U PAL | img |
 | 24 | Battletoads | ✓ | NTSC-J NTSC-U PAL | img |
 | 25 | Blaster Master | ✓ | NTSC-J NTSC-U PAL | img |

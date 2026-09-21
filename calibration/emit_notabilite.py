@@ -35,9 +35,13 @@ def main():
     plat = {p["canonical_id"]: p for p in d["platforms"]}
     cle = {p["canonical_id"]: p.get("key", p["name"]) for p in d["platforms"]}
 
+    # Une œuvre peut figurer sur plusieurs plateformes avec un rang différent
+    # sur chacune — c'est le sens de la carte `notability`. On l'inscrit dans
+    # chaque liste où elle est classée.
     par_pf = collections.defaultdict(list)
     for w in d["works"]:
-        par_pf[w["releases"][0]["platform"]].append(w)
+        for pid, rang in w["notability"].items():
+            par_pf[pid].append((rang, w))
 
     pids = sorted(plat, key=lambda p: ORDRE.index(cle[p]) if cle[p] in ORDRE else 99)
 
@@ -47,6 +51,9 @@ def main():
     A("> Les %d œuvres du [dataset](./poc.json), dans l'ordre où **E02 les "
       "présentera**. Le rang 1 est le titre qu'un joueur de la plateforme cite "
       "en premier.\n" % len(d["works"]))
+    A("> Le rang est **propre à la plateforme** : une œuvre sortie sur deux "
+      "machines y figure deux fois, avec deux rangs. Bubble Bobble est "
+      "19<sup>e</sup> sur Game Boy et 22<sup>e</sup> sur NES.\n")
     A("> ⚙️ **Fichier généré** — `python3 calibration/emit_notabilite.py`. "
       "Ne pas l'éditer à la main : il se régénère depuis `poc.json`. Pour "
       "changer un rang, changer `notability` dans la liste curée et réémettre. "
@@ -70,7 +77,7 @@ def main():
     A("")
 
     for pid in pids:
-        ws = sorted(par_pf[pid], key=lambda w: w["notability"])
+        ws = sorted(par_pf[pid], key=lambda rw: rw[0])
         zonee = cle[pid] not in SANS_ZONAGE
         A("\n## %s — %d titres\n" % (plat[pid]["name"], len(ws)))
         if not zonee:
@@ -78,12 +85,15 @@ def main():
               "région, et `—` n'y signale donc aucune lacune.\n")
         A("| # | Titre | | Régions | |")
         A("|--:|---|:-:|---|---|")
-        for w in ws:
-            f, _ = flag_date(w["releases"])
-            regs = sorted({r["region"] for r in w["releases"] if r.get("region")})
+        for rang, w in ws:
+            # Seules les sorties SUR CETTE PLATEFORME décrivent la ligne : une
+            # date Game Boy ne dit rien de la sortie NES du même titre.
+            ici = [r for r in w["releases"] if r["platform"] == pid]
+            f, _ = flag_date(ici)
+            regs = sorted({r["region"] for r in ici if r.get("region")})
             img = "img" if w["canonical_id"] in manifeste else ""
             A("| %d | %s | %s | %s | %s |"
-              % (w["notability"], w["title"], f, " ".join(regs) or "—", img))
+              % (rang, w["title"], f, " ".join(regs) or "—", img))
 
     chemin = "../dataset/NOTABILITE.md"
     open(chemin, "w").write("\n".join(out) + "\n")

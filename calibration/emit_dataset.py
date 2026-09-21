@@ -178,8 +178,12 @@ def build(entry, raw, platform_ids, platform_qid, seq, wp=None):
         "series": raw["series"][0] if raw["series"] else None,
         "first_release_year": first_year(raw["dates"]),
         "platform_release_year": first_year([{"date": r["date"]} for r in releases]),
-        # §3.3 : rang manuel, décroissant en notoriété, propre à la plateforme.
-        "notability": entry["notability"],
+        # §3.3 : rang manuel, décroissant en notoriété, **propre à la
+        # plateforme**. C'est une carte et non un entier : la notoriété d'un
+        # titre n'est pas la même sur deux machines, et le multiplateforme
+        # devient la norme dès la PS1. Bubble Bobble le montrait déjà —
+        # 19e sur Game Boy, 22e sur NES.
+        "notability": {platform_ids[entry["platform"]]: entry["notability"]},
         "releases": releases,
         "provenance": {"source": "wikidata", "license": "CC0",
                        "external_id": raw["qid"],
@@ -202,6 +206,53 @@ def build(entry, raw, platform_ids, platform_qid, seq, wp=None):
             "title_from": "source" if raw["labels"].get("en") else "curation",
         },
     }
+
+
+def fusionner(works):
+    """Fusionne les œuvres qui partagent un identifiant externe.
+
+    Une même œuvre curée sur deux machines produisait deux `Work` portant le
+    même QID — ce que le modèle interdit (la plateforme appartient à la
+    Release) et ce que le cas de validation n°8 dit explicitement. Bubble
+    Bobble était le seul cas sur 222 ; il ne le restera pas.
+
+    L'identifiant survivant est le **plus ancien** (plus petit `seq`) :
+    l'invariant 9 interdit de réattribuer un identifiant, pas d'en retirer un
+    de la circulation. Celui qui disparaît entre dans la table de redirection,
+    qui n'est jamais purgée.
+    """
+    par_qid, ordre = {}, []
+    for w in works:
+        q = w["provenance"]["external_id"]
+        if q not in par_qid:
+            par_qid[q] = []
+            ordre.append(q)
+        par_qid[q].append(w)
+
+    fusionnes, redirections = [], {}
+    for q in ordre:
+        groupe = par_qid[q]
+        if len(groupe) == 1:
+            fusionnes.append(groupe[0])
+            continue
+        # Le survivant est celui dont le ULID est le plus petit — donc le
+        # premier émis, l'horodatage étant en tête de l'identifiant.
+        groupe.sort(key=lambda w: w["canonical_id"])
+        survivant, absorbes = groupe[0], groupe[1:]
+        for autre in absorbes:
+            redirections[autre["canonical_id"]] = survivant["canonical_id"]
+            survivant["notability"].update(autre["notability"])
+            for r in autre["releases"]:
+                r["work"] = survivant["canonical_id"]
+                survivant["releases"].append(r)
+        survivant["releases"].sort(key=lambda r: (r["platform"], r["date"],
+                                                  r["region"] or ""))
+        survivant["platform_release_year"] = first_year(
+            [{"date": r["date"]} for r in survivant["releases"]])
+        print("  fusion : %s — %d fiches, plateformes %s"
+              % (survivant["title"], len(groupe), sorted(survivant["notability"])))
+        fusionnes.append(survivant)
+    return fusionnes, redirections
 
 
 def main():
@@ -229,7 +280,13 @@ def main():
 
     platform_ids = {k: cid("plt", q, _PLATFORM_BASE + i)
                     for i, (k, (q, _)) in enumerate(PLATFORMS.items())}
+    # Une machine sans zonage n'impose aucune restriction régionale : une
+    # sortie qui n'y porte pas de région est **mondiale**, pas incomplète.
+    # Ce n'est pas « toute sortie y est mondiale » — un titre peut rester
+    # exclusif au Japon et le déclarer.
+    SANS_ZONAGE = {"switch"}
     platforms = [{"canonical_id": platform_ids[k], "key": k, "name": name,
+                  "region_free": k in SANS_ZONAGE,
                   "provenance": {"source": "wikidata", "external_id": q,
                                  "license": "CC0"}}
                  for k, (q, name) in PLATFORMS.items()]
@@ -259,6 +316,8 @@ def main():
                    seqs["%s|%s" % (e["qid"], e["platform"])], wpd.get(e["qid"]))
              for e in resolved if e["qid"] in raw]
 
+    works, redirections = fusionner(works)
+
     dataset = {"dataset_version": DATASET_VERSION,
                # Le partage à l'identique de Wikipédia se propage à l'ensemble
                # dès lors qu'une seule de ses dates est incorporée.
@@ -272,6 +331,9 @@ def main():
                     "usage": "dates de sortie régionales absentes de Wikidata"},
                ],
                "platforms": platforms,
+               # §10.2 : la table de redirection n'est jamais purgée. Un
+               # export utilisateur vieux de trois ans doit encore se résoudre.
+               "redirects": redirections,
                "works": works}
 
     os.makedirs("../dataset", exist_ok=True)

@@ -92,6 +92,8 @@ Work ──────── l'œuvre abstraite            Final Fantasy VII
 ```
 
 - **`Work`** — titre canonique, studio, éditeur, genres, année de première sortie, **`Notability`** (§3.3, requis : la sélection massive ordonne par lui), alias, série.
+
+  > ⚠️ **`Notability` est une carte plateforme → rang, pas un entier.** §3.3 demande un score « par sortie », et ce document le portait sur l'œuvre — une divergence invisible tant qu'aucun titre n'était curé sur deux machines. Bubble Bobble l'est : 19ᵉ sur Game Boy, 22ᵉ sur NES. Un entier unique forçait soit un rang faux sur l'une des deux, soit **deux `Work` pour une seule œuvre**, ce que le cas de validation n°8 interdit. Corrigé le 21 septembre 2026.
 - **`GameVersion`** — distingue un remaster ou un portage significatif de l'œuvre d'origine. **Un remake n'est pas une `GameVersion` : c'est un `Work` distinct**, relié par une `WorkRelation`. Final Fantasy VII Remake est une autre œuvre.
 - **`Release`** — une `GameVersion` sur une `Platform` dans une `Region`, avec sa date. **La région est requise dès la Phase 1** (§3.4) : elle change les titres autant que les dates.
 - **`Edition`** — l'objet commercial précis : standard, Platinum, collector, numérique.

@@ -7,7 +7,19 @@ namespace DigitalTwin.Domain.Reference;
 public enum WorkRelationKind { Remake, Remaster, Prequel, Sequel, Spinoff, SameSeries }
 
 /// <summary>Une plateforme, avec sa génération.</summary>
-public sealed record Platform(string CanonicalId, string Name);
+public sealed record Platform(string CanonicalId, string Name)
+{
+    /// <summary>
+    /// La machine n'impose aucune restriction régionale — Switch, PC, mobile.
+    ///
+    /// <para><b>Ce n'est pas « toute sortie y est mondiale »</b> : un titre
+    /// peut rester exclusif au Japon et le déclarer. Cela veut dire qu'une
+    /// sortie <b>sans région</b> y est mondiale et non incomplète. Sur une
+    /// machine zonée, la même absence est une lacune de curation. Les deux se
+    /// ressemblent dans les données et s'opposent dans le sens.</para>
+    /// </summary>
+    public bool RegionFree { get; init; }
+}
 
 /// <summary>
 /// L'œuvre abstraite — le premier des quatre niveaux.
@@ -18,8 +30,28 @@ public sealed record Platform(string CanonicalId, string Name);
 /// </summary>
 public sealed record Work(string CanonicalId, string Title)
 {
-    /// <summary>Rang de notoriété, requis par §3.3 — la sélection massive ordonne par lui.</summary>
-    public int Notability { get; init; }
+    /// <summary>
+    /// Rang de notoriété <b>par plateforme</b>, requis par §3.3 — la sélection
+    /// massive ordonne par lui.
+    ///
+    /// <para>C'est une carte et non un entier parce que §3.3 dit « les
+    /// principaux jeux <b>de la plateforme</b> » : un titre ne se classe pas
+    /// pareil sur deux machines. Bubble Bobble est 19<sup>e</sup> sur Game Boy
+    /// et 22<sup>e</sup> sur NES. Un entier unique forçait soit un rang faux
+    /// sur l'une des deux, soit deux <c>Work</c> pour une seule œuvre — ce que
+    /// le cas de validation n°8 interdit.</para>
+    /// </summary>
+    public IReadOnlyDictionary<string, int> Notability { get; init; }
+        = new Dictionary<string, int>(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Le rang sur une plateforme, ou <c>null</c> si l'œuvre n'y est pas
+    /// classée. <b>Jamais 0</b> : un rang absent et un premier rang ne sont
+    /// pas la même chose, et les confondre placerait en tête ce qu'on n'a pas
+    /// su classer.
+    /// </summary>
+    public int? NotabilityOn(string platformId)
+        => Notability.TryGetValue(platformId, out var rang) ? rang : null;
 
     /// <summary>
     /// Identifiants externes rattachés à cette œuvre. C'est ce qui permet à
