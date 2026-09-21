@@ -81,7 +81,9 @@ public sealed class EventStore(PlayerEventDbContext db)
             .Where(e => e.UserId == userId).ExecuteDeleteAsync(ct);
         var declarations = await db.PlayDeclarations
             .Where(d => d.UserId == userId).ExecuteDeleteAsync(ct);
-        return evenements + declarations;
+        var revendications = await db.UnresolvedClaims
+            .Where(c => c.UserId == userId).ExecuteDeleteAsync(ct);
+        return evenements + declarations + revendications;
     }
 
     /// <summary>
@@ -137,6 +139,68 @@ public sealed class EventStore(PlayerEventDbContext db)
 
         await db.SaveChangesAsync(ct);
         return aAppliquer.Count;
+    }
+
+    /// <summary>
+    /// L'identifiant de la revendication portant ce titre, en la créant si
+    /// elle n'existe pas.
+    ///
+    /// <para>La comparaison passe par une forme normalisée — casse et
+    /// espaces de bord ignorés — mais <b>le titre saisi est conservé tel
+    /// quel</b> : c'est lui qui constitue le signal de priorisation du
+    /// référentiel.</para>
+    /// </summary>
+    public async Task<string> EnsureClaimAsync(
+        string userId, string titre, string platformId, CancellationToken ct = default)
+    {
+        var normalise = NormaliserTitre(titre);
+        var existante = await db.UnresolvedClaims.FirstOrDefaultAsync(
+            c => c.UserId == userId && c.NormalizedTitle == normalise
+                 && c.PlatformId == platformId, ct);
+        if (existante is not null) return existante.Id;
+
+        var ligne = new UnresolvedClaimRow
+        {
+            // Préfixe distinct de `wrk_` : rien ne peut la confondre avec une
+            // œuvre curée, pas même une lecture distraite d'un journal.
+            Id = "ucl_" + Guid.NewGuid().ToString("N")[..20].ToUpperInvariant(),
+            UserId = userId,
+            Title = titre,
+            NormalizedTitle = normalise,
+            PlatformId = platformId,
+        };
+        db.UnresolvedClaims.Add(ligne);
+        await db.SaveChangesAsync(ct);
+        return ligne.Id;
+    }
+
+    private static string NormaliserTitre(string titre)
+        => titre.Trim().ToLowerInvariant();
+
+    public async Task<IReadOnlyList<UnresolvedClaimRow>> ReadClaimsAsync(
+        string userId, CancellationToken ct = default)
+        => await db.UnresolvedClaims.AsNoTracking()
+            .Where(c => c.UserId == userId)
+            .OrderBy(c => c.Title).ToListAsync(ct);
+
+    /// <summary>
+    /// Rattache une revendication à une œuvre curée.
+    ///
+    /// <para><b>Les événements ne sont pas touchés.</b> Le journal est en
+    /// ajout seul, et §3.5 demande le rattachement « sans perte de
+    /// l'historique ni des dates » : c'est la revendication qui apprend où
+    /// elle mène, pas l'histoire qu'on réécrit.</para>
+    /// </summary>
+    public async Task<bool> ResolveClaimAsync(
+        string userId, string claimId, string workId, CancellationToken ct = default)
+    {
+        var ligne = await db.UnresolvedClaims.FirstOrDefaultAsync(
+            c => c.UserId == userId && c.Id == claimId, ct);
+        if (ligne is null) return false;
+
+        ligne.ResolvedWorkId = workId;
+        await db.SaveChangesAsync(ct);
+        return true;
     }
 
     public async Task<IReadOnlyList<PlayDeclarationRow>> ReadDeclarationsAsync(

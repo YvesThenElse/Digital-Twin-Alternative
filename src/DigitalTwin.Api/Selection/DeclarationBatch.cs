@@ -7,11 +7,18 @@ namespace DigitalTwin.Api.Selection;
 /// <summary>Une ligne cochée : l'œuvre, et ce que la passe 2 y a ajouté.</summary>
 /// <param name="Completion">finished · stillPlaying · abandoned · <c>null</c></param>
 /// <param name="Provenance">owned · elsewhere · borrowed · <c>null</c></param>
+/// <param name="WorkId">
+/// L'œuvre curée. <c>null</c> quand le référentiel ne la contient pas — on
+/// saisit alors <paramref name="Title"/>. Les deux ensemble sont ambigus :
+/// on ne saurait pas si le testeur a trouvé son jeu.
+/// </param>
+/// <param name="Title">Titre libre, quand le jeu manque au référentiel (§3.5).</param>
 public sealed record DeclarationEntry(
-    string WorkId,
+    string? WorkId = null,
     string? Completion = null,
     string? Provenance = null,
-    bool NeverPlayed = false);
+    bool NeverPlayed = false,
+    string? Title = null);
 
 /// <summary>
 /// Un lot de déclarations issu d'un passage sur l'écran de sélection massive.
@@ -42,6 +49,11 @@ public sealed record DeclarationIntent(string WorkId, string PlatformId, string 
     public const string Provenance = "provenance";
 }
 
+/// <summary>
+/// Un titre libre à enregistrer comme revendication non résolue.
+/// </summary>
+public sealed record ClaimIntent(string Title, string PlatformId);
+
 /// <summary>Ce qui empêche un lot d'être enregistré, en nommant l'entrée.</summary>
 public sealed record BatchRejection(string Message);
 
@@ -67,6 +79,10 @@ public static class DeclarationTranslator
     /// Rend les événements, ou le refus. <paramref name="surLaPlateforme"/>
     /// dit si une œuvre paraît bien sur la machine déclarée.
     /// </summary>
+    /// <param name="cibleRevendication">
+    /// Rend l'identifiant de la revendication pour un titre libre — en la
+    /// créant si elle n'existe pas encore.
+    /// </param>
     public static (IReadOnlyList<PlayerEvent>? Events,
                    IReadOnlyList<DeclarationIntent>? Declarations,
                    BatchRejection? Rejection) Translate(
@@ -74,6 +90,7 @@ public static class DeclarationTranslator
         Func<string, bool> plateformeConnue,
         Func<string, bool> oeuvreConnue,
         Func<string, string, bool> surLaPlateforme,
+        Func<ClaimIntent, string> cibleRevendication,
         DateTime enregistreA)
     {
         if (lot.Entries.Count == 0)
@@ -101,17 +118,55 @@ public static class DeclarationTranslator
         var declarations = new List<DeclarationIntent>();
         foreach (var entree in lot.Entries)
         {
-            if (!oeuvreConnue(entree.WorkId))
+            // --- l'œuvre, curée ou libre --------------------------------
+            var titre = entree.Title?.Trim();
+            var aUnTitre = !string.IsNullOrEmpty(titre);
+
+            if (entree.WorkId is not null && entree.Title is not null)
             {
-                return (null, null, new BatchRejection($"Œuvre inconnue : « {entree.WorkId} »."));
-            }
-            if (!surLaPlateforme(entree.WorkId, lot.PlatformId))
-            {
-                // Cocher un jeu Game Boy sur l'écran Super Nintendo est une
-                // faute du client : l'accepter attribuerait un souvenir à une
-                // machine où le jeu n'existe pas.
+                // Ambigu : on ne sait pas si le testeur a trouvé son jeu ou
+                // non. Deviner ferait taire la question au mauvais moment.
                 return (null, null, new BatchRejection(
-                    $"« {entree.WorkId} » ne paraît pas sur « {lot.PlatformId} »."));
+                    $"L'entrée porte à la fois une œuvre « {entree.WorkId} » et un "
+                    + $"titre libre « {entree.Title} » : les deux s'excluent."));
+            }
+            if (entree.WorkId is null && entree.Title is null)
+            {
+                return (null, null, new BatchRejection(
+                    "Une entrée doit porter une œuvre ou un titre libre."));
+            }
+            if (entree.Title is not null && !aUnTitre)
+            {
+                // Un titre vide ne dit rien et ne se rattache à rien : il
+                // polluerait le signal de priorisation sans jamais pouvoir
+                // être résolu.
+                return (null, null, new BatchRejection(
+                    "Un titre libre ne peut pas être vide."));
+            }
+
+            EventTarget cible;
+            if (aUnTitre)
+            {
+                cible = new EventTarget(
+                    "unresolvedClaim",
+                    cibleRevendication(new ClaimIntent(titre!, lot.PlatformId)));
+            }
+            else
+            {
+                if (!oeuvreConnue(entree.WorkId!))
+                {
+                    return (null, null, new BatchRejection(
+                        $"Œuvre inconnue : « {entree.WorkId} »."));
+                }
+                if (!surLaPlateforme(entree.WorkId!, lot.PlatformId))
+                {
+                    // Cocher un jeu Game Boy sur l'écran Super Nintendo est une
+                    // faute du client : l'accepter attribuerait un souvenir à une
+                    // machine où le jeu n'existe pas.
+                    return (null, null, new BatchRejection(
+                        $"« {entree.WorkId} » ne paraît pas sur « {lot.PlatformId} »."));
+                }
+                cible = new EventTarget("work", entree.WorkId!);
             }
 
             if (entree.NeverPlayed)
@@ -122,7 +177,7 @@ public static class DeclarationTranslator
                 if (entree.Completion is not null || entree.Provenance is not null)
                 {
                     return (null, null, new BatchRejection(
-                        $"« {entree.WorkId} » est déclaré « jamais joué » et porte "
+                        $"« {cible.Id} » est déclaré « jamais joué » et porte "
                         + "aussi un achèvement ou une provenance : les deux "
                         + "s'excluent (invariant 8)."));
                 }
@@ -130,7 +185,7 @@ public static class DeclarationTranslator
                 // AUCUN événement. « Jamais joué » n'a pas de date — c'est un
                 // jugement, et lui en forcer une inventerait une précision.
                 declarations.Add(new DeclarationIntent(
-                    entree.WorkId, lot.PlatformId, DeclarationIntent.NeverPlayed, null));
+                    cible.Id, lot.PlatformId, DeclarationIntent.NeverPlayed, null));
                 continue;
             }
 
@@ -143,7 +198,7 @@ public static class DeclarationTranslator
                 // double l'événement d'acquisition sans le remplacer : l'un
                 // date, l'autre qualifie.
                 declarations.Add(new DeclarationIntent(
-                    entree.WorkId, lot.PlatformId, DeclarationIntent.Provenance,
+                    cible.Id, lot.PlatformId, DeclarationIntent.Provenance,
                     ProvenanceDomaine(entree.Provenance)));
             }
 
@@ -152,7 +207,7 @@ public static class DeclarationTranslator
                 evenements.Add(new PlayerEvent(
                     Identifiant(lot.BatchId, evenements.Count),
                     lot.UserId, type,
-                    new EventTarget("work", entree.WorkId),
+                    cible,
                     quand, enregistreA)
                 {
                     BatchId = lot.BatchId,

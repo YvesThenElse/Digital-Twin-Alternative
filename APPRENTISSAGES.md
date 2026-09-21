@@ -1000,3 +1000,50 @@ corrigée.
 déclaration écrite » : prévu 5, obtenu 6 — j'avais oublié un test qui lit les
 jugements. Sans conséquence, mais c'est la troisième fois que le nombre
 annoncé vient d'une énumération de mémoire plutôt que d'un `grep`.
+
+### 28 — Deux tests qui passaient pour la mauvaise raison
+
+Deux mutations ont survécu là où j'attendais des morts : retirer le contrôle
+« titre vide » et le contrôle « ni œuvre ni titre » ne cassait rien.
+
+La raison est la même pour les deux. Sans le contrôle, l'entrée tombait dans
+la branche « œuvre curée » avec un identifiant nul ou vide, et se faisait
+refuser comme **œuvre inconnue** — donc un 400, donc un test vert. Mes deux
+tests n'assertaient que le code HTTP.
+
+Ils passaient, le comportement était acceptable, et pourtant le message rendu
+au client était faux : « Œuvre inconnue : «  » » n'aide personne à comprendre
+qu'il a laissé un champ vide.
+
+> **Règle** — pour un test de refus, asserter le **motif** et pas seulement le
+> code. Deux causes différentes produisent le même 400, et c'est exactement
+> ce qui fait qu'un contrôle peut disparaître sans que rien ne bronche.
+
+C'est la deuxième fois dans cette phase qu'une mutation survivante révèle une
+assertion trop lâche plutôt qu'un code trop faible. Le contrôle par mutation
+teste les **tests** au moins autant que le code.
+
+### 29 — Rattacher sans réécrire
+
+§3.5 demande que les titres libres soient « rattachables ultérieurement à une
+entité canonique, **sans perte de l'historique ni des dates** ». La tentation
+est de réécrire la cible des événements le jour du rattachement.
+
+Le journal est en ajout seul : ce serait à la fois interdit par le
+déclencheur et contraire à l'exigence. La revendication porte donc la
+résolution, et les événements continuent de la cibler — **c'est elle qui
+apprend où elle mène, pas l'histoire qu'on réécrit**.
+
+> **Règle** — quand une donnée doit « pointer ailleurs plus tard », poser le
+> renvoi sur l'entité intermédiaire plutôt que sur ce qui la référence. La
+> table de redirection de §10.2 procède du même principe.
+
+**Un piège évité de justesse.** Ma première version créait les revendications
+depuis un rappel synchrone appelé par le traducteur —
+`EnsureClaimAsync(...).GetAwaiter().GetResult()`, de l'asynchrone bloqué au
+milieu d'une requête. Les tests passaient. Elles sont désormais créées
+**avant** la traduction, qui ne fait plus qu'une lecture de table.
+
+> **Règle** — un rappel qui doit attendre de l'asynchrone est le signe que
+> l'ordre des étapes est faux, pas qu'il faut bloquer. Faire d'abord ce qui
+> attend, passer le résultat ensuite.

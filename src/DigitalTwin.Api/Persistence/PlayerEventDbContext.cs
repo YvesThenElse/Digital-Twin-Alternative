@@ -16,6 +16,11 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
     public DbSet<PlayerEventRow> PlayerEvents => Set<PlayerEventRow>();
 
     /// <summary>
+    /// Les titres saisis librement, faute de fiche au référentiel (§3.5).
+    /// </summary>
+    public DbSet<UnresolvedClaimRow> UnresolvedClaims => Set<UnresolvedClaimRow>();
+
+    /// <summary>
     /// Les jugements permanents. <b>Mutables</b>, contrairement au journal :
     /// une déclaration se révise, et l'invariant 10 interdit de refuser une
     /// correction.
@@ -70,6 +75,20 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
         d.Property(x => x.Affect).HasColumnName("affect").IsRequired();
         // Invariant 11 : purgeable par UserId seul.
         d.HasIndex(x => x.UserId);
+
+        var u = b.Entity<UnresolvedClaimRow>();
+        u.ToTable("unresolved_claims");
+        u.HasKey(x => new { x.UserId, x.Id });
+        u.Property(x => x.Id).HasColumnName("id").IsRequired();
+        u.Property(x => x.UserId).HasColumnName("user_id").IsRequired();
+        u.Property(x => x.Title).HasColumnName("title").IsRequired();
+        u.Property(x => x.NormalizedTitle).HasColumnName("normalized_title").IsRequired();
+        u.Property(x => x.PlatformId).HasColumnName("platform_id").IsRequired();
+        u.Property(x => x.ResolvedWorkId).HasColumnName("resolved_work_id");
+        // Un même titre ne doit pas produire deux revendications : le signal
+        // de priorisation compterait des doublons, et le profil afficherait
+        // deux fois le même jeu.
+        u.HasIndex(x => new { x.UserId, x.NormalizedTitle, x.PlatformId }).IsUnique();
     }
 
     /// <summary>
