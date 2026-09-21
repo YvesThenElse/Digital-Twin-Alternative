@@ -382,3 +382,39 @@ rien ne vérifie le vérificateur.
 > **Règle** — asserter `count(ancrage) == 1` avant toute substitution dans un
 > script de mutation, et afficher le compte quand elle échoue. L'outillage de
 > contrôle mérite la discipline qu'il impose au code.
+
+### 12 — Tester les croisements entre sections, que ni l'une ni l'autre ne réclame
+
+Rien ne vérifiait que les événements de possession sont exclus du
+dénominateur du taux de complétion. Un joueur possédant 200 jeux et en ayant
+joué 20 aurait vu son taux calculé sur 200 — une mesure de sa bibliothèque,
+pas de son parcours.
+
+La cause n'est pas l'inattention. §6 décrit le taux sans rappeler
+l'invariant 5 ; §7 pose l'invariant 5 sans parler du taux. **Le test qui les
+relie n'est réclamé par aucune des deux sections**, et il ne se voit ni en
+relisant l'une ni en relisant l'autre.
+
+C'est la forme la plus durable des trous rencontrés jusqu'ici — voisine de la
+dissymétrie de l'item 06 bis, mais plus difficile à repérer : là il manquait
+un test là où un autre existait, ici il n'y a aucune trace du manque.
+
+> **Règle** — après avoir implémenté une section, relire la **liste des
+> invariants** et écrire un test pour chacun qui s'applique à ce qu'on vient
+> d'écrire, même quand la section ne les mentionne pas.
+
+### 12 bis — Écrire des tests qui interdisent une simplification future
+
+« Toujours en cours » est une absence : aucun événement ne la déclare. Un
+développeur pressé ajouterait un type `StillPlayingGame` — le code
+deviendrait plus direct, et une propriété calculée se changerait en état à
+maintenir, donc à désynchroniser.
+
+Un test interdit désormais qu'un type porte ce nom. Il ne valide rien du
+présent : il garde une décision d'architecture contre sa propre commodité.
+C'est le troisième du genre, après la clé de tri invisible au rendu et le
+critère 3 défensif.
+
+> **Règle** — quand une décision d'architecture rend le code moins direct,
+> écrire le test qui échouera si quelqu'un la défait « pour simplifier ».
+> Le commentaire explique ; seul le test empêche.
