@@ -12,6 +12,10 @@ Product code landed on 21 Sept 2026. Two commands, both containerised — **neit
 | `./web.sh test` | runs the Vitest suite under `web/` |
 | `./dotnet.sh <args>` | any `dotnet` command, in `mcr.microsoft.com/dotnet/sdk:10.0` |
 | `docker compose up -d` | PostgreSQL 17 on host port **5433** (not 5432 — a locally installed Postgres must not silently decide what the app talks to) |
+| `./session.sh <nom>` | runs the app for a **user-test session** (Phase 2) and prints the URL with a fresh profile; `--mesures <profil>` prints that profile's KPIs |
+| `./e2e.sh` | the single end-to-end journey, on both layouts |
+
+⚠️ **`e2e.sh` and `session.sh` share `services.sh`** — one copy of the orchestration, so the journey starts the app *exactly* as a tester receives it. Two traps found by rehearsing the protocol, both of which had already fired: `exec` at the end of `e2e.sh` meant its EXIT trap never ran, so containers survived every **successful** run; and the readiness probe accepted any server on the port, so a two-hour-old leftover served a session that believed it had just started. The probe now refuses a busy port and checks its own container is still alive.
 
 ⚠️ **`test.sh` loops over the test projects on purpose.** `dotnet test src/DigitalTwin.slnx` runs only **one** of them and still prints `Passed!` — when `DigitalTwin.Api.Tests` was added, the domain's 382 tests silently stopped running. Never replace the loop with a solution-level `dotnet test`.
 

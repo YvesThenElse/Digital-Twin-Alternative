@@ -1572,3 +1572,39 @@ Prolonge [[45]] d'un cran : là, un chemin de code n'était gardé que par le
 parcours ; ici, une mesure n'était gardée par **rien du tout**, parce
 qu'un document n'a pas de suite de tests. L'exécuter est ce qui s'en
 rapproche le plus.
+
+### 48 — Une sonde qui accepte n'importe quel serveur ne vérifie rien
+
+En répétant le protocole de test à blanc, la session s'est déclarée prête et
+a servi une application **vieille de deux heures**.
+
+Deux défauts s'étaient composés :
+
+1. `e2e.sh` finissait par `exec docker run … playwright`. `exec` **remplace
+   le shell**, donc le `trap … EXIT` ne s'exécutait jamais : les conteneurs
+   survivaient à chaque exécution **réussie**. Seule l'exécution suivante les
+   nettoyait, à son démarrage — ce qui masquait le problème exactement le
+   temps qu'il faut pour ne jamais le voir.
+2. La sonde de démarrage interrogeait `GET /health` et acceptait `200`. Le
+   conteneur oublié répondait. Le conteneur qu'on venait de lancer mourait
+   sur « address already in use », et l'orchestration concluait que tout
+   allait bien.
+
+Chacun seul est bénin. Ensemble, ils donnaient une session de test
+utilisateur conduite sur une autre construction que celle du dépôt — un
+testeur aurait mesuré un produit qui n'existe plus, et **le relevé aurait eu
+l'air normal**.
+
+**La règle** : une sonde de disponibilité vérifie que **notre** service
+répond, pas qu'un service répond. Concrètement, deux gardes qui ne coûtent
+rien : refuser de démarrer si le port répond **avant** qu'on ait lancé quoi
+que ce soit, et, pendant l'attente, vérifier que notre conteneur **est encore
+en vie** — un conteneur mort à la seconde n'est pas un conteneur lent.
+
+Et le corollaire sur `exec` : il est légitime pour passer la main, jamais
+dans un script qui a posé un piège de nettoyage.
+
+Rien de tout cela n'a été trouvé en relisant. **Ça a été trouvé en jouant le
+protocole**, comme [[47]] l'a été en exécutant ses requêtes. Le dénominateur
+commun tient en une phrase : un mode opératoire non répété est un mode
+opératoire non testé.

@@ -63,16 +63,33 @@ liste des recrutés **avant** la première session, et on n'en retire personne
 
 ## 3. Préparation d'une session
 
-1. **Un profil vierge par testeur.** L'URL porte `?profil=usr_test_<nom>`.
-   Un profil réutilisé ferait lire à quelqu'un l'histoire d'un autre — le
-   parcours de bout en bout a déjà passé au vert sur des restes une fois
-   (journal, item 15).
-2. **Noter l'identifiant de profil** dans la feuille de session : c'est la
-   seule clé qui relie l'observation aux mesures en base.
-3. Vérifier que l'application répond : `GET /api/health` doit rendre 200.
-   Un test conduit sur une base injoignable mesurerait la patience.
-4. **Enregistrer l'écran.** Les gestes ne sont pas instrumentés (§5) ; sans
+```
+./session.sh <nom-du-testeur>
+```
+
+Une commande, pas trois : **la session numéro un ne doit pas commencer par
+un dépannage.** Elle démarre PostgreSQL, applique les migrations, lance
+l'API et sert le front **construit** — celui que le testeur doit voir, pas
+le serveur de développement —, puis rend l'adresse à ouvrir, profil vierge
+compris.
+
+Le profil est **frappé par le script**, avec l'horodatage de la session. Le
+saisir à la main finirait par le réutiliser, et quelqu'un lirait l'histoire
+d'un autre : le parcours de bout en bout est déjà passé au vert sur des
+restes une fois (journal, item 15).
+
+Restent deux gestes humains :
+
+1. **Noter le profil** dans la [feuille de session](./mesures/FEUILLE-DE-SESSION.md).
+   C'est la seule clé qui relie ce qu'on a vu à ce que la base mesure.
+2. **Enregistrer l'écran.** Les gestes ne sont pas instrumentés (§5) ; sans
    enregistrement, le KPI « gestes par jeu déclaré » n'existe pas.
+
+> Si un serveur occupe déjà le port, `session.sh` **refuse de démarrer** et
+> le dit. C'est une leçon payée : deux conteneurs oubliés d'une exécution
+> précédente ont servi une application vieille de deux heures pendant qu'une
+> session se croyait lancée sur la bonne. Une sonde qui accepte la réponse de
+> n'importe quel serveur ne vérifie rien.
 
 ---
 
@@ -145,49 +162,25 @@ enregistrements.
 
 ### Les requêtes
 
-À exécuter par profil, une fois la session close.
-
-```sql
--- B · volume déclaré, et plateformes touchées
-SELECT
-  count(DISTINCT target_id)                          AS jeux_declares,
-  count(DISTINCT platform_id)                        AS plateformes,
-  count(*) FILTER (WHERE occurred_kind <> 'Unknown') AS moments_dates
-FROM player_events
-WHERE user_id = :profil
-  AND superseded_by_event_id IS NULL;
-
--- A · T1 et T2, à deux gestes d'amorce près
-SELECT
-  min(recorded_at)                                        AS depart,
-  (SELECT recorded_at FROM player_events WHERE user_id = :profil
-    ORDER BY recorded_at OFFSET 9 LIMIT 1)                AS dixieme,
-  (SELECT recorded_at FROM player_events WHERE user_id = :profil
-    ORDER BY recorded_at OFFSET 24 LIMIT 1)               AS vingt_cinquieme
-FROM player_events WHERE user_id = :profil;
-
--- E · couverture du référentiel, rapportée SÉPARÉMENT
-SELECT
-  count(*) FILTER (WHERE target_kind = 'unresolvedClaim') AS titres_saisis,
-  count(*)                                                AS total,
-  round(100.0 * count(*) FILTER (WHERE target_kind = 'unresolvedClaim')
-        / nullif(count(*), 0), 1)                         AS pourcentage
-FROM player_events WHERE user_id = :profil;
-
--- Ce que le référentiel devrait apprendre du test (§3.5)
-SELECT title, platform_id, count(*) OVER () AS total
-FROM unresolved_claims WHERE user_id = :profil ORDER BY title;
-
--- §9 · les souvenirs, et leur genre de cible
-SELECT target_kind, count(*), avg(length(text))::int AS longueur_moyenne
-FROM memories WHERE user_id = :profil GROUP BY target_kind;
+```
+./session.sh --mesures <profil>
 ```
 
-La dernière requête n'a pas de cible engagée, et c'est délibéré : le
-souvenir est le contenu que §9 rend irremplaçable, mais §22.3 n'en fait pas
-une porte. On le rapporte comme un signal — **un profil sans une seule
-phrase écrite est un indice fort sur la reconnaissance**, à confronter à la
-réponse qualitative plutôt qu'à un seuil.
+Elles vivent dans **[`mesures/kpi.sql`](./mesures/kpi.sql)**, et ce document
+ne les recopie pas : deux copies divergent, et celle qu'on lirait ne serait
+pas celle qu'on exécute.
+
+Elles rendent le volume déclaré et les plateformes, T1 et T2, la couverture
+du référentiel, les titres saisis à reverser au dataset, et les souvenirs par
+genre de cible.
+
+> ⚠️ **Une fois le premier testeur reçu, ces requêtes ne changent plus.**
+> Une requête corrigée en cours de route redéfinit l'indicateur après avoir
+> vu le résultat — exactement ce que §22.2 interdit pour les seuils.
+
+Un profil vierge — le testeur qui abandonne d'emblée — rend des zéros et des
+valeurs nulles, sans erreur. C'est vérifié : il fallait que l'abandon se lise
+comme un abandon, et non comme un relevé en panne.
 
 ---
 
@@ -222,8 +215,13 @@ mais il déplace le sujet de l'itération de Phase 1.
 
 ## 7. Restitution
 
-Une page par testeur, une page de synthèse. La synthèse porte, dans cet
-ordre :
+Une page par testeur — [`mesures/FEUILLE-DE-SESSION.md`](./mesures/FEUILLE-DE-SESSION.md),
+copiée sous `mesures/sessions/<profil>.md` — et une page de synthèse,
+[`mesures/SYNTHESE.md`](./mesures/SYNTHESE.md).
+
+La synthèse se remplit une fois **toutes** les sessions closes, jamais au fil
+de l'eau : regarder les chiffres pendant qu'on recrute encore, c'est choisir
+ses testeurs en fonction du résultat. Elle porte, dans cet ordre :
 
 1. le **taux de oui francs** sur les recrutés — la porte ;
 2. les indicateurs A et B, avec leur cible et leur verdict ;
