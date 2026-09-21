@@ -46,7 +46,7 @@
 
 - [x] **14 — Chargement du dataset.** Lire `dataset/poc.json`, vérifier ses invariants : unicité des `CanonicalId`, préfixe conforme au type, aucune sortie sans plateforme, `precision` cohérente avec `confidence`. *Acceptation : le dataset réel passe, et un dataset volontairement corrompu échoue avec un message qui nomme l'entrée fautive.*
 
-- [ ] **15 — Bilan.** Mettre à jour [PHASING.md](./PHASING.md) §3 : critère de sortie franchi ou non, avec ce qui reste. *Acceptation : le fichier dit la vérité, y compris si la porte n'est pas franchie.*
+- [x] **15 — Bilan.** Mettre à jour [PHASING.md](./PHASING.md) §3 : critère de sortie franchi ou non, avec ce qui reste. *Acceptation : le fichier dit la vérité, y compris si la porte n'est pas franchie.*
 
 ## Journal
 
@@ -70,3 +70,4 @@
 - **12** — « Toujours en cours » est calculé comme une **absence** : aucun type d'événement ne la déclare, et un test interdit qu'un tel type apparaisse. Deux fermetures contradictoires se tranchent par la plus récemment déclarée (invariants 7 et 10 conciliés) ; rejouer rouvre la partie. Un taux sans déclaration vaut `null`, pas zéro. 331 tests. Un trou comblé : rien ne vérifiait que la possession est exclue du dénominateur.
 - **13** — **LA PORTE EST FRANCHIE.** Les huit cas se rejouent. Il a fallu construire le référentiel — `Work`, `Release`, `Edition`, relations typées, table de redirection — que mon découpage supposait présent : manque de mon backlog, pas de la spec. Deux questions de §6.3 ont désormais leur réponse dans le code : la compilation ne transmet pas la possession, la rétrocompatibilité change la sortie et non l'œuvre. **Un vrai défaut trouvé** : la détection d'incohérence alertait sur une console rachetée. 343 tests.
 - **14** — `DatasetLoader` lit `dataset/poc.json` et rend le dataset **avec** la liste de ses anomalies, chacune nommant l'entrée fautive ; il ne refuse jamais de charger. 365 tests. **L'invariant de l'item était faux** : `precision` et `confidence` ne se correspondent pas (cinq couples réels, pas trois). Reformulé en absence de sur-affirmation — `high ⟹ day`, `low ⟹ year` — vrai sur les 663 sorties. 5 mutations, 5 prédictions exactes, dont la survivante voulue.
+- **15** — Bilan écrit dans PHASING.md §3. **Le critère de sortie est franchi ; la Phase 0 ne l'est pas entièrement** — la distinction est explicite, avec le tableau de ce qui reste (104 sorties sans région, ~400 arbitrages impliqués par la cible internationale, `NOTABILITE.md` en attente, 5 jaquettes, §2.3 à réécrire). Cinq affirmations de §3 étaient devenues fausses du fait des items précédents : corrigées. Deux livrables encore non cochés étaient en réalité tranchés et documentés : cochés avec leur référence.

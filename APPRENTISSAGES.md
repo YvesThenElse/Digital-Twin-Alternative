@@ -484,3 +484,39 @@ soutient pas.
 voulue (`Ordinal` → `OrdinalIgnoreCase` sur la table des identifiants —
 rien ne protège d'un effondrement par la casse ; sans conséquence tant que
 les identifiants restent en minuscules, mais ce n'est garanti nulle part).
+
+### 15 — Un document qui énonce des chiffres devient faux en silence
+
+L'item 15 demandait que PHASING.md §3 « dise la vérité ». Il ne la disait
+plus, sur cinq points, tous introduits par mon propre travail des items
+précédents :
+
+| §3 affirmait | Réalité au 21 septembre |
+|---|---|
+| 706 sorties | 663 — 43 rééditions retirées |
+| provenance CC0 | CC BY-SA 4.0, Wikipédia ayant été ajoutée |
+| « aucune autre source dans le référentiel » | deux sources |
+| « une seule est réutilisable » | deux |
+| 44 % d'œuvres sans région | 8 % |
+
+Aucune de ces phrases n'était fausse quand je l'ai écrite. Chacune l'est
+devenue parce qu'un item ultérieur a changé ce qu'elle décrivait, sans que
+rien ne le signale. Un test qui devient faux échoue ; une phrase qui devient
+fausse se relit sans broncher.
+
+> **Règle** — quand un item change un chiffre ou une décision, chercher dans
+> le même commit les autres documents qui l'énoncent, par `grep` sur le
+> chiffre lui-même. Le document source n'est jamais le seul à le porter.
+
+> **Règle** — préférer, dans un document, le chiffre **dérivable** au chiffre
+> recopié : « ses invariants sont vérifiés par `DatasetLoader` » ne périme
+> pas, « 706 sorties » périme. Quand le chiffre est nécessaire, le dater.
+
+Un second piège, plus discret, s'est glissé dans le bilan lui-même : j'y
+avais écrit « 18 œuvres sans région, 104 sorties », en accolant deux chiffres
+justes séparément. Les 18 œuvres ne portent que **18 sorties** ; les 86
+autres sorties sans région appartiennent à des œuvres qui en ont une
+ailleurs. Vérifier avant de publier l'a rattrapé.
+
+> **Règle** — deux chiffres vrais placés côte à côte forment une affirmation
+> qui, elle, peut être fausse. Recalculer la phrase, pas les chiffres.

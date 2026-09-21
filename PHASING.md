@@ -76,21 +76,25 @@ Quatre principes guident le découpage :
 - **Modèle PlayerEvent / Experience / OwnedItem** (§5 architecture événementielle, §6.2 UserGameExperience / UserOwnedItem) ;
 - **TemporalValue et gestion de l'incertitude temporelle** (§7.3 : ExactDate, Month, Year, Range, ApproximateYear, Age, Unknown) ;
 - **Format des identifiants canoniques** — **✔ tranché** ([MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §10.2) : `CanonicalId` opaque, typé et ordonné dans le temps ; slug mutable séparé pour les URL ; index compact interne réservé à la Phase 7 ;
-- **Stratégie minimale de sourcing des données** (§18.5) — **✔ tranchée** ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md) §5) : **Wikidata (CC0) en amorçage, aucune autre source dans le référentiel**, consultation manuelle seulement pour vérifier une entrée curée, et aucun script sur une source tierce ;
+- **Stratégie minimale de sourcing des données** (§18.5) — **✔ tranchée** ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md) §5) : **deux sources réutilisables et elles seulement** — Wikidata (CC0) en amorçage, **Wikipédia (CC BY-SA 4.0) en complément**, avec attribution et partage à l'identique ; consultation manuelle seulement pour vérifier une entrée curée, et aucun script sur une source tierce. ⚠️ La formulation initiale (« aucune autre source ») excluait Wikipédia sur un motif — l'absence de droit de rediffusion — qui ne lui est pas applicable ; l'ajouter a fait passer la couverture régionale de 56 % à 92 % des œuvres ;
 - **Définition des KPI du POC** — **✔ engagé** le 8 septembre 2026 (§22.3) : cinq familles, chacune avec sa définition opérationnelle et la décision associée si elle est manquée. Révisables tant qu'aucun testeur n'a été reçu, plus après ;
 - **Ordonnancement des `TemporalValue`** (§7.5) — **✔ tranché** ([ORDONNANCEMENT-TEMPOREL.md](./ORDONNANCEMENT-TEMPOREL.md)) : forme normale en intervalle fermé, point représentatif réduit à une clé de tri, algèbre à sept relations, cascade de départage déterministe, zone sans date, requêtes strict/permissif et projections à trois valeurs. Onze vecteurs de test accompagnent la décision. C'était le point le plus sous-spécifié du modèle et il conditionne toute la timeline ;
-- **Décision « modèle événementiel » vs « infrastructure d'event sourcing »** (§5.5) : position par défaut = table en ajout seul dans PostgreSQL + projections calculées, sans event store dédié ;
-- **Stratégie de correction et de rétraction des événements** (§5.3) : les souvenirs sont faillibles, la correction est une fonctionnalité de premier plan ;
+- **Décision « modèle événementiel » vs « infrastructure d'event sourcing »** (§5.5) — **✔ tranchée** ([MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §5) : table en ajout seul dans PostgreSQL + projections calculées à la lecture, matérialisées seulement quand la mesure le justifie. Pas d'event store dédié, pas de framework CQRS. La différence structurante avec un event sourcing classique est le **double axe temporel** `OccurredAt` / `RecordedAt` — déclarer en 2026 avoir terminé un jeu en 1998 — implémenté et testé ;
+- **Stratégie de correction et de rétraction des événements** (§5.3) — **✔ tranchée** ([MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §5) : `SupersededBy` sur `PlayerEvent`, révision conservée côté système sans être exposée. Les invariants réversibles de `PlayDeclaration` (6 et 8) et la désignation de favori — qui rétrograde le précédent et répare les collections fautives — sont couverts par des tests ;
 - **Stratégie d'effacement** — **✔ tranchée** ([MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §10.1) : purge physique partitionnée par utilisateur. Le crypto-shredding sert quand on ne *peut pas* supprimer ; ce n'est pas notre cas, et il faudrait y revenir avant d'adopter un magasin qui l'imposerait ;
 - **Benchmark concurrentiel** (§2) — **✔ fait** ([BENCHMARK-CONCURRENTIEL.md](./BENCHMARK-CONCURRENTIEL.md), 20 septembre 2026) : dix produits confrontés aux cinq différenciateurs. Le différenciateur temporel tient — c'est **le seul** —, mais quatre des cinq revendications de §2.3 sont occupées pris isolément, et le vrai avantage (la saisie massive) n'y figurait pas. §2.3 est à réécrire ;
-- **Vérification juridique des sources envisagées** (§19.1) — **✔ faite** ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md), 20 septembre 2026) : onze sources examinées. Une seule est réutilisable (Wikidata, CC0). ⚠️ **La voie « sources ouvertes » pour les jaquettes n'existe pas** — Wikimedia Commons n'héberge pas de jaquettes. La question ouverte n°1 a été tranchée dans la foulée (**R&D**), ce qui fixe la posture sur les visuels et débloque la grille desktop ;
+- **Vérification juridique des sources envisagées** (§19.1) — **✔ faite** ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md), 20 septembre 2026) : onze sources examinées, **deux réutilisables** : Wikidata (CC0) et Wikipédia (CC BY-SA 4.0). La première version du document n'en retenait qu'une, ayant écarté Wikipédia sans l'évaluer. ⚠️ **La voie « sources ouvertes » pour les jaquettes n'existe pas** — Wikimedia Commons n'héberge pas de jaquettes. La question ouverte n°1 a été tranchée dans la foulée (**R&D**), ce qui fixe la posture sur les visuels et débloque la grille desktop ;
 - **Estimation du coût de curation du référentiel** au-delà du POC (§18.6) — **✔ estimée** ([COUT-DE-CURATION.md](./COUT-DE-CURATION.md)) : **≈ 50 à 55 h pour le POC**, et **6 mois à 3,5 ans-personne** pour un référentiel de 30 000 entrées — donc pas de vérification exhaustive, mais trois niveaux indexés sur `Notability`. Un protocole de calibration sur 30 entrées remplace les hypothèses par des mesures ;
 - **Décision sur les visuels** (§19.2) — **✔ tranchée** : tuiles générées retenues comme socle permanent ; **vraies jaquettes requises pour les 100 à 300 titres du POC**, faute de quoi le test de Phase 2 mesurerait une vitesse de lecture au lieu d'une vitesse de reconnaissance ; grille desktop conditionnée à leur obtention — **condition levée** : la voie d'acquisition est tranchée ([VERIFICATION-JURIDIQUE.md](./VERIFICATION-JURIDIQUE.md) §3.3), reprise sur le web pour la démonstration sous cinq conditions écrites, le projet étant un exercice de R&D. Reste à faire : **l'acquisition elle-même**, avec la `Source` de chaque visuel conservée dès l'acquisition — la rattraper après coup est impossible ;
 - **Langage visuel** ([ecrans/00-langage-visuel.md](./ecrans/00-langage-visuel.md)) : palette, système d'époques, typographie, formes d'état, densité par point de rupture. Livrable de cadrage au même titre que le modèle de domaine, parce qu'il détermine ce qui est constructible en Phase 1 sans reprise.
 
 ### Périmètre volontairement restreint
 
-> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit le 20 septembre 2026 : **222 œuvres, 706 sorties**, sur les huit plateformes visées, avec `Notability` classée à la main et provenance CC0 sur chaque donnée. 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Reste à produire : **la région sur les 44 % d'œuvres qui n'en portent pas**, **la date de sortie sur la plateforme pour les 53 % qui n'en ont aucune de rattachée**, et les jaquettes.
+> ✅ **Le dataset POC existe** — [dataset/](./dataset/), produit les 20 et 21 septembre 2026 : **222 œuvres, 663 sorties** sur les huit plateformes visées, `Notability` classée à la main, provenance portée sur chaque donnée, licence **CC BY-SA 4.0** (Wikidata CC0 + Wikipédia CC BY-SA). 97 % des identités résolues automatiquement, 3 % arbitrées à la main et documentées. Ses invariants sont vérifiés par du code (`DatasetLoader`), pas par relecture.
+>
+> **706 → 663** : les 43 sorties retirées étaient des **rééditions prises pour des sorties d'origine**. Le dataset annonçait Super Mario Bros. en PAL 2011 et Ocarina of Time en PAL 2003. Les déclarations de date sont désormais filtrées sur la plateforme qu'elles qualifient.
+>
+> **Couverture** : région sur **92 % des œuvres** (84 % des sorties) ; date au jour sur **82 % des œuvres** (482 sorties au jour, 48 au mois, 133 à l'année seule) ; **217 jaquettes sur 222**, chacune avec son URL source, son article et son régime de licence conservés.
 
 > ⚠️ Et un point que la source ne peut pas trancher : elle **ne distingue pas « pas de sortie PAL » de « sortie PAL non renseignée »**. Les deux réponses cassent la reconnaissance en sens inverse — retirer un jeu que le testeur a possédé, ou lui en proposer un qu'il n'a jamais pu voir. C'est un arbitrage de curation, pas un défaut d'outillage.
 
@@ -101,6 +105,56 @@ On ne cherche pas encore à avoir une base exhaustive. Pour le POC, un dataset d
 > On sait modéliser proprement un parcours utilisateur complexe sans bricolage — par exemple l'historique temporel de §7.1 (Game Boy 1991 → retrogaming 2018) ou la chaîne d'éditions de §6.1 (FFVII : PS PAL Platinum → version numérique PS3 → remake PS5).
 
 Ces deux parcours, plus les cas limites de §6.3 (remake, compilation, rétrocompatibilité), sont écrits sous forme de **jeux d'événements de référence** et conservés comme tests permanents (§17.4). Le modèle est validé quand ils se rejouent en produisant l'état attendu — pas quand le diagramme paraît élégant.
+
+### Verdict — 21 septembre 2026
+
+> **Le critère de sortie est franchi. La Phase 0 ne l'est pas entièrement.**
+
+Ces deux choses ne sont pas la même, et les confondre serait la première
+entorse au principe des portes.
+
+**Ce que le critère demandait est atteint.** Les huit cas de validation
+existent comme tests permanents et se rejouent en produisant l'état attendu :
+
+| Cas | Parcours | Origine |
+|---|---|---|
+| 1 | trente ans avec une console revendue puis rachetée | §7.1 |
+| 2 | le remake est une autre œuvre, reliée mais distincte ; la même œuvre possédée à deux époques | §6.1, §6.3 |
+| 3 | joué chez un cousin, sans jamais posséder d'exemplaire | §5.1 |
+| 4 | renseigner l'année de naissance recalcule tous les moments | §7.3 |
+| 5 | posséder la compilation ne fait pas posséder les jeux | §6.3 |
+| 6 | jouer un jeu Mega Drive sur Switch change la sortie, pas l'œuvre | §6.3 |
+| 7 | une fiche scindée redirige les événements sans perte, même en chaîne | §10.2 |
+| 8 | trois fiches de la source désignent une seule œuvre, sans doublon au profil | §3.2 |
+
+Un neuvième test interdit qu'un cas disparaisse de la liste sans qu'on s'en
+aperçoive. **365 tests au total, tous verts**, contrôlés par mutation item
+par item. Le modèle temporel — forme normale, algèbre à sept relations,
+cascade de départage, cohérence causale — tient sur un parcours de trente ans
+sans bricolage.
+
+**Ce qui reste ouvert**, et qui n'appartient pas au critère de sortie mais à
+la Phase 0 :
+
+| Reste | Nature | Bloquant pour |
+|---|---|---|
+| **104 sorties sans région**, dont 18 œuvres qui n'en portent aucune | curation | rien en Phase 1 ; gênant au test de Phase 2 pour un joueur PAL |
+| **~400 arbitrages de région** impliqués par la cible « international dès le départ » | curation | l'affichage des dates par région |
+| **40 œuvres sans date au jour** | curation | rien : l'incertitude est affichée, c'est la décision prise |
+| **`NOTABILITE.md` en attente d'annotation** | décision humaine | le réordonnancement déplace les `CanonicalId` — rien ne doit toucher à l'ordre avant |
+| **5 œuvres sans jaquette** | acquisition | marginal ; tuile générée en repli |
+| **§2.3 de la spécification à réécrire** | rédaction | rien en Phase 1 ; à faire avant tout discours produit |
+
+**Ce que la distinction « pas de sortie PAL » / « sortie PAL non renseignée »
+coûte** reste entier : la source ne les distingue pas, et les deux réponses
+cassent la reconnaissance en sens inverse. Le dataset porte l'incertitude
+plutôt que de la trancher au hasard — ce qui est la bonne posture, mais
+reporte l'arbitrage sur la curation.
+
+**Décision.** La Phase 1 peut démarrer sur le modèle, qui est validé. Elle ne
+doit pas démarrer sur l'hypothèse que le référentiel est complet : il ne
+l'est pas, il le dit, et le POC doit afficher cette incertitude plutôt que la
+masquer.
 
 ## 4. Phase 1 — POC fonctionnel
 
