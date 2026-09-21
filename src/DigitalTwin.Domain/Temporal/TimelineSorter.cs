@@ -303,28 +303,53 @@ public static class TimelineSorter
     {
         var avertissements = new List<CoherenceWarning>();
 
-        // Quadratique, et assumé : un parcours utilisateur se compte en
-        // centaines de moments. Si la mesure le dit un jour, on groupera par
-        // sujet — pas avant.
-        for (var a = 0; a < classe.Count; a++)
+        // ⚠️ L'incohérence porte sur un moment SANS PRÉDÉCESSEUR VALIDE, et
+        // non sur une paire inversée quelconque.
+        //
+        // La nuance est décisive et le cas de validation n°1 l'a révélée :
+        // une console acquise en 1991, vendue en 1994, puis RACHETÉE en 2018
+        // forme deux cycles de possession. Comparer toutes les paires y voit
+        // « acquis 2018 après vendu 1994 » et alerte sur un parcours banal.
+        //
+        // §5.4 dit « terminé avant d'avoir découvert » : ce qui est
+        // contradictoire, c'est que le terminé n'ait AUCUN découvert qui le
+        // précède — pas qu'un découvert quelconque lui succède.
+        //
+        // Quadratique, et assumé : un parcours se compte en centaines de
+        // moments. Si la mesure le dit un jour, on groupera par sujet.
+        for (var b = 0; b < classe.Count; b++)
         {
-            for (var b = 0; b < classe.Count; b++)
+            var candidats = new List<int>();
+            for (var a = 0; a < classe.Count; a++)
             {
-                if (a == b || !DoitPreceder(classe[a].Moment, classe[b].Moment))
+                if (a != b && DoitPreceder(classe[a].Moment, classe[b].Moment))
                 {
-                    continue;
+                    candidats.Add(a);
                 }
+            }
 
-                // `a` devrait précéder `b`. Y a-t-il contradiction stricte ?
-                if (IntervalAlgebra.Precedes(classe[b].Interval, classe[a].Interval))
-                {
-                    avertissements.Add(new CoherenceWarning(
-                        classe[a].Moment.Id,
-                        classe[b].Moment.Id,
-                        $"« {classe[a].Moment.Kind} » devrait précéder " +
-                        $"« {classe[b].Moment.Kind} », mais la date déclarée le place après. " +
-                        "Le moment est affiché tel que déclaré."));
-                }
+            if (candidats.Count == 0)
+            {
+                // Aucun prédécesseur déclaré : rien à contredire. Un « vendu »
+                // sans « acquis » n'est pas une incohérence temporelle — c'est
+                // une histoire incomplète, ce que le produit accepte.
+                continue;
+            }
+
+            // Un seul prédécesseur qui tienne suffit à rendre le moment
+            // cohérent : c'est le cycle auquel il appartient.
+            var tenable = candidats.Any(a =>
+                !IntervalAlgebra.Precedes(classe[b].Interval, classe[a].Interval));
+
+            if (!tenable)
+            {
+                var premier = classe[candidats[0]].Moment;
+                avertissements.Add(new CoherenceWarning(
+                    premier.Id,
+                    classe[b].Moment.Id,
+                    $"« {premier.Kind} » devrait précéder " +
+                    $"« {classe[b].Moment.Kind} », mais la date déclarée le place après. " +
+                    "Le moment est affiché tel que déclaré."));
             }
         }
 

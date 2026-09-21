@@ -418,3 +418,28 @@ critère 3 défensif.
 > **Règle** — quand une décision d'architecture rend le code moins direct,
 > écrire le test qui échouera si quelqu'un la défait « pour simplifier ».
 > Le commentaire explique ; seul le test empêche.
+
+### 13 — Un parcours réaliste trouve ce que douze items de tests unitaires ont laissé passer
+
+Le cas de validation n°1 — « une console revendue puis rachetée » — a révélé
+une erreur de lecture commise à l'item 06 et invisible depuis, malgré six
+mutations toutes conformes sur cet item.
+
+Je lisais §5.4 comme « une paire inversée est contradictoire ». Elle dit
+qu'un moment **sans prédécesseur valide** l'est. La différence ne se voit pas
+tant qu'un seul cycle de possession existe — et tous mes tests de l'item 06
+n'en avaient qu'un. Avec deux cycles, comparer toutes les paires voit
+« acquis 2018 après vendu 1994 » et alerte sur un parcours banal.
+
+Aucun de mes tests unitaires n'était faux. Leur somme laissait passer une
+erreur que seul un parcours de trente ans pouvait exposer.
+
+> **Règle** — écrire au moins un scénario où le même sujet traverse
+> **plusieurs cycles** de la même chaîne causale : acquis-vendu-racheté,
+> commencé-fini-rejoué. Un cycle unique valide la règle et masque sa
+> composition.
+
+> **Règle** — ne pas conclure d'un contrôle par mutation réussi que la
+> couverture est bonne. Il vérifie que les tests écrits mordent ; il ne dit
+> rien de ce qu'on n'a pas pensé à tester. Les six mutations conformes de
+> l'item 06 portaient toutes sur du code dont la logique était fausse.
