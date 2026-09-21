@@ -5,7 +5,7 @@ import { t } from "./i18n/t";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
 import type { PeriodeChoisie } from "./periode/periode";
-import { SelectionMassive } from "./selection/SelectionMassive";
+import { SelectionMassive, type EtatLigne } from "./selection/SelectionMassive";
 import { Timeline } from "./timeline/Timeline";
 import type { EntreeTimeline, MomentTimeline } from "./timeline/types";
 import type { Oeuvre, Plateforme } from "./selection/types";
@@ -62,6 +62,7 @@ export function App() {
   // n'avait donnée.
   const [periode, setPeriode] = useState<PeriodeChoisie>({ kind: "unknown" });
   const [oeuvres, setOeuvres] = useState<Oeuvre[]>([]);
+  const [etatInitial, setEtatInitial] = useState<EtatLigne[]>([]);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -74,6 +75,10 @@ export function App() {
 
   async function chargerOeuvres(p: Plateforme) {
     setMachine(p);
+    // Relu AVANT d'afficher : montrer les lignes vierges puis les cocher
+    // ferait clignoter l'écran, et un chargement lent laisserait le joueur
+    // recocher ce qui l'était déjà.
+    setEtatInitial(await client.etatSelection(UTILISATEUR, p.id));
     // Une machine sans zonage n'a pas de région : forcer « PAL » y
     // afficherait « sortie européenne inconnue » sur des titres mondiaux.
     setRegion(p.regionFree ? "WORLDWIDE" : "PAL");
@@ -141,6 +146,7 @@ export function App() {
               client.souvenir(UTILISATEUR, cible, texte).then(() => undefined)
             }
             recharger={() => { void chargerOeuvres(machine); }}
+            etatInitial={etatInitial}
           />
           <button type="button" onClick={() => void ouvrirTimeline()}>
             {t("parcours.voirTimeline")}

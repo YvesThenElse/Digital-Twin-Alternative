@@ -92,6 +92,17 @@ export const MESSAGES = {
 
   "contexte.changer": "Changer la période",
   "contexte.sApplique": "S'applique aux déclarations suivantes.",
+
+  // La passe 2 (E02). L'ordre des questions n'est pas arbitraire : le
+  // factuel avant la provenance, la plus accessoire.
+  "passe2.acheve": "Vous l'avez fini ?",
+  "passe2.fini": "Fini",
+  "passe2.enCours": "Toujours en cours",
+  "passe2.abandonne": "Abandonné",
+  "passe2.comment": "Comment y avez-vous joué ?",
+  "passe2.possede": "Je l'avais",
+  "passe2.ailleurs": "Chez quelqu'un",
+  "passe2.emprunte": "Emprunté",
   "parcours.commencer": "Voir les jeux",
   "parcours.retour": "Changer de console",
   "parcours.voirTimeline": "Voir ma timeline",

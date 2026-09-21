@@ -39,8 +39,22 @@ const DEBUT = 1992;
 const FIN = 1996;
 const PERIODE_LUE = `${DEBUT}\u2013${FIN}`;
 
-/** Trente titres cochés, plus celui qui manquait. */
-const MOMENTS_ATTENDUS = TITRES_A_COCHER + 1;
+/**
+ * Ce que la BANDE compte : des titres déclarés. Trente cochés, plus celui
+ * qui manquait. Affiner une ligne n'en ajoute pas un — c'est le même jeu.
+ */
+const TITRES_DECLARES = TITRES_A_COCHER + 1;
+
+/**
+ * Ce que l'AXE compte : des moments.
+ *
+ * Trente titres cochés, plus celui qui manquait — et **deux de plus** pour
+ * la passe 2 : « fini » produit un `CompletedGame`, « je l'avais » un
+ * `AcquiredItem`. Ce ne sont pas des doublons d'affichage mais des
+ * événements distincts du journal, et les compter à part est ce qui prouve
+ * que la passe 2 a bien été enregistrée.
+ */
+const MOMENTS_ATTENDUS = TITRES_A_COCHER + 1 + 2;
 
 test("reconstruire trente titres et voir la timeline se remplir", async ({ page }, infos) => {
   let gestes = 0;
@@ -120,6 +134,13 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   const bande = page.getByTestId("bande-epoque");
   await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
 
+  // --- 3 bis. la passe 2, sur une ligne déclarée --------------------------
+  //
+  // Facultative par construction : les vingt-neuf autres lignes n'y touchent
+  // pas et restent des déclarations valables.
+  await toucher(page.getByRole("button", { name: "Fini" }).first().click());
+  await toucher(page.getByRole("button", { name: "Je l'avais" }).first().click());
+
   // --- 4. le jeu qui manque ----------------------------------------------
   await toucher(
     page.getByRole("textbox", { name: "Titre absent de la liste" }).fill(TITRE_ABSENT),
@@ -128,7 +149,7 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
 
   // Compté dans la récompense, comme les autres : un geste qui ne ferait
   // rien bouger dirait à l'utilisateur qu'il n'a rien produit.
-  await expect(bande).toHaveAttribute("data-total", String(MOMENTS_ATTENDUS));
+  await expect(bande).toHaveAttribute("data-total", String(TITRES_DECLARES));
   // Et marqué : une saisie libre n'est pas une entrée du référentiel.
   await expect(page.getByTestId("titre-libre")).toHaveAttribute("data-canonique", "false");
 
@@ -166,6 +187,25 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // les deux dirait que le genre n'a servi à rien.
   expect(souvenirs.filter((s: { targetKind: string }) => s.targetKind === "work"))
     .toHaveLength(1);
+
+  // --- 5 bis. RECHARGER ---------------------------------------------------
+  //
+  // L'écran ne relisait rien : un rechargement montrait toutes les lignes
+  // décochées alors que les déclarations étaient en base, et le testeur en
+  // concluait qu'il avait perdu deux heures de saisie. C'est le seul endroit
+  // où ce défaut se voit — aucun test de composant ne recharge une page.
+  await page.goto(`/?profil=${profil}`);
+  await page.getByRole("button", { name: "Super Nintendo Entertainment System" }).click();
+  await page.getByRole("button", { name: "Plutôt une période" }).click();
+  await page.getByRole("button", { name: "Voir les jeux" }).click();
+
+  await expect(page.getByRole("button", { name: /^Déclaré : / }))
+    .toHaveCount(TITRES_A_COCHER);
+  // Et la passe 2 est remontrée, pas seulement conservée en base.
+  await expect(page.getByRole("button", { name: "Fini" }).first())
+    .toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Je l'avais" }).first())
+    .toHaveAttribute("aria-pressed", "true");
 
   // --- 6. la timeline ----------------------------------------------------
   await toucher(page.getByRole("button", { name: "Voir ma timeline" }).click());
@@ -210,7 +250,10 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Trois gestes de plus qu'avant, tous dans le choix de période : saisir
   // deux bornes puis valider. C'est le PIRE cas — les valeurs proposées sont
   // déduites de la machine, et les accepter ne coûte qu'un appui.
-  const budget = TITRES_A_COCHER + 13;
+  // Les deux gestes de passe 2 s'ajoutent au budget. Les gestes du
+  // rechargement, eux, ne sont PAS comptés : ce n'est pas le parcours d'un
+  // testeur, c'est une vérification que seul ce test peut faire.
+  const budget = TITRES_A_COCHER + 15;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

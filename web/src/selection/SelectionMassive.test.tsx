@@ -33,6 +33,7 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
       envoyer={envoyer}
       ecrireSouvenir={ecrireSouvenir}
       recharger={recharger}
+      etatInitial={[]}
       {...surcharge}
     />,
   );
@@ -746,5 +747,165 @@ describe("SelectionMassive — un souvenir sur un titre saisi (§9)", () => {
     expect(ecrireSouvenir).toHaveBeenCalledTimes(1);
     expect(ecrireSouvenir).toHaveBeenCalledWith(
       { kind: "unresolvedClaim", id: "ucl_faux_0" }, "Chez mon cousin.");
+  });
+});
+
+describe("SelectionMassive — relire ce qui est déjà déclaré", () => {
+  it("montre comme déclaré ce qui l'est en base", async () => {
+    // Un rechargement montrait TOUTES les lignes décochées alors que les
+    // déclarations étaient en base. Le testeur en concluait qu'il avait perdu
+    // son travail — le pire mensonge qu'un écran puisse faire sur une saisie
+    // de deux heures.
+    monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+      ],
+    });
+
+    expect(screen.getByRole("button", { name: /^Déclaré : Super Mario World$/ }))
+      .toBeInTheDocument();
+    expect(bande()).toHaveAttribute("data-total", "1");
+  });
+
+  it("n'invente aucune déclaration pour un titre absent de l'état", () => {
+    monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+      ],
+    });
+
+    expect(screen.getByRole("button", { name: /^Déclarer : Chrono Trigger$/ }))
+      .toBeInTheDocument();
+  });
+
+  it("remontre l'achèvement et la provenance déjà enregistrés", () => {
+    monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: "finished", provenance: "borrowed", neverPlayed: false },
+      ],
+    });
+
+    expect(screen.getByRole("button", { name: "Fini" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Emprunté" })).toHaveAttribute("aria-pressed", "true");
+  });
+});
+
+describe("SelectionMassive — la passe 2 (E02)", () => {
+  const chip = (nom: string) => screen.getByRole("button", { name: nom });
+
+  it("ne propose d'affiner qu'une ligne DÉCLARÉE", async () => {
+    // « La passe 2 n'est jamais imposée » : des chips sur 221 lignes non
+    // cochées occuperaient l'écran le plus dense du produit et suggéreraient
+    // un travail à faire.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    expect(screen.queryByRole("button", { name: "Fini" })).toBeNull();
+    await utilisateur.click(lignes()[0]);
+    expect(chip("Fini")).toBeInTheDocument();
+  });
+
+  it("n'envoie rien tant qu'on affine la MÊME ligne", async () => {
+    // Changer d'avis sur la ligne en cours ne doit pas atteindre le serveur :
+    // le journal est en ajout seul, et deux achèvements contradictoires y
+    // resteraient tous les deux.
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    envoyer.mockClear();
+    await utilisateur.click(chip("Fini"));
+    await utilisateur.click(chip("Abandonné"));
+
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("envoie l'affinage quand on passe à une autre ligne", async () => {
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(chip("Fini"));
+    envoyer.mockClear();
+    await utilisateur.click(lignes()[1]);
+
+    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+      entries: [{ workId: "w1", completion: "finished", provenance: null }],
+    }));
+  });
+
+  it("envoie l'affinage en quittant l'écran", async () => {
+    // Sans cela, le dernier jeu affiné perdrait sa réponse — et ce serait
+    // systématiquement le dernier, donc invisible en test manuel rapide.
+    const utilisateur = userEvent.setup();
+    const { envoyer, rendu } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(chip("Je l'avais"));
+    envoyer.mockClear();
+    rendu.unmount();
+
+    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+      entries: [{ workId: "w1", completion: null, provenance: "owned" }],
+    }));
+  });
+
+  it("l'affinage part dans le MÊME lot que la ligne cochée", async () => {
+    // Sinon il formerait un second épisode, et la timeline montrerait deux
+    // moments là où le joueur a fait un seul geste.
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    const lot = envoyer.mock.calls[0][0].batchId;
+    await utilisateur.click(chip("Fini"));
+    await utilisateur.click(lignes()[1]);
+
+    expect(envoyer.mock.calls.at(-1)![0].batchId).toBe(lot);
+  });
+
+  it("porte les deux réponses ensemble", async () => {
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(chip("Abandonné"));
+    await utilisateur.click(chip("Chez quelqu'un"));
+    await utilisateur.click(lignes()[1]);
+
+    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+      entries: [{ workId: "w1", completion: "abandoned", provenance: "elsewhere" }],
+    }));
+  });
+
+  it("déselectionner une chip la rend à « pas prononcé »", async () => {
+    // `null` n'est pas « toujours en cours » : l'un dit qu'on n'a pas
+    // répondu, l'autre qu'on y joue encore.
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(chip("Fini"));
+    await utilisateur.click(chip("Fini"));
+    envoyer.mockClear();
+    await utilisateur.click(lignes()[1]);
+
+    expect(envoyer).not.toHaveBeenCalledWith(expect.objectContaining({
+      entries: [{ workId: "w1", completion: "finished", provenance: null }],
+    }));
+  });
+
+  it("ne demande pas la provenance comme une case « possédé »", () => {
+    // E02 : poser « possédé ? » à côté d'un geste qui dit déjà « joué » est
+    // ambigu. La question du COMMENT couvre le cas fréquent — jouer sans
+    // posséder — et rend visible la séparation possession / expérience.
+    monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+      ],
+    });
+
+    expect(screen.queryByRole("button", { name: /^Possédé$/ })).toBeNull();
+    expect(screen.getByRole("button", { name: "Chez quelqu'un" })).toBeInTheDocument();
   });
 });

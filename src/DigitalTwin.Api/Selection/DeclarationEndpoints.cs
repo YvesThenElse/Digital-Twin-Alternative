@@ -16,7 +16,7 @@ public static class DeclarationEndpoints
             // Les cibles DÉJÀ dans ce lot. Un lot se remplit au fil des
             // gestes : on retire ce qui y est, on garde le reste. Rejeter le
             // lot entier ne conservait que la première déclaration.
-            var dejaLa = await magasin.BatchTargetsAsync(lot.UserId, lot.BatchId, ct);
+            var dejaLa = await magasin.BatchEventIdsAsync(lot.UserId, lot.BatchId, ct);
 
             var d = source.Dataset;
 
@@ -57,7 +57,7 @@ public static class DeclarationEndpoints
             // doit être refusée même si sa cible est déjà dans le lot,
             // sinon un renvoi masquerait la faute.
             var nouveaux = evenements!
-                .Where(e => !dejaLa.Contains(e.Target.Id))
+                .Where(e => !dejaLa.Contains(e.Id))
                 .ToList();
 
             // Pas de retour anticipé quand il n'y a rien de nouveau à écrire :
@@ -107,6 +107,24 @@ public static class DeclarationEndpoints
                 neverPlayed = d.NeverPlayed,
                 provenance = d.Provenance,
                 affect = d.Affect,
+            }).ToList());
+        });
+
+        routes.MapGet("/selection/{userId}/{platformId}", async (
+            string userId, string platformId, EventStore magasin, CancellationToken ct) =>
+        {
+            // Ce que l'écran doit pouvoir remontrer après un rechargement.
+            // Sans lui, toutes les lignes revenaient décochées alors que les
+            // déclarations étaient en base : le testeur en concluait qu'il
+            // avait tout perdu.
+            var etat = await magasin.SelectionStateAsync(userId, platformId, ct);
+            return Results.Ok(etat.Select(l => new
+            {
+                workId = l.WorkId,
+                played = l.Played,
+                completion = l.Completion,
+                provenance = l.Provenance,
+                neverPlayed = l.NeverPlayed,
             }).ToList());
         });
 

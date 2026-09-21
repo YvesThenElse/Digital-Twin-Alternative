@@ -1638,3 +1638,28 @@ Corollaire de méthode : la vérification est mécanique et ne coûte rien —
 scrupule mais parce que le vert immédiat est suspect ([[socle]] : « un test
 qui passe du premier coup mérite un doute »). C'est exactement ce que cette
 règle sert à attraper.
+
+### 50 — Deux tests qui partagent une base partagent aussi leurs identifiants
+
+Les tests d'API tournent tous contre la même base PostgreSQL, et s'isolent
+par l'identifiant d'utilisateur. En écrivant un nouveau fichier j'ai repris
+`usr_partiel` — déjà utilisé ailleurs.
+
+Le test existant affirmait que le journal de `usr_partiel` était **vide**.
+Le mien y écrivait un événement. Celui qui a échoué n'est pas le mien : le
+défaut s'est manifesté **dans un fichier que je n'avais pas touché**, ce qui
+est la façon la plus coûteuse de perdre du temps.
+
+Deux autres identifiants — `usr_fini`, `usr_abandon` — étaient également
+partagés et **passaient par chance** : les assertions ne se contredisaient
+pas. Ils auraient échoué le jour où quelqu'un aurait ajouté une assertion de
+comptage.
+
+**La règle** : dans une suite qui partage un magasin, l'identifiant
+d'isolation se préfixe par le **sujet du fichier**, pas seulement par le cas
+— `usr_etat_fini` et non `usr_fini`. Et la vérification est mécanique :
+chercher chaque identifiant d'un fichier neuf dans le reste de la suite
+prend une commande, là où le diagnostic prend un quart d'heure.
+
+Même famille que [[45]] : ce n'est pas le code qui manquait de garde, c'est
+la **convention** qui n'était vérifiée par rien.

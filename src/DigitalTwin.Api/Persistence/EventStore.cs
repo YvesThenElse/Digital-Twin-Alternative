@@ -40,14 +40,85 @@ public sealed class EventStore(PlayerEventDbContext db)
     /// celle-là refuserait la correction de §5.3, qui chaîne un nouvel
     /// événement sur la même cible — dans un AUTRE lot.</para>
     /// </summary>
-    public async Task<IReadOnlySet<string>> BatchTargetsAsync(
+    /// <para><b>Sur l'IDENTIFIANT, pas sur la cible.</b> L'identifiant encode
+    /// déjà (lot, cible, type) : dédupliquer sur la cible rendait le lot
+    /// aveugle à tout affinage ultérieur. Cocher une ligne puis répondre
+    /// « fini » dans le même passage jetait SILENCIEUSEMENT l'achèvement, et
+    /// l'utilisateur voyait son geste ne rien produire.</para>
+    public async Task<IReadOnlySet<string>> BatchEventIdsAsync(
         string userId, string batchId, CancellationToken ct = default)
         => (await db.PlayerEvents.AsNoTracking()
                 .Where(e => e.UserId == userId && e.BatchId == batchId)
-                .Select(e => e.TargetId)
-                .Distinct()
+                .Select(e => e.Id)
                 .ToListAsync(ct))
             .ToHashSet(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Ce dont l'utilisateur s'est prononcé sur une plateforme.
+    ///
+    /// <para><b>La source du « j'y ai joué » est le JOURNAL</b>, pas la table
+    /// des jugements : cocher une ligne n'écrit aucune déclaration
+    /// permanente. Chercher là ferait rendre « rien de déclaré » à un profil
+    /// plein — c'est exactement l'erreur qui faisait rendre zéro à la mesure
+    /// des plateformes.</para>
+    ///
+    /// <para>Seuls les titres sur lesquels l'utilisateur s'est prononcé sont
+    /// rendus. Rendre 221 lignes dont 220 vides ferait payer la relecture à
+    /// chaque chargement pour ne rien dire.</para>
+    /// </summary>
+    public async Task<IReadOnlyList<EtatDeLigne>> SelectionStateAsync(
+        string userId, string platformId, CancellationToken ct = default)
+    {
+        var evenements = await db.PlayerEvents.AsNoTracking()
+            .Where(e => e.UserId == userId
+                        && e.PlatformId == platformId
+                        && e.TargetKind == "work"
+                        && e.SupersededByEventId == null)
+            .Select(e => new { e.TargetId, e.Type })
+            .ToListAsync(ct);
+
+        var jugements = await db.PlayDeclarations.AsNoTracking()
+            .Where(d => d.UserId == userId && d.PlatformId == platformId)
+            .ToListAsync(ct);
+
+        var oeuvres = evenements.Select(e => e.TargetId)
+            .Concat(jugements.Select(d => d.WorkId))
+            .Distinct(StringComparer.Ordinal)
+            .ToList();
+
+        return [.. oeuvres.Select(oeuvre =>
+        {
+            var siens = evenements.Where(e => e.TargetId == oeuvre).Select(e => e.Type).ToList();
+            var jugement = jugements.FirstOrDefault(d => d.WorkId == oeuvre);
+
+            return new EtatDeLigne(
+                oeuvre,
+                Played: siens.Contains(PlayerEventType.StartedGame),
+                // « Toujours en cours » ne produit aucun événement — c'est un
+                // StartedGame que rien n'a refermé — et se relit donc comme
+                // « pas prononcé ». C'est le modèle qui le veut : lui donner
+                // un type ferait de la position un état à maintenir.
+                Completion:
+                    siens.Contains(PlayerEventType.CompletedGame) ? "finished"
+                    : siens.Contains(PlayerEventType.AbandonedGame) ? "abandoned"
+                    : null,
+                Provenance: ProvenanceEcran(jugement?.Provenance),
+                NeverPlayed: jugement?.NeverPlayed ?? false);
+        })];
+    }
+
+    /// <summary>
+    /// Le vocabulaire du domaine vers celui de l'écran. <c>Unknown</c> devient
+    /// <c>null</c> : « on ne sait pas » n'est pas une réponse que
+    /// l'utilisateur a donnée, et l'afficher comme telle en inventerait une.
+    /// </summary>
+    private static string? ProvenanceEcran(string? domaine) => domaine switch
+    {
+        nameof(DigitalTwin.Domain.Player.Provenance.Owned) => "owned",
+        nameof(DigitalTwin.Domain.Player.Provenance.Elsewhere) => "elsewhere",
+        nameof(DigitalTwin.Domain.Player.Provenance.Borrowed) => "borrowed",
+        _ => null,
+    };
 
     /// <summary>
     /// Tous les événements d'un utilisateur, dans l'ordre d'enregistrement.

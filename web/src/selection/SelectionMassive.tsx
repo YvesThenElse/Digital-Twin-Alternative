@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BandeDEpoque } from "./BandeDEpoque";
 import { StatutRegional } from "../region/StatutRegional";
 import { statutRegion } from "../region/statut";
@@ -14,7 +14,15 @@ import type { Oeuvre } from "./types";
  * libre. Les deux ensemble seraient ambigus, et l'API les refuse en le
  * disant (§3.5).
  */
-export type EntreeDeclaration = { workId: string } | { title: string };
+export type EntreeDeclaration =
+  | {
+      workId: string;
+      /** finished · stillPlaying · abandoned · `null` = pas prononcé. */
+      completion?: string | null;
+      /** owned · elsewhere · borrowed · `null` = pas prononcé. */
+      provenance?: string | null;
+    }
+  | { title: string };
 
 export type LotDeclaration = {
   batchId: string;
@@ -39,6 +47,28 @@ export type CibleSouvenir = {
   kind: "work" | "unresolvedClaim";
   id: string;
 };
+
+/**
+ * Ce dont l'utilisateur s'est déjà prononcé sur cette plateforme.
+ *
+ * <b>Relu à l'ouverture.</b> L'écran ne le lisait pas : un rechargement
+ * montrait toutes les lignes décochées alors que les déclarations étaient en
+ * base, et le testeur en concluait qu'il avait perdu son travail.
+ */
+export type EtatLigne = {
+  workId: string;
+  played: boolean;
+  /** finished · abandoned · `null` = pas prononcé. */
+  completion: string | null;
+  /** owned · elsewhere · borrowed · `null` = pas prononcé. */
+  provenance: string | null;
+  neverPlayed: boolean;
+};
+
+/** Les deux réponses de passe 2 que le modèle sait porter aujourd'hui. */
+type Affinage = { completion: string | null; provenance: string | null };
+
+const SANS_REPONSE: Affinage = { completion: null, provenance: null };
 
 /** Un titre saisi, et la revendication que l'API lui a donnée. */
 type TitreLibre = Oeuvre & { claimId: string | null };
@@ -70,6 +100,12 @@ type Props = {
    * un aller-retour par ligne ruinerait le budget d'un tap par jeu.
    */
   recharger: () => void;
+  /**
+   * L'état relu. Vide par défaut serait un piège : un appelant qui oublie de
+   * le passer verrait un écran vierge sans qu'aucune erreur ne le dise —
+   * exactement le défaut qu'on corrige. Il est donc REQUIS.
+   */
+  etatInitial: EtatLigne[];
 };
 
 /**
@@ -81,6 +117,37 @@ type Props = {
  * on ne défait rien — voir son travail s'effacer est le pire scénario d'un
  * affichage optimiste.
  */
+/**
+ * Une question de passe 2 : une ligne de chips, toutes facultatives.
+ *
+ * <b>Elle ne coûte rien à qui l'ignore</b> et change la nature du profil
+ * pour qui y répond (E02). Elle n'apparaît que sur une ligne DÉCLARÉE :
+ * poser la question sur 221 lignes non cochées occuperait l'écran le plus
+ * dense du produit et suggérerait un travail à faire.
+ */
+function Question({ intitule, choix, valeur, repondre }: {
+  intitule: string;
+  choix: { valeur: string; libelle: string }[];
+  valeur: string | null;
+  repondre: (valeur: string) => void;
+}) {
+  return (
+    <div role="group" aria-label={intitule}>
+      <span>{intitule}</span>
+      {choix.map((c) => (
+        <button
+          key={c.valeur}
+          type="button"
+          aria-pressed={valeur === c.valeur}
+          onClick={() => repondre(c.valeur)}
+        >
+          {c.libelle}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 /**
  * Le champ de souvenir, identique pour une œuvre et pour un titre saisi.
  *
@@ -107,9 +174,29 @@ function ChampSouvenir({ titre, valeur, surSaisie, surSortie }: {
 }
 
 export function SelectionMassive({
-  oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger,
+  oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger, etatInitial,
 }: Props) {
-  const [declarees, setDeclarees] = useState<Set<string>>(new Set());
+  const [declarees, setDeclarees] = useState<Set<string>>(
+    () => new Set(etatInitial.filter((l) => l.played).map((l) => l.workId)),
+  );
+
+  // Les réponses de passe 2, par œuvre. Celles déjà en base sont remontrées :
+  // ne pas le faire inviterait à répondre deux fois la même chose.
+  const [affinages, setAffinages] = useState<Record<string, Affinage>>(() =>
+    Object.fromEntries(etatInitial.map((l) => [
+      l.workId, { completion: l.completion, provenance: l.provenance },
+    ])),
+  );
+
+  // La réponse en cours de saisie, pas encore envoyée.
+  //
+  // Le journal est en AJOUT SEUL : deux achèvements contradictoires y
+  // resteraient tous les deux, et la timeline montrerait « fini » et
+  // « abandonné » sur le même jeu. On valide donc UNE fois par ligne, quand
+  // l'utilisateur passe à une autre ou quitte l'écran. Changer d'avis plus
+  // tard relève d'E07, que la spécification diffère explicitement.
+  const enAttente = useRef<string | null>(null);
+  const dernier = useRef<Record<string, Affinage>>({});
   const [erreur, setErreur] = useState<string | null>(null);
 
   // Les souvenirs vivent HORS de l'ensemble des déclarations : décocher une
@@ -139,7 +226,52 @@ export function SelectionMassive({
     [oeuvres, titresLibres, declarees],
   );
 
+  function validerAffinage(sauf?: string) {
+    const oeuvre = enAttente.current;
+    if (oeuvre === null || oeuvre === sauf) return;
+    enAttente.current = null;
+
+    const reponse = dernier.current[oeuvre] ?? SANS_REPONSE;
+    envoyer({
+      // Le MÊME lot : un affinage n'est pas un second passage sur l'écran.
+      // En ouvrir un autre ferait deux épisodes là où le joueur a fait un
+      // seul geste.
+      batchId: lot.current,
+      entries: [{
+        workId: oeuvre,
+        completion: reponse.completion,
+        provenance: reponse.provenance,
+      }],
+    }).catch(() => setErreur(t("erreur.declaration")));
+  }
+
+  // Quitter l'écran vaut validation. Sans cela, la dernière ligne affinée
+  // perdrait sa réponse — et ce serait SYSTÉMATIQUEMENT la dernière, donc
+  // invisible à un essai manuel rapide.
+  const validerARelacher = useRef(validerAffinage);
+  validerARelacher.current = validerAffinage;
+  useEffect(() => () => validerARelacher.current(), []);
+
+  function repondre(id: string, champ: keyof Affinage, valeur: string) {
+    validerAffinage(id);
+    setAffinages((precedents) => {
+      const courant = precedents[id] ?? SANS_REPONSE;
+      // Re-cliquer la réponse déjà donnée la retire : « pas prononcé » doit
+      // rester atteignable, faute de quoi un geste par erreur serait
+      // définitif.
+      const suivant = {
+        ...courant,
+        [champ]: courant[champ] === valeur ? null : valeur,
+      };
+      dernier.current[id] = suivant;
+      return { ...precedents, [id]: suivant };
+    });
+    enAttente.current = id;
+  }
+
   function basculer(id: string) {
+    validerAffinage(id);
+
     const suivant = new Set(declarees);
     const etaitDeclare = suivant.delete(id);
     if (!etaitDeclare) suivant.add(id);
@@ -155,6 +287,7 @@ export function SelectionMassive({
   }
 
   function ajouterTitreLibre() {
+    validerAffinage();
     const titre = saisie.trim();
     // Rien à garder : une revendication sans titre serait une ligne que plus
     // aucun écran ne saurait nommer.
@@ -271,6 +404,41 @@ export function SelectionMassive({
                   de texte par ligne non cochée occuperait la place de l'écran
                   le plus dense du produit et suggérerait un travail à faire.
                   §9 est un COMPLÉMENT, jamais un passage obligé. */}
+              {/* La passe 2 : deux questions que le modèle sait porter
+                  aujourd'hui. « Quand y avez-vous joué » (§4.8) et « ça vous
+                  a marqué » (§4.7) attendent que l'API les accepte — les
+                  monter maintenant ferait un écran qui recueille des
+                  réponses que personne n'enregistre. */}
+              {declare ? (
+                <Question
+                  intitule={t("passe2.acheve")}
+                  valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).completion}
+                  repondre={(v) => repondre(oeuvre.id, "completion", v)}
+                  choix={[
+                    { valeur: "finished", libelle: t("passe2.fini") },
+                    { valeur: "stillPlaying", libelle: t("passe2.enCours") },
+                    { valeur: "abandoned", libelle: t("passe2.abandonne") },
+                  ]}
+                />
+              ) : null}
+
+              {/* « Comment » REMPLACE une case « possédé » : poser
+                  « possédé ? » à côté d'un geste qui dit déjà « joué » est
+                  ambigu, et jouer sans posséder était la norme avant la
+                  dématérialisation. */}
+              {declare ? (
+                <Question
+                  intitule={t("passe2.comment")}
+                  valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).provenance}
+                  repondre={(v) => repondre(oeuvre.id, "provenance", v)}
+                  choix={[
+                    { valeur: "owned", libelle: t("passe2.possede") },
+                    { valeur: "elsewhere", libelle: t("passe2.ailleurs") },
+                    { valeur: "borrowed", libelle: t("passe2.emprunte") },
+                  ]}
+                />
+              ) : null}
+
               {declare ? (
                 <ChampSouvenir
                   titre={oeuvre.titre}

@@ -2,6 +2,7 @@ import type { Oeuvre, Plateforme } from "../selection/types";
 import type { EntreeTimeline, MomentTimeline } from "../timeline/types";
 import type {
   CibleSouvenir,
+  EtatLigne,
   EntreeDeclaration,
   ReponseDeclaration,
 } from "../selection/SelectionMassive";
@@ -123,6 +124,15 @@ export const client = {
       targetId: cible.id,
       text: texte,
     }),
+
+  /**
+   * Ce dont l'utilisateur s'est déjà prononcé sur cette plateforme.
+   *
+   * La source du « j'y ai joué » est le journal, pas la table des jugements :
+   * cocher une ligne n'écrit aucune déclaration permanente.
+   */
+  etatSelection: (userId: string, platformId: string) =>
+    lire<EtatLigne[]>(`/selection/${userId}/${platformId}`),
 
   timeline: (userId: string) =>
     lire<{ entries: EntreeTimeline[]; undated: MomentTimeline[] }>(
