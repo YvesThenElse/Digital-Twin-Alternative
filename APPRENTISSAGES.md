@@ -717,3 +717,44 @@ n'est couvert que par son interface. Vérifié à la main contre une vraie base
 — 200, puis 503 avec « 57P01: terminating connection due to administrator
 command » une fois la base éteinte, puis 200 de nouveau sans redémarrer
 l'API. **À automatiser à l'item 03**, qui ouvre une vraie connexion.
+
+### 20 — Lire la configuration trop tôt ignore ce que l'hôte de test y met
+
+`Program.cs` lisait `builder.Configuration["Dataset:Path"]` **avant**
+`builder.Build()`. Les sources de configuration ajoutées par
+`WebApplicationFactory` ne sont versées qu'au moment du `Build()` : le test
+qui pointait un dataset volontairement fautif voyait donc le vrai dataset, et
+l'API démarrait tranquillement.
+
+Le test a échoué, donc la faute s'est vue. Mais elle ne se serait pas vue
+avec un test plus mou — « l'API répond toujours » aurait été vert, pour la
+mauvaise raison.
+
+> **Règle** — dans l'hôte générique .NET, lire la configuration **dans une
+> fabrique de service**, jamais à la ligne de l'enregistrement. Et si une
+> vérification doit avoir lieu au démarrage, forcer la résolution juste après
+> `Build()` plutôt que de la faire au moment de l'enregistrement : on obtient
+> la bonne configuration **et** l'échec au démarrage.
+
+**Un test qui aurait passé sans rien prouver.** `Un_dataset_introuvable…`
+n'exigeait d'abord que la présence du chemin dans le message. Or
+`FileNotFoundException` le contient déjà : retirer entièrement mon message
+explicatif laissait le test vert. Il exige désormais aussi la phrase qui dit
+**pourquoi** l'API s'arrête.
+
+> **Règle** — quand on teste un message d'erreur, vérifier qu'il n'aurait pas
+> été satisfait par le message que le runtime produit tout seul. Asserter sur
+> ce qu'on a ajouté, pas sur ce qui était déjà là.
+
+**Une anomalie de données trouvée en écrivant un test.** En vérifiant que les
+sortie rendues sont bien celles de la plateforme demandée, Bubble Bobble sur
+Game Boy s'est révélé daté du **30 octobre 1987** — la Game Boy est sortie en
+1989. C'est la date Famicom, ramenée par le repli « aucune tête de plateforme
+dans l'infobox → prendre tout le champ », qui mord sur les titres
+multiplateformes. Une seule sortie sur 592, et elle n'aurait jamais levé
+d'erreur.
+
+> **Règle** — un repli qui élargit la recherche doit être borné par une
+> contrainte que la donnée elle-même permet de vérifier. Ici : **une sortie ne
+> peut pas précéder la machine sur laquelle elle paraît.** Inscrit à l'item
+> 03b.
