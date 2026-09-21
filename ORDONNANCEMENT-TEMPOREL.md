@@ -114,11 +114,13 @@ Corollaire : un moment ne doit jamais être déplacé pour « faire propre ». U
 
 Certains couples d'événements ont un ordre logique indépendant des dates déclarées :
 
-`DiscoveredGame` → `StartedGame` → `CompletedGame` | `AbandonedGame` · `AcquiredGame` → `SoldGame` · `SoldGame` → `ReplayedGame`
+`DiscoveredGame` → `StartedGame` → `CompletedGame` | `AbandonedGame` · `StartedGame` → `ReplayedGame` · `AcquiredItem` → `SoldItem`
 
-> ⚠️ **Question ouverte, signalée le 21 septembre 2026 — non tranchée ici.** Le dernier maillon, `SoldGame → ReplayedGame`, contredit [SPECIFICATION.md](./SPECIFICATION.md) §5.4, qui range « joué après avoir vendu » parmi les cas **inhabituels**. Si rejouer après vente est inhabituel, alors l'ordre causal normal est l'inverse — et la règle telle qu'écrite fait lever un avertissement sur un parcours banal : acquis 1997, rejoué 1999, vendu 2002. Voir [TODO-PHASE0.md](./TODO-PHASE0.md) pour les trois issues possibles.
-
-> ⚠️ **Noms à aligner.** Cette ligne écrit `AcquiredGame` / `SoldGame` ; [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §5, autoritaire sur le modèle, écrit `AcquiredItem` / `SoldItem`.
+> ✅ **Corrigé le 21 septembre 2026.** Cette ligne posait auparavant `SoldGame → ReplayedGame`, ce qui contredisait [SPECIFICATION.md](./SPECIFICATION.md) §5.4 — lequel range « joué après avoir vendu » parmi les cas **inhabituels**. Si c'est inhabituel, ce ne peut pas être l'ordre normal.
+>
+> Le coût était concret : un parcours banal — acquis 1997, rejoué 1999, vendu 2002 — levait un avertissement d'incohérence.
+>
+> **Le principe retenu : n'affirmer un ordre que là où il en existe réellement un.** Rejouer ne suppose aucune vente préalable ; le maillon est retiré. En revanche `StartedGame → ReplayedGame` est authentiquement causal — on ne rejoue pas ce qu'on n'a jamais commencé — et il remplace le précédent. Les noms suivent désormais [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §5, autoritaire sur le modèle.
 
 Deux cas, et un seul est un problème :
 

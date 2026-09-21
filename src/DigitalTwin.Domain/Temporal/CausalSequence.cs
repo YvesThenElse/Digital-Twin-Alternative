@@ -8,14 +8,24 @@ namespace DigitalTwin.Domain.Temporal;
 ///
 /// <code>
 /// DiscoveredGame → StartedGame → CompletedGame | AbandonedGame
-/// AcquiredGame   → SoldGame    → ReplayedGame
+///                  StartedGame → ReplayedGame
+/// AcquiredItem   → SoldItem
 /// </code>
 ///
-/// Deux absences sont volontaires. <c>CompletedGame</c> et
+/// <para><b>Le principe : n'affirmer un ordre que là où il en existe
+/// réellement un.</b> La spécification posait auparavant
+/// <c>SoldItem → ReplayedGame</c>, ce qui faisait lever un avertissement sur
+/// un parcours banal — acquis 1997, rejoué 1999, vendu 2002. Rejouer ne
+/// suppose aucune vente préalable. En revanche on ne rejoue pas ce qu'on n'a
+/// jamais commencé : c'est <c>StartedGame → ReplayedGame</c> qui est
+/// causal.</para>
+///
+/// <para>Trois absences sont volontaires. <c>CompletedGame</c> et
 /// <c>AbandonedGame</c> ne sont pas ordonnés entre eux : ils sont exclusifs
-/// (invariant 7), pas successifs. Et les deux chaînes sont <b>indépendantes</b>
+/// (invariant 7), pas successifs. Les deux chaînes sont <b>indépendantes</b>
 /// — jouer et posséder sont deux axes distincts (§4.2 du modèle), donc rien
-/// ne dit qu'on acquiert avant de commencer.
+/// ne dit qu'on acquiert avant de commencer. Et rien ne relie plus la
+/// possession au rejeu.</para>
 /// </summary>
 public static class CausalSequence
 {
@@ -24,9 +34,8 @@ public static class CausalSequence
     private static readonly Dictionary<string, string[]> Suivants = new(StringComparer.Ordinal)
     {
         ["DiscoveredGame"] = ["StartedGame"],
-        ["StartedGame"] = ["CompletedGame", "AbandonedGame"],
-        ["AcquiredGame"] = ["SoldGame"],
-        ["SoldGame"] = ["ReplayedGame"],
+        ["StartedGame"] = ["CompletedGame", "AbandonedGame", "ReplayedGame"],
+        ["AcquiredItem"] = ["SoldItem"],
     };
 
     /// <summary>

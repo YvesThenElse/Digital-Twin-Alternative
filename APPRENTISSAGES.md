@@ -321,3 +321,33 @@ intersection avec le vide est vide. L'invariant était vrai, et sans valeur.
 > **Règle** — exiger que les ensembles soient **non vides** avant de vérifier
 > une propriété ensembliste. Sans cette garde, l'invariant se satisfait du cas
 > dégénéré qu'il devrait justement interdire.
+
+### 06 bis — Rejouer une faute commise vaut mieux qu'inventer une altération
+
+Après correction d'une contradiction de spécification, j'ai muté le code pour
+réintroduire **exactement l'erreur d'origine** : le maillon causal fautif, son
+remplaçant retiré, les anciens noms de types.
+
+Muter au hasard vérifie que des tests existent. Rejouer une faute qu'on a
+effectivement commise vérifie qu'elle **ne peut pas revenir** — et celle-ci le
+pourrait facilement : un lecteur de §4.3 dans six mois, sans le contexte,
+jugerait l'ancien maillon plausible.
+
+> **Règle** — après toute correction d'un défaut réel, muter le code pour
+> réinjecter ce défaut précis et exiger qu'un test meure. Le correctif est
+> alors gardé, pas seulement appliqué.
+
+### 06 ter — Les vecteurs de la spécification dictent où va l'attention
+
+La chaîne d'expérience (`StartedGame` → `CompletedGame`) était éprouvée de
+bout en bout ; la chaîne de possession (`AcquiredItem` → `SoldItem`) n'avait
+qu'un test de prédicat. Renommer ses types ne tuait donc qu'un seul test.
+
+Les deux ont pourtant le même statut dans le modèle. La dissymétrie vient de
+l'ordre du travail : les vecteurs T4 et T5 portent sur l'expérience, donc les
+tests de bout en bout se sont construits autour d'elle. Ce que les vecteurs ne
+mentionnent pas reçoit moins de soin, même à rang égal dans le modèle.
+
+> **Règle** — après avoir traité les vecteurs d'un item, énumérer les règles
+> **symétriques** du modèle qu'aucun vecteur ne couvre, et leur donner le même
+> niveau de test. Les vecteurs sont un échantillon, pas la spécification.

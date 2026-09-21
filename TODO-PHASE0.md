@@ -38,37 +38,6 @@
 
 - [x] **10 — Projections à trois valeurs.** §7.3 : certain / possible / non. *Acceptation : vecteur **T10** — acquisition `Range(1993–1997)`, cession `Year(1999)`, requête 1997 → **possible**.*
 
-> ## ⛔ BOUCLE ARRÊTÉE — décision requise avant l'item 11
->
-> Deux documents se contredisent sur la séquence causale, et l'implémentation
-> actuelle (item 06) suit celui qui produit de fausses alertes.
->
-> **[ORDONNANCEMENT-TEMPOREL.md](./ORDONNANCEMENT-TEMPOREL.md) §4.3** pose
-> `SoldGame → ReplayedGame` comme ordre causal : le rejeu doit suivre la vente.
->
-> **[SPECIFICATION.md](./SPECIFICATION.md) §5.4** dit que « joué après avoir
-> vendu » est **inhabituel** mais légitime — donc que jouer *avant* de vendre
-> est le cas normal.
->
-> Les deux énoncés sont inverses. Conséquence concrète sur un parcours
-> ordinaire — acquis 1997, rejoué 1999, vendu 2002 : la règle de §4.3 fait
-> lever un avertissement d'incohérence sur une histoire parfaitement banale.
->
-> **Trois issues possibles, et le choix appartient à Yves :**
->
-> 1. **Retirer `SoldItem → ReplayedGame`** de la chaîne. Rejouer ne suppose
->    aucune vente préalable, et le lien n'a alors plus lieu d'être.
-> 2. **Le conserver** en acceptant les avertissements sur les parcours où le
->    rejeu précède la vente — ce qui contredit §5.4.
-> 3. **Redéfinir `ReplayedGame`** comme « rejoué après réacquisition », ce qui
->    rendrait la chaîne juste mais changerait le sens du type.
->
-> **Second point, mineur et lié.** §4.3 nomme les événements de possession
-> `AcquiredGame` / `SoldGame` ; [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md)
-> §5, autoritaire sur le modèle, les nomme `AcquiredItem` / `SoldItem`.
-> `CausalSequence` utilise aujourd'hui les premiers. À aligner sur le modèle,
-> dans le même geste que la décision ci-dessus.
-
 - [ ] **11 — `PlayerEvent` et `PlayDeclaration`.** `OccurredAt` + `RecordedAt` sur tout événement, `Confidence` dérivé et jamais saisi, `SupersededBy` pour la correction. *Acceptation : invariants 1, 3, 4 de [MODELE-DE-DOMAINE.md](./MODELE-DE-DOMAINE.md) §7 testés ; `Confidence` n'a pas de setter public.*
 
 - [ ] **12 — Projections d'état.** Collection à une date, statut d'achèvement, « toujours en cours » comme **absence** et non comme événement. *Acceptation : un `StartedGame` sans `CompletedGame` ni `AbandonedGame` projette « en cours » ; les trois positions sont exclusives (invariant 7).*
@@ -96,3 +65,4 @@
 - **08** — `TimelineEntry` expose la vue groupée ; `OnAxis` reste la séquence plate, les membres d'un épisode y étant adjacents. Le regroupement exige **un lot ET un intervalle identiques** — la règle 4 est tenue par construction, les moments sans intervalle ayant été écartés avant. 219 tests, cinq prévisions de mutation exactes. **Union prouvée sans effet** : la règle 1 garantit des intervalles identiques.
 - **09** — `TemporalQueryResult` porte les trois catégories ensemble ; aucune méthode de l'API ne rend un entier, vérifié par réflexion. Deux distinctions que la spec n'énonce pas : hors-période n'est pas « écarté pour imprécision », et interroger sur `Unknown` rend une requête muette plutôt que des moments fautifs. Le résumé nomme les trois catégories même à zéro. 238 tests, cinq prévisions exactes, un trou comblé puis vérifié.
 - **10** — `OwnedDuring` rend certain / possible / non ; les deux listes restent séparées quel que soit le mode, qui filtre ce qu'on retient sans changer ce qu'on sait. **Interprétation fixée et documentée** : `Certain` = possédé pendant TOUTE la période, la spec traitant `D` comme un point là où les requêtes portent sur des périodes. 260 tests. Un vrai bug attrapé par un test avant mutation, une assertion fausse corrigée, un invariant faible durci.
+- **06 bis** — Contradiction de spec tranchée par Yves : « il faut être cohérent temporellement ». `SoldItem → ReplayedGame` retiré — rejouer ne suppose aucune vente — et remplacé par `StartedGame → ReplayedGame`, qui l'est authentiquement. Noms alignés sur le modèle, autoritaire. 265 tests. Les trois mutations rejouent des fautes **réellement commises**, pas des altérations inventées.

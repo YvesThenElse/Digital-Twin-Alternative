@@ -31,10 +31,11 @@ public class CausalCoherenceTests
     [InlineData("DiscoveredGame", "StartedGame")]
     [InlineData("StartedGame", "CompletedGame")]
     [InlineData("StartedGame", "AbandonedGame")]
+    [InlineData("StartedGame", "ReplayedGame")]       // on ne rejoue pas ce
+                                                      // qu'on n'a pas commencé
     [InlineData("DiscoveredGame", "CompletedGame")]   // par transitivité
-    [InlineData("AcquiredGame", "SoldGame")]
-    [InlineData("SoldGame", "ReplayedGame")]
-    [InlineData("AcquiredGame", "ReplayedGame")]      // par transitivité
+    [InlineData("DiscoveredGame", "ReplayedGame")]    // par transitivité
+    [InlineData("AcquiredItem", "SoldItem")]
     public void La_sequence_causale_ordonne_ces_couples(string avant, string apres)
     {
         Assert.True(CausalSequence.Precedes(avant, apres));
@@ -43,8 +44,10 @@ public class CausalCoherenceTests
 
     [Theory]
     [InlineData("CompletedGame", "AbandonedGame")]    // exclusifs, pas ordonnés
-    [InlineData("StartedGame", "AcquiredGame")]       // deux chaînes distinctes
-    [InlineData("CompletedGame", "SoldGame")]
+    [InlineData("StartedGame", "AcquiredItem")]       // deux chaînes distinctes
+    [InlineData("CompletedGame", "SoldItem")]
+    [InlineData("SoldItem", "ReplayedGame")]          // ⚠️ le maillon retiré
+    [InlineData("ReplayedGame", "SoldItem")]          // ni dans l'autre sens
     public void La_sequence_causale_n_ordonne_pas_ces_couples(string a, string b)
     {
         // Ne pas inventer d'ordre que §4.3 n'énonce pas. « Terminé » et
@@ -52,6 +55,55 @@ public class CausalCoherenceTests
         // deux axes indépendants (§4.2 du modèle).
         Assert.False(CausalSequence.Precedes(a, b));
         Assert.False(CausalSequence.Precedes(b, a));
+    }
+
+    [Fact]
+    public void Rejouer_avant_de_vendre_est_un_parcours_ordinaire()
+    {
+        // LE cas qui a fait arrêter la boucle. Acquis en 1997, rejoué en
+        // 1999, vendu en 2002 : rien d'incohérent là-dedans, et aucun
+        // avertissement ne doit être levé.
+        //
+        // L'ancienne chaîne posait SoldItem → ReplayedGame, ce qui
+        // contredisait SPECIFICATION §5.4 — « joué après avoir vendu » y est
+        // rangé parmi les cas INHABITUELS, donc l'inverse est la norme.
+        var tri = Trier(
+            M("acquis", new Year(1997), "AcquiredItem"),
+            M("rejoue", new Year(1999), "ReplayedGame"),
+            M("vendu", new Year(2002), "SoldItem"));
+
+        Assert.Empty(tri.Warnings);
+        Assert.Equal(["acquis", "rejoue", "vendu"], tri.OnAxis.Select(m => m.Id));
+    }
+
+    [Fact]
+    public void Rejouer_avant_d_avoir_commence_reste_une_incoherence()
+    {
+        // La contrepartie : le maillon qui remplace l'ancien doit mordre.
+        var tri = Trier(
+            M("rejoue", new Year(1995), "ReplayedGame"),
+            M("commence", new Year(1998), "StartedGame"));
+
+        var a = Assert.Single(tri.Warnings);
+        Assert.Equal("commence", a.ExpectedEarlierId);
+        Assert.Equal("rejoue", a.ExpectedLaterId);
+    }
+
+    [Fact]
+    public void Vendre_avant_d_avoir_acquis_est_une_incoherence()
+    {
+        // La chaîne de possession n'était éprouvée que par le prédicat :
+        // renommer ses types ne tuait qu'un seul test. Elle mérite la même
+        // vérification de bout en bout que la chaîne d'expérience.
+        var tri = Trier(
+            M("vendu", new Year(1995), "SoldItem"),
+            M("acquis", new Year(1998), "AcquiredItem"));
+
+        var a = Assert.Single(tri.Warnings);
+        Assert.Equal("acquis", a.ExpectedEarlierId);
+        Assert.Equal("vendu", a.ExpectedLaterId);
+        Assert.Contains("AcquiredItem", a.Message);
+        Assert.Contains("SoldItem", a.Message);
     }
 
     [Fact]
