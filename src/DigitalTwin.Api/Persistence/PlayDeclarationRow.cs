@@ -35,6 +35,13 @@ public sealed class PlayDeclarationRow
     /// </summary>
     public bool NeverPlayed { get; set; }
 
+    /// <summary>
+    /// « J'y joue encore » (§4.6). <b>Une réponse, pas une absence</b> : le
+    /// journal ne sait pas la distinguer d'un jeu simplement coché, puisque
+    /// les deux ne produisent qu'un <c>StartedGame</c> que rien ne referme.
+    /// </summary>
+    public bool StillPlaying { get; set; }
+
     public string Provenance { get; set; } = "Unknown";
     /// <summary>
     /// <c>Unstated</c>, jamais <c>Indifferent</c> : la valeur par défaut d'une

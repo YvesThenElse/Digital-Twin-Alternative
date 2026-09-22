@@ -77,6 +77,10 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
         d.Property(x => x.WorkId).HasColumnName("work_id").IsRequired();
         d.Property(x => x.PlatformId).HasColumnName("platform_id").IsRequired();
         d.Property(x => x.NeverPlayed).HasColumnName("never_played").IsRequired();
+        // Faux par défaut, et c'est juste : l'absence de réponse n'est pas
+        // « il n'y joue plus », c'est « il n'a rien dit » — et la ligne
+        // elle-même n'existe que si quelque chose a été déclaré.
+        d.Property(x => x.StillPlaying).HasColumnName("still_playing").IsRequired();
         d.Property(x => x.Provenance).HasColumnName("provenance").IsRequired();
         d.Property(x => x.Affect).HasColumnName("affect").IsRequired();
         // Invariant 11 : purgeable par UserId seul.

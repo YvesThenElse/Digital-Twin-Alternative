@@ -21,12 +21,18 @@ public static class PlayDeclarationMapping
             Provenance = Enum.Parse<Provenance>(l.Provenance),
             Affect = Enum.Parse<Affect>(l.Affect),
         };
-        return l.NeverPlayed ? jugement.DeclareNeverPlayed() : jugement;
+        // L'ORDRE compte : `DeclareNeverPlayed` efface « en cours », donc
+        // relire une ligne qui porte les deux doit laisser gagner le premier
+        // — c'est ce que l'invariant 8 dit, et la base ne devrait jamais
+        // contenir cette combinaison.
+        if (l.NeverPlayed) return jugement.DeclareNeverPlayed();
+        return l.StillPlaying ? jugement.DeclareStillPlaying() : jugement;
     }
 
     public static void Apply(PlayDeclarationRow ligne, PlayDeclaration jugement)
     {
         ligne.NeverPlayed = jugement.NeverPlayed;
+        ligne.StillPlaying = jugement.StillPlaying;
         ligne.Provenance = jugement.Provenance.ToString();
         ligne.Affect = jugement.Affect.ToString();
     }

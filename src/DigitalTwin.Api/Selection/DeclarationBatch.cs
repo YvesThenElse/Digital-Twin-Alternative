@@ -47,6 +47,9 @@ public sealed record DeclarationIntent(string WorkId, string PlatformId, string 
 {
     public const string NeverPlayed = "neverPlayed";
     public const string Provenance = "provenance";
+    /// <summary>« J'y joue encore » — ou, à <c>false</c>, une fermeture datée
+    /// qui vient de refermer la position.</summary>
+    public const string StillPlaying = "stillPlaying";
 }
 
 /// <summary>
@@ -191,6 +194,20 @@ public static class DeclarationTranslator
 
             var types = TypesDe(entree, out var refus);
             if (refus is not null) return (null, null, refus);
+
+            // §4.6 : « toujours en cours » est une RÉPONSE, et le journal ne
+            // sait pas la distinguer d'un jeu simplement coché — les deux
+            // ne produisent qu'un `StartedGame` que rien ne referme. Elle
+            // s'écrit donc comme jugement, sans date, ce qu'elle est.
+            //
+            // Et une fermeture la REFERME : sans cela, « fini » laisserait
+            // « en cours » derrière lui, et l'écran relirait les deux.
+            if (entree.Completion is not null)
+            {
+                declarations.Add(new DeclarationIntent(
+                    cible.Id, lot.PlatformId, DeclarationIntent.StillPlaying,
+                    entree.Completion == StillPlaying ? "true" : "false"));
+            }
 
             if (entree.Provenance is not null)
             {

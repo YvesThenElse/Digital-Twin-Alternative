@@ -59,6 +59,25 @@ public sealed record PlayDeclaration
     /// </summary>
     public bool NeverPlayed { get; private init; }
 
+    /// <summary>
+    /// « J'y joue encore » (§4.6) — <b>une réponse, pas une absence</b>.
+    ///
+    /// <para>⚠️ À ne pas confondre avec
+    /// <see cref="CompletionPosition.StillPlaying"/>, que
+    /// <see cref="CompletionProjection"/> DÉDUIT du journal. La projection
+    /// répond « où en est la partie ? » ; ce champ répond « qu'a dit le
+    /// joueur ? ». Les deux sont nécessaires parce que le journal ne peut
+    /// pas les distinguer : un jeu simplement coché et un jeu déclaré
+    /// « en cours » produisent exactement les mêmes événements — un
+    /// <c>StartedGame</c> que rien ne referme.</para>
+    ///
+    /// <para><b>Et ce n'est pas le type d'événement que le domaine
+    /// interdit.</b> Un type « StillPlaying » ferait de la position un état
+    /// à maintenir, donc à désynchroniser ; un jugement sans date est
+    /// précisément ce que cette classe existe pour porter (MODELE §5).</para>
+    /// </summary>
+    public bool StillPlaying { get; private init; }
+
     public Provenance Provenance { get; init; }
     public Affect Affect { get; init; }
 
@@ -71,6 +90,9 @@ public sealed record PlayDeclaration
     {
         NeverPlayed = true,
         Provenance = Provenance.Unknown,
+        // « Je n'y ai jamais joué, et j'y joue encore » : les garder
+        // ensemble serait l'exemple même de ce que l'invariant 8 interdit.
+        StillPlaying = false,
         // Effacé veut dire « pas prononcé ». « Je n'y ai jamais joué » ne dit
         // rien de ce que le jeu aurait laissé : y répondre « sans plus » à sa
         // place inventerait un avis.
@@ -86,6 +108,25 @@ public sealed record PlayDeclaration
 
     public PlayDeclaration WithProvenance(Provenance provenance) =>
         this with { NeverPlayed = false, Provenance = provenance };
+
+    /// <summary>
+    /// « J'y joue encore ». Lève <c>NeverPlayed</c> pour la même raison que
+    /// l'affect et la provenance : c'est une correction, jamais une erreur à
+    /// refuser (invariant 10).
+    /// </summary>
+    public PlayDeclaration DeclareStillPlaying() =>
+        this with { NeverPlayed = false, StillPlaying = true };
+
+    /// <summary>
+    /// La partie ne court plus — parce qu'un <c>CompletedGame</c> ou un
+    /// <c>AbandonedGame</c> vient d'être déclaré, et que ceux-là sont
+    /// <b>datés</b>.
+    ///
+    /// <para>Refermer dit ce qui n'est plus, pas ce qui est : cela ne lève
+    /// donc pas <c>NeverPlayed</c>, contrairement aux trois déclarations
+    /// positives.</para>
+    /// </summary>
+    public PlayDeclaration Closed() => this with { StillPlaying = false };
 
     /// <summary>
     /// Désigne un préféré sur une plateforme. <b>Invariant 6 : il y en a un

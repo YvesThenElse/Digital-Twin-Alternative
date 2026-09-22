@@ -240,9 +240,11 @@ public class DeclarationsTests(PostgresFixture bdd)
     [Fact]
     public async Task Toujours_en_cours_ne_produit_aucun_evenement_supplementaire()
     {
-        // « Toujours en cours » est une ABSENCE, pas un événement : un
-        // `StartedGame` que rien n'a refermé. Lui donner un type ferait de la
-        // position un état à maintenir, donc à désynchroniser.
+        // « Toujours en cours » n'a pas de date : ce n'est pas un événement,
+        // et lui donner un TYPE ferait de la position un état à maintenir,
+        // donc à désynchroniser. Il s'écrit comme jugement — ce que la
+        // relecture vérifie ailleurs — et le journal, lui, ne porte que le
+        // `StartedGame` que rien n'a refermé.
         using var usine = Usine();
         var client = usine.CreateClient();
         var (plateforme, oeuvres) = await Snes(client);

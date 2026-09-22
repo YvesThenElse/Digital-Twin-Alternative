@@ -309,6 +309,14 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await toucher(page.getByRole("button", { name: "Fini" }).first().click());
   await toucher(page.getByRole("button", { name: "Je l'avais" }).first().click());
 
+  // Et « toujours en cours » sur une AUTRE ligne (§4.6) : « commencé, jamais
+  // refermé — il pourrait y revenir ». Le journal ne sait pas la distinguer
+  // d'un jeu simplement coché — les deux ne produisent qu'un `StartedGame`
+  // que rien ne referme —, donc elle s'écrit comme jugement. La chip
+  // revenait vierge au rechargement, et le testeur voyait disparaître ce
+  // qu'il venait de dire.
+  await toucher(page.getByRole("button", { name: "Toujours en cours" }).nth(1).click());
+
   // --- 3 ter. « jamais joué » --------------------------------------------
   //
   // §24.3 : « il n'y a pas joué » n'est pas « il ne s'est pas prononcé ».
@@ -509,6 +517,12 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     .toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("button", { name: "Je l'avais" }).first())
     .toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Toujours en cours" }).nth(1))
+    .toHaveAttribute("aria-pressed", "true");
+  // Et la ligne qui n'a RIEN dit reste vierge : c'est la distinction que
+  // l'item porte — « il n'a rien dit » n'est pas « il y joue encore ».
+  await expect(page.getByRole("button", { name: "Toujours en cours" }).nth(2))
+    .toHaveAttribute("aria-pressed", "false");
 
   // --- 5 ter. est-ce moi, ou est-ce le service ? -------------------------
   //
@@ -652,7 +666,9 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Un geste de plus : le passage à la timeline qui échoue, avant celui qui
   // aboutit. C'est un geste réel — un testeur qui tombe sur une panne le
   // paie aussi.
-  const budget = TITRES_A_COCHER + 22;
+  // Un geste de plus : « toujours en cours ». La passe 2 reste facultative —
+  // vingt-huit lignes n'y touchent pas — mais le parcours la paie.
+  const budget = TITRES_A_COCHER + 23;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

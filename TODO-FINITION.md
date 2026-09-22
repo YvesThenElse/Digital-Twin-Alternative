@@ -44,7 +44,7 @@
 
 - [x] **F12 — La première console déclenche une phrase de récit.** (audit 30 · §24.4) **Décidé** : on construit **la phrase seule**. C'est la récompense la moins chère et la plus précoce — elle arrive dès la machine choisie, avant la liste —, et elle fait parler le produit de l'utilisateur au lieu de son propre compteur. Les **premières statistiques** sont **différées par écrit** : la bande d'époque les devance pendant la saisie, et E04/E10 les porteront mieux. *Acceptation : choisir une console produit une phrase qui parle de CETTE console et de rien d'autre, elle n'invente aucun chiffre, et le report des statistiques est écrit dans `PHASING.md` avec sa raison.*
 
-- [ ] **F13 — « Toujours en cours » est un jugement, pas un silence.** (audit 25 · §4.6) **Décidé** : on le **porte**. « J'y joue encore » est une vraie réponse, et elle sera fréquente sur les machines récentes ; la traiter comme une absence fait revenir la chip vierge et perdre ce que le testeur vient de dire. *Acceptation : `PlayDeclaration` porte l'achèvement déclaré, la migration existe, et la chip revient cochée après un rechargement — sans que « en cours » produise un événement, puisqu'il n'en est pas un.*
+- [x] **F13 — « Toujours en cours » est un jugement, pas un silence.** (audit 25 · §4.6) **Décidé** : on le **porte**. « J'y joue encore » est une vraie réponse, et elle sera fréquente sur les machines récentes ; la traiter comme une absence fait revenir la chip vierge et perdre ce que le testeur vient de dire. *Acceptation : `PlayDeclaration` porte l'achèvement déclaré, la migration existe, et la chip revient cochée après un rechargement — sans que « en cours » produise un événement, puisqu'il n'en est pas un.*
 
 - [ ] **F14 — Les capacités temporelles inatteignables sont inscrites.** (audit 21) **Décidé** : **différées**, pas offertes. La période ouverte et `Age` appartiennent à E07, qui est déjà différé ; les offrir au parcours d'amorce ajouterait une question que §24.4 déconseille. *Acceptation : `PHASING.md` dit lesquelles, où elles iront, et pourquoi elles ne sont pas dans le parcours — et un test le vérifie, ou le document est cité par celui qui les porte.*
 
@@ -236,3 +236,17 @@
   Les premières statistiques sont reportées en Phase 3 dans `PHASING.md`,
   avec leur raison — ce n'est pas le coût, c'est que la bande d'époque les
   devance pendant la saisie.
+
+- **F13** — porté comme **jugement sans date**, ce que `PlayDeclaration`
+  existe pour ça. Ni un type d'événement — le domaine l'interdit, et il a
+  raison : la position cesserait d'être une absence pour devenir un état à
+  maintenir — ni le silence. La distinction qui tranche : **un jeu coché et
+  un jeu déclaré « en cours » produisent exactement les mêmes événements**,
+  donc aucune projection ne peut les séparer. Il lève « jamais joué »
+  (invariant 10), il est effacé par « jamais joué » (invariant 8), et une
+  **fermeture datée le referme** — sans quoi « fini » laisserait « en cours »
+  derrière lui. Le jugement est désormais **rendu** par
+  `GET /declarations/{user}` : l'état relu laisse l'événement daté le
+  masquer, donc une fermeture manquée y serait restée invisible jusqu'en
+  Phase 3. Le parcours le pose sur une ligne, recharge, et vérifie qu'il
+  revient — pendant qu'une ligne voisine, qui n'a rien dit, reste vierge.

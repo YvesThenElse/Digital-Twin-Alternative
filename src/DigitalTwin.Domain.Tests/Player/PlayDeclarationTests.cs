@@ -112,6 +112,71 @@ public class PlayDeclarationTests
         Assert.Equal(Provenance.Borrowed, corrige.Provenance);
     }
 
+    // ---------- §4.6 : « toujours en cours » est une RÉPONSE ---------------
+
+    [Fact]
+    public void Toujours_en_cours_est_une_declaration_et_non_une_absence()
+    {
+        // §4.6 : « commencé, jamais refermé — il pourrait y revenir ». Le
+        // journal ne peut pas le dire seul : un jeu simplement coché produit
+        // exactement les mêmes événements qu'un jeu déclaré « en cours » —
+        // un `StartedGame` que rien ne referme. Les deux se relisaient donc
+        // pareil, et la chip revenait vierge.
+        //
+        // ⚠️ Ce n'est PAS le `StillPlaying` de `CompletionProjection`, et la
+        // distinction est le cœur de l'item. La projection répond « où en
+        // est la partie ? » en DÉDUISANT depuis les événements ; ce champ-ci
+        // répond « qu'a dit le joueur ? ». Le domaine interdit un TYPE
+        // d'événement « StillPlaying » — la position cesserait d'être une
+        // absence pour devenir un état à maintenir. Un jugement sans date
+        // n'est pas un type d'événement : c'est exactement ce que
+        // `PlayDeclaration` existe pour porter.
+        Assert.True(D().DeclareStillPlaying().StillPlaying);
+        Assert.False(D().StillPlaying);
+    }
+
+    [Fact]
+    public void Declarer_toujours_en_cours_leve_jamais_joue()
+    {
+        // Invariant 10 : une correction, jamais un refus. Dire « j'y joue
+        // encore » après « jamais joué » est le geste d'un testeur qui se
+        // reprend.
+        var corrige = D().DeclareNeverPlayed().DeclareStillPlaying();
+
+        Assert.False(corrige.NeverPlayed);
+        Assert.True(corrige.StillPlaying);
+    }
+
+    [Fact]
+    public void Jamais_joue_efface_toujours_en_cours()
+    {
+        // Invariant 8 : `NeverPlayed` exclut toute autre déclaration. Les
+        // garder produirait « je n'y ai jamais joué, et j'y joue encore ».
+        var jamais = D().DeclareStillPlaying().DeclareNeverPlayed();
+
+        Assert.True(jamais.NeverPlayed);
+        Assert.False(jamais.StillPlaying);
+    }
+
+    [Fact]
+    public void Une_fermeture_referme_la_position()
+    {
+        // « Fini » et « abandonné » sont DATÉS : ce sont des événements, et
+        // ils disent que la partie ne court plus. Le jugement cesse alors de
+        // dire « encore » — sans quoi l'écran relirait les deux.
+        Assert.False(D().DeclareStillPlaying().Closed().StillPlaying);
+    }
+
+    [Fact]
+    public void Refermer_n_est_pas_une_declaration_positive()
+    {
+        // Refermer dit ce qui N'EST PLUS, pas ce qui est : cela ne lève donc
+        // pas « jamais joué », contrairement à un affect ou à une provenance.
+        // La correction de cette combinaison appartient à l'écran, qui
+        // retire la marque avant de déclarer (E02).
+        Assert.True(D().DeclareNeverPlayed().Closed().NeverPlayed);
+    }
+
     // ---------- invariant 6 : un seul préféré par plateforme --------------
 
     [Fact]

@@ -221,6 +221,99 @@ public class SelectionEtatTests(PostgresFixture bdd)
         Assert.False(ligne.GetProperty("played").GetBoolean());
     }
 
+    [Fact]
+    public async Task Toujours_en_cours_se_relit_comme_une_reponse()
+    {
+        // §4.6 : « commencé, jamais refermé — il pourrait y revenir ». La
+        // chip revenait VIERGE au rechargement : le traducteur traitait la
+        // réponse comme une absence, et le testeur voyait disparaître ce
+        // qu'il venait de dire.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_encours_etat", "usr_encours_etat", pf,
+            [new { workId = oeuvres[0], completion = "stillPlaying" }]));
+
+        var ligne = Ligne(await Etat(client, "usr_encours_etat", pf), oeuvres[0]);
+        Assert.Equal("stillPlaying", ligne.GetProperty("completion").GetString());
+        Assert.True(ligne.GetProperty("played").GetBoolean());
+    }
+
+    [Fact]
+    public async Task Un_titre_simplement_coche_ne_se_relit_pas_en_cours()
+    {
+        // LE témoin de l'item, et la raison pour laquelle le journal ne
+        // suffisait pas : un jeu coché et un jeu déclaré « en cours »
+        // produisent EXACTEMENT les mêmes événements. Sans jugement, les
+        // deux se relisaient pareil — et « il n'a rien dit » devenait « il y
+        // joue encore ».
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_coche_simple", "usr_coche_simple", pf,
+            [new { workId = oeuvres[0] }]));
+
+        var ligne = Ligne(await Etat(client, "usr_coche_simple", pf), oeuvres[0]);
+        Assert.Equal(JsonValueKind.Null, ligne.GetProperty("completion").ValueKind);
+    }
+
+    [Fact]
+    public async Task Une_fermeture_referme_toujours_en_cours()
+    {
+        // Sans cela, « fini » laisserait « en cours » derrière lui : l'écran
+        // relirait les deux, et le plus fort — l'événement daté — masquerait
+        // un jugement contradictoire resté en base.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_ferme_1", "usr_ferme_encours", pf,
+            [new { workId = oeuvres[0], completion = "stillPlaying" }]));
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_ferme_2", "usr_ferme_encours", pf,
+            [new { workId = oeuvres[0], completion = "finished" }]));
+
+        var ligne = Ligne(await Etat(client, "usr_ferme_encours", pf), oeuvres[0]);
+        Assert.Equal("finished", ligne.GetProperty("completion").GetString());
+
+        // Et le JUGEMENT lui-même ne dit plus « encore ». L'état relu ne
+        // suffit pas à le prouver : l'événement daté y masque le jugement
+        // quoi qu'il contienne. Un « en cours » resté en base serait donc
+        // invisible jusqu'au jour où un écran de Phase 3 le lirait.
+        var jugements = await client.GetFromJsonAsync<JsonElement>(
+            "/declarations/usr_ferme_encours");
+        var jugement = jugements.EnumerateArray()
+            .Single(j => j.GetProperty("workId").GetString() == oeuvres[0]);
+        Assert.False(jugement.GetProperty("stillPlaying").GetBoolean());
+    }
+
+    [Fact]
+    public async Task Toujours_en_cours_leve_jamais_joue()
+    {
+        // Invariant 10 : une correction, jamais un refus. Un testeur qui
+        // écarte un titre puis se reprend doit retrouver sa réponse, pas un
+        // refus.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_jamais_puis", "usr_jamais_puis_encours", pf,
+            [new { workId = oeuvres[0], neverPlayed = true }]));
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_puis_encours", "usr_jamais_puis_encours", pf,
+            [new { workId = oeuvres[0], completion = "stillPlaying" }]));
+
+        var ligne = Ligne(await Etat(client, "usr_jamais_puis_encours", pf), oeuvres[0]);
+        Assert.False(ligne.GetProperty("neverPlayed").GetBoolean());
+        Assert.Equal("stillPlaying", ligne.GetProperty("completion").GetString());
+    }
+
     // ------------------------------------- affiner APRÈS avoir coché
 
     [Fact]

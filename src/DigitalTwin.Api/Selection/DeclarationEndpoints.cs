@@ -128,6 +128,11 @@ public static class DeclarationEndpoints
                 workId = d.WorkId,
                 platformId = d.PlatformId,
                 neverPlayed = d.NeverPlayed,
+                // Rendu ici comme les trois autres : un jugement qu'aucun
+                // point d'entrée ne montre ne peut pas être éprouvé, et
+                // c'est ainsi qu'une fermeture manquée resterait invisible
+                // jusqu'à ce qu'un écran de Phase 3 la lise.
+                stillPlaying = d.StillPlaying,
                 provenance = d.Provenance,
                 affect = d.Affect,
             }).ToList());

@@ -2408,3 +2408,32 @@ dans l'un d'eux, et chaque côté le confronte à ce qu'il a réellement sous la
 main — des réponses pour celui qui répond, des sources pour celui qui lit. Et
 quand une des deux moitiés ne peut être tenue qu'à coups d'exceptions, la
 retirer vaut mieux que la maquiller.
+
+### 76 — Deux réponses qui produisent les mêmes événements ne se distinguent pas dans le journal
+
+« Toujours en cours » était traité comme une absence, et le domaine avait une
+bonne raison : `CompletionProjection` la DÉDUIT du journal — un `StartedGame`
+que rien n'a refermé — et un commentaire interdit explicitement un type
+d'événement pour elle, « sinon la position cesserait d'être une absence pour
+devenir un état à maintenir ».
+
+Le raisonnement est juste, et il ne répond pas à la question posée. Un jeu
+simplement coché et un jeu déclaré « j'y joue encore » produisent **exactement
+les mêmes événements**. La projection ne peut donc pas les séparer : elle
+répond « où en est la partie ? », pas « qu'a dit le joueur ? ». La chip
+revenait vierge, et le testeur voyait disparaître ce qu'il venait de dire.
+
+La sortie n'était ni un type d'événement — l'interdit tient — ni le silence,
+mais la troisième porte que le modèle offrait déjà : un **jugement sans
+date**, ce que `PlayDeclaration` existe pour porter (MODELE §5).
+
+Et il a fallu **exposer** ce jugement pour pouvoir l'éprouver : l'état relu
+laisse l'événement daté masquer le jugement quoi qu'il contienne, si bien
+qu'un « en cours » resté en base après un « fini » était invisible. Une
+fermeture manquée ne se serait vue qu'en Phase 3.
+
+**La règle** : devant un champ qu'on croit dérivable, chercher **deux
+saisies différentes qui produisent la même trace**. Si elles existent, la
+dérivation ne répond pas à la question — et il faut stocker la réponse, pas
+la recalculer. Puis vérifier qu'un point d'entrée la montre : ce qu'aucune
+lecture ne rend ne peut pas être éprouvé.

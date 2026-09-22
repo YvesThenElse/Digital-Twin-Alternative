@@ -98,9 +98,15 @@ public sealed class EventStore(PlayerEventDbContext db)
                 // StartedGame que rien n'a refermé — et se relit donc comme
                 // « pas prononcé ». C'est le modèle qui le veut : lui donner
                 // un type ferait de la position un état à maintenir.
+                // Les événements D'ABORD : ils sont datés, et un achèvement
+                // déclaré est plus fort qu'un jugement. Le jugement ne parle
+                // que là où le journal se tait — et c'est précisément là
+                // qu'il est indispensable : un jeu coché et un jeu déclaré
+                // « en cours » produisent les mêmes événements.
                 Completion:
                     siens.Contains(PlayerEventType.CompletedGame) ? "finished"
                     : siens.Contains(PlayerEventType.AbandonedGame) ? "abandoned"
+                    : jugement?.StillPlaying == true ? "stillPlaying"
                     : null,
                 Provenance: ProvenanceEcran(jugement?.Provenance),
                 NeverPlayed: jugement?.NeverPlayed ?? false);
@@ -268,6 +274,9 @@ public sealed class EventStore(PlayerEventDbContext db)
                 DeclarationIntent.NeverPlayed => jugement.DeclareNeverPlayed(),
                 DeclarationIntent.Provenance =>
                     jugement.WithProvenance(Enum.Parse<Provenance>(intention.Value!)),
+                DeclarationIntent.StillPlaying => intention.Value == "true"
+                    ? jugement.DeclareStillPlaying()
+                    : jugement.Closed(),
                 _ => throw new NotSupportedException(
                     $"Intention de déclaration inconnue : « {intention.Kind} »."),
             };
