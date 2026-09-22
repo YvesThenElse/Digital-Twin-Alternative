@@ -1697,3 +1697,30 @@ Et le corollaire de méthode, valable au-delà de ce champ : **un champ que
 personne ne remplit n'est pas un champ neutre**. [[41]] notait déjà qu'un
 champ sans producteur est un manque invisible ; celui-ci montre le degré
 au-dessus — sans producteur, il ne reste pas vide, il ment.
+
+### 52 — Une garde posée sur un composant ne protège pas son appelant
+
+`SelectionMassive` exige une région, et le dit :
+
+> « Requise, sans valeur par défaut : un défaut choisirait en silence le
+> marché d'un joueur, et la décision "international dès le départ" rend ce
+> choix visible. »
+
+La garde est bonne. Elle est aussi **inutile** : `App.tsx` la satisfait avec
+`useState("PAL")`. Le défaut que la prop interdisait s'est simplement
+installé un niveau plus haut.
+
+Ce qui rend le cas coûteux, c'est que la garde **fait croire au problème
+traité**. En relisant le composant, on lit un commentaire qui nomme
+exactement le risque et affirme l'écarter. Personne ne remonte d'un cran.
+
+**La règle** : une prop requise déplace la question, elle ne la résout pas.
+Quand une valeur ne doit pas être choisie par défaut, la garde utile est
+celle qui interdit la **constante littérale** là où elle serait écrite —
+dans l'appelant. C'est ce que fait le détecteur de libellés en dur ([[14]])
+et c'est reproductible : un test qui lit la source et échoue sur un
+`"PAL"` littéral dans `App.tsx`.
+
+Corollaire pour l'audit : **le crible se pose au point d'origine de la
+valeur**, jamais à l'endroit qui la reçoit. Suivre la valeur en remontant
+est le seul parcours qui trouve où elle a été inventée.

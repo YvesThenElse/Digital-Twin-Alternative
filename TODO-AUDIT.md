@@ -14,7 +14,15 @@
 Ils viennent en premier : un testeur les traverse dans cet ordre, et un
 défaut sur l'un d'eux arrête tout ce qui suit.
 
-- [ ] **01 — Le choix de la machine.** `App.tsx`, étape `machine`. Cite : `ecrans/E01-accueil-onboarding.md`, §3.3. *En particulier : la région est décidée ici (`regionFree ? WORLDWIDE : PAL`) — est-ce un choix de l'utilisateur, une donnée du référentiel, ou une constante qui décide en silence du marché d'un joueur ?*
+- [x] **01 — Le choix de la machine.** `App.tsx`, étape `machine`. Cite : `ecrans/E01-accueil-onboarding.md`, §3.3. *En particulier : la région est décidée ici (`regionFree ? WORLDWIDE : PAL`) — est-ce un choix de l'utilisateur, une donnée du référentiel, ou une constante qui décide en silence du marché d'un joueur ?*
+
+  **1 · Envoyé sans être saisi — DÉFAUT.** `web/src/App.tsx:59` initialise `region` à `"PAL"`, et `:84` la recalcule en `p.regionFree ? "WORLDWIDE" : "PAL"`. **Aucun geste de l'utilisateur n'entre là.** §3.4 est pourtant explicite : « la sélection massive n'a de sens que si elle présente la bibliothèque qu'a réellement vue l'utilisateur — un joueur PAL et un joueur NTSC-J n'ont pas connu le même catalogue SNES ». Un testeur japonais ou américain se voit donc annoncer des statuts de sortie européens, sur l'écran dont toute la mécanique repose sur la reconnaissance. → **item 18**.
+
+  **2 · Rendu sans être lu — DÉFAUT.** `/platforms` rend `worksCount` (`ReferenceEndpoints.cs:13`), le client le traduit (`api/client.ts:86`), le type le porte (`selection/types.ts:33`) — et **aucun composant ne l'affiche**. E02 repère B le spécifie pourtant : « 147 jeux · 12 déclarés ». Un champ calculé, transporté sur trois couches et jeté au bout. `launchYear`, lui, est bien lu (`ChoixPeriode.tsx:37`). → **item 19**.
+
+  **3 · Écrit sans être dit — RIEN.** Cet écran ne persiste rien : `chargerOeuvres` (`App.tsx:76`) ne fait que des lectures, et `client.declarer` n'envoie jamais la région (`api/client.ts`, aucun champ `region` dans le corps). Conséquence à noter sans la corriger ici : **la région n'est nulle part enregistrée**, donc un profil ne peut pas dire de quel marché vient le joueur — ce sera à trancher quand le profil deviendra un livrable (Phase 3).
+
+  **Contrôle — quel test échouerait ?** Aucun, pour les deux défauts. Le second est même protégé à l'envers : `ReferentielTests` vérifie que `worksCount` est juste, ce qui rend le champ *correct* et *invisible*. Les tests de garde viendront avec les items 18 et 19.
 
 - [ ] **02 — Le choix de la période.** `periode/ChoixPeriode.tsx`, `periode/periode.ts`. Cite : §24.3, §7.3, `ecrans/00-principes-transverses.md` §3. *Refait à l'item 21 — le crible doit le confirmer, et couvrir ce que la réparation n'a pas touché : les bornes proposées, le refus motivé, et l'absence de `ApproximateYear` alors que §24.3 parle d'une période **approximative**.*
 
@@ -60,6 +68,17 @@ chacune avait raison séparément.
 
 - [ ] **17 — L'inventaire, et le verdict.** Relire les seize items remplis et répondre à une seule question : *le POC peut-il être montré à un testeur ?* Écrire le verdict dans `PHASING.md`, avec ce qui a été regardé et ce qui reste. *Un audit qui constate sans conclure n'est qu'une liste.*
 
+## Ouverts par le crible
+
+Ils demandent une **décision produit**, pas une correction : la boucle les
+inscrit et ne les construit pas.
+
+- [ ] **18 — La région est décidée en silence.** (§3.4) L'application impose `PAL` — ou `WORLDWIDE` sur une machine sans zonage — sans jamais le demander. *Décision attendue : où poser la question (E01 ? un réglage ?), quelles régions offrir, et que faire d'un joueur qui n'en sait rien. Acceptation : la région vient d'un geste de l'utilisateur, et un test échoue si une région littérale réapparaît dans `App.tsx`.*
+
+- [ ] **19 — Le compte de jeux n'est pas affiché.** (E02 repère B) `worksCount` traverse trois couches et n'apparaît jamais. *Acceptation : le compteur « N jeux · M déclarés » est à l'écran, et le second nombre vient de l'état relu.*
+
 ---
 
 ## Journal
+
+- **01 — le choix de la machine.** Deux défauts, aucun corrigé : les deux demandent une construction, et la boucle ne construit pas. **La région est décidée en silence** (`App.tsx:59` et `:84`) alors que §3.4 en fait la condition de sens de la sélection massive. Le détail qui instruit : le composant `SelectionMassive` **se protège** — sa prop `region` est documentée « requise, sans valeur par défaut : un défaut choisirait en silence le marché d'un joueur » — et l'appelant fait exactement cela, un niveau plus haut. La garde était écrite, elle regardait dans la mauvaise direction. Second défaut : **`worksCount` traverse trois couches et n'est jamais affiché**, alors qu'E02 repère B le spécifie ; il est même *testé pour être juste*, ce qui le rend correct et invisible. Rien n'est persisté par cet écran — et la région n'est enregistrée nulle part, ce qu'il faudra trancher quand le profil deviendra un livrable.
