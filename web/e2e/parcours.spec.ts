@@ -480,8 +480,39 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await expect(page.getByRole("button", { name: "Je l'avais" }).first())
     .toHaveAttribute("aria-pressed", "true");
 
+  // --- 5 ter. est-ce moi, ou est-ce le service ? -------------------------
+  //
+  // Le bandeau d'état était écrit, testé, et affiché NULLE PART. Il répond à
+  // la seule question que l'alerte d'un geste ne tranche pas — et un testeur
+  // qui ne peut pas y répondre s'arrête. On coupe donc pour de vrai, et on
+  // MESURE qu'il se voit : « discrètement » n'est pas « invisible », et un
+  // test de composant rend dans un document sans feuille de style.
+  await page.route("**/api/health", (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({
+        status: "degraded",
+        database: { status: "unreachable", detail: "connexion refusée" },
+      }),
+    }));
+  await page.route("**/api/timeline/**", (route) => route.abort());
+  await toucher(page.getByRole("button", { name: "Voir ma timeline" }).click());
+
+  const bandeau = page.getByText(/Service indisponible/);
+  await expect(bandeau).toBeVisible();
+  await expect(bandeau).toContainText("connexion refusée");
+  const hauteurBandeau = await bandeau.evaluate((n) => n.getBoundingClientRect().height);
+  expect(hauteurBandeau, "le bandeau d'état n'a aucune hauteur").toBeGreaterThan(16);
+
+  await page.unroute("**/api/timeline/**");
+  await page.unroute("**/api/health");
+
   // --- 6. la timeline ----------------------------------------------------
   await toucher(page.getByRole("button", { name: "Voir ma timeline" }).click());
+
+  // Et le diagnostic s'efface : il ne survit pas à la réparation.
+  await expect(page.getByText(/Service indisponible/)).toHaveCount(0);
 
   // Les trente titres ont été cochés d'un seul passage, sur une même
   // période : ils forment UN épisode (§4.4), pas trente moments empilés.
@@ -588,7 +619,10 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // erreur d'amorce réelle, et le budget doit la voir — c'est même tout
   // l'intérêt de la compter, puisque la période conservée est ce qui
   // l'empêche d'en coûter deux de plus.
-  const budget = TITRES_A_COCHER + 21;
+  // Un geste de plus : le passage à la timeline qui échoue, avant celui qui
+  // aboutit. C'est un geste réel — un testeur qui tombe sur une panne le
+  // paie aussi.
+  const budget = TITRES_A_COCHER + 22;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

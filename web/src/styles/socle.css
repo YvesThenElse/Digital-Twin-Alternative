@@ -499,6 +499,20 @@ main {
   color: var(--ink-2);
 }
 
+/* Le bandeau d'état — E02, hors ligne : « signalé une seule fois,
+   DISCRÈTEMENT, en pied d'écran — jamais par ligne ». Discret ne veut pas
+   dire invisible : il ne paraît qu'à la panne, et c'est le seul moment où on
+   a besoin de le lire. */
+.etat-service {
+  margin-block-start: var(--e6);
+  padding: var(--e3) var(--e4);
+  border-radius: var(--r2);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font: var(--meta);
+  color: var(--ink-2);
+}
+
 /* --- les quatre états de §5 --------------------------------------------- */
 
 /*

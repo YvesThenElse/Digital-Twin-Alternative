@@ -12,8 +12,10 @@
  */
 export const MESSAGES = {
   // --- état du service ---------------------------------------------------
-  "service.verification": "Vérification du service…",
-  "service.disponible": "Service disponible.",
+  // Un seul libellé : le bandeau ne paraît qu'à la panne. « Vérification… »
+  // et « Service disponible » ont été retirés avec leurs branches — un
+  // libellé que personne n'affiche fait croire que l'écran dit quelque chose
+  // qu'il ne dit pas.
   "service.indisponible": "Service indisponible — base de données : {detail}",
 
   // --- la bande d'époque (E02 repère D) ----------------------------------

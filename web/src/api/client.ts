@@ -12,6 +12,7 @@ import type {
   SouvenirEcrit,
 } from "../selection/SelectionMassive";
 import type { ValeurTemporelle } from "../temporel/valeur";
+import type { EtatSante } from "../EtatDuService";
 
 /**
  * Le client HTTP.
@@ -112,6 +113,18 @@ function sortieDe(oeuvre: OeuvreApi, region: string): ValeurTemporelle | null {
 }
 
 export const client = {
+  /**
+   * L'état du service — <b>la seule requête dont un 503 est une réponse</b>.
+   *
+   * `/health` rend 503 quand la base ne répond pas, et c'est exactement ce
+   * qu'on vient lire : passer par `lire` ferait lever sur le cas utile, et
+   * l'écran ne saurait jamais dire pourquoi il est tombé.
+   */
+  sante: async (): Promise<EtatSante> => {
+    const reponse = await fetch(`${BASE}/health`);
+    return (await reponse.json()) as EtatSante;
+  },
+
   plateformes: () =>
     lire<{ id: string; name: string; regionFree: boolean; launchYear: number; worksCount: number }[]>(
       "/platforms",

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { client } from "./api/client";
 import { dispositionPour, type Disposition } from "./disposition/epoque";
+import { EtatDuService, type EtatSante } from "./EtatDuService";
 import { t } from "./i18n/t";
 import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
@@ -153,6 +154,26 @@ export function App() {
   const [panne, setPanne] = useState<string | null>(null);
 
   /**
+   * Ce que le service dit de lui-même, <b>demandé seulement après une
+   * panne</b>.
+   *
+   * La question « est-ce moi, ou est-ce le service ? » ne se pose qu'une
+   * fois quelque chose tombé. L'interroger en continu ferait une requête de
+   * fond pour n'afficher, le reste du temps, rien du tout.
+   */
+  const [sante, setSante] = useState<EtatSante | undefined>(undefined);
+
+  async function demanderSante() {
+    try {
+      setSante(await client.sante());
+    } catch {
+      // Injoignable au point de ne pas répondre du tout : on ne sait pas, et
+      // on ne l'affirme pas. L'alerte du geste, elle, a déjà parlé.
+      setSante(undefined);
+    }
+  }
+
+  /**
    * Enveloppe un geste. L'alerte s'efface dès que le suivant aboutit : une
    * alerte qui survit à la réparation ferait douter d'un état sain.
    */
@@ -160,15 +181,19 @@ export function App() {
     setPanne(null);
     try {
       await action();
+      // Ce qui marche INVALIDE le diagnostic précédent : un bandeau de panne
+      // qui survit à la réparation ferait douter d'un état sain.
+      setSante(undefined);
     } catch {
       setPanne(t("parcours.echecAction"));
+      void demanderSante();
     }
   }
 
   useEffect(() => {
     client.plateformes()
       .then((liste) => { setPlateformes(liste); setChargement("pret"); })
-      .catch(() => setChargement("echec"));
+      .catch(() => { setChargement("echec"); void demanderSante(); });
   }, []);
 
   /**
@@ -242,6 +267,7 @@ export function App() {
       setChargementSelection("pret");
     } catch {
       setChargementSelection("echec");
+      void demanderSante();
     }
   }
 
@@ -329,6 +355,10 @@ export function App() {
         </section>
       ) : null}
 
+      {/* E02, hors ligne : « signalé une seule fois, discrètement, en PIED
+          d'écran — jamais par ligne ». Il ne paraît qu'à la panne, et il
+          répond à la seule question que l'alerte d'un geste ne tranche pas :
+          est-ce moi, ou est-ce le service ? */}
       {etape === "timeline" ? (
         <Timeline
           entrees={timeline.entries}
@@ -336,6 +366,7 @@ export function App() {
           avertissements={timeline.warnings}
         />
       ) : null}
+      <EtatDuService etat={sante} />
     </main>
   );
 }

@@ -32,7 +32,7 @@
 
 - [x] **F8 — On peut changer de console.** (audit 34 · E02) Une fois la machine choisie, seul un rechargement ramène au choix. *E02 précise « période conservée » : à trancher en le faisant — revenir au choix de machine, ou changer de plateforme en gardant la période. Acceptation : un testeur qui se trompe de console s'en sort sans recharger.*
 
-- [ ] **F9 — `EtatDuService` est monté.** (audit 28) Composant écrit et testé, affiché nulle part — le même défaut que `ZoneSansDate` avant l'item 18 de la Phase 1. *À trancher en le faisant : un bandeau permanent dirait « tout va bien » en continu, ce que §5 ne demande pas ; à l'échec seulement, il risque de ne jamais s'afficher en test.*
+- [x] **F9 — `EtatDuService` est monté.** (audit 28) Composant écrit et testé, affiché nulle part — le même défaut que `ZoneSansDate` avant l'item 18 de la Phase 1. *À trancher en le faisant : un bandeau permanent dirait « tout va bien » en continu, ce que §5 ne demande pas ; à l'échec seulement, il risque de ne jamais s'afficher en test.*
 
 ## L'outillage, et les promesses non tenues
 
@@ -184,3 +184,16 @@
   la plus tardive — une période qui chevauche la sortie reste tenable, et
   « je ne sais plus » n'oppose aucune borne. Le parcours se trompe désormais
   de console pour de bon, et s'en sort en deux gestes.
+
+- **F9** — tranché en le faisant : le bandeau **ne paraît qu'à la panne**, en
+  pied d'écran, et il répond à la seule question que l'alerte d'un geste ne
+  tranche pas — est-ce moi, ou est-ce le service ? Un bandeau permanent
+  dirait « tout va bien » en continu ; on cesse de lire ce qui ne dit jamais
+  rien, y compris le jour où il devient rouge. **Deux de ses trois états ont
+  donc été retirés**, pas gardés en réserve : « disponible » et « pas encore
+  su » n'avaient aucun producteur, et c'est précisément ce que l'audit
+  reprochait à ce composant. Leurs deux libellés sont partis avec — le garde
+  des libellés morts l'aurait exigé. `/health` est demandé **après** un
+  échec, jamais en continu, et le diagnostic s'efface dès que le geste
+  suivant aboutit. La visibilité est mesurée dans le navigateur : « signalé
+  discrètement » n'est pas « invisible ».

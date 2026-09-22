@@ -6,34 +6,30 @@ export type EtatSante = {
 };
 
 /**
- * Le bandeau d'état du service.
+ * Le bandeau d'état du service — <b>il ne parle que quand il a quelque chose
+ * à dire</b>.
  *
- * Trois états et non deux : disponible, indisponible, **pas encore su**.
- * L'absence de réponse n'est pas une réponse — la même règle que les trois
- * états de région du référentiel. Un bandeau vert par défaut affirmerait
- * précisément ce qu'on ignore.
+ * Il répond à une seule question, et elle ne se pose qu'après une panne :
+ * <i>est-ce moi, ou est-ce le service ?</i> Un bandeau permanent y
+ * répondrait « tout va bien » en continu, ce que §5 ne demande pas et que
+ * E02 écarte pour la synchronisation — « signalé une seule fois,
+ * discrètement, en pied d'écran, jamais par ligne ». On cesse de lire un
+ * bandeau qui ne dit jamais rien, y compris le jour où il devient rouge.
+ *
+ * <b>Deux états ont donc été retirés</b>, pas mis en réserve : « disponible »
+ * et « pas encore su » n'avaient aucun producteur qui les affiche, et une
+ * branche que personne n'atteint est exactement ce que l'audit reprochait à
+ * ce composant.
  *
  * `data-etat` porte l'état lisible par la machine. Ce n'est pas du confort de
  * test : « indisponible » contient « disponible », et une assertion sur le
  * texte seul passe pour la mauvaise raison ou échoue pour la bonne.
  */
 export function EtatDuService({ etat }: { etat?: EtatSante }) {
-  if (!etat) {
-    return (
-      <p role="status" data-etat="inconnu">
-        {t("service.verification")}
-      </p>
-    );
-  }
-  if (etat.status === "ok") {
-    return (
-      <p role="status" data-etat="disponible">
-        {t("service.disponible")}
-      </p>
-    );
-  }
+  if (etat === undefined || etat.status === "ok") return null;
+
   return (
-    <p role="status" data-etat="indisponible">
+    <p role="status" data-etat="indisponible" className="etat-service">
       {t("service.indisponible", { detail: etat.database.detail })}
     </p>
   );

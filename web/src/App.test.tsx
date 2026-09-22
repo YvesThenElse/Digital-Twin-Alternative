@@ -24,6 +24,7 @@ const faux = vi.hoisted(() => ({
   // ci-dessous l'a nommé, et un test qui décoche une ligne aurait échoué
   // sur « n'est pas une fonction », loin de sa cause.
   retracter: vi.fn(),
+  sante: vi.fn(),
   timeline: vi.fn(),
 }));
 
@@ -70,6 +71,9 @@ beforeEach(() => {
   faux.souvenirs.mockResolvedValue({});
   faux.titresLibres.mockResolvedValue([]);
   faux.retracter.mockResolvedValue({ retracted: 1 });
+  faux.sante.mockResolvedValue({
+    status: "ok", database: { status: "ok", detail: "PostgreSQL 17.2" },
+  });
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
 });
@@ -193,6 +197,69 @@ describe("App — la timeline s'ouvre", () => {
     // qui nomme les types du domaine, ne traverse PAS.
     expect(await screen.findByTestId("avertissement")).toBeInTheDocument();
     expect(screen.queryByText(/diagnostic du domaine/)).toBeNull();
+  });
+});
+
+describe("App — est-ce moi, ou est-ce le service ? (audit 28)", () => {
+  const injoignable = {
+    status: "degraded" as const,
+    database: { status: "unreachable" as const, detail: "connexion refusée" },
+  };
+
+  it("ne dit rien du service tant que rien n'est tombé", async () => {
+    // Un bandeau permanent dirait « tout va bien » en continu, et on
+    // cesserait de le lire — y compris le jour où il devient rouge. Et il ne
+    // coûte même pas une requête : la question ne se pose pas encore.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    expect(screen.queryByText(/Service indisponible/)).toBeNull();
+    expect(faux.sante).not.toHaveBeenCalled();
+  });
+
+  it("répond à la question quand un geste échoue", async () => {
+    // L'alerte du geste dit « ça n'a pas marché ». Elle ne dit pas POURQUOI,
+    // et c'est la seule chose que le testeur veut savoir avant de décider
+    // s'il réessaie ou s'il s'arrête.
+    const utilisateur = userEvent.setup();
+    faux.sante.mockResolvedValue(injoignable);
+    await jusquALaSelection(utilisateur);
+
+    faux.timeline.mockRejectedValue(new Error("réseau"));
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    expect(await screen.findByText(/connexion refusée/)).toBeInTheDocument();
+  });
+
+  it("se tait de nouveau dès que le geste suivant aboutit", async () => {
+    // Un diagnostic de panne qui survit à la réparation ferait douter d'un
+    // état sain — c'est la règle que l'alerte du geste suit déjà.
+    const utilisateur = userEvent.setup();
+    faux.sante.mockResolvedValue(injoignable);
+    await jusquALaSelection(utilisateur);
+
+    faux.timeline.mockRejectedValue(new Error("réseau"));
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    expect(await screen.findByText(/connexion refusée/)).toBeInTheDocument();
+
+    faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    await waitFor(() => expect(screen.queryByText(/connexion refusée/)).toBeNull());
+  });
+
+  it("n'affirme rien quand le service ne répond même pas", async () => {
+    // Injoignable au point de ne pas répondre du tout : on ne SAIT pas, et
+    // « ni vert ni rouge » vaut mieux qu'un diagnostic inventé.
+    const utilisateur = userEvent.setup();
+    faux.sante.mockRejectedValue(new Error("injoignable"));
+    await jusquALaSelection(utilisateur);
+
+    faux.timeline.mockRejectedValue(new Error("réseau"));
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(screen.queryByText(/Service indisponible/)).toBeNull();
   });
 });
 
