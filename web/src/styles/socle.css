@@ -99,10 +99,29 @@
   --ratio-tuile: 3 / 4;
 
   --contenu-max: 1200px;
+
+  /* Rayons et élévation — la facture, pas le parti pris.
+     §1 demande « pas de pastiche rétro » : le produit parle d'archives, il
+     ne les imite pas. Des rayons généreux et une ombre basse donnent le
+     registre d'aujourd'hui sans toucher à la couleur, qui reste le signe
+     temporel. */
+  --r1: 10px;
+  --r2: 16px;
+  --r3: 24px;
+
+  /* Une seule ombre, deux intensités. Une élévation qui se voit à peine
+     suffit à détacher une carte du papier ; au-delà, on fabrique du
+     volume que l'écran ne doit pas avoir. */
+  --ombre-1: 0 1px 2px rgb(26 24 21 / 0.04), 0 2px 8px rgb(26 24 21 / 0.06);
+  --ombre-2: 0 2px 4px rgb(26 24 21 / 0.06), 0 8px 24px rgb(26 24 21 / 0.10);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Sur fond sombre, l'ombre ne détache plus : c'est la surface qui
+       s'éclaircit. On garde la variable pour ne pas disperser la règle. */
+    --ombre-1: 0 1px 2px rgb(0 0 0 / 0.30);
+    --ombre-2: 0 4px 16px rgb(0 0 0 / 0.40);
     --surface: #16140f;
     --surface-2: #1e1b16;
     --line: #2e2a26;
@@ -179,21 +198,54 @@ select {
   color: inherit;
 }
 
-/* Toute cible tient la règle des 44 px. Déclarée une fois ici, elle n'a pas
-   à être répétée — ni oubliée — écran par écran. */
+/*
+ * Toute cible tient la règle des 44 px, déclarée une fois ici.
+ *
+ * Mais le défaut est **discret**, pas encadré : un écran où chaque action
+ * porte la même bordure n'a plus de hiérarchie, et l'œil ne sait plus ce
+ * qui est principal. Le relief vient au survol, et les vraies cibles —
+ * cartes, lignes — le prennent explicitement.
+ */
 button {
   min-height: var(--cible);
-  border: 1px solid var(--line);
-  border-radius: var(--e2);
-  background: var(--surface-2);
+  border: 0;
+  border-radius: var(--r1);
+  background: transparent;
   padding: var(--e2) var(--e3);
+  text-align: left;
   cursor: pointer;
   transition: background var(--duree-bascule) ease-out,
-    border-color var(--duree-bascule) ease-out;
+    box-shadow var(--duree-bascule) ease-out;
 }
 
 button:hover {
-  border-color: var(--ink-3);
+  background: var(--surface-2);
+}
+
+/* L'action qui fait avancer le parcours. Une seule par écran. */
+.principal {
+  background: var(--ink);
+  color: var(--surface);
+  border-radius: var(--r2);
+  padding: var(--e3) var(--e6);
+  font-weight: 600;
+  text-align: center;
+  box-shadow: var(--ombre-1);
+}
+
+.principal:hover {
+  background: var(--ink);
+  box-shadow: var(--ombre-2);
+}
+
+/* L'action qu'on propose sans l'encourager — « je ne sais plus », et les
+   autres réponses que §6 des principes interdit de présenter comme un
+   abandon. Elle est lisible, pas reléguée. */
+.discret {
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-align: center;
 }
 
 /* Le focus se voit, toujours. §10 : contraste AA, et l'information n'est
@@ -220,6 +272,73 @@ textarea {
   min-height: calc(var(--cible) * 2);
   resize: vertical;
   width: 100%;
+}
+
+/* ------------------------------------------------------------- les cartes */
+
+/*
+ * La carte de reconnaissance — E01 : « grandes cibles visuelles, pas une
+ * liste déroulante. Le choix doit être **reconnu**, pas cherché. »
+ *
+ * Son fond est l'accent de son époque, ce qui fait la moitié du travail de
+ * reconnaissance avant qu'on ait lu le nom : le gradient de température se
+ * lit d'un coup d'œil, et deux consoles de la même décennie se répondent.
+ */
+.grille-cartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--e3);
+}
+
+@media (min-width: 600px) {
+  .grille-cartes {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--e4);
+  }
+}
+
+.carte {
+  /* Le fond vient de `--accent`, que `[data-epoque]` a posé. La carte ne
+     connaît pas la palette ; c'est ce qui permet au test miroir de garder
+     les deux listes alignées. */
+  background: var(--accent, var(--surface-2));
+  border: 0;
+  border-radius: var(--r2);
+  box-shadow: var(--ombre-1);
+  min-height: 112px;
+  padding: var(--e4);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--e1);
+  text-align: left;
+  color: #fff;
+  transition: transform var(--duree-bascule) ease-out,
+    box-shadow var(--duree-bascule) ease-out;
+}
+
+.carte:hover {
+  background: var(--accent, var(--surface-2));
+  box-shadow: var(--ombre-2);
+  transform: translateY(-2px);
+}
+
+/* `prefers-reduced-motion` supprime les DÉPLACEMENTS et garde les opacités
+   (§7) : la carte ne se soulève plus, elle s'éclaire. */
+@media (prefers-reduced-motion: reduce) {
+  .carte:hover {
+    transform: none;
+  }
+}
+
+.carte-nom {
+  font: var(--display-2);
+  line-height: 1.1;
+}
+
+.carte-meta {
+  font: var(--meta);
+  opacity: 0.85;
 }
 
 /* ------------------------------------------------- l'époque, appliquée */

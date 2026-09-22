@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { client } from "./api/client";
 import { dispositionPour, type Disposition } from "./disposition/epoque";
 import { t } from "./i18n/t";
+import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
 import type { PeriodeChoisie } from "./periode/periode";
@@ -174,25 +175,11 @@ export function App() {
       {panne !== null ? <p role="alert">{panne}</p> : null}
 
       {etape === "machine" ? (
-        <section>
-          <h2>{t("parcours.choisirMachine")}</h2>
-          {chargement === "en-cours" ? <p>{t("parcours.chargement")}</p> : null}
-          {chargement === "echec" ? (
-            <p role="alert">{t("parcours.echecCatalogue")}</p>
-          ) : null}
-          {chargement === "pret" && plateformes.length === 0 ? (
-            <p role="status">{t("parcours.catalogueVide")}</p>
-          ) : null}
-          <ul>
-            {plateformes.map((p) => (
-              <li key={p.id}>
-                <button type="button" onClick={() => { void essayer(() => choisirMachine(p)); }}>
-                  {p.nom}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <ChoixMachine
+          plateformes={plateformes}
+          chargement={chargement}
+          choisir={(p) => { void essayer(() => choisirMachine(p)); }}
+        />
       ) : null}
 
       {etape === "periode" && machine !== null ? (

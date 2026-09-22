@@ -49,7 +49,7 @@ afterEach(() => vi.clearAllMocks());
 
 async function jusquALaSelection(utilisateur: ReturnType<typeof userEvent.setup>) {
   render(<App />);
-  await utilisateur.click(await screen.findByRole("button", { name: "Super Nintendo" }));
+  await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
   await utilisateur.click(screen.getByRole("button", { name: "Plutôt une période" }));
   await utilisateur.click(screen.getByRole("button", { name: "Voir les jeux" }));
 }
@@ -95,7 +95,7 @@ describe("App — un geste qui échoue le dit (principes §5)", () => {
     faux.oeuvres.mockRejectedValue(new Error("réseau"));
     render(<App />);
 
-    await utilisateur.click(await screen.findByRole("button", { name: "Super Nintendo" }));
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
 
     expect(await screen.findByRole("alert")).toBeInTheDocument();
   });
@@ -120,7 +120,7 @@ describe("App — un geste qui échoue le dit (principes §5)", () => {
     faux.oeuvres.mockRejectedValueOnce(new Error("réseau"));
     render(<App />);
 
-    const console = await screen.findByRole("button", { name: "Super Nintendo" });
+    const console = await screen.findByRole("button", { name: /^Super Nintendo/ });
     await utilisateur.click(console);
     expect(await screen.findByRole("alert")).toBeInTheDocument();
 

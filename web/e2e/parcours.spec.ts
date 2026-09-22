@@ -91,14 +91,14 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // vient du nombre d'éléments visibles, jamais de la compression des
   // cibles (§6).
   const hauteurBouton = await page
-    .getByRole("button", { name: "Super Nintendo Entertainment System" })
+    .getByRole("button", { name: /^Super Nintendo Entertainment System/ })
     .evaluate((n) => n.getBoundingClientRect().height);
   expect(hauteurBouton, "une cible sous 44 px").toBeGreaterThanOrEqual(44);
 
   // --- 1. la machine -----------------------------------------------------
   await expect(page.getByRole("heading", { name: /console/i })).toBeVisible();
   await toucher(
-    page.getByRole("button", { name: "Super Nintendo Entertainment System" }).click(),
+    page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }).click(),
   );
 
   // --- 2. la période -----------------------------------------------------
@@ -220,7 +220,7 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // concluait qu'il avait perdu deux heures de saisie. C'est le seul endroit
   // où ce défaut se voit — aucun test de composant ne recharge une page.
   await page.goto(`/?profil=${profil}`);
-  await page.getByRole("button", { name: "Super Nintendo Entertainment System" }).click();
+  await page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }).click();
   await page.getByRole("button", { name: "Plutôt une période" }).click();
   await page.getByRole("button", { name: "Voir les jeux" }).click();
 
