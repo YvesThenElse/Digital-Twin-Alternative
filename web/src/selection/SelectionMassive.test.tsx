@@ -37,6 +37,7 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
       retracter={retracter}
       etatInitial={[]}
       souvenirsInitiaux={{}}
+      titresLibresInitiaux={[]}
       {...surcharge}
     />,
   );
@@ -1264,5 +1265,68 @@ describe("SelectionMassive — « jamais joué » (§24.3, E02)", () => {
         entries: [{ workId: "w1", neverPlayed: true }],
       })),
     );
+  });
+});
+
+describe("SelectionMassive — relire les titres saisis (§3.5)", () => {
+  const revendication = { id: "ucl_dragon", titre: "Le jeu de mon cousin" };
+  const lignesLibres = () => screen.queryAllByTestId("titre-libre");
+
+  it("remontre un titre saisi lors d'une visite précédente", async () => {
+    // §3.5 : les déclarations non résolues sont « visibles dans son profil
+    // COMME LES AUTRES ». Une revendication ajoutée disparaissait de l'écran
+    // au rechargement tout en restant sur la timeline : le joueur la
+    // resaisissait, et la base en gardait deux formes du même souvenir.
+    monter({ titresLibresInitiaux: [revendication] });
+
+    expect(lignesLibres()).toHaveLength(1);
+    expect(lignesLibres()[0]).toHaveTextContent("Le jeu de mon cousin");
+  });
+
+  it("le marque comme non canonique, comme à la saisie", async () => {
+    // « Marquées comme non canoniques » (§3.5). Relue sans sa marque, une
+    // saisie libre se lirait comme une entrée du référentiel dont la date
+    // manquerait.
+    monter({ titresLibresInitiaux: [revendication] });
+
+    expect(lignesLibres()[0]).toHaveAttribute("data-canonique", "false");
+  });
+
+  it("remontre son souvenir, attaché à la revendication", async () => {
+    // C'est là que §9 place le contenu le plus personnel. Le champ revenait
+    // vide alors que la phrase était en base — et c'est précisément celle-là
+    // qu'un testeur ne réécrira pas.
+    monter({
+      titresLibresInitiaux: [revendication],
+      souvenirsInitiaux: { ucl_dragon: { texte: "Le dragon était bleu.", titre: "" } },
+    });
+
+    expect(screen.getByRole("textbox", { name: /Un souvenir sur Le jeu de mon cousin/ }))
+      .toHaveValue("Le dragon était bleu.");
+  });
+
+  it("le compte dans la récompense, comme les autres", async () => {
+    // Il a été déclaré : l'oublier ferait reculer la bande d'une visite à
+    // l'autre, et le joueur y lirait une perte.
+    monter({ titresLibresInitiaux: [revendication] });
+
+    expect(bande()).toHaveAttribute("data-total", "1");
+  });
+
+  it("n'en invente aucun quand le profil n'en a pas", async () => {
+    monter();
+
+    expect(lignesLibres()).toHaveLength(0);
+  });
+
+  it("n'écrase pas un titre relu quand on en ajoute un nouveau", async () => {
+    const utilisateur = userEvent.setup();
+    monter({ titresLibresInitiaux: [revendication] });
+
+    await utilisateur.type(
+      screen.getByRole("textbox", { name: /titre absent/i }), "Un autre jeu");
+    await utilisateur.click(screen.getByRole("button", { name: /ajouter ce titre/i }));
+
+    expect(lignesLibres()).toHaveLength(2);
   });
 });

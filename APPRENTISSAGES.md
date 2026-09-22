@@ -2295,3 +2295,33 @@ comme un fait » — ici l'absence se lisait comme un geste.
 jamais en énumérant les rejets — et, dans un test qui fabrique un événement
 d'entrée, vérifier que l'événement porte réellement ce qu'on croit lui
 donner, en mesurant au moins une de ses valeurs.
+
+### 72 — Un faux écrit à la main n'a aucun contrat avec ce qu'il remplace
+
+Ajouter un point d'entrée au client a fait échouer **trois tests
+d'assemblage sans rapport**, qui se plaignaient tous de ne pas trouver un
+bouton. La cause : le faux du module, un objet écrit à la main, ne portait
+pas la nouvelle méthode ; l'appel levait, et l'enveloppe qui transforme un
+échec en alerte a fait le reste. On cherche le défaut dans l'écran pendant
+que la cause est dans le décor.
+
+Une ligne suffit à rendre l'omission visible à la compilation :
+
+```ts
+import type { client as ClientReel } from "./api/client";
+const _contrat: Record<keyof typeof ClientReel, unknown> = faux;
+```
+
+L'import de type disparaît à la compilation, donc il n'entre pas dans la
+fabrique du mock — qui ne peut rien voir de son dehors. **Et il a trouvé une
+omission dès sa première exécution** : `retracter` manquait au faux depuis
+l'arrivée de la rétractation.
+
+C'est [[56]] retournée : là, un champ que l'API rend et que le client ne
+déclare pas disparaît en silence ; ici, une méthode que le vrai porte et que
+le faux ignore explose loin de sa cause. Dans les deux cas, le défaut est
+l'absence de contrat entre deux descriptions du même objet.
+
+**La règle** : relier tout double — faux, bouchon, décor — à son original par
+une contrainte de type, et l'écrire au moment où l'on crée le double, pas au
+premier accident.

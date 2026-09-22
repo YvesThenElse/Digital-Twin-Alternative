@@ -22,7 +22,7 @@
 
 - [x] **F3 — « Jamais joué » est saisissable et relu.** (audit 23 · §24.3) L'API l'accepte depuis la Phase 1, l'état le rend, **aucun geste ne le pose et aucun rendu ne le montre**. E02 le décrit : balayage à gauche sur mobile, `X` au survol sur desktop, icône « cercle barré » — déjà dessinée. *Acceptation : le geste pose la déclaration, elle se relit distinctement d'un titre non coché, et elle n'est jamais présentée comme un abandon (§6 des principes).*
 
-- [ ] **F4 — Les titres saisis sont relus.** (audit 24 · §3.5) Une revendication ajoutée disparaît de la sélection au rechargement tout en restant sur la timeline. **Le moyen existe déjà et n'est jamais appelé** : `GET /unresolved/{user}`. *Acceptation : un titre saisi revient à l'écran après rechargement, marqué comme tel, avec son souvenir.*
+- [x] **F4 — Les titres saisis sont relus.** (audit 24 · §3.5) Une revendication ajoutée disparaît de la sélection au rechargement tout en restant sur la timeline. **Le moyen existe déjà et n'est jamais appelé** : `GET /unresolved/{user}`. *Acceptation : un titre saisi revient à l'écran après rechargement, marqué comme tel, avec son souvenir.*
 
 - [ ] **F5 — Les avertissements causals atteignent quelqu'un.** (audit 27 · §5.4) L'API les calcule et les rend ; le type du client ne déclare pas le champ, donc personne ne les voit. Ce sont des avertissements **doux** : ils informent, ils ne bloquent rien. *Acceptation : une incohérence déclarée — « fini » avant « commencé » — est visible sur l'axe, et rien n'est refusé à cause d'elle.*
 
@@ -102,3 +102,15 @@
   latéral et le geste n'atteint jamais l'application — le parcours mobile le
   prouve, par un vrai toucher. Ce qui est laissé : corriger « jamais joué »
   en « joué » demande deux gestes, et c'est voulu.
+
+- **F4** — `GET /unresolved/{user}` est enfin appelé. Le filtrage par
+  plateforme est **dans le client** : le point d'entrée rend le profil
+  entier, et c'est ce qu'il doit faire — la timeline les traverse toutes.
+  Les revendications déjà rattachées sont écartées, sans quoi le même jeu
+  s'afficherait deux fois, dont une marquée « hors du référentiel ». Le
+  titre relu porte l'identifiant de sa revendication, ce qui lui rend son
+  souvenir d'emblée, et il compte dans la bande — un recul d'une visite à
+  l'autre se lit comme une perte. `client.souvenirs` ne filtre plus les
+  cibles : les titres saisis ont désormais une ligne où les afficher. Ce qui
+  est laissé : l'état de passe 2 d'un titre saisi n'est pas relu — l'API ne
+  le rend que pour les œuvres.

@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { client as ClientReel } from "./api/client";
 
 /**
  * L'assemblage du parcours.
@@ -16,12 +17,33 @@ const faux = vi.hoisted(() => ({
   oeuvres: vi.fn(),
   etatSelection: vi.fn(),
   souvenirs: vi.fn(),
+  titresLibres: vi.fn(),
   declarer: vi.fn(),
   souvenir: vi.fn(),
+  // Manquait au faux depuis l'arrivée de la rétractation : le contrat
+  // ci-dessous l'a nommé, et un test qui décoche une ligne aurait échoué
+  // sur « n'est pas une fonction », loin de sa cause.
+  retracter: vi.fn(),
   timeline: vi.fn(),
 }));
 
 vi.mock("./api/client", () => ({ client: faux }));
+
+/**
+ * Le faux doit porter <b>tout</b> ce que le vrai porte.
+ *
+ * Sans cette ligne, un point d'entrée ajouté au client manque au faux, l'appel
+ * échoue à l'exécution, et `essayer` transforme la panne en alerte : trois
+ * tests sans rapport se plaignent alors de ne pas trouver un bouton. On
+ * cherche le défaut dans l'écran pendant que la cause est dans le décor.
+ *
+ * L'import est de TYPE seulement : il disparaît à la compilation, et
+ * n'entre donc pas dans la fabrique du mock, qui ne peut rien voir de son
+ * dehors.
+ */
+type ContratDuClient = Record<keyof typeof ClientReel, unknown>;
+const _contrat: ContratDuClient = faux;
+void _contrat;
 
 const { App } = await import("./App");
 
@@ -41,6 +63,8 @@ beforeEach(() => {
   faux.oeuvres.mockResolvedValue(OEUVRES);
   faux.etatSelection.mockResolvedValue([]);
   faux.souvenirs.mockResolvedValue({});
+  faux.titresLibres.mockResolvedValue([]);
+  faux.retracter.mockResolvedValue({ retracted: 1 });
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [] });
 });
@@ -150,6 +174,20 @@ describe("App — la fraîcheur de ce qui est relu", () => {
     await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
 
     await waitFor(() => expect(faux.etatSelection).toHaveBeenCalled());
+  });
+
+  it("relit les titres saisis, sur la plateforme affichée", async () => {
+    // Le point d'entrée existait et n'était appelé par PERSONNE : une
+    // revendication ajoutée disparaissait de l'écran au rechargement tout en
+    // restant sur la timeline. Un moyen écrit et jamais employé ressemble
+    // exactement à un moyen qui manque — sauf qu'il est vert.
+    const utilisateur = userEvent.setup();
+    faux.titresLibres.mockResolvedValue([{ id: "ucl_1", titre: "Le jeu de mon cousin" }]);
+
+    await jusquALaSelection(utilisateur);
+
+    expect(faux.titresLibres).toHaveBeenCalledWith(expect.any(String), "plt_snes");
+    expect(await screen.findByTestId("titre-libre")).toHaveTextContent("Le jeu de mon cousin");
   });
 
   it("recharger la liste ne QUITTE PAS l'écran de sélection", async () => {

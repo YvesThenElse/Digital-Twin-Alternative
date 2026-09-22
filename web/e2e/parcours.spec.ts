@@ -385,6 +385,23 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // chaque visite — ou pire, la cocherait.
   await expect(page.getByRole("button", { name: `Jamais joué : ${titreEcarte}` }))
     .toHaveCount(1);
+
+  // **Et le titre SAISI est revenu**, marqué comme tel et avec sa phrase.
+  // Il disparaissait de l'écran au rechargement tout en restant sur la
+  // timeline : le joueur le resaisissait, et la base gardait deux formes du
+  // même souvenir. §3.5 les veut « visibles dans son profil comme les
+  // autres ». Le moyen — `GET /unresolved/{user}` — existait et n'était
+  // appelé par personne.
+  const libreRelu = page.getByTestId("titre-libre");
+  await expect(libreRelu).toHaveCount(1);
+  await expect(libreRelu).toContainText(TITRE_ABSENT);
+  await expect(libreRelu).toHaveAttribute("data-canonique", "false");
+  await expect(page.getByRole("textbox", { name: `Un souvenir sur ${TITRE_ABSENT} ?` }))
+    .toHaveValue(SOUVENIR_LIBRE);
+
+  // La bande retrouve son compte : le titre saisi y est compté comme les
+  // autres. Un recul d'une visite à l'autre se lit comme une perte.
+  await expect(bande).toHaveAttribute("data-total", String(TITRES_DECLARES));
   // Et la passe 2 est remontrée, pas seulement conservée en base.
   await expect(page.getByRole("button", { name: "Fini" }).first())
     .toHaveAttribute("aria-pressed", "true");

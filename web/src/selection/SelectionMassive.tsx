@@ -95,6 +95,15 @@ const SANS_REPONSE: Affinage = { completion: null, provenance: null };
 /** Un titre saisi, et la revendication que l'API lui a donnée. */
 type TitreLibre = Oeuvre & { claimId: string | null };
 
+/**
+ * Un titre saisi lors d'une visite précédente, tel que l'API le rend.
+ *
+ * Son identifiant est celui de la REVENDICATION : contrairement à un titre
+ * qu'on vient de saisir, il est connu d'emblée, et le souvenir peut s'y
+ * attacher dès l'affichage.
+ */
+export type TitreLibreRelu = { id: string; titre: string };
+
 type Props = {
   oeuvres: Oeuvre[];
   /**
@@ -147,6 +156,19 @@ type Props = {
    * le dise.
    */
   souvenirsInitiaux: Record<string, SouvenirEcrit>;
+  /**
+   * Les titres saisis lors des visites précédentes, sur CETTE plateforme.
+   *
+   * §3.5 les veut « visibles dans son profil comme les autres ». Ils
+   * disparaissaient de l'écran au rechargement tout en restant sur la
+   * timeline : le joueur les resaisissait, et la base gardait deux formes du
+   * même souvenir.
+   *
+   * Requis, sans valeur par défaut, pour la même raison qu'`etatInitial` :
+   * un appelant qui l'oublie verrait un écran incomplet sans qu'aucune
+   * erreur ne le dise.
+   */
+  titresLibresInitiaux: TitreLibreRelu[];
 };
 
 /**
@@ -241,10 +263,17 @@ function ChampSouvenir({ titre, valeur, surSaisie, surSortie }: {
 
 export function SelectionMassive({
   oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger, retracter, etatInitial,
-  souvenirsInitiaux,
+  souvenirsInitiaux, titresLibresInitiaux,
 }: Props) {
   const [declarees, setDeclarees] = useState<Set<string>>(
-    () => new Set(etatInitial.filter((l) => l.played).map((l) => l.workId)),
+    () => new Set([
+      ...etatInitial.filter((l) => l.played).map((l) => l.workId),
+      // Une revendication existe PARCE QU'ELLE A ÉTÉ DÉCLARÉE : l'API la
+      // frappe en traduisant le lot. La compter ici est ce qui empêche la
+      // bande de reculer d'une visite à l'autre — un recul se lit comme une
+      // perte, sur l'écran dont §24.4 fait la récompense.
+      ...titresLibresInitiaux.map((relu) => relu.id),
+    ]),
   );
 
   // Les réponses de passe 2, par œuvre. Celles déjà en base sont remontrées :
@@ -289,7 +318,24 @@ export function SelectionMassive({
   // mélanger leur donnerait un rang, une notoriété et un statut régional
   // qu'ils n'ont pas — c'est-à-dire l'apparence d'une donnée vérifiée là où
   // il n'y a qu'un souvenir.
-  const [titresLibres, setTitresLibres] = useState<TitreLibre[]>([]);
+  const [titresLibres, setTitresLibres] = useState<TitreLibre[]>(() =>
+    titresLibresInitiaux.map((relu) => ({
+      // L'identifiant d'écran EST celui de la revendication : le souvenir
+      // s'indexe par cible, et un identifiant local l'empêcherait de se
+      // retrouver.
+      id: relu.id,
+      claimId: relu.id,
+      titre: relu.titre,
+      // Inerte, comme pour un titre qu'on vient de saisir : une revendication
+      // n'a ni notoriété, ni sortie, ni région. Lui en donner l'apparence
+      // ferait passer un souvenir pour une donnée vérifiée.
+      rang: Number.MAX_SAFE_INTEGER,
+      sortie: null,
+      couverture: null,
+      regions: [],
+      statutRegional: {},
+    })),
+  );
   const [saisie, setSaisie] = useState("");
   const compteurLibre = useRef(0);
 

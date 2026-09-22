@@ -95,23 +95,61 @@ describe("client.souvenirs — relire ce qui a été écrit", () => {
     });
   });
 
-  it("ne retient que les œuvres — les titres saisis n'ont pas de ligne à l'écran", async () => {
-    // L'état de la sélection ne rend pas encore les revendications : leur
-    // souvenir n'aurait nulle part où s'afficher, et l'indexer ferait croire
-    // à une ligne qui n'existe pas.
+  it("retient AUSSI les titres saisis, qui ont désormais leur ligne", async () => {
+    // Ils étaient écartés tant que l'écran ne les relisait pas : leur
+    // souvenir n'avait nulle part où s'afficher. Depuis qu'ils reviennent
+    // (§3.5), les écarter perdrait justement la phrase la plus personnelle
+    // du produit — §9 la place sur les jeux qu'on ne retrouve pas.
     reponse = [
-      { targetKind: "work", targetId: "wrk_1", text: "Gardé.", title: null },
-      { targetKind: "unresolvedClaim", targetId: "ucl_1", text: "Écarté.", title: null },
+      { targetKind: "work", targetId: "wrk_1", text: "Sur une œuvre.", title: null },
+      { targetKind: "unresolvedClaim", targetId: "ucl_1", text: "Sur un titre saisi.",
+        title: null },
     ];
 
-    expect(await client.souvenirs("usr_1"))
-      .toEqual({ wrk_1: { texte: "Gardé.", titre: "" } });
+    expect(await client.souvenirs("usr_1")).toEqual({
+      wrk_1: { texte: "Sur une œuvre.", titre: "" },
+      ucl_1: { texte: "Sur un titre saisi.", titre: "" },
+    });
   });
 
   it("rend un objet vide, jamais une erreur, pour un profil vierge", async () => {
     reponse = [];
 
     expect(await client.souvenirs("usr_vierge")).toEqual({});
+  });
+});
+
+describe("client.titresLibres — relire ce que l'utilisateur a saisi (§3.5)", () => {
+  it("ne rend que les revendications de LA plateforme affichée", async () => {
+    // L'écran n'en montre qu'une. Rendre celles des autres ferait apparaître
+    // un jeu Game Boy dans la liste Super Nintendo — et un clic dessus
+    // attribuerait la déclaration à la mauvaise machine.
+    reponse = [
+      { id: "ucl_1", title: "Le jeu de mon cousin", platformId: "plt_snes", resolved: false },
+      { id: "ucl_2", title: "Un jeu Game Boy", platformId: "plt_gb", resolved: false },
+    ];
+
+    expect(await client.titresLibres("usr_1", "plt_snes"))
+      .toEqual([{ id: "ucl_1", titre: "Le jeu de mon cousin" }]);
+  });
+
+  it("écarte une revendication déjà rattachée à une œuvre", async () => {
+    // Résolue, elle EST dans la liste du référentiel : la montrer aussi en
+    // titre libre afficherait le même jeu deux fois, une fois marqué « hors
+    // du référentiel » alors qu'il y est entré.
+    reponse = [
+      { id: "ucl_1", title: "Résolu", platformId: "plt_snes", resolved: true,
+        resolvedWorkId: "wrk_42" },
+    ];
+
+    expect(await client.titresLibres("usr_1", "plt_snes")).toEqual([]);
+  });
+
+  it("demande le point d'entrée du profil, pas celui de la plateforme", async () => {
+    reponse = [];
+    await client.titresLibres("usr_1", "plt_snes");
+
+    expect(appels[0].url).toBe("/api/unresolved/usr_1");
   });
 });
 

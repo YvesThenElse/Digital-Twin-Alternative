@@ -10,6 +10,7 @@ import {
   SelectionMassive,
   type EtatLigne,
   type SouvenirEcrit,
+  type TitreLibreRelu,
 } from "./selection/SelectionMassive";
 import { Timeline } from "./timeline/Timeline";
 import type { EntreeTimeline, MomentTimeline } from "./timeline/types";
@@ -85,6 +86,7 @@ export function App() {
   const [etatInitial, setEtatInitial] = useState<EtatLigne[]>([]);
   const [souvenirsInitiaux, setSouvenirsInitiaux] =
     useState<Record<string, SouvenirEcrit>>({});
+  const [titresLibresInitiaux, setTitresLibresInitiaux] = useState<TitreLibreRelu[]>([]);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -144,12 +146,17 @@ export function App() {
    * phrase perdue le temps qu'elle arrive.
    */
   async function relireEtat(p: Plateforme) {
-    const [etat, notes] = await Promise.all([
+    const [etat, notes, libres] = await Promise.all([
       client.etatSelection(UTILISATEUR, p.id),
       client.souvenirs(UTILISATEUR),
+      // §3.5 : « visibles dans son profil comme les autres ». Sans cette
+      // lecture, une revendication ajoutée disparaissait de l'écran au
+      // rechargement tout en restant sur la timeline.
+      client.titresLibres(UTILISATEUR, p.id),
     ]);
     setEtatInitial(etat);
     setSouvenirsInitiaux(notes);
+    setTitresLibresInitiaux(libres);
   }
 
   async function choisirMachine(p: Plateforme) {
@@ -242,6 +249,7 @@ export function App() {
             }
             etatInitial={etatInitial}
             souvenirsInitiaux={souvenirsInitiaux}
+            titresLibresInitiaux={titresLibresInitiaux}
           />
           <button type="button" onClick={() => void essayer(ouvrirTimeline)}>
             {t("parcours.voirTimeline")}

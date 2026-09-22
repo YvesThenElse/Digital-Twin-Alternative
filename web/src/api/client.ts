@@ -34,7 +34,7 @@ const BASE = "/api";
  * | `/platforms/{id}/works` | `releases[].confidence` | dérivée de la granularité, déjà rendue |
  * | `/memories/{user}` | `updatedAt` | aucun écran ne montre la date d'une note |
  * | `/timeline/{user}` | `warnings` | **défaut** — §5.4 veut qu'ils soient vus (item 27) |
- * | `/unresolved/{user}` | *point d'entrée entier* | jamais appelé ; c'est pourtant le moyen de relire les titres saisis (item 24) |
+ * | `/unresolved/{user}` | `resolved`, `resolvedWorkId` | une revendication rattachée est déjà dans la liste du référentiel |
  *
  * Et une dérive de TYPE, latente : `/platforms` déclare `LaunchYear` comme
  * facultative côté API, ce client la déclare `number`. Un `null` traversé
@@ -181,20 +181,43 @@ export const client = {
     }),
 
   /**
+   * Les titres saisis lors des visites précédentes, sur une plateforme.
+   *
+   * <b>Filtré ICI et non par l'API</b> : le point d'entrée rend le profil
+   * entier, et c'est ce qu'il doit faire — la timeline les traverse toutes.
+   * L'écran, lui, n'en montre qu'une : y faire apparaître un jeu Game Boy
+   * attribuerait la déclaration à la mauvaise machine.
+   *
+   * Les revendications <b>déjà rattachées</b> sont écartées : elles sont dans
+   * la liste du référentiel, et les montrer aussi en titre libre afficherait
+   * le même jeu deux fois — une fois marqué « hors du référentiel » alors
+   * qu'il y est entré.
+   */
+  titresLibres: (userId: string, platformId: string) =>
+    lire<{ id: string; title: string; platformId: string; resolved: boolean }[]>(
+      `/unresolved/${userId}`,
+    ).then((liste) =>
+      liste
+        .filter((c) => c.platformId === platformId && !c.resolved)
+        .map((c) => ({ id: c.id, titre: c.title })),
+    ),
+
+  /**
    * Les souvenirs déjà écrits, indexés par cible.
    *
-   * Seules les œuvres sont retenues : l'état de la sélection ne rend pas
-   * encore les titres saisis (audit, item 24), donc leurs lignes n'existent
-   * pas à l'écran et leurs souvenirs n'auraient nulle part où s'afficher.
+   * <b>Les deux genres.</b> Les titres saisis étaient écartés tant que
+   * l'écran ne les relisait pas ; depuis qu'ils reviennent (§3.5), les
+   * écarter perdrait la phrase la plus personnelle du produit — §9 la place
+   * justement sur les jeux qu'on ne retrouve pas.
+   *
+   * Les deux espaces d'identifiants ne se croisent pas : `wrk_` et `ucl_`.
    */
   souvenirs: (userId: string) =>
     lire<{ targetKind: string; targetId: string; text: string; title: string | null }[]>(
       `/memories/${userId}`,
     ).then((liste): Record<string, SouvenirEcrit> =>
       Object.fromEntries(
-        liste
-          .filter((m) => m.targetKind === "work")
-          .map((m) => [m.targetId, { texte: m.text, titre: m.title ?? "" }]),
+        liste.map((m) => [m.targetId, { texte: m.text, titre: m.title ?? "" }]),
       ),
     ),
 
