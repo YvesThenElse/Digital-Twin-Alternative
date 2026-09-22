@@ -26,6 +26,7 @@ const faux = vi.hoisted(() => ({
   retracter: vi.fn(),
   sante: vi.fn(),
   timeline: vi.fn(),
+  synthese: vi.fn(),
 }));
 
 vi.mock("./api/client", () => ({ client: faux }));
@@ -76,6 +77,7 @@ beforeEach(() => {
   });
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
+  faux.synthese.mockResolvedValue({ figures: null, opening: null });
 });
 
 afterEach(() => vi.clearAllMocks());
@@ -200,6 +202,74 @@ describe("App — la timeline s'ouvre", () => {
     // qui nomme les types du domaine, ne traverse PAS.
     expect(await screen.findByTestId("avertissement")).toBeInTheDocument();
     expect(screen.queryByText(/diagnostic du domaine/)).toBeNull();
+  });
+
+  it("porte la synthèse AU-DESSUS de l'axe, et elle vient de l'API", async () => {
+    // E04 : « sa synthèse forme l'en-tête de `/mon-histoire`, AU-DESSUS de la
+    // timeline E03 ». L'ordre n'est pas décoratif : le portrait est ce qui
+    // doit produire « oui, ça me ressemble », et il le produit avant la
+    // lecture détaillée, pas après.
+    const utilisateur = userEvent.setup();
+    faux.synthese.mockResolvedValue({
+      figures: { consoles: 2, gamesDeclared: 40, finished: 9, memoriesWritten: 3 },
+      opening: { years: 35, platform: "Game Boy",
+                 occurredAt: { kind: "ApproximateYear", year: 1991, margin: 2 } },
+    });
+
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    const portrait = await screen.findByTestId("portrait");
+    expect(portrait).toHaveTextContent("Game Boy");
+    // AU-DESSUS : mesuré sur le document, pas supposé d'après l'ordre du
+    // code. `compareDocumentPosition` dit FOLLOWING quand l'axe suit.
+    const axe = screen.getByTestId("axe");
+    expect(portrait.compareDocumentPosition(axe) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .toBeTruthy();
+  });
+
+  it("ne recompte pas les chiffres sur ce que l'écran a chargé", async () => {
+    // Le défaut que cette architecture existe pour empêcher : l'écran n'a
+    // qu'UNE plateforme en mémoire et quelques lignes ; un compte fait ici
+    // dirait « 1 console » à qui en a saisi quatre, et il serait juste par
+    // rapport à l'écran. Les chiffres affichés sont donc EXACTEMENT ceux que
+    // l'API rend — y compris quand ils ne ressemblent pas à l'écran.
+    const utilisateur = userEvent.setup();
+    faux.synthese.mockResolvedValue({
+      figures: { consoles: 4, gamesDeclared: 128, finished: 31, memoriesWritten: 7 },
+      opening: null,
+    });
+    faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
+
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    await screen.findByTestId("portrait");
+    expect(screen.getAllByTestId("portrait-nombre").map((n) => n.textContent))
+      .toEqual(["4", "128", "31", "7"]);
+  });
+
+  it("demande la synthèse pour CE profil, et une seule fois", async () => {
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    await waitFor(() => expect(faux.synthese).toHaveBeenCalledTimes(1));
+    expect(faux.synthese.mock.calls[0]).toEqual(faux.timeline.mock.calls[0]);
+  });
+
+  it("dit que rien n'a pu s'ouvrir quand la synthèse échoue", async () => {
+    // Elle voyage avec l'axe : un en-tête qui manque en silence ferait croire
+    // au joueur que son histoire s'est vidée, et c'est le pire endroit du
+    // produit pour laisser ce doute.
+    const utilisateur = userEvent.setup();
+    faux.synthese.mockRejectedValue(new Error("réseau"));
+
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(screen.queryByTestId("axe")).toBeNull();
   });
 });
 

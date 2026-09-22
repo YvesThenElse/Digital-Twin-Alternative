@@ -139,7 +139,7 @@ public static class CompletionProjection
 
         foreach (var e in events)
         {
-            if (!EstExperience(e.Type))
+            if (!IsExperience(e.Type))
             {
                 // Invariant 5 : posséder n'est pas jouer. Un jeu acheté et
                 // jamais lancé n'entre pas au dénominateur.
@@ -158,7 +158,16 @@ public static class CompletionProjection
         return new CompletionRate(finis, parOeuvre.Count);
     }
 
-    private static bool EstExperience(string type) => type is
+    /// <summary>
+    /// Jouer, par opposition à posséder — <b>invariant 5</b>.
+    ///
+    /// <para>Publique parce qu'un second lecteur en dépend : la synthèse du
+    /// profil compte « jeux déclarés » et fait commencer l'histoire au premier
+    /// moment JOUÉ. Recopier la liste là-bas la ferait diverger de
+    /// celle-ci — et c'est le dénominateur d'un taux qui se mettrait à
+    /// mentir.</para>
+    /// </summary>
+    public static bool IsExperience(string type) => type is
         PlayerEventType.DiscoveredGame or PlayerEventType.StartedGame or
         PlayerEventType.CompletedGame or PlayerEventType.AbandonedGame or
         PlayerEventType.ReplayedGame;

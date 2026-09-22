@@ -578,10 +578,87 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Et le diagnostic s'efface : il ne survit pas à la réparation.
   await expect(page.getByText(/Service indisponible/)).toHaveCount(0);
 
+  // --- 6 ter. le portrait, au-dessus de l'axe (E04) ----------------------
+  //
+  // « En Phase 1, E04 n'est pas un écran séparé : sa synthèse forme l'en-tête
+  // de /mon-histoire, AU-DESSUS de la timeline. » Son objectif est la porte
+  // dure de la Phase 2 — « produire le moment *oui, ça me ressemble* ».
+  const portrait = page.getByTestId("portrait");
+  await expect(portrait).toBeVisible();
+
+  // **Les chiffres disent le parcours qu'on vient de jouer.** C'est ce qu'un
+  // test de composant ne peut pas voir : il les reçoit en props. Ici ils ont
+  // traversé le domaine, la base et l'API — et l'écran, lui, n'a qu'UNE
+  // plateforme en mémoire. Un compte fait à l'écran dirait autre chose.
+  const nombres = portrait.getByTestId("portrait-nombre");
+  await expect(nombres).toHaveText([
+    // une console : celle sur laquelle on a déclaré, pas celle qu'on a
+    // ouverte par erreur ;
+    "1",
+    // les trente titres cochés plus celui qui manquait — la ligne décochée
+    // n'y est PAS : §5.3 veut la révision « conservée sans être exposée » ;
+    String(TITRES_DECLARES),
+    // un seul terminé : la passe 2 n'a été jouée qu'une fois ;
+    "1",
+    // deux souvenirs écrits — le quatrième chiffre remplace « à 100 % », que
+    // §4.6 a sorti du modèle.
+    "2",
+  ]);
+
+  // Quatre, jamais treize. §8.2 liste treize indicateurs ; E04 tranche —
+  // « les afficher tous produirait un tableau de bord, pas un portrait ».
+  await expect(nombres).toHaveCount(4);
+
+  // Le REGISTRE, mesuré. Le langage visuel §4 réserve la serif au récit et
+  // l'interdit à l'interface courante ; et les chiffres sont en chasse
+  // tabulaire, « pour que rien ne saute pendant l'incrémentation ». Aucun
+  // test de composant ne voit cela — il rend sans feuille de style.
+  const mise = await portrait.evaluate((n) => {
+    const p = n.querySelector('[data-testid="portrait-phrase"]')!;
+    const nombre = n.querySelector('[data-testid="portrait-nombre"]')!;
+    const etiquette = n.querySelector('[data-testid="portrait-libelle"]')!;
+    return {
+      famille: getComputedStyle(p).fontFamily,
+      taillePhrase: parseFloat(getComputedStyle(p).fontSize),
+      chasse: getComputedStyle(nombre).fontVariantNumeric,
+      tailleNombre: parseFloat(getComputedStyle(nombre).fontSize),
+      tailleEtiquette: parseFloat(getComputedStyle(etiquette).fontSize),
+      corps: parseFloat(getComputedStyle(document.body).fontSize),
+    };
+  });
+  expect(mise.famille, "la phrase du portrait n'est pas en serif")
+    .toMatch(/Georgia|serif/i);
+  expect(mise.taillePhrase, "la phrase ne domine pas l'interface")
+    .toBeGreaterThan(mise.corps);
+  expect(mise.chasse, "les chiffres ne sont pas en chasse tabulaire")
+    .toContain("tabular-nums");
+  expect(mise.tailleNombre, "le libellé prend le pas sur le chiffre")
+    .toBeGreaterThan(mise.tailleEtiquette);
+
+  // La phrase dit ce que le joueur a DÉCLARÉ : sa machine, sa période, et
+  // l'approximation assumée. « ≈ » est dit, pas sous-entendu (§11.4).
+  await expect(portrait).toContainText("Super Nintendo Entertainment System");
+  await expect(portrait).toContainText(PERIODE_LUE);
+  await expect(portrait).toContainText("≈");
+
+  // Et il est bien AU-DESSUS de l'axe, mesuré sur la page — pas déduit de
+  // l'ordre du code, qu'une règle de disposition peut inverser.
+  const axe = page.getByTestId("axe");
+  const boitePortrait = (await portrait.boundingBox())!;
+  const boiteAxe = (await axe.boundingBox())!;
+  expect(boitePortrait.y + boitePortrait.height, "le portrait passe sous l'axe")
+    .toBeLessThanOrEqual(boiteAxe.y + 1);
+
+  // « Saisi d'un seul regard » (E04) : le portrait tient dans le premier
+  // écran, sur les deux dispositions. Un en-tête qu'il faut faire défiler ne
+  // produit pas le moment qu'on lui demande de produire.
+  const hauteurVue = page.viewportSize()!.height;
+  expect(boitePortrait.y + boitePortrait.height, "le portrait déborde du premier écran")
+    .toBeLessThanOrEqual(hauteurVue);
+
   // Les trente titres ont été cochés d'un seul passage, sur une même
   // période : ils forment UN épisode (§4.4), pas trente moments empilés.
   // L'axe le montre replié — c'est précisément ce que l'agrégation sert.
-  const axe = page.getByTestId("axe");
   await expect(axe).toHaveAttribute("data-entrees", "1");
   const entree = axe.locator("> li");
   await expect(entree).toHaveAttribute("data-moments", String(MOMENTS_ATTENDUS));
@@ -655,8 +732,15 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Et la date lue est CELLE QU'ON A SAISIE. C'est le défaut signalé depuis
   // un téléphone : la timeline montrait une année que l'utilisateur n'avait
   // jamais donnée. Une assertion sur « il y a une date » n'aurait rien vu.
-  await expect(page.getByText(PERIODE_LUE).first()).toBeVisible();
-  await expect(page.getByText(PERIODE_LUE)).toHaveCount(MOMENTS_ATTENDUS);
+  //
+  // **Compté DANS l'axe**, et c'est une correction que l'en-tête a provoquée :
+  // le portrait dit lui aussi la période déclarée, et le compte global est
+  // passé à 34. Un écart plus élevé nomme ce qu'on vient d'ajouter
+  // (apprentissage 70) ; le remettre à 34 aurait fait porter l'assertion sur
+  // un total au lieu des moments, et elle serait redevenue fausse au premier
+  // élément suivant qui affiche une date.
+  await expect(axe.getByText(PERIODE_LUE).first()).toBeVisible();
+  await expect(axe.getByText(PERIODE_LUE)).toHaveCount(MOMENTS_ATTENDUS);
 
   // --- le KPI de §22.3 ---------------------------------------------------
   //

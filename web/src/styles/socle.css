@@ -951,3 +951,87 @@ figure[data-testid="bande-epoque"] figcaption {
   font: var(--meta);
   color: var(--ink-3);
 }
+
+/* --- E04, l'en-tête de /mon-histoire ------------------------------------ */
+
+/*
+ * Le portrait, pas le tableau de bord.
+ *
+ * E04 : « Sa réussite se mesure à une réaction émotionnelle, pas à une
+ * quantité d'information. » La densité est FAIBLE (principe 3) — l'air
+ * autour des blocs fait partie de ce qui distingue un portrait d'une ligne
+ * de statistiques, et il ne se récupère pas ailleurs.
+ */
+.portrait {
+  margin-block-end: var(--e12);
+  padding-block-end: var(--e6);
+  border-block-end: 1px solid var(--line);
+}
+
+/*
+ * La phrase, en display serif — « c'est elle qui installe le registre récit
+ * plutôt que tableau de bord », et le langage visuel §4 interdit cette
+ * famille à l'interface courante. `display-1` : « la phrase du profil » est
+ * l'exemple que l'échelle donne elle-même.
+ */
+.portrait-phrase {
+  font: var(--display-1);
+  color: var(--ink);
+  margin-block: 0 var(--e8);
+  /* Une ligne de prose se lit mal au-delà : le portrait n'est pas un
+     paragraphe d'article. */
+  max-inline-size: 22ch;
+}
+
+.portrait-chiffres {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e6) var(--e8);
+}
+
+.portrait-chiffre {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+/*
+ * Chasse TABULAIRE (langage visuel §4) : « pour que rien ne saute pendant
+ * l'incrémentation ». Quatre nombres alignés dont les chiffres n'ont pas la
+ * même largeur se lisent comme un défaut d'impression.
+ */
+.portrait-nombre {
+  font: var(--display-2);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* Le libellé se relègue, le nombre domine : c'est la hiérarchie qui fait
+   lire un portrait plutôt qu'un relevé. */
+.portrait-libelle {
+  font: var(--micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (min-width: 1024px) {
+  /* « Sur desktop, l'objectif est que le portrait soit saisi d'un seul
+     regard, sans défilement » : la phrase et les chiffres tiennent côte à
+     côte au lieu de s'empiler. */
+  .portrait {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--e8);
+  }
+
+  .portrait-phrase {
+    margin-block-end: 0;
+    max-inline-size: 18ch;
+  }
+}

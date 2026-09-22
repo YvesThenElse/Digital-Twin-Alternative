@@ -45,7 +45,7 @@ du périmètre n'ont jamais été livrées.
 
 ## Ce que le périmètre de la Phase 1 promet et que personne n'a livré
 
-- [ ] **S1 — `/mon-histoire` porte sa synthèse.** (E04 fusionné, blocs ⑴ ·
+- [x] **S1 — `/mon-histoire` porte sa synthèse.** (E04 fusionné, blocs ⑴ ·
   `PHASING.md` §4 « page de profil simple », « quelques statistiques ») E04
   dit lui-même que sa synthèse « forme l'en-tête de `/mon-histoire`, au-dessus
   de la timeline » **dès la Phase 1**, et son objectif est la porte dure :
@@ -177,4 +177,41 @@ question.
 
 ---
 
+## Ce que le chemin a fait apparaître
+
+Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
+
+- **Trois blocs ⑴ d'E04 restent absents** : la timeline condensée ⒞, les
+  périodes d'activité ⒟ et « vos préférés » ⒠ bis sont marqués Phase 1 dans
+  la fiche et n'existent pas. ⒞ est presque sans objet ici — la vraie
+  timeline est juste en dessous —, ⒟ est « le bloc le plus immédiatement
+  parlant de l'écran », et ⒠ bis attend que l'affect soit saisissable, ce
+  qui est S8. La fiche porte désormais le tableau de ce qui en est livré.
+- **« Proposer E02 » depuis un profil trop maigre n'existe pas.** L'état
+  « trop maigre » d'E04 demande trois choses : la phrase, l'amorce de
+  timeline, et une invitation à revenir saisir. Les deux premières sont
+  tenues ; la troisième est une porte de navigation que la Phase 1 n'a nulle
+  part — `/mon-histoire` est un cul-de-sac. C'est le même manque que S5, vu
+  depuis l'autre écran.
+
+---
+
 ## Journal
+
+- **S1** — l'en-tête de `/mon-histoire` porte la phrase et les quatre
+  chiffres. `ProfileProjection` (domaine) les calcule depuis le journal :
+  « jeux déclarés » et « terminés » sont le dénominateur et le numérateur du
+  taux de §6, réutilisés plutôt que recomptés ; « consoles » compte la
+  plateforme **reçue** avec la déclaration ; « souvenirs écrits » remplace
+  « à 100 % », que §4.6 a sorti du modèle — la fiche E04 le dit désormais.
+  `GET /profile/{user}` n'envoie **pas** les chiffres sous le seuil du
+  portrait plutôt que de compter sur l'écran pour les cacher : un défaut
+  d'affichage ne peut alors pas faire fuiter un chiffre qui ment. Le seuil
+  est celui de la fiche, et un test le compare à ce qu'elle écrit. La durée
+  est **toujours** approchée — « ≈ » est dit —, parce que le premier moment
+  *déclaré* n'est pas le premier moment *vécu* : l'approximation est dans la
+  prémisse, pas seulement dans la granularité. La garde du registre est dans
+  le navigateur et elle mesure : serif, chasse tabulaire, hiérarchie des
+  corps, position au-dessus de l'axe, et « saisi d'un seul regard » sur les
+  deux dispositions. Ce qui est laissé : les trois blocs ⑴ absents et le
+  retour vers E02, inscrits ci-dessus.

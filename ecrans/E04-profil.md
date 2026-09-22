@@ -2,7 +2,7 @@
 
 **Type** : page · **Phase** : 1 (fusionné) puis 3 (autonome) · **Route** : `/mon-histoire` puis `/profil`
 
-> **En Phase 1, E04 n'est pas un écran séparé** : sa synthèse (la phrase, deux ou trois chiffres, la timeline condensée) forme l'en-tête de `/mon-histoire`, au-dessus de la timeline E03. Le profil de Phase 1 est trop maigre pour justifier une destination de navigation, et le séparer produirait deux écrans faibles au lieu d'un fort.
+> **En Phase 1, E04 n'est pas un écran séparé** : sa synthèse (la phrase, les quatre chiffres, la timeline condensée) forme l'en-tête de `/mon-histoire`, au-dessus de la timeline E03. Le profil de Phase 1 est trop maigre pour justifier une destination de navigation, et le séparer produirait deux écrans faibles au lieu d'un fort.
 >
 > Cette fiche décrit la **cible de Phase 3**, quand le profil a de la matière. Les blocs marqués ⑴ sont ceux qui existent dès la Phase 1, dans l'en-tête fusionné.
 
@@ -22,7 +22,7 @@ Densité **faible** (principe 3). Un profil aussi chargé qu'une grille de saisi
 │                                                              │
 ├──────────────────────────────────────────────────────────────┤
 │    18         487        214          37                     │  B
-│  consoles   jeux joués  terminés   à 100 %                   │
+│  consoles  jeux déclarés terminés  souvenirs écrits          │
 ├──────────────────────────────────────────────────────────────┤
 │  ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━●               │  C
 │  1991                                        2026            │
@@ -46,6 +46,14 @@ Densité **faible** (principe 3). Un profil aussi chargé qu'une grille de saisi
 La phrase seule ne suffit pas à produire l'effet recherché, et une prose générée sonne vite faux. Elle travaille **avec** la bande de densité ⑷ et la timeline condensée ⑶ : c'est l'ensemble qui fait « ça me ressemble », et la partie visuelle y contribue davantage que la partie rédigée.
 
 **B ⑴ — Quatre chiffres, pas douze.** La représentation synthétique de §8.2 liste treize indicateurs : les afficher tous produirait un tableau de bord, pas un portrait. Les autres vivent dans E10. Chiffres en chasse tabulaire, en display.
+
+> ⚠️ **Le quatrième n'est pas « à 100 % », et ne peut pas l'être.** La v1 de cette fiche l'annonçait ; [SPECIFICATION](../SPECIFICATION.md) §4.6 l'a explicitement sorti du modèle — c'est une *profondeur de complétion*, pas une position sur l'axe, et « 100 % de Tetris ou d'un jeu de sport ne veut rien dire ». Un écran ne peut pas afficher un chiffre que le domaine refuse de produire.
+>
+> Il est remplacé par le compte des **souvenirs écrits**. Ce n'est pas un pis-aller : c'est le seul contenu du produit qui ne soit pas générable, et §9.1 en fait le porteur direct du « oui, ça me ressemble » — soit l'objectif même de cet écran.
+>
+> Les trois autres viennent de la même projection que le taux de §6 : « jeux déclarés » est son dénominateur, « terminés » son numérateur. Les recompter ailleurs produirait une seconde définition de « déclaré », qui divergerait sans que rien ne le signale.
+
+**Ce que l'en-tête compte, et ce qu'il ne compte pas.** Les chiffres sont calculés par le domaine, jamais par l'écran : `/mon-histoire` n'a en mémoire qu'une plateforme et les lignes qu'on lui a chargées. Un compte fait là serait juste par rapport à l'écran et faux par rapport à l'histoire — « 1 console » à quelqu'un qui en a saisi quatre —, et personne ne le verrait.
 
 **C ⑴ — Timeline condensée.** Aperçu non interactif, avec une entrée vers E03.
 
@@ -88,9 +96,22 @@ En Phase 1, l'image peut déjà être générée pour un usage privé (« garder
 
 ## États
 
-- **Vide** : n'existe pas dans le parcours normal — E01 garantit au moins un moment.
+- **Vide** : n'existe pas dans le parcours normal — E01 garantit au moins un moment. L'URL d'un profil restant adressable, l'en-tête ne rend alors **rien** : ni chiffres à zéro, ni coquille. Un profil sans rien n'a pas un taux de zéro, il n'en a pas.
 - **Trop maigre pour un portrait** (moins de ~10 moments) : afficher la phrase et l'amorce de timeline, **masquer les chiffres et les goûts**, et proposer E02. Des statistiques calculées sur cinq jeux détruisent la crédibilité de l'écran — c'est le principal risque de cette page.
 - **Partiel** : cas nominal, les blocs sans données suffisantes s'effacent au lieu d'afficher zéro.
+
+## Ce qui en est livré — 23 septembre 2026
+
+| Bloc | Phase 1 | État |
+|---|---|---|
+| A — la phrase | ⑴ | **livré** : durée approchée et commencement, avec leur granularité |
+| B — les quatre chiffres | ⑴ | **livré** : `consoles · jeux déclarés · terminés · souvenirs écrits` |
+| C — la timeline condensée | ⑴ | absent — la timeline E03, elle, est juste en dessous |
+| D — les périodes d'activité | ⑴ | absent |
+| E bis — vos préférés | ⑴ | absent : l'affect n'est pas encore saisissable (E07) |
+| E — goûts · F — souvenir mis en avant | — | Phase 3 |
+
+Les trois blocs ⑴ absents sont inscrits dans [TODO-ECRANS.md](../TODO-ECRANS.md) : ils attendent le verdict de la session de test, qui dit s'il faut approfondir le portrait ou passer à la suite.
 
 ## Relations
 

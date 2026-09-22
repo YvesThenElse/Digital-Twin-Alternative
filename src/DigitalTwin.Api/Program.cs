@@ -1,6 +1,7 @@
 using DigitalTwin.Api.Health;
 using DigitalTwin.Api.Memories;
 using DigitalTwin.Api.Persistence;
+using DigitalTwin.Api.Profile;
 using DigitalTwin.Api.Reference;
 using DigitalTwin.Api.Selection;
 using DigitalTwin.Api.Timeline;
@@ -54,6 +55,7 @@ app.MapReference();
 app.MapCovers();
 app.MapDeclarations();
 app.MapTimeline();
+app.MapProfile();
 app.MapMemories();
 app.Run();
 

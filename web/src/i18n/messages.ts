@@ -188,6 +188,32 @@ export const MESSAGES = {
   "timeline.avertissement":
     "« {avant} » vient d'ordinaire avant. La date déclarée le place après — c'est gardé tel quel.",
 
+  // --- l'en-tête de /mon-histoire (E04, blocs A et B) --------------------
+  //
+  // « ≈ » est DIT, pas sous-entendu : E04 tranche — « `≈ 35 ans` dérivé d'un
+  // premier moment flou est honnête ; `35 ans` ne l'est pas » (§11.4). Et
+  // l'approximation n'est pas seulement celle de la date : le premier moment
+  // DÉCLARÉ n'est pas le premier moment vécu.
+  "portrait.depuis": "Vous jouez depuis ≈ {annees} ans.",
+  // Le tiret cadratin évite la préposition : « en 1991 », « en vers 1991 » et
+  // « en 12 mars 1991 » ne peuvent pas être la même phrase, et la
+  // granularité, elle, doit rester celle qui a été déclarée.
+  "portrait.debut.machine": "Tout a commencé avec {machine} — {quand}.",
+  "portrait.debut": "Tout a commencé — {quand}.",
+
+  // Quatre libellés, pas douze : §8.2 liste treize indicateurs et E04
+  // tranche. Le quatrième de la fiche — « à 100 % » — est remplacé : §4.6 l'a
+  // sorti du modèle, « 100 % de Tetris ou d'un jeu de sport ne veut rien
+  // dire ».
+  "portrait.consoles.un": "console",
+  "portrait.consoles.plusieurs": "consoles",
+  "portrait.jeux.un": "jeu déclaré",
+  "portrait.jeux.plusieurs": "jeux déclarés",
+  "portrait.termines.un": "terminé",
+  "portrait.termines.plusieurs": "terminés",
+  "portrait.souvenirs.un": "souvenir écrit",
+  "portrait.souvenirs.plusieurs": "souvenirs écrits",
+
   // --- les régions (§3.4) ------------------------------------------------
   // Le nom, jamais le code : « PAL » ne dit rien à un joueur.
   "region.PAL": "Europe",

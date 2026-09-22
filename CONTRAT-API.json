@@ -82,6 +82,20 @@
         }
       }
     },
+    "GET /profile/{user}": {
+      "": {
+        "lit": ["figures", "opening"],
+        "ignore": {}
+      },
+      "figures": {
+        "lit": ["consoles", "gamesDeclared", "finished", "memoriesWritten"],
+        "ignore": {}
+      },
+      "opening": {
+        "lit": ["years", "platform", "occurredAt"],
+        "ignore": {}
+      }
+    },
     "GET /health": {
       "": {
         "lit": ["status", "database"],

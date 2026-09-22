@@ -2507,3 +2507,42 @@ l'écran est toujours là.
 poser une fois tout calme — jamais au premier instant, où elle est vraie même
 dans le cas qu'on veut interdire. Et se méfier d'un parcours vert sur un geste
 enchaîné : l'automate ne vit pas au rythme d'une main.
+
+### 80 — Un test écrit en fonction de sa constante n'en garde que la forme
+
+Le seuil du portrait — « moins de ~10 moments », au-delà duquel les chiffres
+d'un profil cessent de mentir — était gardé par ce qui paraît le bon test :
+
+```csharp
+Assert.False(Synthese(Nourri(PortraitThreshold - 1)).MakesAPortrait);
+Assert.True (Synthese(Nourri(PortraitThreshold)).MakesAPortrait);
+```
+
+Il est juste, il éprouve la borne — « moins de » et non « au plus » —, et il
+est **aveugle à la valeur**. Mis à dix, à cinq ou à trois, il reste vert : il
+mesure la constante avec la constante.
+
+Je ne l'ai pas vu en le relisant. Je l'ai vu en **annonçant un nombre
+d'échecs avant la mutation** : le seuil passé de 10 à 5 devait faire tomber
+ce test, et j'ai dû admettre en écrivant la prédiction qu'il ne pouvait pas
+tomber. La discipline du compte annoncé a servi là où elle sert le plus —
+avant l'exécution, pas après.
+
+Le nombre est écrit **deux fois** : dans la fiche d'écran et dans le code. Un
+second test le lit donc là où il fait foi :
+
+```csharp
+var ecrit = Regex.Match(fiche, @"moins de ~(\d+) moments");
+Assert.Equal(int.Parse(ecrit.Groups[1].Value), ProfileSummary.PortraitThreshold);
+```
+
+C'est [[77]] appliqué à un seuil plutôt qu'à une décision : prendre la valeur
+à sa source d'autorité, jamais à une copie. Et c'est la même famille que
+[[14]] — un garde qui ne peut pas échouer.
+
+**La règle** : quand un test porte sur une constante, écrire **deux** tests
+et pas un. L'un éprouve la logique autour d'elle, et il a le droit de la
+nommer ; l'autre compare sa valeur au document qui la décide, et il ne doit
+jamais la nommer deux fois. Devant un test paramétré par ce qu'il garde, la
+question n'est pas « est-il juste ? » mais « que faudrait-il casser pour
+qu'il rougisse ? ».

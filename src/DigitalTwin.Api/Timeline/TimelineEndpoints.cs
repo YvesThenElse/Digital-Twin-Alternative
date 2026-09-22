@@ -129,27 +129,5 @@ public static class TimelineEndpoints
 
     private static MomentView Voir(PlayerEvent e, string libelle, MemoryView? souvenir)
         => new(e.Id, e.Type, e.Target.Kind, e.Target.Id, libelle,
-               e.Confidence.ToString(), Voir(e.OccurredAt), souvenir);
-
-    /// <summary>
-    /// Traduit la valeur temporelle <b>sans l'aplatir</b>.
-    ///
-    /// <para>L'expression est exhaustive par construction : la hiérarchie est
-    /// fermée, donc une huitième variante échouerait à la compilation plutôt
-    /// que de s'afficher comme « inconnu ».</para>
-    /// </summary>
-    private static TemporalView Voir(TemporalValue v) => v switch
-    {
-        ExactDate x => new TemporalView("ExactDate", Date: x.Date.ToString("yyyy-MM-dd")),
-        Month m => new TemporalView("Month", Year: m.Year, Month: m.MonthOfYear),
-        Year y => new TemporalView("Year", Year: y.Value),
-        YearRange r => new TemporalView("YearRange", Year: r.StartYear, EndYear: r.EndYear),
-        ApproximateYear a => new TemporalView("ApproximateYear", Year: a.Year, Margin: a.Margin),
-        // Brut, jamais résolu : l'écran affiche « vers mes 12 ans » et la
-        // résolution appartient à l'horizon, pas à la valeur.
-        Age g => new TemporalView("Age", Age: g.Years),
-        Unknown => new TemporalView("Unknown"),
-        _ => throw new NotSupportedException(
-            $"Variante temporelle non rendue : {v.GetType().Name}."),
-    };
+               e.Confidence.ToString(), TemporalEncoding.Voir(e.OccurredAt), souvenir);
 }

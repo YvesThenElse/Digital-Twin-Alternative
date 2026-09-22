@@ -5,6 +5,7 @@ import { EtatDuService, type EtatSante } from "./EtatDuService";
 import { t } from "./i18n/t";
 import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
+import { SyntheseProfil, type SyntheseDuProfil } from "./profil/SyntheseProfil";
 import { PhraseDeRecit } from "./recit/PhraseDeRecit";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
 import { periodeTenable, type PeriodeChoisie } from "./periode/periode";
@@ -110,6 +111,18 @@ export function App() {
    * quand on entre dans la sélection, pas quand React refait un rendu.
    */
   const [lot, setLot] = useState(() => `bat_${Math.random().toString(36).slice(2, 12)}`);
+  /**
+   * Le portrait qui coiffe `/mon-histoire` (E04, blocs A et B).
+   *
+   * <b>Il vient de l'API, pas d'un compte fait ici.</b> Cet écran n'a en
+   * mémoire qu'UNE plateforme et les lignes qu'on lui a chargées : un chiffre
+   * calculé à partir de cela serait juste par rapport à l'écran et faux par
+   * rapport à l'histoire — et rien ne le dirait.
+   *
+   * `null` tant qu'il n'est pas lu : l'en-tête ne rend rien plutôt que de
+   * s'afficher vide puis de sauter sous les yeux du joueur.
+   */
+  const [synthese, setSynthese] = useState<SyntheseDuProfil | null>(null);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -273,7 +286,16 @@ export function App() {
   }
 
   async function ouvrirTimeline() {
-    setTimeline(await client.timeline(UTILISATEUR));
+    // Les deux ENSEMBLE, et l'étape ne change qu'après. L'en-tête arrivant
+    // après l'axe ferait sauter l'écran au moment précis où le joueur
+    // découvre son histoire ; et si l'une des deux lâche, `essayer` le dit au
+    // lieu de montrer une moitié de page pour une panne.
+    const [axe, portrait] = await Promise.all([
+      client.timeline(UTILISATEUR),
+      client.synthese(UTILISATEUR),
+    ]);
+    setTimeline(axe);
+    setSynthese(portrait);
     setEtape("timeline");
   }
 
@@ -368,11 +390,18 @@ export function App() {
           répond à la seule question que l'alerte d'un geste ne tranche pas :
           est-ce moi, ou est-ce le service ? */}
       {etape === "timeline" ? (
-        <Timeline
-          entrees={timeline.entries}
-          sansDate={timeline.undated}
-          avertissements={timeline.warnings}
-        />
+        <>
+          {/* E04 : « sa synthèse forme l'en-tête de `/mon-histoire`,
+              AU-DESSUS de la timeline E03 ». C'est le bloc dont l'objectif
+              est la porte dure de la Phase 2 — « produire le moment *oui, ça
+              me ressemble* » —, et il doit être lu avant le détail. */}
+          <SyntheseProfil synthese={synthese} />
+          <Timeline
+            entrees={timeline.entries}
+            sansDate={timeline.undated}
+            avertissements={timeline.warnings}
+          />
+        </>
       ) : null}
       <EtatDuService etat={sante} />
     </main>

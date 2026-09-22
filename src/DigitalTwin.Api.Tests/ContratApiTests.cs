@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using DigitalTwin.Api.Health;
 using DigitalTwin.Api.Persistence;
+using DigitalTwin.Domain.Player;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -243,6 +244,35 @@ public class ContratApiTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task La_synthese_du_profil_rend_exactement_ce_que_le_contrat_declare()
+    {
+        // Deux formes NULLABLES : `figures` disparaît sous le seuil du
+        // portrait, `opening` quand aucun moment n'est daté. Un contrat
+        // vérifié sur un profil maigre décrirait donc deux `null` et ne
+        // vérifierait rien — le profil est nourri exprès.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var user = $"usr_contrat_profil_{Guid.NewGuid():N}"[..24];
+
+        await using (var db = bdd.CreerContexte())
+        {
+            await new EventStore(db).AppendAsync(
+                [.. Enumerable.Range(0, ProfileSummary.PortraitThreshold).Select(i =>
+                    new DigitalTwin.Domain.Player.PlayerEvent(
+                        $"ctp{i}", user, DigitalTwin.Domain.Player.PlayerEventType.StartedGame,
+                        new DigitalTwin.Domain.Player.EventTarget("work", $"wrk_ctp{i}"),
+                        new DigitalTwin.Domain.Temporal.Year(1995),
+                        new DateTime(2026, 1, 15, 12, 0, 0, DateTimeKind.Utc))
+                    { PlatformId = "plt_contrat" })]);
+        }
+
+        var profil = await Lire(client, $"/profile/{user}");
+        Assert.Equal(JsonValueKind.Object, profil.GetProperty("figures").ValueKind);
+        Assert.Equal(JsonValueKind.Object, profil.GetProperty("opening").ValueKind);
+        Confronter("GET /profile/{user}", profil);
+    }
+
+    [Fact]
     public async Task La_sante_rend_exactement_ce_que_le_contrat_declare()
     {
         using var usine = Usine();
@@ -302,6 +332,7 @@ public class ContratApiTests(PostgresFixture bdd)
             ("GET /memories/{user}", "`/memories/"),
             ("GET /unresolved/{user}", "`/unresolved/"),
             ("GET /timeline/{user}", "`/timeline/"),
+            ("GET /profile/{user}", "`/profile/"),
             ("GET /health", "/health`"),
             ("POST /declarations", "\"/declarations\""),
             ("POST /declarations/retract", "\"/declarations/retract\""),

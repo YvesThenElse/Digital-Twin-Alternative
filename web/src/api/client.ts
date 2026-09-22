@@ -11,6 +11,7 @@ import type {
   ReponseDeclaration,
   SouvenirEcrit,
 } from "../selection/SelectionMassive";
+import type { SyntheseDuProfil } from "../profil/SyntheseProfil";
 import type { ValeurTemporelle } from "../temporel/valeur";
 import type { EtatSante } from "../EtatDuService";
 
@@ -240,6 +241,20 @@ export const client = {
         liste.map((m) => [m.targetId, { texte: m.text, titre: m.title ?? "" }]),
       ),
     ),
+
+  /**
+   * La synthèse qui forme l'en-tête de `/mon-histoire` (E04, blocs A et B).
+   *
+   * <b>Une requête séparée de l'axe, et c'est voulu.</b> Les deux répondent à
+   * des questions différentes — « qu'ai-je vécu ? » et « qui suis-je ? » —, et
+   * E04 devient un écran autonome en Phase 3. Les fondre ferait porter au
+   * point d'entrée de l'axe une forme qu'il faudrait démêler plus tard.
+   *
+   * Les chiffres sont <b>calculés par le domaine</b>. Les recompter ici
+   * porterait sur ce qui est chargé — une plateforme, les lignes visibles —
+   * et non sur l'histoire : le nombre serait juste par rapport à l'écran.
+   */
+  synthese: (userId: string) => lire<SyntheseDuProfil>(`/profile/${userId}`),
 
   timeline: (userId: string) =>
     lire<{
