@@ -51,6 +51,11 @@ const SNES = {
   id: "plt_snes", nom: "Super Nintendo", regionFree: false,
   launchYear: 1990, worksCount: 2,
 };
+/** Une console SORTIE APRÈS la période que le parcours choisit. */
+const SWITCH = {
+  id: "plt_switch", nom: "Nintendo Switch", regionFree: true,
+  launchYear: 2017, worksCount: 2,
+};
 const OEUVRES = [
   { id: "w1", titre: "Super Mario World", rang: 1, sortie: { kind: "Year", year: 1990 },
     couverture: null, regions: ["PAL"], statutRegional: {} },
@@ -59,7 +64,7 @@ const OEUVRES = [
 ];
 
 beforeEach(() => {
-  faux.plateformes.mockResolvedValue([SNES]);
+  faux.plateformes.mockResolvedValue([SNES, SWITCH]);
   faux.oeuvres.mockResolvedValue(OEUVRES);
   faux.etatSelection.mockResolvedValue([]);
   faux.souvenirs.mockResolvedValue({});
@@ -188,6 +193,66 @@ describe("App — la timeline s'ouvre", () => {
     // qui nomme les types du domaine, ne traverse PAS.
     expect(await screen.findByTestId("avertissement")).toBeInTheDocument();
     expect(screen.queryByText(/diagnostic du domaine/)).toBeNull();
+  });
+});
+
+describe("App — se tromper de console (E02)", () => {
+  const changerDeConsole = async (utilisateur: ReturnType<typeof userEvent.setup>) =>
+    utilisateur.click(screen.getByRole("button", { name: "Changer de console" }));
+
+  it("ramène au choix de machine sans recharger la page", async () => {
+    // Une fois la machine choisie, SEUL un rechargement y ramenait. Un
+    // testeur qui se trompe de console perdait son amorce — et, sur un
+    // téléphone, ne savait pas forcément comment recharger.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    await changerDeConsole(utilisateur);
+
+    expect(screen.getByRole("heading", { name: /console/i })).toBeInTheDocument();
+  });
+
+  it("garde la période et retourne DIRECTEMENT à la sélection", async () => {
+    // E02 : « changer de plateforme → E02 sur une autre plateforme, période
+    // conservée ». La redemander ferait payer deux fois une réponse déjà
+    // donnée, sur l'écran dont §24.4 dit que chaque geste compte.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    await changerDeConsole(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: /^Super Nintendo/ }));
+
+    const contexte = await screen.findByTestId("contexte");
+    expect(contexte).toHaveTextContent("1990");
+    // Et non l'écran de période : c'est ce qui prouve qu'elle est conservée.
+    expect(screen.queryByRole("button", { name: /Années 90/ })).toBeNull();
+  });
+
+  it("redemande la période quand la nouvelle console est sortie après", async () => {
+    // Garder « 1990–1994 » sur une console de 2017 conduirait au refus de
+    // l'API au premier lot — c'est-à-dire APRÈS avoir coché. La règle est
+    // celle de la couche qui écrit ; l'écran la répète plus tôt, et mieux.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    await changerDeConsole(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: /^Nintendo Switch/ }));
+
+    expect(await screen.findByRole("heading", { name: /quand/i })).toBeInTheDocument();
+  });
+
+  it("charge la ludothèque de la NOUVELLE console", async () => {
+    // Garder la période ne doit pas garder la liste : le joueur verrait les
+    // jeux de la console qu'il vient de quitter, et les déclarerait sur
+    // l'autre.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+    faux.oeuvres.mockClear();
+
+    await changerDeConsole(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: /^Super Nintendo/ }));
+
+    expect(faux.oeuvres).toHaveBeenCalledWith("plt_snes", "PAL");
   });
 });
 

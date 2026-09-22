@@ -18,14 +18,29 @@ export function ContexteDeSaisie({
   region,
   periode,
   changer,
+  changerMachine,
 }: {
   machine: string;
   region: string;
   periode: PeriodeChoisie;
   changer: () => void;
+  /**
+   * Retour au choix de machine — E02 repère A, la flèche en tête d'écran.
+   *
+   * Requis, sans valeur par défaut : se tromper de console est une erreur
+   * d'amorce, et un bandeau qui ne saurait pas en sortir laisserait le
+   * testeur recharger la page.
+   */
+  changerMachine: () => void;
 }) {
   return (
     <p className="contexte" data-testid="contexte">
+      {/* La machine D'ABORD, et elle est cliquable : E02 la met en tête
+          d'écran avec sa flèche de retour. C'est le seul endroit où
+          l'utilisateur regarde quand il s'aperçoit qu'il s'est trompé. */}
+      <button type="button" onClick={changerMachine}>
+        {t("contexte.changerMachine")}
+      </button>
       <span>{t("parcours.machine", { machine, region })}</span>
       <span className="contexte-periode">{libelle(versValeurTemporelle(periode))}</span>
       <button type="button" onClick={changer}>{t("contexte.changer")}</button>

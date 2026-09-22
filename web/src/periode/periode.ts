@@ -36,3 +36,27 @@ export function versValeurTemporelle(periode: PeriodeChoisie): ValeurTemporelle 
       return { kind: "Unknown" };
   }
 }
+
+/**
+ * La période reste-t-elle possible sur cette machine ?
+ *
+ * <b>La règle est celle de l'API</b>, qui refuse un lot dont la période est
+ * « entièrement antérieure » à la sortie de la machine. L'écran la répète
+ * ici pour ne pas conduire le joueur dans un cul-de-sac en changeant de
+ * console — mais il n'en est pas le porteur : c'est la couche qui écrit qui
+ * refuse, et elle continue de le faire.
+ *
+ * On compare la borne la plus TARDIVE, et c'est ce qui rend le verdict sûr :
+ * une période qui chevauche la sortie reste tenable, et « je ne sais plus »
+ * n'oppose aucune borne.
+ */
+export function periodeTenable(periode: PeriodeChoisie, anneeDeLancement: number): boolean {
+  switch (periode.kind) {
+    case "year":
+      return periode.year >= anneeDeLancement;
+    case "range":
+      return periode.to >= anneeDeLancement;
+    case "unknown":
+      return true;
+  }
+}

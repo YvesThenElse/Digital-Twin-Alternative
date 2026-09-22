@@ -80,19 +80,6 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // une mutation l'a montré.
   const profil = `usr_e2e_${infos.project.name}_${Date.now()}`;
 
-  // **Une jaquette, et une seule, est révoquée** — refusée par le réseau,
-  // comme le jour où l'emprunt de §19.2 prend fin. « Rien dans le produit ne
-  // doit cesser de marcher le jour où elle disparaît »
-  // (VERIFICATION-JURIDIQUE §3.3), et un navigateur n'échoue PAS sur une
-  // image cassée : il dessine un glyphe et se tait. Seul un vrai refus
-  // réseau le prouve — jsdom ne demande aucune image.
-  let revoquee: string | null = null;
-  await page.route("**/covers/**", async (route, requete) => {
-    revoquee ??= requete.url();
-    if (requete.url() === revoquee) return route.abort();
-    return route.continue();
-  });
-
   await page.goto(`/?profil=${profil}`);
 
   // --- 0. le socle visuel est SERVI --------------------------------------
@@ -120,10 +107,14 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     .evaluate((n) => n.getBoundingClientRect().height);
   expect(hauteurBouton, "une cible sous 44 px").toBeGreaterThanOrEqual(44);
 
-  // --- 1. la machine -----------------------------------------------------
+  // --- 1. la machine, et on se trompe ------------------------------------
+  //
+  // Se tromper de console est une erreur d'AMORCE, et seul un rechargement en
+  // sortait — sur un téléphone, un testeur ne sait pas forcément comment
+  // recharger. Le parcours la commet donc pour de bon.
   await expect(page.getByRole("heading", { name: /console/i })).toBeVisible();
   await toucher(
-    page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }).click(),
+    page.getByRole("button", { name: /^Nintendo Entertainment System/ }).click(),
   );
 
   // --- 2. la période -----------------------------------------------------
@@ -142,6 +133,33 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
 
   // Le contexte de saisie (E02 repère A) annonce ce qui sera attaché.
   await expect(page.getByTestId("contexte")).toContainText(PERIODE_LUE);
+
+  // --- 2 bis. se corriger de console, la période en poche ----------------
+  //
+  // E02 : « changer de plateforme → E02 sur une autre plateforme, PÉRIODE
+  // CONSERVÉE ». On revient au choix, on prend la bonne console, et on doit
+  // retomber DIRECTEMENT sur la liste — sans redonner une réponse déjà
+  // donnée.
+  //
+  // La révocation de jaquette s'arme ICI : les premières demandées seront
+  // celles de la bonne console, et non celles de la console qu'on quitte.
+  let revoquee: string | null = null;
+  await page.route("**/covers/**", async (route, requete) => {
+    revoquee ??= requete.url();
+    if (requete.url() === revoquee) return route.abort();
+    return route.continue();
+  });
+
+  await toucher(page.getByRole("button", { name: "Changer de console" }).click());
+  await toucher(
+    page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }).click(),
+  );
+
+  // Pas l'écran de période : c'est ce qui prouve qu'elle est conservée.
+  await expect(page.getByRole("heading", { name: /quand/i })).toHaveCount(0);
+  const contexte = page.getByTestId("contexte");
+  await expect(contexte).toContainText(PERIODE_LUE);
+  await expect(contexte).toContainText("Super Nintendo");
 
   // --- 3. cocher ---------------------------------------------------------
   const lignes = page.getByRole("button", { name: /^Déclarer : / });
@@ -183,8 +201,15 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     //
     // `naturalWidth` vaut 0 tant qu'une image n'a pas été décodée — c'est le
     // seul signal qu'un `<img>` donne d'un échec.
-    // La jaquette révoquée n'est plus annoncée comme une jaquette : elle
-    // s'est repliée sur la tuile composée, qui est le socle permanent.
+    // **Une jaquette, et une seule, a été révoquée** — refusée par le
+    // réseau, comme le jour où l'emprunt de §19.2 prend fin. « Rien dans le
+    // produit ne doit cesser de marcher le jour où elle disparaît »
+    // (VERIFICATION-JURIDIQUE §3.3), et un navigateur n'échoue PAS sur une
+    // image cassée : il dessine un glyphe et se tait. Seul un vrai refus
+    // réseau le prouve — jsdom ne demande aucune image.
+    //
+    // Elle n'est plus annoncée comme une jaquette : elle s'est repliée sur
+    // la tuile composée, qui est le socle permanent.
     expect(revoquee, "aucune jaquette n'a été révoquée : le test ne prouve rien")
       .not.toBeNull();
     const repliee = page.locator(`[data-tuile="jaquette"] img[src="${
@@ -559,9 +584,11 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Un geste de plus : « jamais joué ». Il est FACULTATIF — « un utilisateur
   // qui l'ignore complètement n'est pas pénalisé » (E02) — mais le parcours
   // le paie, et le budget doit le voir.
-  // Un geste de plus : recharger la liste. Ce n'est pas un geste de saisie,
-  // mais c'en est un, et le budget doit le voir.
-  const budget = TITRES_A_COCHER + 19;
+  // Deux gestes de plus : se tromper de console, et se corriger. C'est une
+  // erreur d'amorce réelle, et le budget doit la voir — c'est même tout
+  // l'intérêt de la compter, puisque la période conservée est ce qui
+  // l'empêche d'en coûter deux de plus.
+  const budget = TITRES_A_COCHER + 21;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

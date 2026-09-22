@@ -30,7 +30,7 @@
 
 - [x] **F7 — La sélection a un état vide.** (audit 33 · E02) `oeuvres.length === 0` donnerait une **page blanche**, qu'E02 interdit — « proposer d'élargir la période ou de changer de région, jamais une page blanche ». Latent aujourd'hui. *Acceptation : l'état vide propose une issue qui existe, et le crible des quatre états passe sur E02 comme il passe sur E01.*
 
-- [ ] **F8 — On peut changer de console.** (audit 34 · E02) Une fois la machine choisie, seul un rechargement ramène au choix. *E02 précise « période conservée » : à trancher en le faisant — revenir au choix de machine, ou changer de plateforme en gardant la période. Acceptation : un testeur qui se trompe de console s'en sort sans recharger.*
+- [x] **F8 — On peut changer de console.** (audit 34 · E02) Une fois la machine choisie, seul un rechargement ramène au choix. *E02 précise « période conservée » : à trancher en le faisant — revenir au choix de machine, ou changer de plateforme en gardant la période. Acceptation : un testeur qui se trompe de console s'en sort sans recharger.*
 
 - [ ] **F9 — `EtatDuService` est monté.** (audit 28) Composant écrit et testé, affiché nulle part — le même défaut que `ZoneSansDate` avant l'item 18 de la Phase 1. *À trancher en le faisant : un bandeau permanent dirait « tout va bien » en continu, ce que §5 ne demande pas ; à l'échec seulement, il risque de ne jamais s'afficher en test.*
 
@@ -173,3 +173,14 @@
   laissé : l'état de chargement à l'**entrée** dans l'écran n'existe pas ;
   l'attente s'y joue encore sur l'écran de période, faute de pouvoir ouvrir
   E02 plus tôt sans casser l'affinage (voir F18).
+
+- **F8** — tranché en le faisant : le bandeau ramène au choix de machine, et
+  **la période survit** (E02 : « période conservée ») — on ne redemande pas
+  une réponse déjà donnée sur l'écran où chaque geste compte. Elle ne survit
+  que si elle reste **possible** sur la nouvelle console : garder
+  « 1990–1994 » sur une machine de 2017 conduirait au refus de l'API au
+  premier lot, c'est-à-dire APRÈS avoir coché. La règle reste celle de la
+  couche qui écrit ; `periodeTenable` la répète plus tôt, et compare la borne
+  la plus tardive — une période qui chevauche la sortie reste tenable, et
+  « je ne sais plus » n'oppose aucune borne. Le parcours se trompe désormais
+  de console pour de bon, et s'en sort en deux gestes.

@@ -5,7 +5,7 @@ import { t } from "./i18n/t";
 import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
-import type { PeriodeChoisie } from "./periode/periode";
+import { periodeTenable, type PeriodeChoisie } from "./periode/periode";
 import {
   SelectionMassive,
   type EtatLigne,
@@ -82,10 +82,17 @@ export function App() {
    * lieu d'une ligne.
    */
   const [region, setRegion] = useState("PAL");
-  // La période est CHOISIE par l'utilisateur. Elle valait 1995 quoi qu'il
-  // fasse, et tous ses jeux portaient donc la même année, que personne
-  // n'avait donnée.
-  const [periode, setPeriode] = useState<PeriodeChoisie>({ kind: "unknown" });
+  /**
+   * La période est CHOISIE par l'utilisateur. Elle valait 1995 quoi qu'il
+   * fasse, et tous ses jeux portaient donc la même année, que personne
+   * n'avait donnée.
+   *
+   * <b>`null` tant que rien n'est choisi</b>, et ce n'est pas un détail :
+   * « je ne sais plus » EST une réponse (§7.3). Sans cette distinction,
+   * changer de console ne saurait pas s'il y a une période à conserver, et
+   * il conserverait un défaut que personne n'a donné.
+   */
+  const [periode, setPeriode] = useState<PeriodeChoisie | null>(null);
   const [oeuvres, setOeuvres] = useState<Oeuvre[]>([]);
   const [etatInitial, setEtatInitial] = useState<EtatLigne[]>([]);
   const [souvenirsInitiaux, setSouvenirsInitiaux] =
@@ -199,6 +206,15 @@ export function App() {
     // La région conditionne AUSSI les dates affichées (§3.4), pas seulement
     // le statut de sortie : elle voyage donc avec la requête.
     setOeuvres(await client.oeuvres(p.id, zone));
+
+    // **Période conservée** (E02) : se tromper de console ne doit pas coûter
+    // de la redonner. On ne la garde que si elle reste POSSIBLE sur la
+    // nouvelle machine — sinon l'API refuserait le premier lot, et le
+    // testeur découvrirait le cul-de-sac après avoir coché.
+    if (periode !== null && periodeTenable(periode, p.launchYear)) {
+      await ouvrirSelection(periode, p);
+      return;
+    }
     setEtape("periode");
   }
 
@@ -260,13 +276,16 @@ export function App() {
         />
       ) : null}
 
-      {etape === "selection" && machine !== null ? (
+      {etape === "selection" && machine !== null && periode !== null ? (
         <section>
           <ContexteDeSaisie
             machine={machine.nom}
             region={region}
             periode={periode}
             changer={() => setEtape("periode")}
+            // Retour au choix de machine, la période en poche. C'est
+            // `choisirMachine` qui décidera si elle survit.
+            changerMachine={() => setEtape("machine")}
           />
           <SelectionMassive
             // ⚠️ La CLÉ, et elle est load-bearing. `SelectionMassive` dérive

@@ -117,6 +117,10 @@ export const MESSAGES = {
   // comme une panne, pas comme une règle.
 
   "contexte.changer": "Changer la période",
+  // E02 : « changer de plateforme → E02 sur une autre plateforme, PÉRIODE
+  // CONSERVÉE ». Se tromper de console est une erreur d'amorce, et seul un
+  // rechargement en sortait.
+  "contexte.changerMachine": "Changer de console",
   "contexte.sApplique": "S'applique aux déclarations suivantes.",
 
   // La passe 2 (E02). L'ordre des questions n'est pas arbitraire : le

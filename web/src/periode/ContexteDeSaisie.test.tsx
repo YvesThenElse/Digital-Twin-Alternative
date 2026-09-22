@@ -7,11 +7,13 @@ import { libelle } from "../temporel/valeur";
 
 function monter(periode: PeriodeChoisie) {
   const changer = vi.fn();
+  const changerMachine = vi.fn();
   render(
     <ContexteDeSaisie
-      machine="Super Nintendo" region="PAL" periode={periode} changer={changer} />,
+      machine="Super Nintendo" region="PAL" periode={periode}
+      changer={changer} changerMachine={changerMachine} />,
   );
-  return { changer };
+  return { changer, changerMachine };
 }
 
 describe("ContexteDeSaisie — E02 repère A", () => {
@@ -37,7 +39,7 @@ describe("ContexteDeSaisie — E02 repère A", () => {
 
     for (const periode of cas) {
       const { unmount } = render(
-        <ContexteDeSaisie machine="M" region="PAL" periode={periode} changer={() => {}} />,
+        <ContexteDeSaisie machine="M" region="PAL" periode={periode} changer={() => {}} changerMachine={() => {}} />,
       );
       expect(screen.getByTestId("contexte"))
         .toHaveTextContent(libelle(versValeurTemporelle(periode)));
@@ -61,5 +63,31 @@ describe("ContexteDeSaisie — E02 repère A", () => {
     monter({ kind: "year", year: 1994 });
 
     expect(screen.getByTestId("contexte")).toHaveTextContent(/suivantes/i);
+  });
+});
+
+describe("ContexteDeSaisie — se tromper de console (E02)", () => {
+  it("offre de changer de console depuis le bandeau", async () => {
+    // E02 repère A place la machine en tête d'écran, flèche comprise. Une
+    // fois la machine choisie, seul un rechargement ramenait au choix : un
+    // testeur qui se trompe de console perdait son amorce.
+    const utilisateur = userEvent.setup();
+    const { changerMachine } = monter({ kind: "range", from: 1990, to: 1994 });
+
+    await utilisateur.click(screen.getByRole("button", { name: "Changer de console" }));
+
+    expect(changerMachine).toHaveBeenCalled();
+  });
+
+  it("ne confond pas les deux changements", async () => {
+    // Deux boutons voisins qui font la même chose seraient pires qu'un seul :
+    // le testeur croirait avoir changé de console en changeant de période.
+    const utilisateur = userEvent.setup();
+    const { changer, changerMachine } = monter({ kind: "range", from: 1990, to: 1994 });
+
+    await utilisateur.click(screen.getByRole("button", { name: "Changer la période" }));
+
+    expect(changer).toHaveBeenCalled();
+    expect(changerMachine).not.toHaveBeenCalled();
   });
 });
