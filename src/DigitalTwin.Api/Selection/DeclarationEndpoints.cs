@@ -53,6 +53,29 @@ public static class DeclarationEndpoints
                 return Results.BadRequest(new { error = refus.Message });
             }
 
+            // Un joueur ne peut pas avoir joué sur une machine qui n'existait
+            // pas. L'écran le refusait déjà — et **le nommait** — mais la
+            // règle n'existait que dans le navigateur : la couche qui fait
+            // foi était la plus permissive.
+            //
+            // On ne refuse que l'IMPOSSIBLE CERTAIN, c'est-à-dire quand
+            // l'année la plus tardive que la période autorise précède encore
+            // la sortie de la machine. Une imprécision qui chevauche
+            // l'impossible reste acceptée : « vers 1991 » sur une console de
+            // 1990 peut vouloir dire 1992, et refuser reviendrait à exiger
+            // une précision que §7.3 interdit de demander.
+            var lancement = d.Platforms
+                .FirstOrDefault(p => p.CanonicalId == lot.PlatformId)?.LaunchYear;
+            if (lancement is { } annee && DerniereAnneePossible(lot.Period) is { } fin
+                && fin < annee)
+            {
+                return Results.BadRequest(new
+                {
+                    error = $"La machine « {lot.PlatformId} » est sortie en {annee} : "
+                          + "la période déclarée lui est entièrement antérieure.",
+                });
+            }
+
             // Le filtrage a lieu APRÈS la traduction : une entrée fautive
             // doit être refusée même si sa cible est déjà dans le lot,
             // sinon un renvoi masquerait la faute.
@@ -167,6 +190,26 @@ public static class DeclarationEndpoints
 
         return routes;
     }
+
+    /// <summary>
+    /// L'année la plus tardive que cette période autorise, ou <c>null</c>
+    /// quand elle n'en borne aucune.
+    ///
+    /// <para><b>La plus tardive, et non la plus ancienne</b> : c'est ce qui
+    /// rend le refus sûr. Une période ouverte s'étend jusqu'à aujourd'hui et
+    /// n'est jamais impossible ; « je ne sais plus » non plus.</para>
+    /// </summary>
+    private static int? DerniereAnneePossible(PeriodInput periode) => periode.Kind switch
+    {
+        "year" => periode.Year,
+        "approximate" => periode.Year is { } a
+            ? a + (periode.Margin is { } m && m >= 1 ? m : PeriodInput.MargeParDefaut)
+            : null,
+        // Une fin absente veut dire « depuis » : la période court jusqu'à
+        // aujourd'hui, donc aucune borne haute à opposer.
+        "range" => periode.To,
+        _ => null,
+    };
 }
 
 /// <summary>L'œuvre à laquelle rattacher une revendication (§3.5).</summary>

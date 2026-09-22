@@ -2097,3 +2097,31 @@ fichier et comparer**. Il n'existait pas. Sa parenté avec [[47]] est
 directe — exécuter un document plutôt que le relire — appliquée cette fois à
 un enregistrement : **mesurer un artefact plutôt que lire ce qu'il dit de
 lui-même**.
+
+### 65 — Une règle qui n'existe que dans le client n'existe pas
+
+`ChoixPeriode` refuse « 1985 sur Super Nintendo » et **nomme** l'année de
+sortie de la console dans son message. La règle est donc écrite, expliquée,
+testée — et elle ne vivait **que dans le navigateur**. L'API acceptait le
+même lot sans broncher ; vérifié en le postant.
+
+La couche qui fait foi était la plus permissive. C'est l'inverse de ce qu'on
+veut : un client plus strict que le serveur est un confort, un serveur plus
+permissif que le client est un trou.
+
+Le piège tient à la façon dont la règle naît. Elle est apparue en écrivant
+l'écran, parce que c'est là qu'on voit le problème — un joueur qui tape une
+date absurde. On l'implémente où on la voit, et le message qu'on rédige
+donne l'impression d'un travail fini.
+
+**La règle** : une contrainte de **validité de la donnée** appartient à la
+couche qui écrit. L'écran peut la répéter pour l'expliquer plus tôt et mieux
+— c'est même souhaitable —, mais il ne peut pas en être le seul porteur.
+Le critère est simple : *si quelqu'un poste directement, que se passe-t-il ?*
+
+Et une nuance qui a compté ici : les deux couches n'ont pas à être
+**identiques**. L'écran refuse chaque borne antérieure à la machine ; l'API
+ne refuse que l'**impossible certain** — l'année la plus tardive de la
+période. Un serveur qui rejetterait une imprécision légitime coûterait plus
+qu'il ne protège, sur un produit dont la thèse est justement que
+l'incertitude est une donnée.

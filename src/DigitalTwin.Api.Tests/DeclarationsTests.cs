@@ -655,6 +655,49 @@ public class DeclarationsTests(PostgresFixture bdd)
         Assert.Equal("Unstated", jugement.GetProperty("affect").GetString());
     }
 
+    [Fact]
+    public async Task Une_periode_anterieure_a_la_machine_est_refusee_en_la_nommant()
+    {
+        // L'écran refuse déjà « 1985 sur Super Nintendo » et **nomme** l'année
+        // de sortie de la console. L'API, elle, acceptait : la règle
+        // n'existait que dans le navigateur, et la couche qui fait foi était
+        // la plus permissive.
+        //
+        // Un joueur ne peut pas avoir joué sur une machine qui n'existait
+        // pas. Accepter place le moment à une position absurde sur l'axe,
+        // sans que rien ne l'explique.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        var reponse = await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_avant_machine", "usr_avant_machine", plateforme,
+            [new { workId = oeuvres[0] }],
+            periode: new { kind = "year", year = 1985 }));
+
+        Assert.Equal(HttpStatusCode.BadRequest, reponse.StatusCode);
+        var corps = await reponse.Content.ReadAsStringAsync();
+        Assert.Contains("1990", corps, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task Une_periode_posterieure_a_la_machine_reste_acceptee()
+    {
+        // Le rétrogaming est un cas NOMINAL : jouer à un jeu Game Boy en
+        // 2018 est le cas de validation n°1 du modèle. Seule la borne basse
+        // est une impossibilité.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        var reponse = await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_retro", "usr_retro", plateforme,
+            [new { workId = oeuvres[0] }],
+            periode: new { kind = "year", year = 2018 }));
+
+        Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
+    }
+
     // --------------------------------- la plateforme, pour la mesure §22.3
 
     [Fact]
