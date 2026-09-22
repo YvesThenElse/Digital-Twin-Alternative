@@ -26,9 +26,11 @@ Un testeur bloqué au premier de ces défauts invalide le test utilisateur bien
 avant d'invalider le produit. Cette boucle passe donc chaque surface au
 crible **avant** de recruter.
 
-## Le crible — trois questions, dans cet ordre
+## Le crible — quatre questions, dans cet ordre
 
-Pour la surface de l'item en cours, répondre aux trois, **preuve à l'appui**.
+Pour la surface de l'item en cours, répondre aux quatre, **preuve à l'appui**.
+La quatrième a été ajoutée par l'audit lui-même : un crible se corrige avec
+ce qu'il trouve.
 Une réponse sans fichier et sans numéro de ligne n'est pas une réponse.
 
 ### 1. Envoyé sans être saisi
@@ -58,6 +60,17 @@ comme une réponse ?
 > C'est le plus coûteux des trois. Une valeur par défaut est une affirmation
 > (apprentissage 51).
 
+### 4. Dit sans être écrit
+
+Tout **geste** que cette surface accepte — un tap, une chip, une saisie —
+laisse-t-il une trace ailleurs que dans l'état local ? Peut-on **nommer** la
+table ou l'événement qui le conserve ?
+
+> Ajoutée après coup : le crible a trouvé cette forme trois fois en deux
+> surfaces alors qu'elle n'était dans aucune de ses trois questions
+> (apprentissage 55). Elle est la plus coûteuse, parce que l'utilisateur a
+> *fait* quelque chose — et qu'elle frappe surtout quand il corrige.
+
 ### Et la question de contrôle
 
 **Quel test échouerait si ce défaut était réintroduit ?** S'il n'y en a
@@ -66,15 +79,15 @@ aucun, le défaut n'est pas corrigé tant que ce test n'existe pas
 
 ## À chaque itération
 
-0. **Lis `APPRENTISSAGES.md`.** Cinquante et une entrées y décrivent les
+0. **Lis `APPRENTISSAGES.md`.** Cinquante-cinq entrées y décrivent les
    façons de se tromper déjà rencontrées ici. Plusieurs décrivent exactement
    ce que cette boucle cherche.
 1. **Lis `TODO-AUDIT.md`.** Prends le **premier item non coché**. Un seul.
 2. **Lis la fiche d'écran et les sections de spécification** que l'item cite.
    Le crible compare le code à ce qui était **écrit**, pas à ce qui paraît
    raisonnable.
-3. **Applique les trois questions.** Écris les réponses dans l'item, avec
-   fichier et ligne. Une surface sans défaut se coche avec ses trois réponses
+3. **Applique les quatre questions.** Écris les réponses dans l'item, avec
+   fichier et ligne. Une surface sans défaut se coche avec ses quatre réponses
    — c'est l'issue **normale** et elle a de la valeur : elle dit ce qui a été
    regardé.
 4. **Pour chaque défaut trouvé** : écris d'abord le test qui échoue, puis
@@ -85,7 +98,7 @@ aucun, le défaut n'est pas corrigé tant que ce test n'existe pas
    **`./e2e.sh`** aussi.
 6. **Écris ce que l'itération t'a appris** dans `APPRENTISSAGES.md`, en
    suivant ses règles. **N'écris rien si tu n'as rien appris** — une entrée
-   creuse dilue les cinquante et une autres.
+   creuse dilue les autres.
 7. **Commite** le code, les tests, la case cochée, les trois réponses et
    l'entrée d'apprentissage dans le **même** commit.
 8. **Ne pousse pas.**
@@ -96,7 +109,7 @@ aucun, le défaut n'est pas corrigé tant que ce test n'existe pas
   elle n'ajoute pas d'écran ni de champ. Un manque qui demande une
   construction s'inscrit au TODO et attend une décision.
 - **N'affaiblis jamais un test** pour faire passer une surface.
-- **Ne coche pas un item sans ses trois réponses.** « Rien à signaler » sans
+- **Ne coche pas un item sans ses quatre réponses.** « Rien à signaler » sans
   preuve est exactement ce qui a laissé passer les trois défauts.
 - **Un seul item par itération.**
 - **Ne réécris pas le domaine** sans que le crible ait montré qu'il ment.

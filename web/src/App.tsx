@@ -63,6 +63,7 @@ export function App() {
   const [periode, setPeriode] = useState<PeriodeChoisie>({ kind: "unknown" });
   const [oeuvres, setOeuvres] = useState<Oeuvre[]>([]);
   const [etatInitial, setEtatInitial] = useState<EtatLigne[]>([]);
+  const [souvenirsInitiaux, setSouvenirsInitiaux] = useState<Record<string, string>>({});
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -78,7 +79,15 @@ export function App() {
     // Relu AVANT d'afficher : montrer les lignes vierges puis les cocher
     // ferait clignoter l'écran, et un chargement lent laisserait le joueur
     // recocher ce qui l'était déjà.
-    setEtatInitial(await client.etatSelection(UTILISATEUR, p.id));
+    // Les deux relectures ensemble : montrer les lignes avant les souvenirs
+    // ferait clignoter les champs, et un chargement lent laisserait croire
+    // la phrase perdue le temps qu'elle arrive.
+    const [etat, notes] = await Promise.all([
+      client.etatSelection(UTILISATEUR, p.id),
+      client.souvenirs(UTILISATEUR),
+    ]);
+    setEtatInitial(etat);
+    setSouvenirsInitiaux(notes);
     // Une machine sans zonage n'a pas de région : forcer « PAL » y
     // afficherait « sortie européenne inconnue » sur des titres mondiaux.
     setRegion(p.regionFree ? "WORLDWIDE" : "PAL");
@@ -147,6 +156,7 @@ export function App() {
             }
             recharger={() => { void chargerOeuvres(machine); }}
             etatInitial={etatInitial}
+            souvenirsInitiaux={souvenirsInitiaux}
           />
           <button type="button" onClick={() => void ouvrirTimeline()}>
             {t("parcours.voirTimeline")}

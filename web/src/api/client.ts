@@ -134,6 +134,22 @@ export const client = {
   etatSelection: (userId: string, platformId: string) =>
     lire<EtatLigne[]>(`/selection/${userId}/${platformId}`),
 
+  /**
+   * Les souvenirs déjà écrits, indexés par cible.
+   *
+   * Seules les œuvres sont retenues : l'état de la sélection ne rend pas
+   * encore les titres saisis (audit, item 24), donc leurs lignes n'existent
+   * pas à l'écran et leurs souvenirs n'auraient nulle part où s'afficher.
+   */
+  souvenirs: (userId: string) =>
+    lire<{ targetKind: string; targetId: string; text: string }[]>(
+      `/memories/${userId}`,
+    ).then((liste) =>
+      Object.fromEntries(
+        liste.filter((m) => m.targetKind === "work").map((m) => [m.targetId, m.text]),
+      ),
+    ),
+
   timeline: (userId: string) =>
     lire<{ entries: EntreeTimeline[]; undated: MomentTimeline[] }>(
       `/timeline/${userId}`,

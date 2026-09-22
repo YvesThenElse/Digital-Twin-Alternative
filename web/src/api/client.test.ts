@@ -72,6 +72,38 @@ describe("client.souvenir — la cible porte son genre", () => {
   });
 });
 
+describe("client.souvenirs — relire ce qui a été écrit", () => {
+  it("indexe les souvenirs par cible", async () => {
+    reponse = [
+      { targetKind: "work", targetId: "wrk_1", text: "Noël 1992." },
+      { targetKind: "work", targetId: "wrk_2", text: "Chez mon cousin." },
+    ];
+
+    expect(await client.souvenirs("usr_1")).toEqual({
+      wrk_1: "Noël 1992.",
+      wrk_2: "Chez mon cousin.",
+    });
+  });
+
+  it("ne retient que les œuvres — les titres saisis n'ont pas de ligne à l'écran", async () => {
+    // L'état de la sélection ne rend pas encore les revendications : leur
+    // souvenir n'aurait nulle part où s'afficher, et l'indexer ferait croire
+    // à une ligne qui n'existe pas.
+    reponse = [
+      { targetKind: "work", targetId: "wrk_1", text: "Gardé." },
+      { targetKind: "unresolvedClaim", targetId: "ucl_1", text: "Écarté." },
+    ];
+
+    expect(await client.souvenirs("usr_1")).toEqual({ wrk_1: "Gardé." });
+  });
+
+  it("rend un objet vide, jamais une erreur, pour un profil vierge", async () => {
+    reponse = [];
+
+    expect(await client.souvenirs("usr_vierge")).toEqual({});
+  });
+});
+
 describe("client — les adresses et les verbes", () => {
   it("préfixe toutes les requêtes par /api", async () => {
     // Le mandataire de Vite ne relaie que ce préfixe. Une adresse sans lui

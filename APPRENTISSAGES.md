@@ -1780,3 +1780,30 @@ Et un signe à reconnaître : le test qui couvrait le geste s'appelait
 n'assérait qu'un compteur local. Un nom de test est une affirmation ; quand
 il promet plus que ses assertions, il **empêche** de chercher. Voisin de
 [[44]] — nommer n'est pas rendre — appliqué cette fois aux tests eux-mêmes.
+
+### 55 — Le crible a trouvé une quatrième forme, absente de ses trois questions
+
+L'audit cherche trois choses : envoyé sans être saisi, rendu sans être lu,
+écrit sans être dit. En deux surfaces, il a trouvé **trois fois** une forme
+qui n'est dans aucune des trois — son inverse : **dit sans être écrit**.
+
+- décocher une ligne ne quitte pas le navigateur ;
+- « toujours en cours » est offert, puis traité comme une absence de
+  réponse ;
+- un titre saisi n'est pas relu, donc disparaît de l'écran qui l'a accepté.
+
+Les trois partagent une mécanique : **l'interface accepte un geste, l'affiche
+comme pris en compte, et rien ne le conserve.** C'est plus grave que les
+trois formes prévues, parce que l'utilisateur a **fait** quelque chose. Un
+champ jamais rempli ne coûte qu'une occasion manquée ; un geste perdu coûte
+la confiance, et il coûte précisément au moment où l'utilisateur corrige —
+c'est-à-dire quand il s'applique.
+
+**La règle ajoutée au crible** : pour chaque geste que la surface accepte,
+demander *où il est écrit*, et pouvoir nommer la table ou l'événement. Un
+geste dont la réponse est « dans l'état local » n'est pas enregistré.
+
+La leçon de méthode est au-dessus de la règle : **un crible se corrige avec
+ce qu'il trouve.** Les trois questions venaient de trois défauts réels ; la
+quatrième vient de trois autres, et elle n'aurait pas été devinée en amont.
+Un inventaire figé aurait classé ces cas en « rien à signaler ».

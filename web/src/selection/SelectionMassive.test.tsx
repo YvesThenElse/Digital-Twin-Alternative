@@ -34,6 +34,7 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
       ecrireSouvenir={ecrireSouvenir}
       recharger={recharger}
       etatInitial={[]}
+      souvenirsInitiaux={{}}
       {...surcharge}
     />,
   );
@@ -919,5 +920,49 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
 
     expect(screen.queryByRole("button", { name: /^Possédé$/ })).toBeNull();
     expect(screen.getByRole("button", { name: "Chez quelqu'un" })).toBeInTheDocument();
+  });
+});
+
+describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () => {
+  const souvenirDe = (titre: string) =>
+    screen.queryByRole("textbox", { name: `Un souvenir sur ${titre} ?` });
+
+  it("remontre le souvenir écrit lors d'une visite précédente", async () => {
+    // §9 : le contenu le plus précieux du produit, et **le seul qui ne soit
+    // pas régénérable**. Le champ revenait vide après un rechargement alors
+    // que la phrase était en base : le testeur en conclut qu'il l'a perdue,
+    // et c'est précisément celle-là qu'il ne réécrira pas.
+    monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+      ],
+      souvenirsInitiaux: { w1: "Noël 1992, chez ma grand-mère." },
+    });
+
+    expect(souvenirDe("Super Mario World")).toHaveValue("Noël 1992, chez ma grand-mère.");
+  });
+
+  it("laisse vide une ligne sans souvenir, plutôt que d'en inventer un", async () => {
+    const utilisateur = userEvent.setup();
+    monter({ souvenirsInitiaux: { w2: "Sur une autre ligne." } });
+
+    await utilisateur.click(lignes()[0]);
+
+    expect(souvenirDe("Super Mario World")).toHaveValue("");
+  });
+
+  it("garde le souvenir relu quand on décoche puis recoche", async () => {
+    const utilisateur = userEvent.setup();
+    monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+      ],
+      souvenirsInitiaux: { w1: "Une phrase déjà écrite." },
+    });
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(lignes()[0]);
+
+    expect(souvenirDe("Super Mario World")).toHaveValue("Une phrase déjà écrite.");
   });
 });

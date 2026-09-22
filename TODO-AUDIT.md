@@ -1,11 +1,14 @@
 # Audit des surfaces — avant de recevoir des testeurs
 
 > Le crible et la méthode sont dans [`BOUCLE-AUDIT.md`](./BOUCLE-AUDIT.md).
-> Trois questions par surface : **envoyé sans être saisi**, **rendu sans être
-> lu**, **écrit sans être dit** — plus la question de contrôle : *quel test
-> échouerait si le défaut revenait ?*
+> Quatre questions par surface : **envoyé sans être saisi**, **rendu sans
+> être lu**, **écrit sans être dit**, **dit sans être écrit** — plus la
+> question de contrôle : *quel test échouerait si le défaut revenait ?*
 >
-> Un item se coche avec ses **trois réponses**, fichier et ligne à l'appui.
+> La quatrième a été ajoutée à l'item 04, par ce que l'audit avait déjà
+> trouvé trois fois sans avoir de case où le ranger.
+>
+> Un item se coche avec ses réponses, fichier et ligne à l'appui.
 > « Rien à signaler » sans preuve est exactement ce qui a laissé passer la
 > période figée, la relecture absente et l'affect fabriqué.
 
@@ -44,7 +47,15 @@ défaut sur l'un d'eux arrête tout ce qui suit.
 
   **Contrôle — quel test échouerait ?** Aucun, et pire : un test s'appelait « décocher rétrécit la bande — **la déclaration est révisable** » en n'assérant qu'un compteur local. Il **affirmait** la capacité manquante. Renommé, et l'absence d'envoi y est désormais épinglée avec le numéro d'item : le jour où la rétractation existera, ce test échouera.
 
-- [ ] **04 — La sélection massive, passe 2 et titres libres.** Même fichier : chips, saisie libre, souvenir. Cite : E02, §3.5, §9, §4.5 à §4.8. *Quatre questions sont spécifiées, deux sont montées — vérifier que les deux absentes ne laissent aucune trace qui prétende le contraire.*
+- [x] **04 — La sélection massive, passe 2 et titres libres.** Même fichier : chips, saisie libre, souvenir. Cite : E02, §3.5, §9, §4.5 à §4.8. *Quatre questions sont spécifiées, deux sont montées — vérifier que les deux absentes ne laissent aucune trace qui prétende le contraire.*
+
+  **1 · Envoyé sans être saisi — RIEN.** Les chips ne transmettent que ce qui a été cliqué (`SelectionMassive.tsx:297`), le titre libre que ce qui a été tapé (`:290`), le souvenir que ce qui a été écrit. L'œuvre fabriquée pour un titre saisi (`:310`) porte des valeurs inertes — `rang`, `sortie`, `regions` — mais aucune ne sort du navigateur : elle ne sert qu'au décompte et au rendu, et le code le dit.
+
+  **2 · Rendu sans être lu — DÉFAUT, corrigé.** `souvenirs` partait de `{}` : **le champ revenait vide après un rechargement alors que la phrase était en base**. §9 en fait « le contenu le plus précieux du produit, et le seul qui ne soit pas régénérable » — le testeur en conclut qu'il l'a perdue, et c'est justement celle-là qu'il ne réécrira pas. Corrigé : `client.souvenirs` relit `/memories/{user}`, `App` le charge avec l'état, le composant en part. Trois tests de composant, trois de client, deux mutations annoncées et vérifiées.
+
+  **3 · Écrit sans être dit — L'INVERSE, deux fois.** (a) **« Toujours en cours » n'écrit rien** : `DeclarationBatch.cs:253` traite `stillPlaying` comme `null`, aucun événement, aucun jugement. L'écran l'offre comme une troisième réponse et l'oublie — au rechargement la chip est vierge, indiscernable de « pas prononcé ». → **item 25**. (b) **Les titres saisis ne sont pas relus** : `EventStore.SelectionStateAsync` filtre `TargetKind == "work"`, donc une revendication ajoutée disparaît de l'écran au rechargement, tout en restant sur la timeline. → **item 24**.
+
+  **Contrôle — quel test échouerait ?** Pour le souvenir relu, oui, six tests neufs et deux mutations. Pour (a) et (b), aucun. À noter : la première mutation **n'a pas compilé** — retirer l'usage de la prop rend le paramètre inutilisé et le typage le refuse. Le compilateur est ici une garde, faible mais réelle.
 
 - [ ] **05 — La timeline.** `timeline/Timeline.tsx`, `timeline/types.ts`. Cite : `ecrans/E03-timeline.md`, §7.5, `ORDONNANCEMENT-TEMPOREL.md`. *Défaut déjà connu à confirmer ou infirmer : un jeu affiné apparaît trois fois, le même titre à la même date.*
 
@@ -101,6 +112,10 @@ inscrit et ne les construit pas.
 
 - [ ] **23 — « Jamais joué » n'est ni saisissable ni relu.** (§24.3) L'API l'accepte et le rend ; aucun geste ne le pose, aucun rendu ne le montre. *Acceptation : le geste d'E02 — balayage à gauche sur mobile, `X` au survol sur desktop — pose la déclaration, et elle se relit distinctement d'un titre non coché.*
 
+- [ ] **24 — Les titres saisis ne sont pas relus.** (§3.5) `SelectionStateAsync` ne rend que les cibles `work` ; une revendication ajoutée disparaît de la sélection au rechargement, tout en restant sur la timeline. *Acceptation : un titre saisi revient à l'écran après rechargement, marqué comme tel, avec son souvenir.*
+
+- [ ] **25 — « Toujours en cours » n'est enregistré nulle part.** (§4.6) L'écran l'offre, le traducteur le traite comme une absence de réponse. *Décision attendue : le porter comme jugement permanent — `PlayDeclaration` n'a pas de champ d'achèvement — ou cesser de l'offrir, puisqu'il décrit l'état par défaut d'un jeu commencé. Le laisser ainsi fait disparaître une réponse donnée.*
+
 ---
 
 ## Journal
@@ -110,3 +125,5 @@ inscrit et ne les construit pas.
 - **02 — le choix de la période.** **Aucun mensonge** : la réparation d'hier tient, toute valeur transmise vient d'une saisie ou d'une suggestion affichée et modifiable, et onze tests plus le parcours le gardent. Mais le crible a trouvé autre chose, que la relecture de la spécification seule pouvait donner : **trois documents prescrivent un mode de saisie dérivé** — §7.3 🆕, E01 et `MODELE-DE-DOMAINE.md:74` — où le référentiel fournit le repère et l'utilisateur répond en langage courant (« à sa sortie », « sur le tard »). L'écran, lui, demande un nombre ; `SPECIFICATION.md:311` nomme exactement cet anti-motif, la « question nue ». Le prérequis manque d'ailleurs dans les données : le modèle veut une **fenêtre commerciale `from`/`to` par région**, le dataset ne porte que `launch_year`. Second constat : la **période ouverte** est acceptée par l'API, rendue par `libelle`, couverte par un test — et **aucun geste ne peut la produire**. Deux items ouverts, aucun code modifié.
 
 - **03 — la sélection massive, passe 1.** Rien n'est envoyé à l'insu de l'utilisateur, et le tri suit bien la notoriété. Mais deux défauts, dont **le plus grave de l'audit jusqu'ici, et il est de la forme inverse du crible : dit sans être écrit**. `basculer` persiste quand on coche et **retourne sans rien envoyer quand on décoche**, alors qu'E02 écrit « chaque bascule est persistée immédiatement ». C'est le geste le plus fréquent de l'écran — le dépôt le dit lui-même — et il ne survit pas. Tant que rien n'était relu, cela ne se voyait pas ; **depuis l'item 22, le mensonge est visible** : on décoche, on recharge, la ligne revient. Second défaut : `neverPlayed` est rendu par l'API et **lu par personne**, si bien qu'un titre déclaré « jamais joué » revient indiscernable d'un titre non coché — la distinction même que §24.3 existe pour tenir. Un test s'appelait « la déclaration est révisable » en n'assérant qu'un compteur local : renommé, avec l'absence d'envoi désormais épinglée et rattachée à son item.
+
+- **04 — la passe 2 et les titres libres.** Rien n'est envoyé à l'insu de l'utilisateur. Un défaut **corrigé** : les souvenirs n'étaient jamais relus, et le champ revenait vide alors que la phrase était en base — sur le contenu que §9 dit « le seul qui ne soit pas régénérable ». Six tests neufs, deux mutations annoncées et vérifiées ; l'une d'elles **n'a pas compilé**, le typage refusant une prop devenue inutilisée, ce qui fait du compilateur une garde faible mais réelle. Deux défauts inscrits, tous deux de la forme **dit sans être écrit**, comme celui de l'item 03 : « toujours en cours » est offert puis traité comme une absence de réponse, et les **titres saisis ne sont pas relus** — ils disparaissent de la sélection au rechargement tout en restant sur la timeline. Le crible aura donc trouvé cette forme trois fois en deux surfaces, alors qu'elle ne figurait pas dans ses trois questions.

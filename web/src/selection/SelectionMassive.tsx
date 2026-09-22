@@ -106,6 +106,19 @@ type Props = {
    * exactement le défaut qu'on corrige. Il est donc REQUIS.
    */
   etatInitial: EtatLigne[];
+  /**
+   * Les souvenirs déjà écrits, par cible.
+   *
+   * §9 en fait **le contenu le plus précieux du produit, et le seul qui ne
+   * soit pas régénérable**. Le champ revenait vide après un rechargement
+   * alors que la phrase était en base : le testeur en conclut qu'il l'a
+   * perdue — et c'est justement celle-là qu'il ne réécrira pas.
+   *
+   * Requis, sans valeur par défaut, pour la même raison que `etatInitial` :
+   * un appelant qui l'oublie verrait un écran vide sans qu'aucune erreur ne
+   * le dise.
+   */
+  souvenirsInitiaux: Record<string, string>;
 };
 
 /**
@@ -175,6 +188,7 @@ function ChampSouvenir({ titre, valeur, surSaisie, surSortie }: {
 
 export function SelectionMassive({
   oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger, etatInitial,
+  souvenirsInitiaux,
 }: Props) {
   const [declarees, setDeclarees] = useState<Set<string>>(
     () => new Set(etatInitial.filter((l) => l.played).map((l) => l.workId)),
@@ -203,7 +217,7 @@ export function SelectionMassive({
   // ligne ne doit pas détruire une phrase. Se tromper de ligne est le geste
   // le plus fréquent de cet écran, et perdre du texte à cause d'un tap mal
   // placé serait impardonnable sur le seul contenu non régénérable.
-  const [souvenirs, setSouvenirs] = useState<Record<string, string>>({});
+  const [souvenirs, setSouvenirs] = useState<Record<string, string>>(souvenirsInitiaux);
 
   // Les titres saisis. Ils vivent à part des œuvres du référentiel : les
   // mélanger leur donnerait un rang, une notoriété et un statut régional
