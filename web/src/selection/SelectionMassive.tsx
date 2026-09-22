@@ -378,6 +378,16 @@ export function SelectionMassive({
 
   return (
     <section>
+      {/* Repère B — « 147 jeux · 12 déclarés ». Le second nombre vient de
+          l'état relu : sans lui, l'écran annoncerait zéro déclaré à un
+          profil plein. */}
+      <p className="compte">
+        {t("selection.compte", {
+          jeux: String(oeuvres.length),
+          declares: String(declarees.size),
+        })}
+      </p>
+
       <ul data-disposition={disposition}>
         {ordonnees.map((oeuvre) => {
           const declare = declarees.has(oeuvre.id);
@@ -390,6 +400,7 @@ export function SelectionMassive({
                   toute la mécanique repose sur la reconnaissance. */}
               <button
                 type="button"
+                className="ligne"
                 aria-pressed={declare}
                 aria-label={t(declare ? "ligne.declare" : "ligne.declarer", { titre: oeuvre.titre })}
                 onClick={() => basculer(oeuvre.id)}
@@ -403,7 +414,7 @@ export function SelectionMassive({
                     couverture={oeuvre.couverture}
                   />
                 ) : null}
-                <span>{oeuvre.titre}</span>
+                <span className="ligne-titre">{oeuvre.titre}</span>
                 {/* La date porte SA granularité : une année seule ne s'affiche
                     pas comme une date au jour. 31 sorties du dataset ne sont
                     datées qu'à l'année, et les rendre exactes affirmerait un

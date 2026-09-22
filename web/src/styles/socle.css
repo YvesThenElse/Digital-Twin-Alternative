@@ -433,3 +433,238 @@ main {
     scroll-behavior: auto !important;
   }
 }
+
+/* ===================================================================
+ * E02 — la sélection massive
+ *
+ * L'écran dont tout le budget d'interaction dépend, et le seul où « très
+ * dense » et « cibles ≥ 44 px » se rencontrent. Le tableau de densité de
+ * §6 tranche : **la densité vient du nombre d'éléments visibles, jamais de
+ * la compression des cibles.**
+ *
+ * Mobile et desktop ne sont pas la même disposition étirée : on balaye une
+ * liste sur téléphone, une grille sur écran large. Jusqu'ici les deux
+ * rendaient la MÊME chose — le parcours vérifiait un attribut, pas une
+ * disposition.
+ * =================================================================== */
+
+/* Repère A — le contexte fixe. Plateforme, région, et période appliquée aux
+   déclarations suivantes. C'est la source d'erreur la plus probable de
+   l'écran, donc la règle reste visible. */
+.contexte {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e2) var(--e3);
+  padding: var(--e3) var(--e4);
+  background: var(--surface-2);
+  border-radius: var(--r2);
+  box-shadow: var(--ombre-1);
+}
+
+.contexte-periode {
+  font: var(--title);
+}
+
+.contexte-regle {
+  flex-basis: 100%;
+  font: var(--micro);
+  color: var(--ink-3);
+}
+
+/* Repère B — « 147 jeux · 12 déclarés ». Le second nombre vient de l'état
+   relu : sans lui, l'écran annoncerait zéro déclaré à un profil plein. */
+.compte {
+  font: var(--meta);
+  color: var(--ink-2);
+}
+
+/* --- mobile : la liste dense ------------------------------------------- */
+
+[data-disposition="liste"] {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-disposition="liste"] > li {
+  border-bottom: 1px solid var(--line);
+}
+
+/* La CELLULE ENTIÈRE est la cible : quatre cibles de 44 px occuperaient
+   200 px et ne laisseraient que 143 px de titre sur un écran de 375 px —
+   sur l'écran dont toute la mécanique repose sur la reconnaissance. */
+[data-disposition="liste"] .ligne {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  align-items: center;
+  gap: var(--e3);
+  width: 100%;
+  min-height: var(--ligne-liste);
+  padding: var(--e2) var(--e3);
+  border-radius: 0;
+}
+
+[data-disposition="liste"] .ligne [data-tuile] {
+  width: 40px;
+}
+
+/* --- desktop : la grille ------------------------------------------------ */
+
+/* Au-delà de 1024 px, une colonne unique gaspillerait 60 % du viewport. La
+   grille en montre 40 à 50 d'un coup — c'est la disposition qui rend la
+   reconnaissance rapide. */
+[data-disposition="grille"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--e4);
+}
+
+[data-disposition="grille"] .ligne {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  width: 100%;
+  padding: 0;
+}
+
+[data-disposition="grille"] .ligne-titre {
+  font: var(--meta);
+  color: var(--ink);
+}
+
+/* --- la tuile ----------------------------------------------------------- */
+
+/* Format constant 3:4 quelle que soit l'origine, pour que la grille reste
+   régulière — c'est ce qui empêche l'alternance de paraître rapiécée (§5). */
+[data-ratio="3:4"] {
+  display: block;
+  aspect-ratio: var(--ratio-tuile);
+  border-radius: var(--r1);
+  overflow: hidden;
+  background: var(--accent, var(--line));
+}
+
+[data-tuile="jaquette"] img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* La tuile générée assume d'être une composition typographique : pas de
+   bordure de boîtier, pas de faux logo. Elle ne doit JAMAIS ressembler à
+   une vraie jaquette. */
+[data-tuile="generee"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--e2);
+}
+
+[data-role="titre-tuile"] {
+  font-family: var(--display);
+  font-size: 13px;
+  line-height: 1.15;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* L'état déclaré se voit — et pas par la seule couleur (§10). */
+.ligne[aria-pressed="true"] {
+  background: var(--surface-2);
+}
+
+.ligne[aria-pressed="true"] .ligne-titre,
+.ligne[aria-pressed="true"] > span:not([data-tuile]) {
+  font-weight: 600;
+}
+
+/* --- repère D : la bande d'époque --------------------------------------- */
+
+/*
+ * **Le mouvement le plus important du produit** (§7) : quand une ligne est
+ * déclarée, la bande grandit visiblement. Ce n'est pas un compteur qui
+ * s'incrémente, c'est une histoire qui pousse.
+ *
+ * Elle était INVISIBLE : ses barres portaient une hauteur en pourcentage
+ * dans un conteneur qui n'en avait pas.
+ */
+figure[data-testid="bande-epoque"] {
+  margin: 0;
+  padding: var(--e3) var(--e4);
+  background: var(--surface-2);
+  border-radius: var(--r2);
+  box-shadow: var(--ombre-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+}
+
+.bande {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 48px;
+}
+
+.bande-tranche {
+  flex: 1;
+  min-width: 3px;
+  min-height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--ink-3);
+  transition: height var(--duree-moment) ease-out;
+}
+
+figure[data-testid="bande-epoque"] figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e1) var(--e3);
+  font: var(--meta);
+  color: var(--ink-2);
+}
+
+/* --- la passe 2, et le titre saisi -------------------------------------- */
+
+[role="group"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e2);
+  padding: var(--e2) var(--e3);
+}
+
+[role="group"] > span:first-child {
+  font: var(--micro);
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+[role="group"] button {
+  min-height: 36px;
+  padding: var(--e1) var(--e3);
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font: var(--meta);
+}
+
+[role="group"] button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--surface);
+  border-color: var(--ink);
+}
+
+[data-canonique="false"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e2);
+  padding: var(--e2) var(--e3);
+  border-bottom: 1px solid var(--line);
+}
+
+[data-canonique="false"] > span:nth-child(2) {
+  font: var(--micro);
+  color: var(--ink-3);
+}

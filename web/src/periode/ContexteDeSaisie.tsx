@@ -25,13 +25,13 @@ export function ContexteDeSaisie({
   changer: () => void;
 }) {
   return (
-    <p data-testid="contexte">
+    <p className="contexte" data-testid="contexte">
       <span>{t("parcours.machine", { machine, region })}</span>
-      <span>{libelle(versValeurTemporelle(periode))}</span>
+      <span className="contexte-periode">{libelle(versValeurTemporelle(periode))}</span>
       <button type="button" onClick={changer}>{t("contexte.changer")}</button>
       {/* La règle reste écrite : c'est la source d'erreur la plus probable
           de l'écran, et la supposer connue la rendrait invisible. */}
-      <small>{t("contexte.sApplique")}</small>
+      <small className="contexte-regle">{t("contexte.sApplique")}</small>
     </p>
   );
 }

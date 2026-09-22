@@ -57,7 +57,12 @@ export function ChoixMachine({
               onClick={() => choisir(p)}
             >
               <span className="carte-nom">{p.nom}</span>
-              <span className="carte-meta">{p.launchYear}</span>
+              <span className="carte-meta">
+                {t("machine.resume", {
+                  annee: String(p.launchYear),
+                  jeux: String(p.worksCount),
+                })}
+              </span>
             </button>
           );
         })}

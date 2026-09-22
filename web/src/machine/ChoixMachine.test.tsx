@@ -51,10 +51,14 @@ describe("ChoixMachine — le choix doit être RECONNU, pas cherché (E01)", () 
     expect(nes.getAttribute("data-epoque")).not.toBe(switch_.getAttribute("data-epoque"));
   });
 
-  it("porte l'année de sortie, qui est le second repère", async () => {
+  it("porte l'année de sortie ET le nombre de jeux", async () => {
+    // `worksCount` traversait l'API, le client et le type sans que rien ne
+    // l'affiche (audit, item 19). C'est ici qu'il sert : il dit ce qu'il y
+    // a derrière la carte avant qu'on l'ouvre.
     monter();
 
-    expect(within(carteDe("Super Nintendo")).getByText("1990")).toBeInTheDocument();
+    expect(within(carteDe("Super Nintendo")).getByText(/1990/)).toBeInTheDocument();
+    expect(within(carteDe("Super Nintendo")).getByText(/35 jeux/)).toBeInTheDocument();
   });
 
   it("rend la console choisie, pas son libellé", async () => {
@@ -72,7 +76,7 @@ describe("ChoixMachine — le choix doit être RECONNU, pas cherché (E01)", () 
     const utilisateur = userEvent.setup();
     const { choisir } = monter();
 
-    await utilisateur.click(within(carteDe("Switch")).getByText("2017"));
+    await utilisateur.click(within(carteDe("Switch")).getByText(/2017/));
 
     expect(choisir).toHaveBeenCalledWith(PLATEFORMES[2]);
   });

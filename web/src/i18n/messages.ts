@@ -111,6 +111,10 @@ export const MESSAGES = {
   "parcours.echecAction":
     "L'action n'a pas abouti. Ce que vous avez déjà déclaré est conservé ; réessayez.",
   "parcours.machine": "{machine} · {region}",
+  // Repère B d'E02, et le compte de jeux d'une console : deux nombres que
+  // l'API calculait et que personne n'affichait.
+  "selection.compte": "{jeux} jeux · {declares} déclarés",
+  "machine.resume": "{annee} · {jeux} jeux",
   "timeline.titre": "Ma timeline",
   "timeline.invitation": "Racontez votre première console.",
   "timeline.deplier": "Déplier : {n} jeux déclarés ensemble",

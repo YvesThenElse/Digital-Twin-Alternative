@@ -126,7 +126,30 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // sur les deux écrans ne prouve rien si les deux rendent la même chose :
   // une mutation forçant la liste partout laissait ce parcours vert.
   const attendue = infos.project.name === "desktop" ? "grille" : "liste";
-  await expect(page.getByRole("list").last()).toHaveAttribute("data-disposition", attendue);
+  const liste = page.getByRole("list").last();
+  await expect(liste).toHaveAttribute("data-disposition", attendue);
+
+  // **L'attribut ne suffit pas.** Il a longtemps été toute la vérification,
+  // et les deux dispositions rendaient exactement la même chose : le test
+  // assérait une intention déclarée. On regarde donc ce que le navigateur
+  // a vraiment calculé.
+  const rendu = await liste.evaluate((n) => {
+    const s = getComputedStyle(n);
+    return { affichage: s.display, colonnes: s.gridTemplateColumns.split(" ").length };
+  });
+  if (attendue === "grille") {
+    expect(rendu.affichage, "la grille ne se rend pas en grille").toBe("grid");
+    expect(rendu.colonnes, "la grille n'a qu'une colonne").toBeGreaterThan(3);
+  } else {
+    expect(rendu.affichage, "la liste se rend en grille").toBe("flex");
+  }
+
+  // Et la règle des 56 px de la ligne mobile — la densité vient du nombre
+  // d'éléments, jamais de la compression des cibles (§6).
+  if (attendue === "liste") {
+    const hauteur = await lignes.first().evaluate((n) => n.getBoundingClientRect().height);
+    expect(hauteur, "la ligne de liste est sous 56 px").toBeGreaterThanOrEqual(56);
+  }
 
   if (attendue === "grille") {
     // Les jaquettes doivent CHARGER, pas seulement être annoncées. Un
@@ -159,6 +182,18 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // La récompense est arrivée PENDANT la saisie, pas à la fin (§24.4).
   const bande = page.getByTestId("bande-epoque");
   await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
+
+  // **Et elle se VOIT.** « Ce n'est pas un compteur qui s'incrémente, c'est
+  // une histoire qui pousse » — or ses barres portaient une hauteur en
+  // pourcentage dans un conteneur qui n'en avait pas : la bande la plus
+  // importante du produit était invisible, et trois attributs `data-*`
+  // disaient le contraire.
+  const barres = await bande.locator(".bande-tranche").evaluateAll((noeuds) =>
+    noeuds.map((n) => n.getBoundingClientRect().height),
+  );
+  expect(barres.length, "la bande n'a aucune tranche").toBeGreaterThan(0);
+  expect(Math.max(...barres), "la bande n'a pas de hauteur visible")
+    .toBeGreaterThan(8);
 
   // --- 3 bis. la passe 2, sur une ligne déclarée --------------------------
   //
