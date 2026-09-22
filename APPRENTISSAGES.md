@@ -2437,3 +2437,28 @@ saisies différentes qui produisent la même trace**. Si elles existent, la
 dérivation ne répond pas à la question — et il faut stocker la réponse, pas
 la recalculer. Puis vérifier qu'un point d'entrée la montre : ce qu'aucune
 lecture ne rend ne peut pas être éprouvé.
+
+### 77 — Une décision de ne pas faire se garde comme le reste
+
+Quatre items de cette boucle se réglaient par une phrase : différer. Écrite
+dans un document, cette phrase se périme exactement comme du code — sauf que
+rien ne le signale, et qu'au bout d'un moment « différé » ne se distingue
+plus d'« oublié ». C'est ce qui était arrivé à la passe temporelle, décrite
+dans une fiche d'écran et inscrite dans aucune phase.
+
+Deux gardes de documentation ont été écrits sur le même patron, et il se
+transpose :
+
+1. **Prendre l'ensemble à sa source d'autorité** — la hiérarchie scellée par
+   réflexion, la ligne « Entrant » d'une fiche — jamais à une liste recopiée.
+2. **Le comparer au document**, dans les deux sens : ce que le document tait,
+   et ce qu'il nomme de trop.
+3. **Ancrer la lecture sur une section**, pas sur le fichier entier. Le
+   premier essai ramassait onze lignes d'un tableau sans rapport, et se
+   serait cru satisfait par n'importe quel document assez long.
+4. **Un témoin qui éprouve la logique**, pas l'arbre : un document amputé,
+   une fiche fabriquée. Sans lui, un ensemble vide passe pour une garantie.
+
+**La règle** : quand une décision est de ne rien construire, écrire le garde
+qui vérifie que la décision reste écrite. Il coûte dix lignes et il survit à
+la mémoire de celui qui a décidé.

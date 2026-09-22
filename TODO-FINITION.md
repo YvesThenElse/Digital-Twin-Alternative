@@ -48,7 +48,7 @@
 
 - [x] **F14 — Les capacités temporelles inatteignables sont inscrites.** (audit 21) **Décidé** : **différées**, pas offertes. La période ouverte et `Age` appartiennent à E07, qui est déjà différé ; les offrir au parcours d'amorce ajouterait une question que §24.4 déconseille. *Acceptation : `PHASING.md` dit lesquelles, où elles iront, et pourquoi elles ne sont pas dans le parcours — et un test le vérifie, ou le document est cité par celui qui les porte.*
 
-- [ ] **F15 — Le tiroir sans date entre dans une phase.** (audit 32) **Décidé** : **inscrit**, pas construit. Une session de Phase 2 est unique : la relance ne s'y joue pas, et un écran de plus à concevoir servirait un chemin qu'aucun testeur n'empruntera. *Acceptation : E14 — la passe temporelle — figure au TODO d'une phase avec sa raison, et `ecrans/E14` cesse d'être un écran que rien n'appelle.*
+- [x] **F15 — Le tiroir sans date entre dans une phase.** (audit 32) **Décidé** : **inscrit**, pas construit. Une session de Phase 2 est unique : la relance ne s'y joue pas, et un écran de plus à concevoir servirait un chemin qu'aucun testeur n'empruntera. *Acceptation : E14 — la passe temporelle — figure au TODO d'une phase avec sa raison, et `ecrans/E14` cesse d'être un écran que rien n'appelle.*
 
 ## Trouvé en chemin
 
@@ -262,3 +262,13 @@
   suite jusqu'à ce que quelqu'un dise où elle va. Deux témoins gardent le
   garde : sept variantes trouvées, et un tableau réellement lu — sans eux, un
   ensemble vide passerait pour une garantie.
+
+- **F15** — E14 a **deux entrants**, et ils n'arrivent pas dans la même
+  phase : l'import (E13) était déjà décrit en Phase 4, le **tiroir** (E03) ne
+  l'était nulle part. Il est inscrit en Phase 3, avec sa raison — une session
+  de test de Phase 2 est unique, la relance ne s'y joue pas, et le tiroir
+  prend son sens quand un profil dure. `PasseTemporelleTests` lit les portes
+  dans la fiche elle-même et exige que le plan les situe : une porte
+  qu'aucune phase ne prévoit est une porte qui n'existera jamais. Trois
+  témoins, dont un qui vérifie qu'une **sortie** n'est pas prise pour une
+  entrée.

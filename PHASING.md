@@ -542,6 +542,32 @@ imposer un formulaire long avant le premier retour visible ».
   parler le produit de lui-même au moment précis où §24.4 lui demande de
   parler du joueur. E04 et E10 sont leur place, avec de quoi les nourrir.
 
+#### La passe temporelle par le tiroir — E14 depuis E03
+
+`ORDONNANCEMENT-TEMPOREL.md` §6 fait une promesse que la Phase 1 ne tient
+pas : « le tiroir est une **tâche, pas une poubelle**. Il est dimensionné
+pour être vidé — c'est la relance de session la moins coûteuse du produit. »
+Il n'accepte aujourd'hui **aucun geste** : on y voit les moments sans date,
+on ne peut pas les dater.
+
+L'écran qui le ferait existe — c'est **E14**, la passe temporelle — et sa
+fiche lui donne **deux entrants**, que ce plan doit situer séparément :
+
+| Entrant vers E14 | Ce qui l'amène | Phase |
+|---|---|---|
+| **E13** | l'import, qui donne le « quoi » et rarement le « quand » | **Phase 4**, §7 — le couple E13 → E14 y est déjà décrit |
+| **E03** | le tiroir des sans-date, « dater ces moments » | **Phase 3**, ici |
+
+**Pourquoi Phase 3 et pas Phase 1.** Une session de test de Phase 2 est
+**unique** : le testeur vient une fois, et la relance ne s'y joue pas. Un
+écran de plus à concevoir et à garder servirait un chemin qu'aucun testeur
+n'empruntera. Le tiroir prend son sens quand un profil **dure** — c'est-à-dire
+quand le compte et la timeline persistante existent, donc ici.
+
+**Ce que la Phase 1 laisse en l'état, sciemment** : le tiroir affiche, compte
+et n'efface rien. Un moment sans date reste un moment valide (§6) ; il est
+seulement absent de l'axe.
+
 ### Extensions du modèle de données
 
 À ce stade, le modèle intègre :
