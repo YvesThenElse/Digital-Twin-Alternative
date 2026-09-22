@@ -2068,3 +2068,32 @@ déjà, mieux, ailleurs.
 **La règle** : avant d'écrire une garde, chercher celle qui existe. Et quand
 une mutation fait tomber plus de tests que prévu, **lire leurs noms** : ils
 disent où le sujet était déjà traité.
+
+### 64 — Dans un même enregistrement, certains champs sont mesurés et d'autres souhaités
+
+Le manifeste des jaquettes porte, par visuel : `source_url`, `licence`,
+`bytes`, `width`, `height`. Il inscrivait `width: 512` pour **les 218**.
+
+Les fichiers mesurent de 213 à 960 px, médiane 300. Le `512` n'était pas une
+mesure : c'était la taille **demandée** à la source, écrite au moment de la
+requête. Et `bytes` était juste **au bit près** — celui-là avait été mesuré
+après coup.
+
+Deux champs voisins, dans la même ligne, écrits par le même script : l'un
+décrit ce qu'on a obtenu, l'autre ce qu'on avait demandé. **Rien ne les
+distinguait**, et le second se lisait comme le premier.
+
+Ce que cela coûte dépend de l'enregistrement. Ici, c'est la pièce sur
+laquelle s'appuierait une demande de retrait, et elle prétendait une
+conformité — « 512 px au plus » — que deux fichiers ne respectent pas.
+
+**La règle** : un enregistrement qui documente un fait doit être écrit
+**après** l'action, à partir de ce qu'elle a produit — jamais à partir de ce
+qu'on lui avait demandé. Quand les deux doivent coexister, ils portent des
+noms différents : `largeur_demandee` et `largeur`.
+
+Et le contrôle qui l'attrape est trivial une fois qu'on y pense : **relire le
+fichier et comparer**. Il n'existait pas. Sa parenté avec [[47]] est
+directe — exécuter un document plutôt que le relire — appliquée cette fois à
+un enregistrement : **mesurer un artefact plutôt que lire ce qu'il dit de
+lui-même**.

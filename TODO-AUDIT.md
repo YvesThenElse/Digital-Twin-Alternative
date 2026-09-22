@@ -191,7 +191,29 @@ chacune avait raison séparément.
 
   **Contrôle — quel test échouerait ?** `ReferentielTests.Chaque_plateforme_expose_son_annee_de_lancement` : il appelle `GetInt32()`, qui **lève** sur un `null`. La garde existait déjà — je l'ai découvert en mispréduisant une mutation (1 annoncé, 3 obtenus) et en cherchant l'écart. J'avais écrit un test redondant ; il est retiré, et la raison qui l'avait fait écrire est désormais inscrite dans la garde existante.
 
-- [ ] **13 — Le catalogue et les jaquettes.** `Reference/ReferenceEndpoints.cs`, `Reference/CoverEndpoints.cs`, `Reference/ReferenceCatalogSource.cs`. Cite : §3.3, §3.4, §19.2. *Le manifeste enregistre une acquisition, pas une présence.*
+- [x] **13 — Le catalogue et les jaquettes.** `Reference/ReferenceEndpoints.cs`, `Reference/CoverEndpoints.cs`, `Reference/ReferenceCatalogSource.cs`. Cite : §3.3, §3.4, §19.2. *Le manifeste enregistre une acquisition, pas une présence.*
+
+  **§19.2 / VERIFICATION-JURIDIQUE §3.3 portent CINQ conditions écrites. Une était fausse, une est violée, trois tiennent.**
+
+  | Condition | État |
+  |---|---|
+  | 1 · **512 px de large au plus** | ❌ **deux visuels la violent** — *Celeste* à **960 px**, un `.webp` à 546 px |
+  | 2 · **Origine conservée par visuel** | ✅ le manifeste porte `source_url`, `source_article`, `licence`, `regime`, `external_id` |
+  | 3 · **Retrait immédiat, la tuile reprend la place** | ⚠️ vrai après redémarrage — le catalogue filtre sur l'existence à l'amorçage — mais l'`<img>` casse en séance (item 29) |
+  | 4 · **Diffusion bornée** | ✅ tailnet privé, lié à l'adresse Tailscale, LAN fermé |
+  | 5 · **Aucune redistribution** | ✅ pas d'export ; `/covers` sert la page du produit, ce que la condition distingue explicitement |
+
+  **Et le manifeste mentait sur les 218 visuels.** Il inscrivait `width: 512` **partout** — ce n'était pas une mesure mais la taille *demandée* à la source. Les fichiers réels vont de **213 à 960 px, médiane 300**. Le champ `bytes`, lui, était juste **au bit près** : dans un même enregistrement, certains champs sont des observations et d'autres des intentions, et rien ne les distinguait. Or c'est la pièce sur laquelle s'appuierait une demande de retrait. **Corrigé** : les 218 entrées portent désormais la mesure.
+
+  **1 · Envoyé sans être saisi — RIEN.** `CoverEndpoints` prend le chemin **du manifeste, jamais de la requête** (item 17 de la Phase 1), avec une liste fermée de types.
+
+  **2 · Rendu sans être lu — déjà inscrit.** `worksCount` (item 19), `releases[].confidence` (item 12).
+
+  **3 · Écrit sans être dit — le manifeste, corrigé ci-dessus.** **4 · Dit sans être écrit — RIEN.**
+
+  **Contrôle — quel test échouerait ?** Aucun n'existait : **`calibration/test_covers.py`** est écrit pour cela — concordance manifeste/fichiers, présence de l'origine, nombre d'octets, et la règle des 512 px. Il ne lit que des fichiers versionnés, donc il tourne depuis un dépôt neuf.
+
+  **Ce qui manque et qu'aucun fichier ne réclame : les trois contrôles hors ligne documentés ne tournent pas.** `CLAUDE.md` les présente comme « à lancer après avoir touché au pipeline ». Vérifié : `test_id_stability.py` réclame `resolved.json` (absent du dépôt), `test_wp_parser.py` réclame `wp_wikitextes.json` (absent), `emit_notabilite.py` ne marche **que** depuis `calibration/`. → **item 36**.
 
 - [ ] **14 — Les déclarations et l'état relu.** `Selection/DeclarationEndpoints.cs`, `Selection/DeclarationBatch.cs`, `Selection/PeriodInput.cs`. Cite : §24.3, §3.5, `MODELE-DE-DOMAINE.md` §12. *Le vocabulaire diffère entre `/declarations/{userId}` (« Owned ») et `/selection` (« owned ») — écart déjà relevé, à trancher.*
 
@@ -244,6 +266,10 @@ inscrit et ne les construit pas.
 
 - [ ] **35 — Aucun contrat partagé entre l'API et le client.** `lire<T>` fait un `as T` : un champ que l'API ajoute, renomme ou rend facultatif disparaît côté front **sans qu'aucun outil ne puisse le dire**. Quatre omissions et une dérive de type l'ont montré. *Décision attendue : engendrer les types du client depuis l'API (OpenAPI, ou un schéma émis au build), ou tenir à la main l'inventaire des champs sciemment ignorés — il est écrit dans `client.ts`, mais rien ne le vérifie.*
 
+- [ ] **36 — Deux visuels violent la règle des 512 px.** (§3.3 condition 1) *Celeste* à 960×1539 et un `.webp` à 546 px. *Décision attendue : re-télécharger à la bonne taille depuis `source_url`, ou retirer les fichiers — la tuile générée reprend la place, c'est son rôle de socle. `calibration/test_covers.py` le signale tant que ce n'est pas fait.*
+
+- [ ] **37 — Les trois contrôles hors ligne documentés ne tournent pas.** `CLAUDE.md` les présente comme lançables ; deux réclament des fichiers intermédiaires absents du dépôt (`resolved.json`, `wp_wikitextes.json`) et le troisième n'accepte qu'un répertoire courant précis. *Un garde documenté et non lançable est pire qu'aucun : il fait croire le sujet couvert.*
+
 ---
 
 ## Journal
@@ -271,3 +297,5 @@ inscrit et ne les construit pas.
 - **11 — le contexte de saisie et l'état du service.** Un défaut corrigé : **quatre chemins asynchrones sans `catch`**, si bien qu'un échec laissait l'écran figé et muet — le testeur appuie, rien ne se passe, il appuie encore. Mais l'itération vaut surtout par ce qu'une **prédiction fausse** a révélé. J'attendais quatre échecs de la mutation ; il y en a eu trois. Le quatrième devait venir du garde des libellés morts — qui, vérification faite, **ne pouvait pas échouer** : `messages.ts` figurait parmi les sources où l'on cherche un usage, et chaque clé s'y trouve par définition. Une clé fabriquée que personne n'utilisait passait. Le contrôle voisin avait son témoin ; celui-ci n'en avait pas. Réparé avec deux témoins — la logique, et l'exclusion du catalogue —, il a immédiatement trouvé un vrai mort : **`parcours.retour`, « Changer de console »**, dont le libellé existait sans que l'action existe. On ne peut pas changer de console sans recharger la page.
 
 - **12 — le client HTTP.** Comparaison champ par champ : **quatre omissions** — dont deux légitimes —, **une dérive de type** et **un point d'entrée orphelin**. `/unresolved/{user}` n'est jamais appelé alors que c'est précisément le moyen de relire les titres saisis (item 24). La dérive mérite son détail : l'année de lancement est **facultative** côté modèle, le chargeur **saute l'invariant 03b** quand elle manque, et le client la déclare `number` — un `null` traversé donnerait `null + 2 === 2`, donc une année suggérée de **2**, et plus rien ne refuserait une date antérieure à la machine. L'itération s'est réglée sur une **misprédiction** : j'annonçais un échec, il y en a eu trois, et l'écart a montré que **la garde existait déjà** — `GetInt32()` lève sur un `null`. Mon test était un doublon ; retiré, sa raison inscrite dans la garde existante. Les omissions sont désormais un tableau dans `client.ts` : faute de contrat partagé, une décision écrite vaut mieux qu'un silence.
+
+- **13 — le catalogue et les jaquettes.** Les cinq conditions écrites de §3.3 sont vérifiables, et je les ai **mesurées**. Trois tiennent, une est partielle, et **le manifeste mentait sur les 218 visuels** : il inscrivait `width: 512` partout — non pas une mesure, mais la taille *demandée* à la source. Les fichiers vont de **213 à 960 px, médiane 300**. Le champ `bytes` était juste **au bit près** : dans un même enregistrement, certains champs sont des observations et d'autres des intentions, et rien ne les distinguait — sur la pièce même qui documenterait une demande de retrait. Corrigé, les 218 entrées portent la mesure. Le contrôle qui manquait est écrit — `calibration/test_covers.py`, qui ne lit que des fichiers versionnés —, et il signale la vraie infraction : **deux visuels dépassent 512 px**, *Celeste* à 960. En le lançant, j'ai découvert que **les trois contrôles hors ligne documentés dans `CLAUDE.md` ne tournent pas** : deux réclament des intermédiaires absents du dépôt, le troisième n'accepte qu'un répertoire courant précis.
