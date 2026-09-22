@@ -8,8 +8,11 @@ qu'un contributeur a réécrit un article.
 Chaque cas porte le nom du défaut qu'il exerce. Sans cela, un test qui passe
 ne dit pas ce qu'il protège.
 """
-import json, sys
+import json, pathlib, sys
 import wp_dates as W
+
+# Résolu depuis le FICHIER : voir `test_id_stability.py`.
+ICI = pathlib.Path(__file__).resolve().parent
 
 CAS = [
     # (QID, plateforme, régions attendues, défaut exercé)
@@ -83,7 +86,7 @@ CAS = [
 
 
 def main():
-    cache = json.load(open("wp_wikitextes.json"))
+    cache = json.load(open(ICI / "wp_wikitextes.json"))
     echecs = 0
     for qid, pf, attendu, defaut in CAS:
         e = cache[qid]

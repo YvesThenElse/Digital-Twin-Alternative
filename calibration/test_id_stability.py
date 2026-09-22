@@ -25,8 +25,14 @@ Trois perturbations, chacune ayant déjà cassé quelque chose :
    au rang les séparait par accident ; en le retirant, il a fallu clé le
    registre sur (QID, plateforme).
 """
-import copy, json, sys
+import copy, json, pathlib, sys
 import emit_dataset as E
+
+# Les chemins sont résolus depuis le FICHIER, jamais depuis le répertoire
+# courant : un contrôle qui n'obéit qu'à un `cd` préalable ne se lance pas,
+# et un garde qui ne se lance pas fait croire le sujet couvert.
+ICI = pathlib.Path(__file__).resolve().parent
+RACINE = ICI.parent
 from curated import PLATFORMS
 
 
@@ -77,17 +83,17 @@ def echec(base, apres, ignorer, quoi):
 
 
 def main():
-    resolved = json.load(open("resolved.json"))
-    raw = json.load(open("raw_fields.json"))
-    seqs = json.load(open(E._REGISTRE))
-    wpd = json.load(open("wp_dates.json"))
+    resolved = json.load(open(ICI / "resolved.json"))
+    raw = json.load(open(ICI / "raw_fields.json"))
+    seqs = json.load(open(ICI / E._REGISTRE))
+    wpd = json.load(open(ICI / "wp_dates.json"))
 
     base = ids(build_all(resolved, raw, seqs, wpd))
     print("identifiants comparés : %d" % len(base))
 
     # Un test qui n'exerce qu'une partie du pipeline dit « OK » sur ce qu'il
     # n'a pas regardé. On exige la couverture du dataset réellement publié.
-    publie = json.load(open("../dataset/poc.json"))
+    publie = json.load(open(RACINE / "dataset" / "poc.json"))
     attendu = len(publie["works"]) + sum(len(w["releases"]) for w in publie["works"])
     if len(base) != attendu:
         sys.exit("ÉCHEC — %d identifiants construits pour %d publiés : "

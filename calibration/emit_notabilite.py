@@ -6,9 +6,13 @@ journée : il annonçait 35 titres NES et deux Bubble Bobble, état antérieur a
 correctif des rééditions. Un document qui recopie des chiffres se périme sans
 prévenir ; celui-ci se régénère.
 
-    python3 emit_notabilite.py
+    python3 calibration/emit_notabilite.py
 """
-import json, collections, os
+import json, collections, os, pathlib
+
+# Résolu depuis le FICHIER : ce script n'acceptait qu'un répertoire courant
+# précis, et la documentation le présentait comme lançable.
+RACINE = pathlib.Path(__file__).resolve().parent.parent
 
 ORDRE = ["nes", "snes", "gb", "gba", "n64", "ps1", "ps2", "switch"]
 # Machines sans zonage : l'absence de région n'y est pas une lacune.
@@ -26,9 +30,9 @@ def flag_date(rels):
 
 
 def main():
-    d = json.load(open("../dataset/poc.json"))
+    d = json.load(open(RACINE / "dataset" / "poc.json"))
     try:
-        manifeste = json.load(open("../dataset/covers/MANIFEST.json"))
+        manifeste = json.load(open(RACINE / "dataset" / "covers" / "MANIFEST.json"))
     except FileNotFoundError:
         manifeste = {}
 
@@ -107,10 +111,10 @@ def main():
             A("| %d | %s | %s | %s | %s |"
               % (rang, w["title"], f, " ".join(regs) or "—", img))
 
-    chemin = "../dataset/NOTABILITE.md"
+    chemin = RACINE / "dataset" / "NOTABILITE.md"
     open(chemin, "w").write("\n".join(out) + "\n")
     print("écrit %s — %d titres sur %d plateformes"
-          % (chemin, len(d["works"]), len(pids)))
+          % (chemin.relative_to(RACINE), len(d["works"]), len(pids)))
 
 
 if __name__ == "__main__":

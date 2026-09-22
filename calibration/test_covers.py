@@ -1,7 +1,11 @@
 """Les jaquettes contre les cinq conditions écrites de VERIFICATION-JURIDIQUE §3.3.
 
-Contrôle hors ligne, comme `test_id_stability.py` : il lit les fichiers du
-dépôt et n'appelle rien.
+Contrôle hors ligne, comme `test_id_stability.py` : il n'appelle rien. Mais
+il ne lit pas que des fichiers versionnés — **les jaquettes n'y sont pas**,
+et c'est délibéré. Sur un dépôt neuf il rend **2** : « je n'ai pas pu »,
+distinct de « j'ai trouvé une faute ». Il faut les régénérer d'abord :
+
+    python3 calibration/fetch_covers.py
 
 Ce qu'il a trouvé la première fois : **le manifeste inscrivait `width: 512`
 pour les 218 visuels**, alors que les fichiers mesurent de 213 à 960 px. Ce
@@ -113,6 +117,19 @@ def controler() -> int:
 
         if largeur > LARGEUR_MAX:
             trop_larges.append(f"{cle} : {largeur} px de large ({entree['file']})")
+
+    # **Aucune jaquette du tout** n'est pas un écart : c'est un dépôt neuf.
+    # Les images ne sont PAS versionnées — le dépôt est public, et les
+    # conditions 4 et 5 de §3.3 interdisent l'une la diffusion large, l'autre
+    # la redistribution. Rendre 0 ici ferait un contrôle vert qui n'a rien
+    # contrôlé ; rendre 1 accuserait le manifeste de mentir. On distingue
+    # donc « je n'ai pas pu » de « j'ai trouvé une faute ».
+    if manifeste and not fichiers:
+        print("⏭  Les jaquettes ne sont pas versionnées (dépôt public, "
+              "§3.3 conditions 4 et 5).")
+        print("   Pour lancer ce contrôle : python3 calibration/fetch_covers.py")
+        return 2
+
 
     print(f"{len(manifeste)} visuels au manifeste, {len(fichiers)} sur le disque")
 

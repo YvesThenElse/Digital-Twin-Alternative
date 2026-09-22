@@ -2352,3 +2352,33 @@ Deux corrections, et la seconde n'est pas facultative :
 écrire dans le même geste **ce qui le remonte** et **ce qui doit lui
 survivre**. Une dérivation au montage est un contrat avec le cycle de vie —
 implicite, il se rompt à la première optimisation du parent.
+
+### 74 — Un contrôle qui ne peut pas s'exécuter doit le dire, pas rendre vert
+
+Les quatre contrôles hors ligne du référentiel ne se lançaient que depuis
+`calibration/` : ils ouvraient `"resolved.json"` et `"../dataset/poc.json"`,
+c'est-à-dire des chemins relatifs au **répertoire courant**. Documentés comme
+lançables, ils ne l'étaient pas — et un garde documenté qui ne se lance pas
+fait croire le sujet couvert.
+
+Résoudre depuis `__file__` a réglé cela en trois lignes. Le cas intéressant
+est le quatrième : celui des jaquettes **ne peut pas** tourner sur un dépôt
+neuf, parce que les images ne sont délibérément pas versionnées — le dépôt
+est public, et deux des cinq conditions juridiques l'interdisent. La
+documentation le donnait pourtant pour « lançable partout ».
+
+Trois issues possibles, et une seule est honnête :
+
+| Rendre | Ce que ça dit | Ce que c'est |
+|---|---|---|
+| `0` | « les conditions tiennent » | **un mensonge** — rien n'a été lu |
+| `1` | « le manifeste ment » | une accusation fausse |
+| `2` | « je n'ai pas pu, voici ce qu'il me faut » | le fait |
+
+Vérifié en le faisant : avec `0`, la commande d'ensemble annonce « les quatre
+contrôles passent » sur un dépôt où aucune jaquette n'existe.
+
+**La règle** : donner à tout contrôle un code distinct pour « je n'ai pas
+pu », et le faire nommer ce qui lui manque. Un binaire réussite/échec force
+le contrôle indisponible à mentir dans un sens ou dans l'autre — et le sens
+qui arrange est toujours le vert.

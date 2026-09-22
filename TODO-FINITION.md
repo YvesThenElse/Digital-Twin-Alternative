@@ -36,7 +36,7 @@
 
 ## L'outillage, et les promesses non tenues
 
-- [ ] **F10 — Les contrôles hors ligne se lancent.** (audit 37) `CLAUDE.md` en présente trois comme lançables ; deux réclament des fichiers absents du dépôt, le troisième n'accepte qu'un répertoire courant précis. **Un garde documenté et non lançable fait croire le sujet couvert.** *Acceptation : chacun se lance depuis un dépôt neuf, ou la documentation dit ce qu'il lui faut.*
+- [x] **F10 — Les contrôles hors ligne se lancent.** (audit 37) `CLAUDE.md` en présente trois comme lançables ; deux réclament des fichiers absents du dépôt, le troisième n'accepte qu'un répertoire courant précis. **Un garde documenté et non lançable fait croire le sujet couvert.** *Acceptation : chacun se lance depuis un dépôt neuf, ou la documentation dit ce qu'il lui faut.*
 
 - [ ] **F11 — Le contrat entre l'API et le client est vérifié.** (audit 35) `lire<T>` fait un `as T` : un champ ajouté, renommé ou rendu facultatif disparaît côté front **sans qu'aucun outil ne puisse le dire**. L'inventaire des omissions est écrit dans `client.ts`, et rien ne le vérifie. *Acceptation : un champ que l'API rend et que le client ne déclare pas fait échouer un test.*
 
@@ -197,3 +197,14 @@
   échec, jamais en continu, et le diagnostic s'efface dès que le geste
   suivant aboutit. La visibilité est mesurée dans le navigateur : « signalé
   discrètement » n'est pas « invisible ».
+
+- **F10** — les quatre résolvent leurs chemins depuis leur propre fichier et
+  se lancent de n'importe où ; `./controles.sh` les enchaîne. Vérifié depuis
+  un **dépôt fraîchement cloné** et depuis `/tmp`, pas seulement relu. Deux
+  constats en chemin : les deux fichiers de données que l'audit croyait
+  absents **sont versionnés** — seul le répertoire courant bloquait —, et
+  c'est le contrôle annoncé comme « lançable partout » qui ne l'était pas :
+  les 218 jaquettes ne sont pas dans le dépôt, délibérément. Il rend
+  désormais **2**, « je n'ai pas pu », distinct de **1**, « j'ai trouvé une
+  faute » — avec `0`, la commande d'ensemble annonçait « les quatre
+  contrôles passent » sans avoir lu un seul fichier. Vérifié en l'essayant.
