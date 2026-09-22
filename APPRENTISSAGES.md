@@ -1969,3 +1969,33 @@ Corollaire pour l'audit : **chercher ce qui n'existe pas est plus difficile
 que chercher ce qui est faux.** Les huit premières surfaces ont été criblées
 fichier par fichier ; celle-ci s'est trouvée en posant une question qu'aucun
 fichier ne pose — *où est le CSS ?*
+
+### 61 — L'exigence qui nomme un algorithme est faite ; celle qui nomme une intention est oubliée
+
+§6 de `ORDONNANCEMENT-TEMPOREL.md` porte trois phrases :
+
+1. « Ordre dans le tiroir : `RecordedAt` **décroissant** » — **faite**, avec
+   deux tests du domaine et un test miroir à l'API ;
+2. « Le tiroir est une **tâche**, pas une poubelle. Il est dimensionné pour
+   être vidé » — **pas faite** : il n'accepte aucun geste ;
+3. « Un moment sans date **compte dans les totaux** du profil » — pas faite.
+
+Le même contraste apparaît dans §24.4 : « la timeline se remplit à mesure
+qu'on coche » est faite, « une phrase de récit à la première console » ne
+l'est pas. Et dans §3.4 : le statut régional est fait, les **dates**
+régionales ne l'étaient pas.
+
+Le motif n'est pas la négligence, c'est la **prise**. Une phrase qui nomme
+un tri, un champ, un format se traduit directement en code, donc en test,
+donc en case cochée. Une phrase qui nomme une intention — « c'est une
+tâche », « ça doit récompenser », « ça doit se reconnaître » — n'a pas de
+traduction évidente : elle attend qu'on lui en invente une, et personne ne
+remarque qu'on ne l'a pas fait.
+
+**La règle** : en lisant une section, **compter ses phrases impératives et
+les classer** — algorithme ou intention. Celles qui nomment une intention
+sont celles qui seront oubliées ; ce sont donc elles qu'il faut inscrire
+explicitement, avec une acceptation, même si l'inscription dit « différé ».
+
+C'est la mécanique derrière [[59]] : une règle citée à moitié est une règle
+à moitié appliquée — et la moitié qui tombe est toujours la même.
