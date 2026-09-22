@@ -1724,3 +1724,29 @@ et c'est reproductible : un test qui lit la source et échoue sur un
 Corollaire pour l'audit : **le crible se pose au point d'origine de la
 valeur**, jamais à l'endroit qui la reçoit. Suivre la valeur en remontant
 est le seul parcours qui trouve où elle a été inventée.
+
+### 53 — Un test peut maintenir en vie du code que rien n'atteint
+
+`valeur.ts` rend une période sans fin par « depuis 1994 ». `PeriodInput`
+l'accepte. `valeur.test.ts` la couvre, sous un titre explicite — « une
+période ouverte ». Tout est vert.
+
+**Aucun geste de l'interface ne peut la produire.** `PeriodeChoisie` n'a pas
+de forme pour elle : le choix « plutôt une période » exige ses deux bornes.
+Le chemin est correct, testé, maintenu — et mort.
+
+C'est l'inverse exact du défaut le plus fréquent ici. [[41]] décrit un champ
+que personne ne remplit ; celui-ci est un **rendu que personne n'alimente**.
+Et il est plus difficile à voir, parce que le test lui donne l'apparence de
+la vie : en relisant le fichier, on voit une branche couverte, donc utile.
+
+**La règle** : la couverture prouve qu'un chemin est **correct**, jamais
+qu'il est **atteint**. Pour savoir s'il l'est, la question n'est pas « y
+a-t-il un test ? » mais « **quel geste de l'utilisateur produit cette
+valeur ?** » — et il faut pouvoir le nommer.
+
+Ce n'est pas une raison de supprimer : une capacité en avance sur son
+interface est parfois un choix. Mais elle doit être **inscrite comme
+telle**, sinon elle se lit comme une fonctionnalité livrée. Ici, ni la
+spécification ni le TODO ne mentionnaient la période ouverte — elle
+existait, sans que personne l'ait décidée.
