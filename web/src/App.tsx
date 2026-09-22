@@ -7,6 +7,7 @@ import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
 import { SyntheseProfil, type SyntheseDuProfil } from "./profil/SyntheseProfil";
 import { PhraseDeRecit } from "./recit/PhraseDeRecit";
+import { TroisiemeTemps } from "./recit/TroisiemeTemps";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
 import { periodeTenable, type PeriodeChoisie } from "./periode/periode";
 import {
@@ -44,7 +45,7 @@ function profil(): string {
 
 const UTILISATEUR = profil();
 
-type Etape = "machine" | "periode" | "selection" | "timeline";
+type Etape = "machine" | "periode" | "recompense" | "selection" | "timeline";
 
 /**
  * La largeur observée, traduite en stratégie de lecture.
@@ -111,6 +112,18 @@ export function App() {
    * quand on entre dans la sélection, pas quand React refait un rendu.
    */
   const [lot, setLot] = useState(() => `bat_${Math.random().toString(36).slice(2, 12)}`);
+
+  /**
+   * L'accueil a-t-il déjà été joué ?
+   *
+   * <b>Le temps 3 appartient à E01, pas à E02.</b> La récompense est celle
+   * de la première session — « la première fois que l'utilisateur voit du
+   * contenu qui lui ressemble ». Changer la période depuis la liste (E02
+   * repère A) est une CORRECTION : rejouer « votre histoire commence dans
+   * les années 90 » y ferait payer un geste de plus pour un cadeau déjà
+   * reçu, et le joueur attend simplement de retrouver sa liste.
+   */
+  const [accueilFait, setAccueilFait] = useState(false);
   /**
    * Le portrait qui coiffe `/mon-histoire` (E04, blocs A et B).
    *
@@ -257,6 +270,25 @@ export function App() {
     setEtape("periode");
   }
 
+  /**
+   * E01, temps 3 — <b>la récompense, et rien d'autre</b>.
+   *
+   * Aucune requête, aucun `await` : tout ce que l'écran montre est déjà en
+   * mémoire — les œuvres ont été lues au choix de la machine, la période
+   * vient d'être donnée. C'est ce qui rend « sans transition ni chargement
+   * bloquant » vrai par construction, et non par chance sur une machine
+   * rapide (apprentissage 79).
+   *
+   * La relecture de l'état, elle, attend la continuation : la lancer ici en
+   * arrière-plan ferait dépendre l'écran suivant d'une promesse que
+   * personne ne tient, et c'est exactement ce qui a déjà coûté un état
+   * initial capturé vide (apprentissage 73).
+   */
+  function montrerRecompense(choisie: PeriodeChoisie) {
+    setPeriode(choisie);
+    setEtape("recompense");
+  }
+
   async function ouvrirSelection(choisie: PeriodeChoisie, p: Plateforme) {
     setPeriode(choisie);
     // Un nouveau passage : la période change ce qui sera attaché, donc les
@@ -264,6 +296,7 @@ export function App() {
     setLot(`bat_${Math.random().toString(36).slice(2, 12)}`);
     await relireEtat(p);
     setChargementSelection("pret");
+    setAccueilFait(true);
     setEtape("selection");
   }
 
@@ -327,9 +360,28 @@ export function App() {
             // L'horloge est lue ICI, une fois : le composant ne la lit pas
             // lui-même, sans quoi ses tests dépendraient du jour.
             anneeCourante={new Date().getFullYear()}
-            choisir={(choisie) => { void essayer(() => ouvrirSelection(choisie, machine)); }}
+            // Le temps 3 s'intercale ICI, et il ne coûte aucune requête :
+            // §24.4 veut le bénéfice PENDANT la saisie, pas à la fin.
+            choisir={(choisie) => {
+              if (accueilFait) {
+                void essayer(() => ouvrirSelection(choisie, machine));
+                return;
+              }
+              montrerRecompense(choisie);
+            }}
           />
         </>
+      ) : null}
+
+      {etape === "recompense" && machine !== null && periode !== null ? (
+        <TroisiemeTemps
+          machine={machine}
+          periode={periode}
+          // Déjà en mémoire depuis le temps 1 : l'aperçu ne redemande rien.
+          oeuvres={oeuvres}
+          disposition={disposition}
+          continuer={() => { void essayer(() => ouvrirSelection(periode, machine)); }}
+        />
       ) : null}
 
       {etape === "selection" && machine !== null && periode !== null ? (

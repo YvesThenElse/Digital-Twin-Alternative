@@ -2,7 +2,7 @@ import { useState } from "react";
 import { accentEpoque } from "../disposition/epoque";
 import { t } from "../i18n/t";
 import type { Plateforme } from "../selection/types";
-import type { PeriodeChoisie } from "./periode";
+import { nomDecennie, type PeriodeChoisie } from "./periode";
 
 /**
  * E01, temps 2 — situer dans le temps, par décennie.
@@ -53,13 +53,6 @@ export function ChoixPeriode({
   ) {
     decennies.push(d);
   }
-
-  /**
-   * « Années 80 », « Années 2000 » — la forme qu'on dit à voix haute, celle
-   * des maquettes d'E01. « Années 1990 » n'est pas du français parlé, et ce
-   * qui se lit autrement qu'on ne le pense se lit plus lentement.
-   */
-  const nomDecennie = (d: number) => (d < 2000 ? String(d % 100) : String(d));
 
   const debutDe = (d: number) => Math.max(d, machine.launchYear);
   const finDe = (d: number) => Math.min(d + 9, anneeCourante);

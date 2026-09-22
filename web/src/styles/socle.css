@@ -1035,3 +1035,109 @@ figure[data-testid="bande-epoque"] figcaption {
     max-inline-size: 18ch;
   }
 }
+
+/* --- E01, temps 3 : la récompense immédiate ----------------------------- */
+
+/*
+ * « Chaque temps tient sur une hauteur d'écran, sur mobile comme sur
+ * desktop. » Ce n'est pas un écran de travail : il a de l'air, et l'air fait
+ * partie de ce qui le rend lisible comme un cadeau plutôt que comme une
+ * étape de formulaire.
+ */
+.temps3 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e6);
+  padding-block: var(--e6);
+}
+
+/*
+ * La phrase, en display serif. « C'est le premier retour visible exigé par
+ * le principe 1 » — et le langage visuel §4 réserve cette famille au récit,
+ * en l'interdisant à l'interface courante.
+ */
+.temps3-phrase {
+  font: var(--display-1);
+  color: var(--ink);
+  margin: 0;
+  max-inline-size: 20ch;
+}
+
+/* La bande sur l'axe : la période déclarée, peinte à l'accent de son
+   époque — « le système visuel du produit s'installe dès le deuxième
+   écran » (E01). */
+.temps3-axe {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--e1) var(--e3);
+}
+
+.temps3-bande {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent, var(--line));
+  /* Une bande, pas un point : la période a une largeur, et c'est ce que la
+     granularité déclarée dit. */
+  inline-size: 100%;
+  max-inline-size: 240px;
+}
+
+.temps3-bornes {
+  font: var(--display-2);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.temps3-machine {
+  font: var(--meta);
+  color: var(--ink-2);
+}
+
+.temps3-invite {
+  font: var(--meta);
+  color: var(--ink-2);
+  margin: 0 0 var(--e3);
+}
+
+/*
+ * « Empilé, aperçu sur une rangée de 4 » sur mobile. Quatre colonnes fixes
+ * et non `auto-fill` : la rangée est le format, et une grille qui se
+ * réorganiserait ferait de l'aperçu une liste.
+ */
+.temps3-jaquettes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--e2);
+}
+
+@media (min-width: 1024px) {
+  /* « Axe et aperçu côte à côte, 8 jaquettes. » */
+  .temps3-jaquettes {
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--e3);
+  }
+}
+
+/*
+ * L'action primaire — « Sortant principal : → E02. C'est la seule
+ * continuation qui compte. » Elle est pleine et centrée : le seul bouton
+ * de la Phase 1 qui porte le poids d'un pas en avant.
+ */
+.primaire {
+  background: var(--ink);
+  color: var(--surface);
+  font: var(--title);
+  text-align: center;
+  padding: var(--e3) var(--e6);
+  border-radius: var(--r2);
+  align-self: start;
+}
+
+.primaire:hover {
+  background: var(--ink-2);
+}

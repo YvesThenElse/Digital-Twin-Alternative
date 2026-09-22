@@ -174,7 +174,76 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await expect(page.getByTestId("affinage")).toBeVisible();
   await expect(page.getByRole("button", { name: /^Déclarer : / })).toHaveCount(0);
 
+  // --- 2 ter. le temps 3, la récompense immédiate (E01) ------------------
+  //
+  // « Dès la validation du temps 2, SANS TRANSITION NI CHARGEMENT BLOQUANT :
+  // une phrase, une bande sur un axe, un aperçu visuel des jeux à venir, une
+  // continuation. » C'est l'écran où se joue le KPI de première session, et
+  // « un onboarding raté ne se rattrape sur aucun autre écran ».
+  //
+  // On MESURE l'absence de chargement : aucune requête de données ne doit
+  // partir entre le clic et l'apparition de l'écran. Un test de composant ne
+  // peut pas le voir — il ne sait rien du réseau —, et une assertion de
+  // visibilité seule passerait même si l'écran avait attendu trois lectures.
+  const requetesDeDonnees: string[] = [];
+  const espion = (requete: { resourceType(): string; url(): string }) => {
+    if (requete.resourceType() === "xhr" || requete.resourceType() === "fetch") {
+      requetesDeDonnees.push(requete.url());
+    }
+  };
+  page.on("request", espion);
   await toucher(page.getByRole("button", { name: `${DEBUT} – ${FIN}` }).click());
+  await expect(page.getByTestId("temps3")).toBeVisible();
+  page.off("request", espion);
+  expect(requetesDeDonnees, "la récompense a attendu une lecture").toEqual([]);
+
+  // Les quatre éléments. La phrase dit la décennie, l'axe porte la période
+  // DÉCLARÉE — pas une autre —, l'aperçu montre des jeux, et la
+  // continuation est la seule action.
+  await expect(page.getByTestId("temps3-phrase")).toContainText("90");
+  await expect(page.getByTestId("temps3-axe")).toContainText(PERIODE_LUE);
+
+  // **De VRAIES jaquettes.** « L'aperçu de quatre jaquettes n'est pas
+  // décoratif : il montre concrètement ce que la suite propose. » Un
+  // navigateur n'échoue pas sur une image cassée — il dessine un glyphe et
+  // se tait —, donc on mesure la largeur réellement décodée.
+  const apercu = page.getByTestId("temps3-apercu").locator("img");
+  const attendues = infos.project.name === "mobile" ? 4 : 8;
+  await expect(apercu, "l'aperçu n'a pas le nombre de jaquettes de sa disposition")
+    .toHaveCount(attendues);
+  for (let i = 0; i < attendues; i += 1) {
+    await expect(apercu.nth(i)).toHaveJSProperty("complete", true);
+    const largeur = await apercu.nth(i).evaluate(
+      (img) => (img as HTMLImageElement).naturalWidth,
+    );
+    expect(largeur, `jaquette d'aperçu non chargée : ${await apercu.nth(i).getAttribute("src")}`)
+      .toBeGreaterThan(0);
+  }
+
+  // Le registre, mesuré : la serif du récit, et la bande PEINTE. Une bande
+  // nommée mais sans hauteur ni couleur se lit comme un défaut d'affichage —
+  // c'est déjà arrivé à la bande d'époque.
+  const cadeau = await page.getByTestId("temps3").evaluate((n) => {
+    const p = n.querySelector('[data-testid="temps3-phrase"]')!;
+    const bande = n.querySelector(".temps3-bande")!;
+    return {
+      famille: getComputedStyle(p).fontFamily,
+      taille: parseFloat(getComputedStyle(p).fontSize),
+      corps: parseFloat(getComputedStyle(document.body).fontSize),
+      fond: getComputedStyle(bande).backgroundColor,
+      hauteur: bande.getBoundingClientRect().height,
+      largeur: bande.getBoundingClientRect().width,
+    };
+  });
+  expect(cadeau.famille, "la phrase du temps 3 n'est pas en serif").toMatch(/Georgia|serif/i);
+  expect(cadeau.taille, "la phrase du temps 3 ne domine pas l'interface")
+    .toBeGreaterThan(cadeau.corps);
+  expect(cadeau.fond, "la bande d'axe n'est pas peinte").not.toBe("rgba(0, 0, 0, 0)");
+  expect(cadeau.hauteur, "la bande d'axe n'a aucune hauteur").toBeGreaterThan(2);
+  expect(cadeau.largeur, "la bande d'axe n'a aucune largeur").toBeGreaterThan(40);
+
+  // « Sortant principal : → E02. C'est la seule continuation qui compte. »
+  await toucher(page.getByRole("button", { name: /^Voir les jeux/ }).click());
 
   // Le contexte de saisie (E02 repère A) annonce ce qui sera attaché.
   await expect(page.getByTestId("contexte")).toContainText(PERIODE_LUE);
@@ -504,6 +573,12 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // ce test peut faire.
   await page.getByRole("button", { name: /Années 90/ }).click();
   await page.getByRole("button", { name: `${DEBUT} – ${FIN}` }).click();
+  // Et le temps 3 REVIENT. C'est ce que la Phase 1 fait aujourd'hui, et ce
+  // test le dit plutôt que de le masquer : E01 promet autre chose au
+  // visiteur qui revient — « si un historique local existe, proposer de le
+  // reprendre plutôt que de recommencer » —, et cette reprise n'existe pas.
+  // Le manque est inscrit dans TODO-ECRANS.md ; il n'est pas de cet item.
+  await page.getByRole("button", { name: /^Voir les jeux/ }).click();
 
   await expect(page.getByRole("button", { name: /^Déclaré : / }))
     .toHaveCount(TITRES_A_COCHER);
@@ -772,7 +847,11 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // paie aussi.
   // Un geste de plus : « toujours en cours ». La passe 2 reste facultative —
   // vingt-huit lignes n'y touchent pas — mais le parcours la paie.
-  const budget = TITRES_A_COCHER + 23;
+  // Un geste de plus : la continuation du temps 3. Il est VOULU et il se
+  // paie — §24.4 veut le bénéfice PENDANT la saisie, pas à la fin, et E01
+  // fait de cet écran celui où se joue le KPI de première session. Le nier
+  // au budget reviendrait à cacher ce que la décision coûte.
+  const budget = TITRES_A_COCHER + 24;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

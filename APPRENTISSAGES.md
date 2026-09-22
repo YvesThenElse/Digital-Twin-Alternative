@@ -2546,3 +2546,46 @@ nommer ; l'autre compare sa valeur au document qui la décide, et il ne doit
 jamais la nommer deux fois. Devant un test paramétré par ce qu'il garde, la
 question n'est pas « est-il juste ? » mais « que faudrait-il casser pour
 qu'il rougisse ? ».
+
+### 81 — Une absence d'attente se mesure à ce qui n'est PAS parti
+
+E01 exige du temps 3 qu'il arrive « sans transition ni chargement bloquant ».
+La première façon d'en faire une garde vient toute seule, et elle est
+mauvaise :
+
+```ts
+const debut = Date.now();
+await expect(page.getByTestId("temps3")).toBeVisible();
+expect(Date.now() - debut).toBeLessThan(200);   // ← une machine, pas une règle
+```
+
+Un seuil de durée passe partout où la machine est rapide — c'est
+littéralement [[79]] : l'automate gagne une course que la main perd, et le
+jour où la lecture devient lente, le test ne dit pas « l'écran attend », il
+dit « la CI était chargée ». On mesure alors l'hébergeur.
+
+Ce qu'il fallait mesurer n'est pas un temps mais un **fait** : combien de
+requêtes de données partent entre le geste et l'écran.
+
+```ts
+page.on("request", espion);           // xhr et fetch seulement — les images
+await toucher(bouton.click());        // ne bloquent rien
+await expect(page.getByTestId("temps3")).toBeVisible();
+page.off("request", espion);
+expect(requetesDeDonnees).toEqual([]);
+```
+
+Zéro requête, et la propriété devient indépendante de la vitesse de tout le
+monde. Le pendant côté composant est du même ordre : faire en sorte que les
+trois lectures de l'écran suivant **ne répondent jamais** (`new Promise(() =>
+{})`), puis exiger que la récompense s'affiche quand même. Si elle dépendait
+d'une seule d'entre elles, elle ne viendrait pas.
+
+Les deux gardes disent la même chose de deux endroits : l'écran ne demande
+rien, parce que tout ce qu'il montre était déjà là.
+
+**La règle** : une propriété de rapidité s'écrit comme une propriété de
+dépendance. « Assez vite » dépend de la machine ; « ne demande rien » n'en
+dépend pas — et c'est presque toujours ce qu'on voulait dire. Quand
+l'attendu est une absence, la garde compte ce qui n'a pas eu lieu (voir
+[[78]] pour son témoin obligatoire).

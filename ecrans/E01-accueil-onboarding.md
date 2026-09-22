@@ -88,6 +88,13 @@ Une phrase, une bande sur un axe, un aperçu visuel des jeux à venir, une conti
 
 L'aperçu de quatre jaquettes n'est pas décoratif : il montre concrètement ce que la suite propose, ce qui augmente le passage vers E02.
 
+> **Livré le 23 septembre 2026.** Les quatre éléments y sont, et l'absence de chargement est **mesurée** : le parcours de bout en bout exige qu'aucune requête de données ne parte entre le clic du temps 2 et l'apparition de cet écran. Elle est vraie par construction — les œuvres de la plateforme ont été lues au temps 1, la période vient d'être donnée au temps 2 —, et non par chance sur une machine rapide.
+>
+> Deux écarts à la fiche, assumés et inscrits :
+>
+> - **« Je ne sais plus » ne porte pas de bande.** Trois éléments au lieu de quatre. Invariant 2 : ce qui n'a pas d'intervalle n'a pas de place sur un axe, et en dessiner une affirmerait une position que personne n'a donnée. La phrase, l'aperçu et la continuation, eux, sont là — « jamais un blocage ».
+> - **Le visiteur qui revient rejoue le temps 3.** L'état « Retour d'un visiteur non authentifié » ci-dessous promet de proposer une reprise ; la Phase 1 n'a ni cette reprise ni la redirection vers `/mon-histoire` annoncée en tête de fiche. Le manque est inscrit dans [TODO-ECRANS.md](../TODO-ECRANS.md).
+
 ## Mobile et desktop
 
 | | Temps 1 | Temps 2 | Temps 3 |

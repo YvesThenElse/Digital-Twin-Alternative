@@ -29,6 +29,21 @@ export const MESSAGES = {
   // donnée — c'est exactement le défaut que la période choisie a corrigé.
   "recit.premiereConsole": "Votre histoire commence avec {machine}, une machine de {annee}.",
 
+  // --- E01, temps 3 : la récompense immédiate ----------------------------
+  //
+  // « Le temps 3 n'est pas une confirmation, c'est un cadeau. Il ne dit pas
+  // "enregistré", il montre le début d'une histoire. » La phrase parle donc
+  // du joueur, jamais de ce que le produit vient de faire.
+  "temps3.decennie": "Votre histoire commence dans les années {d}.",
+  // « Je ne sais plus » ne bloque jamais (E01) : la phrase se dit sans la
+  // date, plutôt que d'en inventer une.
+  "temps3.sansDate": "Votre histoire commence.",
+  // « PEUT-ÊTRE » : l'aperçu propose, il ne constate pas. Rien de ce qu'il
+  // montre n'a été déclaré par le joueur, et le produit tout entier repose
+  // sur le fait de ne pas inventer ce qu'il n'a pas dit.
+  "temps3.apercu": "Vous aviez peut-être ces jeux-là :",
+  "temps3.continuer": "Voir les jeux {machine}",
+
   // --- la bande d'époque (E02 repère D) ----------------------------------
   "bande.intitule": "Votre histoire, en construction",
   "bande.declares.un": "{n} déclaré",

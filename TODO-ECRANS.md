@@ -73,7 +73,7 @@ du périmètre n'ont jamais été livrées.
   jamais d'un recompte de l'écran ; et la fiche E04 cesse d'annoncer un
   chiffre que le modèle refuse.*
 
-- [ ] **S2 — E01 a son troisième temps.** (E01 · §24.4) « Dès la validation
+- [x] **S2 — E01 a son troisième temps.** (E01 · §24.4) « Dès la validation
   du temps 2, sans transition ni chargement bloquant : une phrase, une bande
   sur un axe, un aperçu visuel des jeux à venir, une continuation. » Seule la
   phrase existe (F12). L'aperçu « n'est pas décoratif : il montre concrètement
@@ -194,6 +194,15 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   part — `/mon-histoire` est un cul-de-sac. C'est le même manque que S5, vu
   depuis l'autre écran.
 
+- **Le visiteur qui revient rejoue l'accueil.** E01 annonce deux choses
+  qu'aucune n'existe : la route `/` « redirige vers `/mon-histoire` si
+  l'historique n'est pas vide », et l'état « retour d'un visiteur non
+  authentifié » demande de « proposer de le reprendre plutôt que de
+  recommencer ». Aujourd'hui, recharger la page remet tout le monde au
+  temps 1. Ce n'est pas une perte de données — la base garde tout, et le
+  parcours le vérifie —, c'est un détour imposé à chaque retour. Trouvé en
+  rechargeant, pas en lisant.
+
 ---
 
 ## Journal
@@ -215,3 +224,19 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   corps, position au-dessus de l'axe, et « saisi d'un seul regard » sur les
   deux dispositions. Ce qui est laissé : les trois blocs ⑴ absents et le
   retour vers E02, inscrits ci-dessus.
+
+- **S2** — le temps 3 d'E01 s'intercale entre la période et la liste, avec
+  ses quatre éléments : la phrase qui nomme la décennie, la bande peinte à
+  l'accent de son époque, l'aperçu de **vraies** jaquettes — quatre sur
+  mobile, huit sur écran large — et la seule continuation qui compte.
+  **Il ne demande rien** : les œuvres ont été lues au temps 1, la période
+  vient d'être donnée, et le parcours l'exige en comptant les requêtes
+  parties entre le clic et l'écran — zéro. L'aperçu **préfère** les œuvres
+  qui ont une jaquette, sans retrier : l'ordre reste celui que l'API tient du
+  score de notoriété, sans quoi le joueur ne retrouverait pas dans la liste
+  les jeux qu'on vient de lui montrer. « Je ne sais plus » y mène aussi, sans
+  bande : trois éléments plutôt qu'une date inventée. Et la récompense
+  appartient à E01 : changer la période depuis la liste ne la rejoue pas.
+  Le budget de gestes passe à `TITRES_A_COCHER + 24` — la continuation est un
+  geste réel, et le cacher reviendrait à cacher ce que la décision coûte.
+  Ce qui est laissé : la reprise du visiteur qui revient, inscrite ci-dessus.

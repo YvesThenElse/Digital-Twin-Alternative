@@ -91,6 +91,10 @@ async function jusquALaSelection(utilisateur: ReturnType<typeof userEvent.setup>
   // course que l'utilisateur perd sur une machine rapide.
   await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
   await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
+  // E01, temps 3 : la récompense s'intercale entre la période et la liste.
+  // C'est un geste de plus, et il est VOULU — §24.4 veut le bénéfice avant
+  // l'effort, pas après.
+  await utilisateur.click(await screen.findByRole("button", { name: /Voir les jeux/ }));
 }
 
 describe("App — l'état du chargement (principes §5)", () => {
@@ -270,6 +274,99 @@ describe("App — la timeline s'ouvre", () => {
 
     expect(await screen.findByRole("alert")).toBeInTheDocument();
     expect(screen.queryByTestId("axe")).toBeNull();
+  });
+});
+
+describe("App — E01 temps 3, la récompense immédiate", () => {
+  it("s'intercale entre la période et la liste", async () => {
+    // « Dès la validation du temps 2 » : la liste ne vient plus tout de
+    // suite. C'est le premier retour visible exigé par le principe 1, et
+    // l'écran où se joue le KPI de première session.
+    const utilisateur = userEvent.setup();
+    render(<App />);
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
+
+    expect(await screen.findByTestId("temps3")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Déclarer : / })).toBeNull();
+  });
+
+  it("n'attend AUCUN chargement pour s'afficher", async () => {
+    // « Sans transition ni chargement bloquant. » Les trois lectures que la
+    // sélection demande ne répondent JAMAIS ici : si la récompense en
+    // dépendait d'une seule, elle ne s'afficherait pas — et le joueur
+    // attendrait devant l'écran du temps 2.
+    const utilisateur = userEvent.setup();
+    faux.etatSelection.mockReturnValue(new Promise(() => {}));
+    faux.souvenirs.mockReturnValue(new Promise(() => {}));
+    faux.titresLibres.mockReturnValue(new Promise(() => {}));
+    render(<App />);
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
+
+    expect(await screen.findByTestId("temps3")).toBeInTheDocument();
+  });
+
+  it("montre de vraies jaquettes, celles de la machine choisie", async () => {
+    // « L'aperçu de quatre jaquettes n'est pas décoratif : il montre
+    // concrètement ce que la suite propose. » Elles viennent des œuvres déjà
+    // lues au temps 1 — c'est ce qui rend l'absence de chargement vraie par
+    // construction.
+    const utilisateur = userEvent.setup();
+    faux.oeuvres.mockResolvedValue(OEUVRES.map((o) => ({
+      ...o, couverture: `/api/covers/${o.id}`,
+    })));
+    render(<App />);
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
+
+    const apercu = await screen.findByTestId("temps3-apercu");
+    expect([...apercu.querySelectorAll("img")].map((i) => i.getAttribute("alt")))
+      .toEqual(["Super Mario World", "Chrono Trigger"]);
+  });
+
+  it("« je ne sais plus » y mène aussi : jamais un blocage", async () => {
+    // E01 : « "Je ne sais plus" → temps suivant, avec Unknown — JAMAIS un
+    // blocage. » La récompense arrive donc sans date, plutôt que pas du tout.
+    const utilisateur = userEvent.setup();
+    render(<App />);
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /ne sais plus/i }));
+
+    expect(await screen.findByTestId("temps3")).toBeInTheDocument();
+    expect(screen.queryByTestId("temps3-axe")).toBeNull();
+  });
+
+  it("ne se rejoue PAS quand on change la période depuis la liste", async () => {
+    // Le temps 3 appartient à E01, pas à E02. Changer la période depuis le
+    // contexte de saisie est une correction : rejouer « votre histoire
+    // commence » y ferait payer un geste de plus pour un cadeau déjà reçu.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    await utilisateur.click(screen.getByRole("button", { name: /changer la période/i }));
+    await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
+
+    expect(await screen.findByRole("button", { name: /^Déclarer : Super Mario World$/ }))
+      .toBeInTheDocument();
+    expect(screen.queryByTestId("temps3")).toBeNull();
+  });
+
+  it("la continuation ouvre la sélection, préfiltrée sur cette machine", async () => {
+    const utilisateur = userEvent.setup();
+    render(<App />);
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
+    await utilisateur.click(await screen.findByRole("button", { name: /Voir les jeux/ }));
+
+    expect(await screen.findByRole("button", { name: /^Déclarer : Super Mario World/ }))
+      .toBeInTheDocument();
+    expect(faux.etatSelection).toHaveBeenCalledWith(expect.any(String), "plt_snes");
   });
 });
 
