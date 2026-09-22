@@ -57,7 +57,17 @@ défaut sur l'un d'eux arrête tout ce qui suit.
 
   **Contrôle — quel test échouerait ?** Pour le souvenir relu, oui, six tests neufs et deux mutations. Pour (a) et (b), aucun. À noter : la première mutation **n'a pas compilé** — retirer l'usage de la prop rend le paramètre inutilisé et le typage le refuse. Le compilateur est ici une garde, faible mais réelle.
 
-- [ ] **05 — La timeline.** `timeline/Timeline.tsx`, `timeline/types.ts`. Cite : `ecrans/E03-timeline.md`, §7.5, `ORDONNANCEMENT-TEMPOREL.md`. *Défaut déjà connu à confirmer ou infirmer : un jeu affiné apparaît trois fois, le même titre à la même date.*
+- [x] **05 — La timeline.** `timeline/Timeline.tsx`, `timeline/types.ts`. Cite : `ecrans/E03-timeline.md`, §7.5, `ORDONNANCEMENT-TEMPOREL.md`. *Défaut déjà connu à confirmer ou infirmer : un jeu affiné apparaît trois fois, le même titre à la même date.*
+
+  **1 · Envoyé sans être saisi — RIEN.** L'écran est en lecture seule : il ne transmet aucune valeur. Son seul état, `deplie` (`Timeline.tsx:56`), est un repli d'affichage.
+
+  **2 · Rendu sans être lu — TROIS CHAMPS JETÉS.** (a) **`type`** (`types.ts:5`) n'est lu nulle part : `Timeline.tsx:88-90` ne rend que `targetLabel` et `occurredAt`. `StartedGame`, `CompletedGame` et `AcquiredItem` sont donc **indiscernables** — c'est la cause exacte du symptôme signalé, « le même titre trois fois à la même date ». Vérifié en base : une œuvre du profil porte trois moments, trois autres en portent deux. (b) **`targetKind`** est jeté : un titre saisi se rend comme une œuvre curée, alors qu'E02 le marque « hors du référentiel ». (c) **`Warnings`** — `TimelineEndpoints.cs:45` les rend, et `client.ts:154` déclare un type à **deux champs** ; les avertissements causals de §5.4 n'atteignent donc personne. → **items 26 et 27**. En revanche `confidence` n'est pas un manque : elle se **déduit** de la granularité, déjà rendue par `data-forme` et `libelle` ; l'afficher à part la dupliquerait.
+
+  **3 · Écrit sans être dit — RIEN.** Aucune persistance.
+
+  **4 · Dit sans être écrit — RIEN.** Le seul geste est « Déplier », et un repli d'affichage n'est pas une donnée.
+
+  **Contrôle — quel test échouerait ?** Aucun pour les trois champs jetés, et le troisième est structurellement invisible : `lire<T>` **caste** le JSON, donc le compilateur ne peut pas signaler un champ non déclaré.
 
 - [ ] **06 — L'assemblage du parcours.** `App.tsx` dans son ensemble : états, transitions, profil, disposition. Cite : `ecrans/PARCOURS-ET-LIENS.md`, `ecrans/PLAN-DU-SITE.md`. *C'est là que vivent les valeurs qui traversent les écrans sans appartenir à aucun.*
 
@@ -116,6 +126,10 @@ inscrit et ne les construit pas.
 
 - [ ] **25 — « Toujours en cours » n'est enregistré nulle part.** (§4.6) L'écran l'offre, le traducteur le traite comme une absence de réponse. *Décision attendue : le porter comme jugement permanent — `PlayDeclaration` n'a pas de champ d'achèvement — ou cesser de l'offrir, puisqu'il décrit l'état par défaut d'un jeu commencé. Le laisser ainsi fait disparaître une réponse donnée.*
 
+- [ ] **26 — Le moment ne dit pas ce qu'il est.** (E03, langage visuel §3) `type` et `targetKind` sont rendus par l'API et jetés par l'écran : trois moments d'un même jeu s'affichent en trois lignes identiques, et un titre saisi se donne pour une œuvre curée. *Le langage visuel prescrit une **icône dessinée** par famille — ce qu'on a fait du jeu, où l'objet se trouvait, ce qu'il a laissé — et « aucune légende ». Décision attendue : dessiner ces icônes, ou regrouper les moments d'un même jeu (E03 repère A parle de regroupement au niveau décennie).*
+
+- [ ] **27 — Les avertissements causals n'atteignent personne.** (§5.4) L'API les calcule et les rend ; le type du client n'a pas le champ. *Acceptation : une incohérence déclarée — « fini » avant « commencé » — est visible à l'écran comme un avertissement doux, et ne bloque rien.*
+
 ---
 
 ## Journal
@@ -127,3 +141,5 @@ inscrit et ne les construit pas.
 - **03 — la sélection massive, passe 1.** Rien n'est envoyé à l'insu de l'utilisateur, et le tri suit bien la notoriété. Mais deux défauts, dont **le plus grave de l'audit jusqu'ici, et il est de la forme inverse du crible : dit sans être écrit**. `basculer` persiste quand on coche et **retourne sans rien envoyer quand on décoche**, alors qu'E02 écrit « chaque bascule est persistée immédiatement ». C'est le geste le plus fréquent de l'écran — le dépôt le dit lui-même — et il ne survit pas. Tant que rien n'était relu, cela ne se voyait pas ; **depuis l'item 22, le mensonge est visible** : on décoche, on recharge, la ligne revient. Second défaut : `neverPlayed` est rendu par l'API et **lu par personne**, si bien qu'un titre déclaré « jamais joué » revient indiscernable d'un titre non coché — la distinction même que §24.3 existe pour tenir. Un test s'appelait « la déclaration est révisable » en n'assérant qu'un compteur local : renommé, avec l'absence d'envoi désormais épinglée et rattachée à son item.
 
 - **04 — la passe 2 et les titres libres.** Rien n'est envoyé à l'insu de l'utilisateur. Un défaut **corrigé** : les souvenirs n'étaient jamais relus, et le champ revenait vide alors que la phrase était en base — sur le contenu que §9 dit « le seul qui ne soit pas régénérable ». Six tests neufs, deux mutations annoncées et vérifiées ; l'une d'elles **n'a pas compilé**, le typage refusant une prop devenue inutilisée, ce qui fait du compilateur une garde faible mais réelle. Deux défauts inscrits, tous deux de la forme **dit sans être écrit**, comme celui de l'item 03 : « toujours en cours » est offert puis traité comme une absence de réponse, et les **titres saisis ne sont pas relus** — ils disparaissent de la sélection au rechargement tout en restant sur la timeline. Le crible aura donc trouvé cette forme trois fois en deux surfaces, alors qu'elle ne figurait pas dans ses trois questions.
+
+- **05 — la timeline.** Écran en lecture seule : rien d'envoyé, rien de persisté, aucun geste perdu. Mais **trois champs sont rendus par l'API et jetés par l'écran**. `type` d'abord, et c'est la cause exacte du symptôme signalé depuis un téléphone — vérifié en base, une œuvre du profil porte trois moments, `AcquiredItem`, `CompletedGame`, `StartedGame`, que l'écran affiche en trois lignes identiques. `targetKind` ensuite : un titre saisi se donne pour une œuvre curée. Et les **avertissements causals** de §5.4, que l'API calcule et que le type du client ne déclare pas. Ce dernier est structurellement invisible : `lire<T>` **caste** le JSON, donc aucun compilateur ne peut signaler un champ manquant à l'appel. `confidence`, en revanche, n'est pas un manque : elle se déduit de la granularité, déjà rendue.

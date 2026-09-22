@@ -1807,3 +1807,33 @@ La leçon de méthode est au-dessus de la règle : **un crible se corrige avec
 ce qu'il trouve.** Les trois questions venaient de trois défauts réels ; la
 quatrième vient de trois autres, et elle n'aurait pas été devinée en amont.
 Un inventaire figé aurait classé ces cas en « rien à signaler ».
+
+### 56 — Un cast à la frontière rend invisible tout ce qu'on jette
+
+`client.ts` lit la timeline ainsi :
+
+```ts
+lire<{ entries: EntreeTimeline[]; undated: MomentTimeline[] }>(`/timeline/${userId}`)
+```
+
+L'API en rend **trois** : `entries`, `undated` et `warnings`. Le troisième
+n'existe pour personne dans le front — et **aucun outil ne peut le dire**,
+parce que `lire<T>` fait `as T` sur du JSON analysé. Un cast n'est pas une
+vérification : c'est une affirmation que le compilateur croit sur parole.
+
+C'est l'endroit exact où le typage aurait pu attraper un « rendu sans être
+lu », et c'est l'endroit où le code y renonce. Le reste du front est
+typé de bout en bout ; la seule couche où la donnée vient du dehors est la
+seule où le type est une déclaration d'intention.
+
+**La règle** : à chaque frontière où l'on caste une réponse externe, la
+question « ai-je déclaré tout ce que l'autre côté envoie ? » ne se pose pas
+toute seule. Elle doit être posée **à la main**, en lisant le contrat de
+l'API à côté du type — ou automatisée par un test qui compare les deux.
+
+Le corollaire vaut pour l'audit : les trois frontières de ce dépôt
+(`client.ts`, les vues d'API, les lignes de persistance) méritent le crible
+**en priorité**, parce que ce sont les seules où un champ peut disparaître
+sans qu'aucune machine ne s'en aperçoive. [[42]] et [[17]] le disaient déjà
+des défauts ; celui-ci dit pourquoi : la frontière est là où les garanties
+s'arrêtent.
