@@ -200,6 +200,42 @@ describe("App — la timeline s'ouvre", () => {
   });
 });
 
+describe("App — la récompense arrive avant l'effort (§24.4)", () => {
+  it("montre la phrase de récit dès la console choisie", async () => {
+    // « La PREMIÈRE console saisie déclenche déjà une phrase de récit. »
+    // Pas après la période, pas après la liste : au premier geste, avant
+    // qu'on ait rien demandé de plus.
+    const utilisateur = userEvent.setup();
+    render(<App />);
+
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+
+    expect(await screen.findByTestId("recit")).toHaveTextContent("Super Nintendo");
+  });
+
+  it("la montre AVANT la liste, pas avec elle", async () => {
+    // Si elle n'arrivait qu'avec la liste, elle ne récompenserait plus rien :
+    // la liste est déjà la récompense. §24.4 la veut au premier geste.
+    const utilisateur = userEvent.setup();
+    render(<App />);
+
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+
+    expect(screen.getByTestId("recit")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Déclarer : / })).toBeNull();
+  });
+
+  it("ne la laisse pas traîner sur l'écran de sélection", async () => {
+    // Elle ouvre une histoire ; répétée au-dessus de la liste, elle
+    // deviendrait un bandeau qu'on cesse de lire — et le contexte de saisie
+    // dit déjà la machine, mieux et à sa place (E02 repère A).
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    expect(screen.queryByTestId("recit")).toBeNull();
+  });
+});
+
 describe("App — est-ce moi, ou est-ce le service ? (audit 28)", () => {
   const injoignable = {
     status: "degraded" as const,

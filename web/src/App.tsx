@@ -5,6 +5,7 @@ import { EtatDuService, type EtatSante } from "./EtatDuService";
 import { t } from "./i18n/t";
 import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
+import { PhraseDeRecit } from "./recit/PhraseDeRecit";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
 import { periodeTenable, type PeriodeChoisie } from "./periode/periode";
 import {
@@ -293,13 +294,20 @@ export function App() {
       ) : null}
 
       {etape === "periode" && machine !== null ? (
-        <ChoixPeriode
-          machine={machine}
-          // L'horloge est lue ICI, une fois : le composant ne la lit pas
-          // lui-même, sans quoi ses tests dépendraient du jour.
-          anneeCourante={new Date().getFullYear()}
-          choisir={(choisie) => { void essayer(() => ouvrirSelection(choisie, machine)); }}
-        />
+        <>
+          {/* §24.4 : « la première console saisie déclenche DÉJÀ une phrase
+              de récit ». Avant la période, avant la liste, avant qu'on ait
+              rien demandé de plus — c'est la récompense qui précède
+              l'effort, et la réponse au risque produit numéro un. */}
+          <PhraseDeRecit machine={machine} />
+          <ChoixPeriode
+            machine={machine}
+            // L'horloge est lue ICI, une fois : le composant ne la lit pas
+            // lui-même, sans quoi ses tests dépendraient du jour.
+            anneeCourante={new Date().getFullYear()}
+            choisir={(choisie) => { void essayer(() => ouvrirSelection(choisie, machine)); }}
+          />
+        </>
       ) : null}
 
       {etape === "selection" && machine !== null && periode !== null ? (

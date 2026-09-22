@@ -490,12 +490,26 @@ Une fois le concept validé, on industrialise.
 - Collection actuelle / historique ;
 - Wishlist ;
 - Favoris ;
-- Statistiques plus riches ;
+- Statistiques plus riches — **dont les « premières statistiques après quelques jeux » de §24.4, différées depuis la Phase 1** (voir ci-dessous) ;
 - Import / export ;
 - Visibilité privée / publique ;
 - Meilleure recherche ;
 - Dataset de référence versionné ;
 - Premiers mécanismes de canonicalisation.
+
+### Ce qui arrive ici parce que la Phase 1 l'a écarté par écrit
+
+Ce que le modèle ou l'API portent depuis la Phase 1 **sans aucun producteur**
+s'inscrit ici plutôt que de rester vert et inatteignable — c'est le défaut
+que l'audit du 22 septembre 2026 a le plus souvent trouvé.
+
+- **Les premières statistiques de §24.4.** « Les premières statistiques
+  apparaissent après quelques jeux » : différé en Phase 1 au profit de la
+  seule **phrase de récit**, qui arrive plus tôt — dès la console choisie —
+  et pour moins cher. La raison n'est pas le coût : pendant la saisie, la
+  **bande d'époque** montre déjà l'histoire qui pousse, et un compteur ferait
+  parler le produit de lui-même au moment précis où §24.4 lui demande de
+  parler du joueur. E04 et E10 sont leur place, avec de quoi les nourrir.
 
 ### Extensions du modèle de données
 

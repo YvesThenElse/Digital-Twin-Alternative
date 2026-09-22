@@ -42,7 +42,7 @@
 
 ## Tranché le 22 septembre 2026 — la boucle s'est arrêtée et a demandé
 
-- [ ] **F12 — La première console déclenche une phrase de récit.** (audit 30 · §24.4) **Décidé** : on construit **la phrase seule**. C'est la récompense la moins chère et la plus précoce — elle arrive dès la machine choisie, avant la liste —, et elle fait parler le produit de l'utilisateur au lieu de son propre compteur. Les **premières statistiques** sont **différées par écrit** : la bande d'époque les devance pendant la saisie, et E04/E10 les porteront mieux. *Acceptation : choisir une console produit une phrase qui parle de CETTE console et de rien d'autre, elle n'invente aucun chiffre, et le report des statistiques est écrit dans `PHASING.md` avec sa raison.*
+- [x] **F12 — La première console déclenche une phrase de récit.** (audit 30 · §24.4) **Décidé** : on construit **la phrase seule**. C'est la récompense la moins chère et la plus précoce — elle arrive dès la machine choisie, avant la liste —, et elle fait parler le produit de l'utilisateur au lieu de son propre compteur. Les **premières statistiques** sont **différées par écrit** : la bande d'époque les devance pendant la saisie, et E04/E10 les porteront mieux. *Acceptation : choisir une console produit une phrase qui parle de CETTE console et de rien d'autre, elle n'invente aucun chiffre, et le report des statistiques est écrit dans `PHASING.md` avec sa raison.*
 
 - [ ] **F13 — « Toujours en cours » est un jugement, pas un silence.** (audit 25 · §4.6) **Décidé** : on le **porte**. « J'y joue encore » est une vraie réponse, et elle sera fréquente sur les machines récentes ; la traiter comme une absence fait revenir la chip vierge et perdre ce que le testeur vient de dire. *Acceptation : `PlayDeclaration` porte l'achèvement déclaré, la migration existe, et la chip revient cochée après un rechargement — sans que « en cours » produise un événement, puisqu'il n'en est pas un.*
 
@@ -222,3 +222,17 @@
   ailleurs. Et la moitié « aucun champ ignoré n'est lu » a été **retirée**
   plutôt qu'aménagée : `batchId` et `targetId` sont aussi des champs de
   requête, et une garde qui ne tient qu'à coups d'exceptions ne garde rien.
+
+- **F12** — la phrase arrive **dès la console choisie**, avant la période et
+  avant la liste : plus tard, elle ne récompenserait plus rien, la liste
+  étant déjà la récompense. Elle nomme CETTE console, et le seul chiffre
+  qu'elle porte est un fait du référentiel — l'année de la machine, jamais
+  une date du joueur : « votre histoire commence en 1990 » affirmerait ce
+  que personne n'a donné. Elle ne confirme rien (E01 : « ce n'est pas une
+  confirmation, c'est un cadeau ») et disparaît en entrant dans la liste,
+  où le contexte de saisie dit la machine mieux et à sa place. Son registre
+  est **mesuré dans le navigateur** : la serif du langage visuel §4, réservée
+  au récit et interdite à l'interface courante, et le filet d'époque peint.
+  Les premières statistiques sont reportées en Phase 3 dans `PHASING.md`,
+  avec leur raison — ce n'est pas le coût, c'est que la bande d'époque les
+  devance pendant la saisie.

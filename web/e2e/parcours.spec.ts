@@ -117,6 +117,36 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     page.getByRole("button", { name: /^Nintendo Entertainment System/ }).click(),
   );
 
+  // --- 1 bis. la récompense, avant tout effort ---------------------------
+  //
+  // §24.4 : « la première console saisie déclenche DÉJÀ une phrase de récit ».
+  // C'est la réponse au risque produit numéro un — pourquoi passer deux
+  // heures à saisir trente ans ? — et elle arrive au premier geste.
+  //
+  // On MESURE son registre : le langage visuel §4 réserve la serif au récit
+  // et l'interdit à l'interface courante. Une phrase rendue dans la même
+  // police que les boutons ne raconterait rien, et aucun test de composant
+  // ne peut le voir.
+  const recit = page.getByTestId("recit");
+  await expect(recit).toContainText("Nintendo Entertainment System");
+  const registre = await recit.evaluate((n) => {
+    const s = getComputedStyle(n);
+    return {
+      famille: s.fontFamily,
+      taille: parseFloat(s.fontSize),
+      corps: parseFloat(getComputedStyle(document.body).fontSize),
+      filet: s.borderInlineStartColor,
+    };
+  });
+  expect(registre.famille, "la phrase de récit n'est pas en serif")
+    .toMatch(/Georgia|serif/i);
+  expect(registre.taille, "la phrase de récit ne domine pas l'interface")
+    .toBeGreaterThan(registre.corps);
+  // Peinte, pas seulement nommée : E01 veut que le système de couleur
+  // s'installe dès le deuxième écran.
+  expect(registre.filet, "le filet d'époque n'est pas peint")
+    .not.toBe("rgba(0, 0, 0, 0)");
+
   // --- 2. la période -----------------------------------------------------
   //
   // Elle est CHOISIE, bornes comprises. L'écran a longtemps envoyé 1995 quoi

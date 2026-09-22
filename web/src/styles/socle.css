@@ -499,6 +499,21 @@ main {
   color: var(--ink-2);
 }
 
+/*
+ * §24.4 — la phrase de récit, la récompense qui précède l'effort.
+ *
+ * C'est le seul endroit de la Phase 1 où le produit RACONTE, et la serif est
+ * faite pour cela : le langage visuel §4 la réserve au registre du récit et
+ * l'interdit à l'interface courante. Le filet prend l'accent de l'époque de
+ * la machine — « le système visuel s'installe dès le deuxième écran » (E01).
+ */
+.recit {
+  font: var(--display-2);
+  border-inline-start: 3px solid var(--accent, var(--line));
+  padding: var(--e3) var(--e4);
+  margin-block: var(--e4) var(--e6);
+}
+
 /* Le bandeau d'état — E02, hors ligne : « signalé une seule fois,
    DISCRÈTEMENT, en pied d'écran — jamais par ligne ». Discret ne veut pas
    dire invisible : il ne paraît qu'à la panne, et c'est le seul moment où on

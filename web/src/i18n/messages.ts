@@ -18,6 +18,17 @@ export const MESSAGES = {
   // qu'il ne dit pas.
   "service.indisponible": "Service indisponible — base de données : {detail}",
 
+  // --- la phrase de récit (E01 temps 3, §24.4) ---------------------------
+  //
+  // « Le temps 3 n'est pas une confirmation, c'est un cadeau. Il ne dit pas
+  // "enregistré", il montre le début d'une histoire. » Elle parle donc du
+  // joueur et de sa machine, jamais de ce que le produit vient de faire.
+  //
+  // L'année est celle de la MACHINE, pas celle du joueur : dire « votre
+  // histoire commence en 1990 » affirmerait une date que personne n'a
+  // donnée — c'est exactement le défaut que la période choisie a corrigé.
+  "recit.premiereConsole": "Votre histoire commence avec {machine}, une machine de {annee}.",
+
   // --- la bande d'époque (E02 repère D) ----------------------------------
   "bande.intitule": "Votre histoire, en construction",
   "bande.declares.un": "{n} déclaré",
