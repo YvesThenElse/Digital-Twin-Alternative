@@ -79,6 +79,20 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // parcours passait même lorsque plus aucune déclaration n'était envoyée —
   // une mutation l'a montré.
   const profil = `usr_e2e_${infos.project.name}_${Date.now()}`;
+
+  // **Une jaquette, et une seule, est révoquée** — refusée par le réseau,
+  // comme le jour où l'emprunt de §19.2 prend fin. « Rien dans le produit ne
+  // doit cesser de marcher le jour où elle disparaît »
+  // (VERIFICATION-JURIDIQUE §3.3), et un navigateur n'échoue PAS sur une
+  // image cassée : il dessine un glyphe et se tait. Seul un vrai refus
+  // réseau le prouve — jsdom ne demande aucune image.
+  let revoquee: string | null = null;
+  await page.route("**/covers/**", async (route, requete) => {
+    revoquee ??= requete.url();
+    if (requete.url() === revoquee) return route.abort();
+    return route.continue();
+  });
+
   await page.goto(`/?profil=${profil}`);
 
   // --- 0. le socle visuel est SERVI --------------------------------------
@@ -169,6 +183,15 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     //
     // `naturalWidth` vaut 0 tant qu'une image n'a pas été décodée — c'est le
     // seul signal qu'un `<img>` donne d'un échec.
+    // La jaquette révoquée n'est plus annoncée comme une jaquette : elle
+    // s'est repliée sur la tuile composée, qui est le socle permanent.
+    expect(revoquee, "aucune jaquette n'a été révoquée : le test ne prouve rien")
+      .not.toBeNull();
+    const repliee = page.locator(`[data-tuile="jaquette"] img[src="${
+      new URL(revoquee!).pathname}"]`);
+    await expect(repliee, "la jaquette révoquée est restée à l'écran").toHaveCount(0);
+    await expect(page.locator('[data-tuile="generee"]').first()).toBeVisible();
+
     const images = page.locator('[data-tuile="jaquette"] img');
     const combien = await images.count();
     expect(combien, "aucune jaquette dans la grille : le test ne prouverait rien")

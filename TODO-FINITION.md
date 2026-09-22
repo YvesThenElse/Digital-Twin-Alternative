@@ -26,7 +26,7 @@
 
 - [x] **F5 — Les avertissements causals atteignent quelqu'un.** (audit 27 · §5.4) L'API les calcule et les rend ; le type du client ne déclare pas le champ, donc personne ne les voit. Ce sont des avertissements **doux** : ils informent, ils ne bloquent rien. *Acceptation : une incohérence déclarée — « fini » avant « commencé » — est visible sur l'axe, et rien n'est refusé à cause d'elle.*
 
-- [ ] **F6 — Une jaquette qui disparaît ne casse plus la tuile.** (audit 29 · §19.2) « Une jaquette reprise est un emprunt révocable : **rien dans le produit ne doit cesser de marcher le jour où elle disparaît** ». Le catalogue ne filtre qu'à l'amorçage ; retirée ensuite, l'image donne un glyphe cassé. *Acceptation : une source invalide se replie sur la tuile composée, et un test le prouve.*
+- [x] **F6 — Une jaquette qui disparaît ne casse plus la tuile.** (audit 29 · §19.2) « Une jaquette reprise est un emprunt révocable : **rien dans le produit ne doit cesser de marcher le jour où elle disparaît** ». Le catalogue ne filtre qu'à l'amorçage ; retirée ensuite, l'image donne un glyphe cassé. *Acceptation : une source invalide se replie sur la tuile composée, et un test le prouve.*
 
 - [ ] **F7 — La sélection a un état vide.** (audit 33 · E02) `oeuvres.length === 0` donnerait une **page blanche**, qu'E02 interdit — « proposer d'élargir la période ou de changer de région, jamais une page blanche ». Latent aujourd'hui. *Acceptation : l'état vide propose une issue qui existe, et le crible des quatre états passe sur E02 comme il passe sur E01.*
 
@@ -137,3 +137,13 @@
   fait de mal. Ce qui est laissé : **le parcours ne peut pas en produire un**
   — voir F17 —, donc la garde est au niveau du composant et de l'assemblage,
   pas dans le navigateur.
+
+- **F6** — la tuile retient l'**adresse** qui a échoué, pas le fait d'avoir
+  échoué : retenir « cette tuile est cassée » priverait le joueur d'une
+  jaquette valide dès que la liste change sous elle, et ne rien retenir
+  referait la requête à chaque rendu sur 218 tuiles. Le repli garde le
+  format et l'accent — sans quoi la grille paraîtrait rapiécée là où elle
+  devrait seulement changer d'origine. La garde est **dans le navigateur** :
+  le parcours révoque une jaquette au niveau du réseau, ce qu'aucun test de
+  composant ne peut faire — jsdom ne demande aucune image, et un navigateur
+  n'échoue pas sur une image cassée, il dessine un glyphe et se tait.

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { accentEpoque, trameDuTitre } from "./epoque";
 
 /**
@@ -17,6 +18,12 @@ import { accentEpoque, trameDuTitre } from "./epoque";
  * fond coloré : on la lit au lieu de la reconnaître. C'est un point
  * d'ancrage, et c'est pourquoi la grille desktop ne se justifie que là où de
  * vraies jaquettes existent.
+ *
+ * <b>Et elle est le filet.</b> « Une jaquette reprise est un emprunt
+ * révocable : rien dans le produit ne doit cesser de marcher le jour où elle
+ * disparaît » (VERIFICATION-JURIDIQUE §3.3). Le catalogue ne filtre qu'à
+ * l'amorçage ; une source retirée ensuite laissait un glyphe cassé dans la
+ * grille — sur l'écran dont toute la mécanique repose sur la reconnaissance.
  */
 export function Tuile({
   titre,
@@ -29,7 +36,16 @@ export function Tuile({
 }) {
   const epoque = accentEpoque(annee);
 
-  if (couverture !== null) {
+  /**
+   * L'ADRESSE qui a échoué, pas le fait d'avoir échoué.
+   *
+   * Retenir « cette tuile est cassée » priverait le joueur d'une jaquette
+   * valide dès que la liste change sous elle ; ne rien retenir referait la
+   * requête à chaque rendu, sur 218 tuiles.
+   */
+  const [adresseEchouee, setAdresseEchouee] = useState<string | null>(null);
+
+  if (couverture !== null && couverture !== adresseEchouee) {
     return (
       <span
         data-tuile="jaquette"
@@ -38,7 +54,10 @@ export function Tuile({
         data-ratio="3:4"
         data-epoque={epoque.nom}
       >
-        <img src={couverture} alt={titre} />
+        {/* Un navigateur n'échoue PAS sur une image cassée : il dessine un
+            glyphe et se tait. `onError` est le seul signal qu'il donne, et
+            sans lui le repli n'aurait jamais lieu. */}
+        <img src={couverture} alt={titre} onError={() => setAdresseEchouee(couverture)} />
       </span>
     );
   }
