@@ -290,6 +290,26 @@ public class EventStoreTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task Aucune_colonne_n_echappe_au_journal_en_ajout_seul()
+    {
+        // Le déclencheur ÉNUMÉRAIT ses colonnes, et `platform_id` — ajoutée
+        // après lui — n'y figurait pas : elle pouvait être réécrite sans
+        // que rien ne bronche. C'est la faute de l'apprentissage 66,
+        // transposée au SQL : couvrir des colonnes n'est pas couvrir un
+        // ensemble.
+        //
+        // Il compare désormais la ligne ENTIÈRE, marqueur de remplacement
+        // excepté, et aucune colonne future ne peut lui échapper.
+        var magasin = Magasin(out var db);
+        await using (db) await magasin.AppendAsync(Evenement("evt_pf", new Year(1998)));
+
+        var erreur = await Assert.ThrowsAsync<PostgresException>(() => ExecuterSql(
+            "UPDATE player_events SET platform_id = 'plt_autre' WHERE id = 'evt_pf'"));
+
+        Assert.Contains("ajout seul", erreur.MessageText, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task Aucune_table_d_utilisateur_n_echappe_a_la_purge()
     {
         // §19.4 fait de l'effacement une contrainte de CONCEPTION, pas une

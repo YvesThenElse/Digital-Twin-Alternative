@@ -217,6 +217,9 @@ export function App() {
               client.souvenir(UTILISATEUR, cible, texte).then(() => undefined)
             }
             recharger={() => { void essayer(() => rechargerListe(machine)); }}
+            retracter={(workId) =>
+              client.retracter(UTILISATEUR, machine.id, workId).then(() => undefined)
+            }
             etatInitial={etatInitial}
             souvenirsInitiaux={souvenirsInitiaux}
           />

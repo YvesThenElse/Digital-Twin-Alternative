@@ -167,6 +167,14 @@ export const client = {
   etatSelection: (userId: string, platformId: string) =>
     lire<EtatLigne[]>(`/selection/${userId}/${platformId}`),
 
+  /** Retire une déclaration : l'événement reste, marqué (§5.3). */
+  retracter: (userId: string, platformId: string, workId: string) =>
+    ecrire<{ retracted: number }>("/declarations/retract", {
+      userId,
+      platformId,
+      workId,
+    }),
+
   /**
    * Les souvenirs déjà écrits, indexés par cible.
    *

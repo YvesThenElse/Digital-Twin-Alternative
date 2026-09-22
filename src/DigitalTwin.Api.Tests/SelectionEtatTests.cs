@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using DigitalTwin.Api.Health;
@@ -263,5 +264,131 @@ public class SelectionEtatTests(PostgresFixture bdd)
         var corps = await second.Content.ReadFromJsonAsync<JsonElement>();
         Assert.Equal(0, corps.GetProperty("created").GetInt32());
         Assert.True(corps.GetProperty("alreadyRecorded").GetBoolean());
+    }
+
+    // ------------------------------------------------ la rétractation
+
+    [Fact]
+    public async Task Decocher_un_titre_le_retire_de_l_etat()
+    {
+        // Le geste le plus fréquent de l'écran — le dépôt le dit lui-même —
+        // ne quittait pas le navigateur. Depuis que l'état est relu, la
+        // correction se défaisait sous les yeux de l'utilisateur au premier
+        // rechargement.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_retract", "usr_retract", pf, [new { workId = oeuvres[0] }]));
+        Assert.True(Ligne(await Etat(client, "usr_retract", pf), oeuvres[0])
+            .GetProperty("played").GetBoolean());
+
+        var reponse = await client.PostAsJsonAsync("/declarations/retract", new
+        {
+            userId = "usr_retract", platformId = pf, workId = oeuvres[0],
+        });
+
+        Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
+        Assert.Empty((await Etat(client, "usr_retract", pf)).EnumerateArray());
+    }
+
+    [Fact]
+    public async Task Decocher_CONSERVE_l_evenement_en_base()
+    {
+        // §5.3 : « la révision est conservée côté système sans être
+        // exposée ». Le journal est en ajout seul — rien n'en sort, on pose
+        // un marqueur. Effacer réellement serait réécrire une histoire.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_trace", "usr_trace", pf, [new { workId = oeuvres[0] }]));
+        await client.PostAsJsonAsync("/declarations/retract", new
+        {
+            userId = "usr_trace", platformId = pf, workId = oeuvres[0],
+        });
+
+        await using var db = bdd.CreerContexte();
+        var lignes = db.PlayerEvents.Where(e => e.UserId == "usr_trace").ToList();
+        Assert.Single(lignes);
+        Assert.NotNull(lignes[0].SupersededByEventId);
+    }
+
+    [Fact]
+    public async Task Decocher_retire_aussi_l_affinage()
+    {
+        // Sinon « je l'avais » survivrait à un jeu qu'on ne déclare plus :
+        // un jugement orphelin, que plus aucun écran ne saurait montrer.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_aff", "usr_aff_retract", pf,
+            [new { workId = oeuvres[0], provenance = "owned", completion = "finished" }]));
+        await client.PostAsJsonAsync("/declarations/retract", new
+        {
+            userId = "usr_aff_retract", platformId = pf, workId = oeuvres[0],
+        });
+
+        Assert.Empty((await Etat(client, "usr_aff_retract", pf)).EnumerateArray());
+    }
+
+    [Fact]
+    public async Task Decocher_ce_qui_n_a_jamais_ete_declare_ne_casse_rien()
+    {
+        // Un double tap, un renvoi réseau : le geste doit être rejouable.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        var reponse = await client.PostAsJsonAsync("/declarations/retract", new
+        {
+            userId = "usr_jamais_declare", platformId = pf, workId = oeuvres[0],
+        });
+
+        Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
+    }
+
+    [Fact]
+    public async Task Decocher_ne_touche_pas_aux_AUTRES_titres()
+    {
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_voisin", "usr_voisin", pf,
+            [new { workId = oeuvres[0] }, new { workId = oeuvres[1] }]));
+        await client.PostAsJsonAsync("/declarations/retract", new
+        {
+            userId = "usr_voisin", platformId = pf, workId = oeuvres[0],
+        });
+
+        var etat = await Etat(client, "usr_voisin", pf);
+        Assert.Equal(1, etat.GetArrayLength());
+        Assert.True(Ligne(etat, oeuvres[1]).GetProperty("played").GetBoolean());
+    }
+
+    [Fact]
+    public async Task Un_titre_retracte_disparait_aussi_de_la_timeline()
+    {
+        // « Conservée côté système SANS ÊTRE EXPOSÉE » : le moment ne doit
+        // plus paraître sur l'axe, sinon la correction n'en est pas une.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_axe", "usr_axe_retract", pf, [new { workId = oeuvres[0] }]));
+        await client.PostAsJsonAsync("/declarations/retract", new
+        {
+            userId = "usr_axe_retract", platformId = pf, workId = oeuvres[0],
+        });
+
+        var axe = await client.GetFromJsonAsync<JsonElement>("/timeline/usr_axe_retract");
+        Assert.Equal(0, axe.GetProperty("entries").GetArrayLength());
     }
 }

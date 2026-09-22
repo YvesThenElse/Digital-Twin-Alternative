@@ -40,6 +40,8 @@ export const MESSAGES = {
   // --- les échecs, dits sans effacer le travail --------------------------
   "erreur.declaration":
     "Une déclaration n'a pas pu être enregistrée. Elle reste affichée ; réessayez plus tard.",
+  "erreur.retractation":
+    "Le retrait n'a pas abouti. La ligne reste décochée à l'écran ; réessayez.",
   "erreur.souvenir":
     "Un souvenir n'a pas pu être enregistré. Il reste affiché ; réessayez plus tard.",
 

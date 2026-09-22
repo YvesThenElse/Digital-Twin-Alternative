@@ -195,6 +195,24 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   expect(Math.max(...barres), "la bande n'a pas de hauteur visible")
     .toBeGreaterThan(8);
 
+  // --- 3 bis. se tromper, et se corriger ---------------------------------
+  //
+  // « Se tromper de ligne est le geste le plus fréquent de cet écran », et
+  // il ne quittait pas le navigateur : on décochait, on rechargeait, la
+  // ligne revenait. C'est le seul défaut de l'audit qui faisait perdre du
+  // travail à un testeur.
+  const aRetirer = page.getByRole("button", { name: /^Déclarer : / }).first();
+  // Le nom ACCESSIBLE, pas le contenu : celui-ci concatène le titre, la
+  // date et le statut régional.
+  const titreRetire = (await aRetirer.getAttribute("aria-label"))!
+    .replace("Déclarer : ", "");
+  await toucher(aRetirer.click());
+  await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER + 1));
+  await toucher(
+    page.getByRole("button", { name: `Déclaré : ${titreRetire}` }).click(),
+  );
+  await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
+
   // --- 3 bis. la passe 2, sur une ligne déclarée --------------------------
   //
   // Facultative par construction : les vingt-neuf autres lignes n'y touchent
@@ -261,6 +279,9 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
 
   await expect(page.getByRole("button", { name: /^Déclaré : / }))
     .toHaveCount(TITRES_A_COCHER);
+  // Et la correction a TENU : le titre décoché n'est pas revenu.
+  await expect(page.getByRole("button", { name: `Déclaré : ${titreRetire}` }))
+    .toHaveCount(0);
   // Et la passe 2 est remontrée, pas seulement conservée en base.
   await expect(page.getByRole("button", { name: "Fini" }).first())
     .toHaveAttribute("aria-pressed", "true");
@@ -321,7 +342,9 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Les deux gestes de passe 2 s'ajoutent au budget. Les gestes du
   // rechargement, eux, ne sont PAS comptés : ce n'est pas le parcours d'un
   // testeur, c'est une vérification que seul ce test peut faire.
-  const budget = TITRES_A_COCHER + 13;
+  // Les deux gestes de la correction — cocher par erreur, décocher — sont
+  // comptés : c'est un geste réel, et le budget doit le voir.
+  const budget = TITRES_A_COCHER + 15;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

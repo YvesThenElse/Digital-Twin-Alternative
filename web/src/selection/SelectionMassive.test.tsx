@@ -25,6 +25,7 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
   }));
   const ecrireSouvenir = vi.fn().mockResolvedValue(undefined);
   const recharger = vi.fn();
+  const retracter = vi.fn().mockResolvedValue(undefined);
   const rendu = render(
     <SelectionMassive
       oeuvres={oeuvres}
@@ -33,12 +34,13 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
       envoyer={envoyer}
       ecrireSouvenir={ecrireSouvenir}
       recharger={recharger}
+      retracter={retracter}
       etatInitial={[]}
       souvenirsInitiaux={{}}
       {...surcharge}
     />,
   );
-  return { envoyer, ecrireSouvenir, recharger, rendu };
+  return { envoyer, ecrireSouvenir, recharger, retracter, rendu };
 }
 
 const bande = () => screen.getByTestId("bande-epoque");
@@ -91,28 +93,33 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     expect(bande()).toHaveTextContent("1995");
   });
 
-  it("décocher rétrécit la bande — et ne va PAS plus loin que l'écran", async () => {
-    // Le nom de ce test disait « la déclaration est révisable ». Il
-    // n'assérait qu'un compteur local, et la révision ne quitte pas le
-    // navigateur : décocher ne rappelle jamais l'API.
-    //
-    // Tant que rien n'était relu, cela ne se voyait pas. Depuis que l'écran
-    // relit son état, le mensonge est VISIBLE : on décoche, on recharge, la
-    // ligne revient. E02 l'interdit — « chaque bascule est persistée
+  it("décocher rétrécit la bande ET retire la déclaration", async () => {
+    // Le nom de ce test disait « la déclaration est révisable » alors qu'il
+    // n'assérait qu'un compteur local : la révision ne quittait pas le
+    // navigateur, et depuis que l'état est relu, elle se défaisait au
+    // premier rechargement. E02 l'interdit — « chaque bascule est persistée
     // immédiatement ».
-    //
-    // On épingle donc le comportement actuel, défaut compris, plutôt que de
-    // le taire : le jour où la rétractation existera (audit, item 22), ce
-    // test échouera, et c'est exactement ce qu'on veut de lui.
     const utilisateur = userEvent.setup();
-    const { envoyer } = monter();
+    const { retracter } = monter();
 
     await utilisateur.click(lignes()[0]);
     await utilisateur.click(lignes()[0]);
 
     expect(bande()).toHaveAttribute("data-total", "0");
-    expect(envoyer, "décocher n'envoie rien — défaut connu, item 22")
-      .toHaveBeenCalledTimes(1);
+    expect(retracter).toHaveBeenCalledWith("w1");
+  });
+
+  it("un échec de rétractation se dit, sans recocher la ligne", async () => {
+    // Recocher sous les yeux de l'utilisateur serait pire que l'échec :
+    // il ne distinguerait pas cela d'un geste qui n'a pas porté.
+    const utilisateur = userEvent.setup();
+    monter({ retracter: vi.fn().mockRejectedValue(new Error("réseau")) });
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(lignes()[0]);
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(bande()).toHaveAttribute("data-total", "0");
   });
 
   it("la ligne entière est la cible, pas une case à cocher", async () => {

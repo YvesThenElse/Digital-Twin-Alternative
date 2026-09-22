@@ -2212,3 +2212,33 @@ Et le choix de l'assertion compte autant que son existence : vérifier « le
 fond n'est pas blanc » aurait laissé passer n'importe quelle couleur.
 Vérifier `rgb(250, 248, 245)` — « un blanc cassé légèrement papier », ce qui
 distingue une archive d'un outil — vérifie que **ce socle-là** est servi.
+
+### 69 — Un déclencheur qui énumère ses colonnes se périme à la migration suivante
+
+Le journal est en ajout seul, garanti par un déclencheur PostgreSQL qui
+comparait `NEW` et `OLD` **colonne par colonne**, la liste écrite à la main.
+
+`platform_id`, ajoutée après lui, n'y figurait pas. Elle pouvait donc être
+réécrite sans qu'aucune exception ne se lève — vérifié en la réécrivant.
+La garantie centrale du modèle avait un trou, ouvert par ma propre
+migration, et aucun test ne l'a vu parce que les tests éprouvaient les
+colonnes **qu'on connaissait**.
+
+C'est [[66]] transposée au SQL : couvrir des colonnes n'est pas couvrir un
+ensemble. Et c'est la même correction — demander l'ensemble à sa source
+plutôt que le recopier :
+
+```sql
+to_jsonb(NEW) - 'superseded_by_event_id'
+IS DISTINCT FROM
+to_jsonb(OLD) - 'superseded_by_event_id'
+```
+
+**La règle** : une garde qui protège « tout sauf X » s'écrit en retranchant
+X du tout, jamais en énumérant ce qui reste. La première forme reste vraie
+quand le tout grandit ; la seconde se périme en silence, et son silence
+ressemble à une garantie.
+
+Le test qui l'accompagne se pose la même question : il ne vérifie pas que
+telle colonne est protégée, il vérifie qu'**une colonne ajoutée après le
+déclencheur** l'est.

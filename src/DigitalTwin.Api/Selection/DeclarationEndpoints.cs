@@ -133,6 +133,17 @@ public static class DeclarationEndpoints
             }).ToList());
         });
 
+        routes.MapPost("/declarations/retract", async (
+            RetractRequest requete, EventStore magasin, CancellationToken ct) =>
+        {
+            // Rejouable : un double tap ou un renvoi réseau ne doit pas
+            // échouer. Retirer ce qui n'a jamais été déclaré ne fait rien,
+            // et le dit en rendant zéro.
+            var retires = await magasin.RetractAsync(
+                requete.UserId, requete.PlatformId, requete.WorkId, ct);
+            return Results.Ok(new { retracted = retires });
+        });
+
         routes.MapGet("/selection/{userId}/{platformId}", async (
             string userId, string platformId, EventStore magasin, CancellationToken ct) =>
         {
@@ -211,6 +222,13 @@ public static class DeclarationEndpoints
         _ => null,
     };
 }
+
+/// <summary>
+/// Ce qu'on retire. Par (utilisateur, plateforme, œuvre) et non par lot :
+/// on décoche une ligne sur un écran, pas un passage entier — et la ligne
+/// peut avoir été cochée lors d'une visite précédente.
+/// </summary>
+public sealed record RetractRequest(string UserId, string PlatformId, string WorkId);
 
 /// <summary>L'œuvre à laquelle rattacher une revendication (§3.5).</summary>
 public sealed record ResolveRequest(string WorkId);

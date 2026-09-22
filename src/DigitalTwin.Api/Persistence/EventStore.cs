@@ -129,7 +129,9 @@ public sealed class EventStore(PlayerEventDbContext db)
         string userId, CancellationToken ct = default)
     {
         var lignes = await db.PlayerEvents.AsNoTracking()
-            .Where(e => e.UserId == userId)
+            // Un événement retiré ou corrigé ne paraît plus : §5.3 veut la
+            // révision « conservée côté système sans être exposée ».
+            .Where(e => e.UserId == userId && e.SupersededByEventId == null)
             .OrderBy(e => e.RecordedAt).ThenBy(e => e.Id)
             .ToListAsync(ct);
         return [.. lignes.Select(PlayerEventMapping.ToDomain)];
@@ -150,6 +152,50 @@ public sealed class EventStore(PlayerEventDbContext db)
 
         ligne.SupersededByEventId = correctionEventId;
         await db.SaveChangesAsync(ct);
+    }
+
+    /// <summary>
+    /// Le marqueur d'une rétractation.
+    ///
+    /// <para>Le journal est en ajout seul : on ne retire pas un événement,
+    /// on pose un marqueur. §5.3 veut que « la révision soit conservée côté
+    /// système <b>sans être exposée</b> », et les lectures excluent déjà
+    /// tout ce qui porte ce champ.</para>
+    ///
+    /// <para>Une valeur plutôt que <c>null</c>, parce que <c>null</c> veut
+    /// déjà dire « vivant » — et une valeur distincte d'un identifiant
+    /// d'événement, parce que **rien ne remplace** un geste retiré : il
+    /// n'est pas corrigé, il est annulé.</para>
+    /// </summary>
+    public const string Retracte = "retracte";
+
+    /// <summary>
+    /// Retire une déclaration : le geste le plus fréquent de l'écran de
+    /// sélection, et le seul qui ne survivait pas.
+    ///
+    /// <para>Tous les événements vivants de cette œuvre sur cette
+    /// plateforme sont marqués, et le jugement permanent disparaît — sinon
+    /// « je l'avais » survivrait à un jeu qu'on ne déclare plus, orphelin
+    /// que plus aucun écran ne saurait montrer.</para>
+    /// </summary>
+    public async Task<int> RetractAsync(
+        string userId, string platformId, string workId, CancellationToken ct = default)
+    {
+        var vivants = await db.PlayerEvents
+            .Where(e => e.UserId == userId
+                        && e.PlatformId == platformId
+                        && e.TargetId == workId
+                        && e.SupersededByEventId == null)
+            .ToListAsync(ct);
+
+        foreach (var ligne in vivants) ligne.SupersededByEventId = Retracte;
+
+        await db.PlayDeclarations
+            .Where(d => d.UserId == userId && d.PlatformId == platformId && d.WorkId == workId)
+            .ExecuteDeleteAsync(ct);
+
+        await db.SaveChangesAsync(ct);
+        return vivants.Count;
     }
 
     /// <summary>

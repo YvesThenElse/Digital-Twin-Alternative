@@ -101,6 +101,12 @@ type Props = {
    */
   recharger: () => void;
   /**
+   * Retire une déclaration. Requis, sans valeur par défaut : décocher est
+   * le geste le plus fréquent de l'écran, et il n'a longtemps pas quitté
+   * le navigateur.
+   */
+  retracter: (workId: string) => Promise<void>;
+  /**
    * L'état relu. Vide par défaut serait un piège : un appelant qui oublie de
    * le passer verrait un écran vierge sans qu'aucune erreur ne le dise —
    * exactement le défaut qu'on corrige. Il est donc REQUIS.
@@ -187,7 +193,7 @@ function ChampSouvenir({ titre, valeur, surSaisie, surSortie }: {
 }
 
 export function SelectionMassive({
-  oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger, etatInitial,
+  oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger, retracter, etatInitial,
   souvenirsInitiaux,
 }: Props) {
   const [declarees, setDeclarees] = useState<Set<string>>(
@@ -293,7 +299,13 @@ export function SelectionMassive({
     // L'affichage change MAINTENANT, avant tout appel réseau.
     setDeclarees(suivant);
 
-    if (etaitDeclare) return;
+    if (etaitDeclare) {
+      // Le journal est en ajout seul : on ne retire pas l'événement, on
+      // demande qu'il soit marqué. §5.3 veut la révision « conservée côté
+      // système sans être exposée ».
+      retracter(id).catch(() => setErreur(t("erreur.retractation")));
+      return;
+    }
 
     envoyer({ batchId: lot.current, entries: [{ workId: id }] }).catch(() => {
       setErreur(t("erreur.declaration"));
