@@ -2462,3 +2462,24 @@ transpose :
 **La règle** : quand une décision est de ne rien construire, écrire le garde
 qui vérifie que la décision reste écrite. Il coûte dix lignes et il survit à
 la mémoire de celui qui a décidé.
+
+### 78 — Un test qui attend « rien » porte son témoin, ou il ne prouve rien
+
+« Aucun geste du produit ne peut produire une incohérence causale » se vérifie
+en envoyant les seize combinaisons que l'écran accepte et en exigeant zéro
+avertissement. Cette assertion-là se satisfait de **tout ce qui va mal** : un
+détecteur en panne, un champ renommé, un profil vide, une requête qui échoue
+en silence. Elle passerait pour la pire des raisons, et personne ne le saurait.
+
+Le même test force donc, ensuite, une contradiction dans le **même journal** —
+un achèvement entièrement antérieur à tout commencement — et exige qu'elle
+soit vue. Le zéro cesse d'être un silence : il devient une mesure.
+
+C'est la contrepartie de [[14]]. Là, un garde ne pouvait pas échouer ; ici,
+une assertion ne peut pas distinguer « il n'y en a pas » de « je ne sais pas
+regarder ».
+
+**La règle** : tout test dont l'attendu est une absence — zéro résultat, liste
+vide, rien d'affiché — enchaîne immédiatement sur un cas où la chose DOIT
+apparaître, dans le même montage. Sans cela, son vert ne dit rien de plus que
+« le test s'est exécuté ».

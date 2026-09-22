@@ -542,6 +542,33 @@ imposer un formulaire long avant le premier retour visible ».
   parler le produit de lui-même au moment précis où §24.4 lui demande de
   parler du joueur. E04 et E10 sont leur place, avec de quoi les nourrir.
 
+#### E07, et les avertissements causals qui l'attendent
+
+**E07 — l'éditeur de moment — se déclare « Phase 1 » dans sa fiche et n'a
+jamais été construit.** Ce plan le situe ici, et c'est ce plan qui fait foi
+(§1). La Phase 1 est close sans lui, sciemment : son rôle est de **corriger
+après coup** — une date, un état, un souvenir — et corriger suppose un
+profil qui dure.
+
+Trois choses l'attendent, et aucune n'est un défaut de la Phase 1 :
+
+- **Les avertissements causals de §5.4.** Le domaine les calcule, l'API les
+  rend, l'axe les affiche — et **aucun geste du produit livré ne peut en
+  déclencher un**. La raison est dans le traducteur de lots : « terminé »
+  produit un `StartedGame` **en plus** du `CompletedGame`, à la même date,
+  si bien que tout achèvement emporte son commencement.
+  `DeclarationsTests.Aucun_lot_de_selection_massive_ne_peut_produire_une_incoherence`
+  le mesure sur les seize combinaisons que l'écran accepte, et porte son
+  propre témoin : une contradiction forcée dans le même journal est bien
+  détectée. Il faudra E07 pour qu'une incohérence devienne seulement
+  possible.
+- **Le repli de précision** — mois, date exacte, « vers », âge, période
+  ouverte : voir le tableau des sept granularités ci-dessus.
+- **Changer d'avis après coup.** La sélection massive valide **une fois par
+  ligne**, parce que le journal est en ajout seul et que deux achèvements
+  contradictoires y resteraient tous les deux. E02 le dit déjà : « changer
+  d'avis plus tard relève d'E07 ».
+
 #### La passe temporelle par le tiroir — E14 depuis E03
 
 `ORDONNANCEMENT-TEMPOREL.md` §6 fait une promesse que la Phase 1 ne tient

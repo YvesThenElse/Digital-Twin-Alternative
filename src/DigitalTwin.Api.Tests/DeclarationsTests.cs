@@ -258,6 +258,77 @@ public class DeclarationsTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task Aucun_lot_de_selection_massive_ne_peut_produire_une_incoherence()
+    {
+        // §5.4 veut que les incohérences soient signalées « en avertissement
+        // doux et jamais en blocage ». Le domaine les calcule, l'API les
+        // rend, l'axe les affiche depuis F5 — et RIEN dans le produit livré
+        // ne peut en déclencher une. Ce test le MESURE au lieu de le
+        // supposer, sur tout l'espace d'entrée que la sélection massive
+        // accepte.
+        //
+        // La cause est dans le traducteur : « terminé » produit un
+        // `StartedGame` EN PLUS du `CompletedGame`, à la même date. Tout
+        // achèvement a donc toujours un commencement qui le précède ou
+        // l'accompagne. Il faudra E07 — corriger une date après coup — pour
+        // qu'une contradiction devienne seulement possible.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        string?[] achevements = [null, "finished", "stillPlaying", "abandoned"];
+        string?[] provenances = [null, "owned", "elsewhere", "borrowed"];
+        var entrees = achevements
+            .SelectMany(a => provenances.Select(p => (Achevement: a, Provenance: p)))
+            .Select((combo, i) => (object)new
+            {
+                workId = oeuvres[i],
+                completion = combo.Achevement,
+                provenance = combo.Provenance,
+            })
+            .ToList();
+        Assert.Equal(16, entrees.Count);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_incoherence_1", "usr_incoherence", plateforme, entrees));
+        // Un SECOND passage, sur une période ANTÉRIEURE : c'est le cas qui
+        // ressemble le plus à une contradiction — « fini en 1990 » après
+        // « fini en 1995 » — et il n'en produit pas non plus, chaque
+        // achèvement emportant son propre commencement.
+        await client.PostAsJsonAsync("/declarations", new
+        {
+            batchId = "bat_incoherence_2",
+            userId = "usr_incoherence",
+            platformId = plateforme,
+            period = new { kind = "year", year = 1990 },
+            entries = entrees,
+        });
+
+        var axe = await client.GetFromJsonAsync<JsonElement>("/timeline/usr_incoherence");
+        Assert.Empty(axe.GetProperty("warnings").EnumerateArray());
+
+        // ⚠️ SON PROPRE TÉMOIN, et il n'est pas facultatif. « Aucun
+        // avertissement » se satisferait d'un détecteur en panne, d'un champ
+        // renommé ou d'un profil vide : le test passerait pour la pire des
+        // raisons. On force donc une contradiction dans le MÊME journal —
+        // un achèvement en 1985, entièrement antérieur à tout commencement —
+        // et on exige que le détecteur la voie.
+        await using (var db = bdd.CreerContexte())
+        {
+            await new EventStore(db).AppendAsync([
+                new PlayerEvent("ctr_temoin", "usr_incoherence",
+                    PlayerEventType.CompletedGame,
+                    new EventTarget("work", oeuvres[0]),
+                    new Year(1985),
+                    new DateTime(2026, 1, 15, 12, 0, 0, DateTimeKind.Utc)),
+            ]);
+        }
+
+        var apres = await client.GetFromJsonAsync<JsonElement>("/timeline/usr_incoherence");
+        Assert.NotEmpty(apres.GetProperty("warnings").EnumerateArray());
+    }
+
+    [Fact]
     public async Task Abandonne_produit_l_abandon_et_le_commencement()
     {
         using var usine = Usine();

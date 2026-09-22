@@ -61,7 +61,7 @@
   l'affinage sans naviguer, et « quelque part dans les années 90 » —
   qui existe déjà — est ce qui continue.*
 
-- [ ] **F17 — Aucun geste de Phase 1 ne produit d'incohérence causale.**
+- [x] **F17 — Aucun geste de Phase 1 ne produit d'incohérence causale.**
   Constaté en faisant F5 : le traducteur de lot fait de « terminé » un
   `StartedGame` **plus** un `CompletedGame`, à la même date — donc tout
   achèvement a toujours un début qui le précède ou l'accompagne. Les
@@ -282,3 +282,14 @@
   une migration reparte dans le vide — et il recolle les continuations avant
   d'inspecter, sans quoi il ne verrait que des fragments et passerait sur
   tout ce qui est bien écrit.
+
+- **F17** — mesuré, pas supposé : les **seize** combinaisons que la sélection
+  massive accepte, jouées sur deux passages de périodes différentes, ne
+  produisent **aucun** avertissement. La cause est dans le traducteur —
+  « terminé » emporte son `StartedGame` à la même date — et le test porte
+  **son propre témoin** : une contradiction forcée dans le même journal est
+  bien détectée, sans quoi le zéro se satisferait d'un détecteur en panne.
+  Trouvé en chemin, et plus gros que l'item : **E07 se déclarait « Phase 1 »
+  et la Phase 1 s'est close sans lui.** `PHASING.md` le situe désormais en
+  Phase 3 avec les trois capacités qui l'attendent, et les deux fiches qui
+  affirmaient le contraire sont corrigées.

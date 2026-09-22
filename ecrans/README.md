@@ -24,7 +24,7 @@ Chaque fiche suit la même structure : **Objectif → Contenu → Actions → É
 | [E04](./E04-profil.md) | Profil | Page | 1 fusionné, 3 autonome | Le moment « oui, ça me ressemble » |
 | [E05](./E05-fiches-referentiel.md) | Fiches référentiel (jeu / plateforme / studio) | Page, 3 variantes | 1 | Navigation relationnelle et déclaration en contexte |
 | [E06](./E06-recherche.md) | Recherche | Surcouche | 1 | Atteindre n'importe quelle entité en une frappe |
-| [E07](./E07-editeur-evenement.md) | Éditeur d'événement / souvenir | Panneau | 1 | Dater, corriger, raconter sans quitter le contexte |
+| [E07](./E07-editeur-evenement.md) | Éditeur d'événement / souvenir | Panneau | 3 | Dater, corriger, raconter sans quitter le contexte |
 | [E08](./E08-collection.md) | Collection | Page | 3 | Ce que je possède — et ce que je possédais |
 | [E09](./E09-backlog-wishlist.md) | Backlog & Wishlist | Page | 3 | Intentions : jouer d'un côté, posséder de l'autre |
 | [E10](./E10-statistiques.md) | Statistiques | Page | 3 | L'analyse, séparée de la narration |
