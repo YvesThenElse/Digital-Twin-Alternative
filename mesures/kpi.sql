@@ -47,5 +47,30 @@ SELECT title, platform_id
 FROM unresolved_claims WHERE user_id = :'profil' ORDER BY title;
 
 \echo '── §9 · les souvenirs, et leur genre de cible — signal, pas porte'
-SELECT target_kind, count(*), avg(length(text))::int AS longueur_moyenne
+-- Le REPÈRE est compté à part : §9.2 en fait un titre court « servant de
+-- repère sur la timeline », et il est facultatif. Savoir combien de
+-- souvenirs en reçoivent un dit si le geste est compris — pas s'il est
+-- réussi, ce qui ne se mesure pas ici.
+SELECT
+  target_kind,
+  count(*),
+  avg(length(text))::int                        AS longueur_moyenne,
+  count(*) FILTER (WHERE title IS NOT NULL)     AS avec_repere
 FROM memories WHERE user_id = :'profil' GROUP BY target_kind;
+
+\echo '── §24.3 · le silence et le refus ne sont pas la même chose'
+-- « Jamais joué » est une déclaration POSITIVE (principes §6 bis) : elle
+-- distingue « il n'y a pas joué » de « il ne s'est pas prononcé ». Aucun
+-- geste ne la posait avant le 22 septembre 2026 ; on regarde donc si les
+-- testeurs s'en servent, et si « toujours en cours » — l'autre réponse que
+-- le journal ne sait pas dire seul — est employée.
+--
+-- ⚠️ Un zéro ici n'est PAS un échec du produit : les deux sont facultatives,
+-- et E02 dit qu'« un utilisateur qui les ignore n'est pas pénalisé ». C'est
+-- un signal sur la découvrabilité du geste, pas une porte.
+SELECT
+  count(*) FILTER (WHERE never_played)                      AS jamais_joue,
+  count(*) FILTER (WHERE still_playing)                     AS toujours_en_cours,
+  count(*) FILTER (WHERE provenance <> 'Unknown')           AS provenance_dite,
+  count(*)                                                  AS jugements
+FROM play_declarations WHERE user_id = :'profil';

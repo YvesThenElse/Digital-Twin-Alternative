@@ -206,8 +206,23 @@ ne les recopie pas : deux copies divergent, et celle qu'on lirait ne serait
 pas celle qu'on exécute.
 
 Elles rendent le volume déclaré et les plateformes, T1 et T2, la couverture
-du référentiel, les titres saisis à reverser au dataset, et les souvenirs par
-genre de cible.
+du référentiel, les titres saisis à reverser au dataset, les souvenirs par
+genre de cible — **et, depuis la boucle de finition, deux relevés de plus** :
+
+- **combien de souvenirs portent un repère** (§9.2). Le titre court est
+  facultatif ; savoir s'il est employé dit si le geste est *compris*.
+- **« jamais joué », « toujours en cours », et la provenance dite**
+  (§24.3, principes §6 bis). Aucun geste ne posait « jamais joué » avant le
+  22 septembre 2026. ⚠️ **Un zéro n'est pas un échec du produit** : les deux
+  sont facultatives, et E02 dit qu'« un utilisateur qui les ignore n'est pas
+  pénalisé ». C'est un signal de découvrabilité, pas une porte.
+
+**Répétition à blanc faite le 22 septembre 2026**, contre l'application
+servie sur le tailnet : un profil fabriqué comme un testeur le ferait — cinq
+titres déclarés dont un titre saisi, un écarté, un « toujours en cours », un
+souvenir avec son repère — rend les comptes attendus. Les quatre migrations
+de la boucle n'ont rien cassé, et les deux relevés neufs voient ce qu'ils
+doivent voir. Relire les requêtes ne l'aurait pas dit.
 
 > ⚠️ **Une fois le premier testeur reçu, ces requêtes ne changent plus.**
 > Une requête corrigée en cours de route redéfinit l'indicateur après avoir
