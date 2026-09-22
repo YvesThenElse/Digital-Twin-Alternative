@@ -27,6 +27,12 @@ export const MESSAGES = {
   "ligne.declarer": "Déclarer : {titre}",
   "ligne.declare": "Déclaré : {titre}",
   "ligne.dateInconnue": "date inconnue",
+  // §24.3 : « il n'y a pas joué » n'est pas « il ne s'est pas prononcé ».
+  // Formulé au constat, jamais au renoncement : les principes §6 bis
+  // interdisent de présenter ce choix comme un abandon ou un échec.
+  "ligne.jamaisJoue": "Jamais joué : {titre}",
+  "action.jamaisJoue": "Je n'y ai jamais joué à {titre}",
+  "action.retirerJamaisJoue": "Retirer « jamais joué » de {titre}",
   "souvenir.invite": "Un souvenir sur {titre} ?",
   // Le repère de §9.2 — « un titre court, servant de repère sur la
   // timeline ». « Facultatif » est DIT : un champ muet à côté d'une zone de

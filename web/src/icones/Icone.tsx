@@ -107,7 +107,19 @@ const TRACES: Record<NomIcone, React.ReactElement> = {
   ),
 };
 
-export function Icone({ nom, taille = 15 }: { nom: NomIcone; taille?: number }) {
+/**
+ * @param muette
+ * Retire l'icône de l'arbre d'accessibilité. À n'employer que dans un
+ * élément qui porte DÉJÀ le nom — un bouton libellé, par exemple : l'icône y
+ * répéterait « Jamais joué » après « Je n'y ai jamais joué à… », et un
+ * lecteur d'écran lirait deux fois la même chose. Partout ailleurs, §10
+ * l'interdit : « l'information n'est jamais portée par la seule icône ».
+ */
+export function Icone({ nom, taille = 15, muette = false }: {
+  nom: NomIcone;
+  taille?: number;
+  muette?: boolean;
+}) {
   return (
     <svg
       width={taille}
@@ -118,8 +130,9 @@ export function Icone({ nom, taille = 15 }: { nom: NomIcone; taille?: number }) 
       strokeWidth="1.9"
       strokeLinecap="round"
       strokeLinejoin="round"
-      role="img"
-      aria-label={t(`icone.${nom}`)}
+      role={muette ? undefined : "img"}
+      aria-hidden={muette ? true : undefined}
+      aria-label={muette ? undefined : t(`icone.${nom}`)}
     >
       {TRACES[nom]}
     </svg>

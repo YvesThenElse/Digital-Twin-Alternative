@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -1078,5 +1078,191 @@ describe("SelectionMassive — le repère du souvenir (§9.2)", () => {
     expect(ecrireSouvenir).toHaveBeenCalledWith(
       { kind: "unresolvedClaim", id: "ucl_faux_0" },
       { texte: "Le dragon était bleu.", titre: "Chez mon cousin" });
+  });
+});
+
+describe("SelectionMassive — « jamais joué » (§24.3, E02)", () => {
+  /**
+   * Le balayage, tel que le navigateur l'envoie : un appui, un relâchement
+   * ailleurs, puis le clic que le navigateur en tire. Sans ce dernier, le
+   * test ne verrait pas le piège principal — un balayage qui déclare AUSSI
+   * « joué » en partant.
+   */
+  // `MouseEvent` et non l'assistant `fireEvent.pointerDown` : jsdom n'a pas
+  // de `PointerEvent`, et l'assistant fabrique alors un événement NU — les
+  // coordonnées n'arrivent pas, les écarts valent `NaN`, et toutes les
+  // comparaisons deviennent fausses. Le composant voyait donc un balayage
+  // dans chaque geste, y compris un défilement.
+  const pointeur = (element: HTMLElement, type: string, x: number, y: number) =>
+    fireEvent(element, new MouseEvent(type, { clientX: x, clientY: y, bubbles: true }));
+
+  const balayer = (element: HTMLElement, dx: number, dy = 0) => {
+    pointeur(element, "pointerdown", 300, 100);
+    pointeur(element, "pointerup", 300 + dx, 100 + dy);
+    fireEvent.click(element);
+  };
+
+  const ligneDe = (titre: string) =>
+    screen.getByRole("button", { name: new RegExp(`: ${titre}$`) });
+  const li = (titre: string) => ligneDe(titre).closest("li")!;
+  // Le geste, jamais la ligne : les deux portent le mot « jamais joué », et
+  // seul celui-ci commence par « je n'y ai » ou « retirer ».
+  const croix = (titre: string) =>
+    within(li(titre)).getByRole("button", { name: /^(je n'y ai|retirer)/i });
+
+  const jamaisJoue = (workId: string) => ({
+    workId, played: false, completion: null, provenance: null, neverPlayed: true,
+  });
+
+  it("pose la déclaration au balayage vers la gauche", async () => {
+    // E02 : « mobile : un balayage vers la gauche sur la ligne ». L'API
+    // l'accepte depuis la Phase 1 et AUCUN geste ne la posait : la
+    // distinction que §24.3 réclame — « il n'y a pas joué » contre « il ne
+    // s'est pas prononcé » — était inatteignable.
+    const { envoyer } = monter();
+
+    balayer(ligneDe("Super Mario World"), -60);
+
+    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+      entries: [{ workId: "w1", neverPlayed: true }],
+    }));
+  });
+
+  it("ne la pose pas sur un balayage trop court", async () => {
+    // Un seuil trop bas ferait du moindre tremblement une déclaration que
+    // le joueur n'a pas faite — sur l'écran où le tap est le geste de base.
+    const { envoyer } = monter();
+
+    balayer(ligneDe("Super Mario World"), -8);
+
+    // Le clic passe : c'est un tap, et un tap déclare « joué ».
+    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+      entries: [{ workId: "w1" }],
+    }));
+  });
+
+  it("ne la pose pas sur un défilement vertical", async () => {
+    // Descendre la liste est le geste le plus fréquent de l'écran. Un
+    // défilement qui déclarerait « jamais joué » au passage rendrait la
+    // liste impraticable au pouce.
+    const { envoyer } = monter();
+
+    balayer(ligneDe("Super Mario World"), -60, 120);
+
+    expect(envoyer).not.toHaveBeenCalledWith(expect.objectContaining({
+      entries: [{ workId: "w1", neverPlayed: true }],
+    }));
+  });
+
+  it("ne défait pas sa propre marque avec le clic qu'il produit", async () => {
+    // Le navigateur tire un clic du relâchement. Non étouffé, il retombe sur
+    // la ligne QUI VIENT D'ÊTRE marquée — et la démarque aussitôt : le
+    // joueur voit son balayage ne rien faire, et la base reçoit une
+    // déclaration suivie de sa rétractation.
+    //
+    // Compter les appels ne suffit pas à le voir : il y en a un dans les
+    // deux cas. C'est le RÉSULTAT qui diffère.
+    const { envoyer, retracter } = monter();
+
+    balayer(ligneDe("Super Mario World"), -60);
+
+    expect(li("Super Mario World")).toHaveAttribute("data-jamais-joue", "true");
+    expect(retracter).not.toHaveBeenCalled();
+    expect(envoyer).toHaveBeenCalledTimes(1);
+  });
+
+  it("la pose au bouton, sur la disposition en grille", async () => {
+    // E02 : « desktop : une des options du survol ». Le bouton existe dans
+    // le document en permanence — révélé au survol et au FOCUS : un geste
+    // qui n'existe qu'à la souris n'existe pas au clavier.
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter({ disposition: "grille" });
+
+    await utilisateur.click(croix("Super Mario World"));
+
+    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+      entries: [{ workId: "w1", neverPlayed: true }],
+    }));
+  });
+
+  it("se relit distinctement d'un titre non coché", async () => {
+    // LE point de l'item : « il n'y a pas joué » et « il ne s'est pas
+    // prononcé » doivent se voir l'un de l'autre. Rendus pareil, la
+    // déclaration ne sert à rien — et le joueur la repose à chaque visite.
+    monter({ etatInitial: [jamaisJoue("w1")] });
+
+    expect(li("Super Mario World")).toHaveAttribute("data-jamais-joue", "true");
+    expect(li("A Link to the Past")).not.toHaveAttribute("data-jamais-joue", "true");
+    // Et la ligne le DIT, elle ne le suggère pas par une nuance de gris.
+    expect(ligneDe("Super Mario World")).toHaveAccessibleName(/jamais joué/i);
+  });
+
+  it("ne la présente jamais comme un abandon", async () => {
+    // Principes §6 bis : « la déclaration négative est positive dans le
+    // modèle […] l'interface ne doit jamais présenter ces choix comme un
+    // abandon ou un échec ». Le vocabulaire de l'abandon appartient à la
+    // passe 2, et la marque de l'abandon aussi.
+    monter({ etatInitial: [jamaisJoue("w1")] });
+
+    const ligne = li("Super Mario World");
+    expect(ligne.textContent).not.toMatch(/abandon|échec|raté/i);
+    expect(within(ligne).queryByRole("img", { name: "Abandonné" })).toBeNull();
+    expect(within(ligne).getByRole("img", { name: "Jamais joué" })).toBeInTheDocument();
+    // Et elle reste LISIBLE : estompée, jamais retirée — sans quoi elle ne
+    // serait plus corrigeable.
+    expect(ligne).toHaveTextContent("Super Mario World");
+  });
+
+  it("ne la compte pas dans la récompense", async () => {
+    // La bande montre l'histoire qui pousse (§24.4). « Jamais joué » ne
+    // produit aucun événement et n'atteint aucune timeline : l'y compter
+    // ferait grandir une bande que l'axe ne confirmerait pas.
+    monter({ etatInitial: [jamaisJoue("w1")] });
+
+    expect(bande()).toHaveAttribute("data-total", "0");
+  });
+
+  it("la retire au même geste", async () => {
+    // « S'estompe sans disparaître, POUR RESTER CORRIGEABLE. » Un balayage
+    // par erreur ne doit pas être définitif.
+    const { retracter } = monter({ etatInitial: [jamaisJoue("w1")] });
+
+    balayer(ligneDe("Super Mario World"), -60);
+
+    expect(retracter).toHaveBeenCalledWith("w1");
+    expect(li("Super Mario World")).not.toHaveAttribute("data-jamais-joue", "true");
+  });
+
+  it("revient à « pas prononcé » au tap, sans déclarer joué", async () => {
+    // Invariant 8 : « jamais joué » exclut toute autre déclaration. Taper
+    // une ligne estompée pour y écrire « joué » produirait « je n'y ai
+    // jamais joué, et j'y ai joué » — on repasse donc par le silence, qui
+    // est un état atteignable et non un détour.
+    const utilisateur = userEvent.setup();
+    const { envoyer, retracter } = monter({ etatInitial: [jamaisJoue("w1")] });
+
+    await utilisateur.click(ligneDe("Super Mario World"));
+
+    expect(retracter).toHaveBeenCalledWith("w1");
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+
+  it("retire la déclaration avant de marquer une ligne déjà cochée", async () => {
+    // L'ordre compte : marquer sans retirer laisserait l'événement « joué »
+    // vivant sous le jugement « jamais joué », et l'écran relirait les deux.
+    const { envoyer, retracter } = monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+      ],
+    });
+
+    balayer(ligneDe("Super Mario World"), -60);
+
+    expect(retracter).toHaveBeenCalledWith("w1");
+    await vi.waitFor(() =>
+      expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+        entries: [{ workId: "w1", neverPlayed: true }],
+      })),
+    );
   });
 });

@@ -2262,3 +2262,36 @@ pas ; plus, c'est un chemin qu'on ne savait pas avoir.
 supplémentaire avant de toucher au nombre — puis remplacer le nombre par des
 assertions qui les nomment. `toHaveCount(2)` seul serait redevenu faux au
 premier souvenir ajouté au parcours, sans rien dire de ce qui a changé.
+
+### 71 — `NaN` ne déclenche pas un garde écrit au rejet, il le traverse
+
+Le balayage de §24.3 se reconnaît à deux conditions : assez loin, et plus
+horizontal que vertical. Écrites au rejet —
+
+```ts
+if (dx < SEUIL || dx <= dy) return;   // « rejeter si… »
+```
+
+— elles ont laissé passer **tous** les gestes, défilement vertical compris.
+La cause n'était pas la logique mais l'absence de coordonnées : jsdom n'a pas
+de `PointerEvent`, l'assistant de test fabriquait un événement nu, `dx` et
+`dy` valaient `NaN` — et **toute comparaison avec `NaN` est fausse**. Le
+rejet ne rejetait donc rien.
+
+Un garde formulé au rejet dit ce qu'il refuse et laisse passer **tout le
+reste**, y compris l'inconnu. Formulé à l'acceptation, il dit ce qu'il
+accepte et refuse tout le reste — ce qui est le bon défaut pour un geste qui
+écrit en base :
+
+```ts
+if (!(dx >= SEUIL && dx > dy)) return;   // « n'accepter que… »
+```
+
+C'est [[66]] au niveau d'une expression : se retrancher du tout plutôt
+qu'énumérer les cas. Et c'est la même famille que « une donnée absente se lit
+comme un fait » — ici l'absence se lisait comme un geste.
+
+**La règle** : écrire une condition d'admission à l'acceptation et la nier,
+jamais en énumérant les rejets — et, dans un test qui fabrique un événement
+d'entrée, vérifier que l'événement porte réellement ce qu'on croit lui
+donner, en mesurant au moins une de ses valeurs.

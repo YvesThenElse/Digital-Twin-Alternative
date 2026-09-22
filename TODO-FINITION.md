@@ -20,7 +20,7 @@
 
 ## Ce qui appauvrit le profil sans l'empêcher
 
-- [ ] **F3 — « Jamais joué » est saisissable et relu.** (audit 23 · §24.3) L'API l'accepte depuis la Phase 1, l'état le rend, **aucun geste ne le pose et aucun rendu ne le montre**. E02 le décrit : balayage à gauche sur mobile, `X` au survol sur desktop, icône « cercle barré » — déjà dessinée. *Acceptation : le geste pose la déclaration, elle se relit distinctement d'un titre non coché, et elle n'est jamais présentée comme un abandon (§6 des principes).*
+- [x] **F3 — « Jamais joué » est saisissable et relu.** (audit 23 · §24.3) L'API l'accepte depuis la Phase 1, l'état le rend, **aucun geste ne le pose et aucun rendu ne le montre**. E02 le décrit : balayage à gauche sur mobile, `X` au survol sur desktop, icône « cercle barré » — déjà dessinée. *Acceptation : le geste pose la déclaration, elle se relit distinctement d'un titre non coché, et elle n'est jamais présentée comme un abandon (§6 des principes).*
 
 - [ ] **F4 — Les titres saisis sont relus.** (audit 24 · §3.5) Une revendication ajoutée disparaît de la sélection au rechargement tout en restant sur la timeline. **Le moyen existe déjà et n'est jamais appelé** : `GET /unresolved/{user}`. *Acceptation : un titre saisi revient à l'écran après rechargement, marqué comme tel, avec son souvenir.*
 
@@ -50,6 +50,16 @@
 
 - [ ] **F15 — Le tiroir sans date est une tâche, pas une poubelle.** (audit 32) « Dimensionné pour être vidé — la relance de session la moins coûteuse du produit » : il n'accepte aucun geste. C'est E14, la passe temporelle, et elle n'est inscrite dans aucun TODO de phase.
 
+## Trouvé en chemin
+
+- [ ] **F16 — Une construction du front qui échoue s'arrête en silence.**
+  `services_front` fait `./web.sh build >/dev/null` : une erreur de
+  typage fait sortir `e2e.sh` avec le code 1 **sans une ligne d'explication**,
+  après avoir affiché « ── front ». Trouvé en F3, en croyant à une panne du
+  parcours. C'est la famille de F10 : un outillage qui échoue sans le dire
+  fait chercher le défaut ailleurs. *Acceptation : une construction qui
+  échoue nomme ce qui a échoué.*
+
 ---
 
 ## Journal
@@ -77,3 +87,18 @@
   protégerait plus rien. `WORLDWIDE` n'est pas policé : c'est l'absence de
   zonage, un fait du dataset. Ce qui est laissé : aucun écran ne demande sa
   région au joueur, et le profil ne l'enregistre pas (Phase 3).
+
+- **F3** — deux gestes, un par disposition, parce que E02 les sépare et
+  qu'ils ne sont pas interchangeables : **balayage vers la gauche** au pouce
+  (seuil de 48 px, horizontal dominant, et le clic que le navigateur en tire
+  est étouffé), **bouton révélé au survol et au focus** à la souris et au
+  clavier. La ligne s'estompe sans disparaître, porte le cercle barré — et
+  jamais la marque de l'abandon —, ne compte pas dans la bande, et se relit
+  à l'ouverture. Elle se retire du même geste, ou d'un tap, qui ramène au
+  **silence** plutôt qu'à « joué » : l'invariant 8 interdit les deux
+  ensemble, et « pas prononcé » doit rester atteignable. Marquer une ligne
+  déjà cochée retire d'abord la déclaration. `touch-action: pan-y` sur la
+  ligne : sans lui, le navigateur annule le pointeur au premier mouvement
+  latéral et le geste n'atteint jamais l'application — le parcours mobile le
+  prouve, par un vrai toucher. Ce qui est laissé : corriger « jamais joué »
+  en « joué » demande deux gestes, et c'est voulu.

@@ -337,6 +337,38 @@ public class SelectionEtatTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task Retirer_un_jamais_joue_le_ramene_a_l_absence_d_avis()
+    {
+        // E02 : une ligne marquée « jamais joué » « s'estompe sans
+        // disparaître, POUR RESTER CORRIGEABLE ». Sans ce chemin, un
+        // balayage par erreur serait définitif — sur une déclaration que le
+        // joueur n'a pas faite.
+        //
+        // Et « pas prononcé » doit être ATTEIGNABLE : le ramener à « joué »
+        // ferait dire au profil l'inverse de ce qu'il disait, au lieu de le
+        // rendre muet (principes §6 bis).
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (pf, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_retire_jamais", "usr_retire_jamais", pf,
+            [new { workId = oeuvres[0], neverPlayed = true }]));
+
+        var reponse = await client.PostAsJsonAsync("/declarations/retract", new
+        {
+            userId = "usr_retire_jamais", platformId = pf, workId = oeuvres[0],
+        });
+        Assert.Equal(HttpStatusCode.OK, reponse.StatusCode);
+
+        // La ligne disparaît de l'état : plus aucun avis n'est porté sur ce
+        // titre. « Jamais joué » à `false` dirait la même chose, mais seule
+        // l'absence de ligne dit qu'il n'y a RIEN — pas même une ligne de
+        // jugement vide.
+        Assert.Equal(0, (await Etat(client, "usr_retire_jamais", pf)).GetArrayLength());
+    }
+
+    [Fact]
     public async Task Decocher_ce_qui_n_a_jamais_ete_declare_ne_casse_rien()
     {
         // Un double tap, un renvoi réseau : le geste doit être rejouable.

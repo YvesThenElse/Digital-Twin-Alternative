@@ -499,6 +499,72 @@ main {
   color: var(--ink-2);
 }
 
+/* --- « jamais joué » : une déclaration, pas un abandon ------------------ */
+
+/*
+ * §24.3 : « il n'y a pas joué » n'est pas « il ne s'est pas prononcé ». La
+ * ligne s'estompe SANS disparaître — E02 la veut corrigeable, et une ligne
+ * retirée ferait perdre ses repères au joueur, qui la recocherait.
+ *
+ * Estompée seulement : les principes §6 bis interdisent de rendre ce choix
+ * comme un renoncement, donc pas de barré, pas de gris mort.
+ */
+[data-jamais-joue="true"] .ligne {
+  opacity: 0.55;
+}
+
+/*
+ * Le geste n'a PAS de cible permanente : quatre cibles de 44 px occuperaient
+ * 200 px et ne laisseraient que 143 px de titre sur un écran de 375 px —
+ * c'est exactement l'erreur que E02 corrige. Le bouton reste donc hors de
+ * vue, et le balayage est le geste du pouce.
+ */
+[data-disposition] > li {
+  position: relative;
+}
+
+.ligne-jamais-joue {
+  position: absolute;
+  inset-block-start: var(--e1);
+  inset-inline-end: var(--e1);
+  min-height: var(--cible);
+  color: var(--ink-3);
+}
+
+/* Desktop : « une des options du survol » (E02) — et du FOCUS, sans quoi le
+   geste n'existerait pas au clavier. Il reste visible une fois la marque
+   posée : autrement, plus rien ne la retirerait à la souris. */
+[data-disposition="grille"] .ligne-jamais-joue {
+  opacity: 0;
+  transition: opacity var(--duree-bascule) ease-out;
+}
+
+[data-disposition="grille"] > li:hover .ligne-jamais-joue,
+[data-disposition="grille"] .ligne-jamais-joue:focus-visible,
+[data-disposition="grille"] > li[data-jamais-joue="true"] .ligne-jamais-joue {
+  opacity: 1;
+}
+
+/* Mobile : hors de vue mais ATTEIGNABLE au clavier — `display: none` le
+   rendrait infocusable, et le seul chemin restant serait le balayage, que
+   personne ne fait au clavier. Un point d'un pixel n'attrape aucun pouce. */
+[data-disposition="liste"] .ligne-jamais-joue {
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+[data-disposition="liste"] .ligne-jamais-joue:focus {
+  width: auto;
+  height: auto;
+  min-height: var(--cible);
+  clip-path: none;
+  background: var(--surface-2);
+  box-shadow: var(--ombre-1);
+}
+
 /* --- mobile : la liste dense ------------------------------------------- */
 
 [data-disposition="liste"] {
@@ -514,6 +580,10 @@ main {
    200 px et ne laisseraient que 143 px de titre sur un écran de 375 px —
    sur l'écran dont toute la mécanique repose sur la reconnaissance. */
 [data-disposition="liste"] .ligne {
+  /* Le défilement VERTICAL appartient au navigateur, l'horizontal à l'écran :
+     sans cette ligne, le navigateur annule le pointeur au premier mouvement
+     latéral et le balayage de §24.3 n'atteint jamais l'application. */
+  touch-action: pan-y;
   display: grid;
   grid-template-columns: 40px 1fr auto;
   align-items: center;

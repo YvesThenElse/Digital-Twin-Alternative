@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BandeDEpoque } from "./BandeDEpoque";
+import { Icone } from "../icones/Icone";
 import { StatutRegional } from "../region/StatutRegional";
 import { statutRegion } from "../region/statut";
 import { t } from "../i18n/t";
@@ -21,6 +22,12 @@ export type EntreeDeclaration =
       completion?: string | null;
       /** owned · elsewhere · borrowed · `null` = pas prononcé. */
       provenance?: string | null;
+      /**
+       * « Je n'y ai jamais joué » — une déclaration **positive** (§24.3),
+       * pas une absence. Elle exclut tout le reste (invariant 8), et
+       * l'omettre veut dire « rien de dit », jamais « faux ».
+       */
+      neverPlayed?: boolean;
     }
   | { title: string };
 
@@ -183,6 +190,16 @@ function Question({ intitule, choix, valeur, repondre }: {
 }
 
 /**
+ * Ce qu'il faut parcourir horizontalement pour que ce soit un <b>balayage</b>
+ * et non un tap.
+ *
+ * Plus bas, le moindre tremblement du pouce poserait une déclaration que
+ * personne n'a faite, sur l'écran où le tap est le geste de base. Plus haut,
+ * le geste devient un effort sur une ligne de 56 px.
+ */
+const SEUIL_BALAYAGE = 48;
+
+/**
  * Le champ de souvenir, identique pour une œuvre et pour un titre saisi.
  *
  * <b>Défini au niveau du module, et c'est essentiel.</b> Déclaré dans le
@@ -248,6 +265,18 @@ export function SelectionMassive({
   const enAttente = useRef<string | null>(null);
   const dernier = useRef<Record<string, Affinage>>({});
   const [erreur, setErreur] = useState<string | null>(null);
+
+  /**
+   * Les titres déclarés « jamais joué » (§24.3).
+   *
+   * <b>Hors de `declarees`, et c'est le point.</b> « Il n'y a pas joué » et
+   * « il ne s'est pas prononcé » sont deux informations différentes ; les
+   * mêler ferait grandir la bande d'une histoire que la timeline ne
+   * confirmerait pas — aucun événement n'est produit.
+   */
+  const [jamaisJoues, setJamaisJoues] = useState<Set<string>>(
+    () => new Set(etatInitial.filter((l) => l.neverPlayed).map((l) => l.workId)),
+  );
 
   // Les souvenirs vivent HORS de l'ensemble des déclarations : décocher une
   // ligne ne doit pas détruire une phrase. Se tromper de ligne est le geste
@@ -323,6 +352,15 @@ export function SelectionMassive({
   function basculer(id: string) {
     validerAffinage(id);
 
+    // Une ligne estompée revient d'abord au SILENCE. Y écrire « joué » sans
+    // retirer la marque produirait « je n'y ai jamais joué, et j'y ai
+    // joué » (invariant 8) — et « pas prononcé » doit rester atteignable,
+    // faute de quoi un balayage par erreur serait définitif.
+    if (jamaisJoues.has(id)) {
+      retirerJamaisJoue(id);
+      return;
+    }
+
     const suivant = new Set(declarees);
     const etaitDeclare = suivant.delete(id);
     if (!etaitDeclare) suivant.add(id);
@@ -341,6 +379,84 @@ export function SelectionMassive({
     envoyer({ batchId: lot.current, entries: [{ workId: id }] }).catch(() => {
       setErreur(t("erreur.declaration"));
     });
+  }
+
+  function retirerJamaisJoue(id: string) {
+    setJamaisJoues((precedents) => {
+      const suivant = new Set(precedents);
+      suivant.delete(id);
+      return suivant;
+    });
+    // La rétractation supprime le jugement : la ligne cesse d'exister dans
+    // l'état relu, ce qui est bien « rien de dit » — et non « joué : faux »,
+    // qui serait un second avis.
+    retracter(id).catch(() => setErreur(t("erreur.retractation")));
+  }
+
+  /**
+   * Le geste de §24.3, dans les deux sens.
+   *
+   * E02 le veut atteignable sans quatrième cible permanente : un balayage
+   * vers la gauche sur mobile, un bouton révélé au survol et au focus sur
+   * desktop. Les deux appellent ceci.
+   */
+  function basculerJamaisJoue(id: string) {
+    validerAffinage(id);
+
+    if (jamaisJoues.has(id)) {
+      retirerJamaisJoue(id);
+      return;
+    }
+
+    const etaitDeclare = declarees.has(id);
+    if (etaitDeclare) {
+      const restantes = new Set(declarees);
+      restantes.delete(id);
+      setDeclarees(restantes);
+    }
+    setJamaisJoues((precedents) => new Set(precedents).add(id));
+
+    const marquer = () =>
+      envoyer({
+        batchId: lot.current,
+        entries: [{ workId: id, neverPlayed: true }],
+      });
+
+    // L'ORDRE compte : marquer sans retirer laisserait l'événement « joué »
+    // vivant sous le jugement « jamais joué », et l'écran relirait les deux.
+    (etaitDeclare ? retracter(id).then(marquer) : marquer()).catch(() => {
+      setErreur(t("erreur.declaration"));
+    });
+  }
+
+  /**
+   * Le balayage, reconstitué à partir des événements de pointeur.
+   *
+   * <b>Horizontal DOMINANT</b> : descendre la liste est le geste le plus
+   * fréquent de l'écran, et un défilement qui déclarerait au passage la
+   * rendrait impraticable au pouce.
+   *
+   * Le navigateur tire un clic du relâchement. `balaye` l'étouffe, sans
+   * quoi le même geste dirait « j'y ai joué » et « je n'y ai jamais joué ».
+   */
+  const depart = useRef<{ x: number; y: number } | null>(null);
+  const balaye = useRef(false);
+
+  function finBalayage(id: string, x: number, y: number) {
+    const debut = depart.current;
+    depart.current = null;
+    if (debut === null) return;
+
+    const dx = debut.x - x;
+    const dy = Math.abs(debut.y - y);
+    // Écrit comme une condition d'ACCEPTATION, et niée. Sous la forme
+    // « rejeter si dx < seuil », une coordonnée manquante donne `NaN`, toute
+    // comparaison devient fausse, et le rejet ne rejette plus : le geste
+    // passe. Ici, `NaN` ne satisfait rien, donc rien ne se déclare.
+    if (!(dx >= SEUIL_BALAYAGE && dx > dy)) return;
+
+    balaye.current = true;
+    basculerJamaisJoue(id);
   }
 
   function ajouterTitreLibre() {
@@ -437,9 +553,16 @@ export function SelectionMassive({
       <ul data-disposition={disposition}>
         {ordonnees.map((oeuvre) => {
           const declare = declarees.has(oeuvre.id);
+          const jamais = jamaisJoues.has(oeuvre.id);
           const enGrille = disposition === "grille";
           return (
-            <li key={oeuvre.id} data-hauteur={enGrille ? undefined : 56}>
+            <li
+              key={oeuvre.id}
+              data-hauteur={enGrille ? undefined : 56}
+              // Estompée, jamais retirée : E02 la veut corrigeable, et une
+              // ligne qui disparaît fait perdre ses repères au joueur.
+              data-jamais-joue={String(jamais)}
+            >
               {/* La CELLULE ENTIÈRE est la cible, en liste comme en grille :
                   quatre cibles de 44 px occuperaient 200 px et ne laisseraient
                   que 143 px de titre sur un écran de 375 px — sur l'écran dont
@@ -448,8 +571,23 @@ export function SelectionMassive({
                 type="button"
                 className="ligne"
                 aria-pressed={declare}
-                aria-label={t(declare ? "ligne.declare" : "ligne.declarer", { titre: oeuvre.titre })}
-                onClick={() => basculer(oeuvre.id)}
+                aria-label={t(
+                  jamais ? "ligne.jamaisJoue" : declare ? "ligne.declare" : "ligne.declarer",
+                  { titre: oeuvre.titre },
+                )}
+                onPointerDown={(e) => {
+                  depart.current = { x: e.clientX, y: e.clientY };
+                }}
+                onPointerUp={(e) => finBalayage(oeuvre.id, e.clientX, e.clientY)}
+                onClick={() => {
+                  // Le clic que le navigateur tire d'un balayage : le geste a
+                  // déjà dit ce qu'il voulait dire.
+                  if (balaye.current) {
+                    balaye.current = false;
+                    return;
+                  }
+                  basculer(oeuvre.id);
+                }}
               >
                 {/* La grille balaye des IMAGES, la liste balaye du TEXTE :
                     deux stratégies de lecture, pas une disposition étirée. */}
@@ -469,6 +607,33 @@ export function SelectionMassive({
                   {oeuvre.sortie ? libelle(oeuvre.sortie) : t("ligne.dateInconnue")}
                 </span>
                 <StatutRegional statut={statutRegion(oeuvre, region)} region={region} />
+                {/* La marque est DITE, avec son nom : une icône sans nom
+                    accessible se déchiffre au lieu de se reconnaître (§10).
+                    Celle du cercle barré, jamais celle de l'abandon — les
+                    principes §6 bis interdisent de rendre ce choix comme un
+                    renoncement. */}
+                {jamais ? <Icone nom="jamais-joue" /> : null}
+              </button>
+
+              {/* Le geste de desktop (E02), et le seul chemin au CLAVIER.
+                  Frère de la ligne, pas enfant : un bouton dans un bouton
+                  n'est pas du HTML valide, et le navigateur en perdrait un.
+                  Présent en permanence dans le document, révélé au survol et
+                  au focus par le socle — une quatrième cible permanente sur
+                  chaque ligne coûterait les 200 px que E02 refuse. */}
+              <button
+                type="button"
+                className="ligne-jamais-joue"
+                aria-pressed={jamais}
+                aria-label={t(
+                  jamais ? "action.retirerJamaisJoue" : "action.jamaisJoue",
+                  { titre: oeuvre.titre },
+                )}
+                onClick={() => basculerJamaisJoue(oeuvre.id)}
+              >
+                {/* Muette : le bouton porte déjà son nom, et l'icône y
+                    ferait lire « Jamais joué » deux fois de suite. */}
+                <Icone nom="jamais-joue" muette />
               </button>
 
               {/* Le champ n'apparaît qu'une fois la ligne déclarée : une zone

@@ -231,6 +231,81 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await toucher(page.getByRole("button", { name: "Fini" }).first().click());
   await toucher(page.getByRole("button", { name: "Je l'avais" }).first().click());
 
+  // --- 3 ter. « jamais joué » --------------------------------------------
+  //
+  // §24.3 : « il n'y a pas joué » n'est pas « il ne s'est pas prononcé ».
+  // L'API l'acceptait depuis la Phase 1, l'état le rendait, et AUCUN geste
+  // ne la posait : la distinction était inatteignable.
+  //
+  // Deux gestes, un par disposition — c'est E02 qui les sépare, et ils ne
+  // sont pas interchangeables : le balayage n'existe pas à la souris, le
+  // survol n'existe pas au pouce.
+  const aEcarter = page.getByRole("button", { name: /^Déclarer : / }).first();
+  const titreEcarte = (await aEcarter.getAttribute("aria-label"))!
+    .replace("Déclarer : ", "");
+
+  if (attendue === "liste") {
+    // Le balayage vers la gauche, en vrai TOUCHER. `page.mouse` ne convient
+    // pas ici : le projet mobile émule un écran tactile, et la souris n'y
+    // produit pas les événements de pointeur qu'un pouce produit. On passe
+    // donc par le protocole du navigateur, qui les synthétise lui-même —
+    // pointeur, puis le clic qu'il en tire, c'est-à-dire exactement le piège
+    // que l'écran doit étouffer.
+    // Les coordonnées du protocole sont celles de la FENÊTRE : une ligne
+    // restée sous le pli recevrait le balayage à côté.
+    await aEcarter.scrollIntoViewIfNeeded();
+    const boite = (await aEcarter.boundingBox())!;
+    const y = boite.y + boite.height / 2;
+    const depart = boite.x + boite.width - 10;
+    const cdp = await page.context().newCDPSession(page);
+    const toucherEcran = (
+      type: "touchStart" | "touchMove" | "touchEnd",
+      x: number,
+    ) =>
+      cdp.send("Input.dispatchTouchEvent", {
+        type,
+        touchPoints: type === "touchEnd" ? [] : [{ x, y }],
+      });
+    await toucherEcran("touchStart", depart);
+    await toucherEcran("touchMove", depart - 60);
+    await toucherEcran("touchMove", depart - 120);
+    await toucherEcran("touchEnd", depart - 120);
+    await toucher(Promise.resolve());
+  } else {
+    // Le bouton du survol. Il est dans le document en permanence et ne se
+    // révèle qu'au survol : Playwright survole avant de cliquer, comme une
+    // main.
+    await toucher(
+      page.getByRole("button", { name: `Je n'y ai jamais joué à ${titreEcarte}` }).click(),
+    );
+  }
+
+  // La ligne le DIT — elle ne le suggère pas par une nuance de gris. On la
+  // retrouve par son NOUVEAU nom : un localisateur est paresseux, et celui
+  // du départ désigne désormais la ligne suivante.
+  const ecartee = page.getByRole("button", { name: `Jamais joué : ${titreEcarte}` });
+  await expect(ecartee).toHaveCount(1);
+  const ligneEcartee = ecartee.locator("xpath=..");
+
+  // **Et elle s'estompe SANS disparaître.** E02 la veut corrigeable ; une
+  // ligne retirée ferait perdre ses repères au joueur, qui la recocherait.
+  // Aucun test de composant ne peut le voir : il rend dans un document sans
+  // CSS.
+  const estompee = await ligneEcartee.evaluate((n) => {
+    const ligne = n.querySelector(".ligne")!;
+    return {
+      opacite: Number(getComputedStyle(ligne).opacity),
+      hauteur: n.getBoundingClientRect().height,
+    };
+  });
+  expect(estompee.opacite, "la ligne écartée n'est pas estompée").toBeLessThan(1);
+  expect(estompee.opacite, "la ligne écartée est invisible").toBeGreaterThan(0.2);
+  expect(estompee.hauteur, "la ligne écartée a disparu").toBeGreaterThan(0);
+
+  // Et elle ne compte pas dans la récompense : aucun événement n'est produit,
+  // donc l'axe ne la confirmera pas.
+  await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
+
   // --- 4. le jeu qui manque ----------------------------------------------
   await toucher(
     page.getByRole("textbox", { name: "Titre absent de la liste" }).fill(TITRE_ABSENT),
@@ -305,6 +380,11 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Et la correction a TENU : le titre décoché n'est pas revenu.
   await expect(page.getByRole("button", { name: `Déclaré : ${titreRetire}` }))
     .toHaveCount(0);
+  // Et « jamais joué » aussi : c'est une déclaration, elle se relit comme
+  // les autres. Relue comme un titre vierge, le joueur la reposerait à
+  // chaque visite — ou pire, la cocherait.
+  await expect(page.getByRole("button", { name: `Jamais joué : ${titreEcarte}` }))
+    .toHaveCount(1);
   // Et la passe 2 est remontrée, pas seulement conservée en base.
   await expect(page.getByRole("button", { name: "Fini" }).first())
     .toHaveAttribute("aria-pressed", "true");
@@ -412,7 +492,10 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Deux gestes de plus que le budget d'origine : poser le repère, et ouvrir
   // le souvenir sur l'axe. Le premier est FACULTATIF — aucune des vingt-neuf
   // autres lignes ne le paie — et le second est une lecture, pas une saisie.
-  const budget = TITRES_A_COCHER + 17;
+  // Un geste de plus : « jamais joué ». Il est FACULTATIF — « un utilisateur
+  // qui l'ignore complètement n'est pas pénalisé » (E02) — mais le parcours
+  // le paie, et le budget doit le voir.
+  const budget = TITRES_A_COCHER + 18;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });
