@@ -35,8 +35,8 @@ const SOUVENIR_LIBRE = "Jamais retrouvé le nom, mais le dragon était bleu.";
 // (1993-1997) : avec celles-ci, une régression vers la valeur figée aurait
 // satisfait l'assertion, et le test aurait gardé un défaut qu'il prétend
 // surveiller.
-const DEBUT = 1992;
-const FIN = 1996;
+const DEBUT = 1990;
+const FIN = 1994;
 const PERIODE_LUE = `${DEBUT}\u2013${FIN}`;
 
 /**
@@ -109,10 +109,11 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // main — le pire cas en gestes — et vérifie plus bas que ce sont bien
   // celles-là qui arrivent sur l'axe.
   await expect(page.getByRole("heading", { name: /quand/i })).toBeVisible();
-  await toucher(page.getByRole("button", { name: "Plutôt une période" }).click());
-  await toucher(page.getByRole("spinbutton", { name: "Année de début" }).fill(String(DEBUT)));
-  await toucher(page.getByRole("spinbutton", { name: "Année de fin" }).fill(String(FIN)));
-  await toucher(page.getByRole("button", { name: "Voir les jeux" }).click());
+  // Une carte de décennie, puis l'affinage FACULTATIF. Deux gestes là où le
+  // champ numérique en coûtait quatre — et la granularité reste honnête :
+  // ce qui part est un intervalle, jamais une année inventée.
+  await toucher(page.getByRole("button", { name: /Années 90/ }).click());
+  await toucher(page.getByRole("button", { name: `${DEBUT} – ${FIN}` }).click());
 
   // Le contexte de saisie (E02 repère A) annonce ce qui sera attaché.
   await expect(page.getByTestId("contexte")).toContainText(PERIODE_LUE);
@@ -221,8 +222,7 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // où ce défaut se voit — aucun test de composant ne recharge une page.
   await page.goto(`/?profil=${profil}`);
   await page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }).click();
-  await page.getByRole("button", { name: "Plutôt une période" }).click();
-  await page.getByRole("button", { name: "Voir les jeux" }).click();
+  await page.getByRole("button", { name: /Années 90/ }).click();
 
   await expect(page.getByRole("button", { name: /^Déclaré : / }))
     .toHaveCount(TITRES_A_COCHER);
@@ -272,13 +272,12 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // cas se répète, et un troisième geste par titre manquant sortirait du
   // budget « un tap par jeu ». Dépasser signifierait qu'un geste s'est
   // glissé quelque part, et c'est exactement ce que le test doit voir.
-  // Trois gestes de plus qu'avant, tous dans le choix de période : saisir
-  // deux bornes puis valider. C'est le PIRE cas — les valeurs proposées sont
-  // déduites de la machine, et les accepter ne coûte qu'un appui.
+  // La carte de décennie et son affinage remplacent le mode, les deux
+  // bornes et la validation : deux gestes de moins.
   // Les deux gestes de passe 2 s'ajoutent au budget. Les gestes du
   // rechargement, eux, ne sont PAS comptés : ce n'est pas le parcours d'un
   // testeur, c'est une vérification que seul ce test peut faire.
-  const budget = TITRES_A_COCHER + 15;
+  const budget = TITRES_A_COCHER + 13;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

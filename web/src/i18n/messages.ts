@@ -73,22 +73,19 @@ export const MESSAGES = {
   "parcours.titre": "Reconstruire mon histoire",
   "parcours.choisirMachine": "Sur quelle console ?",
   "parcours.choisirPeriode": "Vers quand y avez-vous joué ?",
-  "parcours.periodeAnnee": "Une année",
-  "parcours.periodePeriode": "Plutôt une période",
   "parcours.periodeInconnue": "Je ne sais plus",
+
+  // Des cartes de décennie, pas un curseur (E01). La granularité est
+  // HONNÊTE : personne ne se souvient de l'année exacte de sa première
+  // console, et l'intervalle sur la décennie est une réponse pleine.
+  "periode.decennie": "Années {d}",
+  "periode.bornes": "{debut} – {fin}",
+  "periode.affiner": "Plus précisément, si vous le savez :",
+  "periode.quelquePart": "Quelque part dans les années {d}",
 
   // Le choix de période. Une année impossible est refusée EN LE DISANT, et
   // jamais corrigée en silence : une valeur qui change toute seule se lit
   // comme une panne, pas comme une règle.
-  "periode.annee": "Année",
-  "periode.debut": "Année de début",
-  "periode.fin": "Année de fin",
-  "periode.precedente": "Année précédente",
-  "periode.suivante": "Année suivante",
-  "periode.avantLaMachine":
-    "La {machine} est sortie en {annee} : vous n'avez pas pu y jouer avant.",
-  "periode.aVenir": "{annee} n'est pas encore passée.",
-  "periode.finAvantDebut": "La fin ne peut pas précéder le début.",
 
   "contexte.changer": "Changer la période",
   "contexte.sApplique": "S'applique aux déclarations suivantes.",
@@ -103,7 +100,6 @@ export const MESSAGES = {
   "passe2.possede": "Je l'avais",
   "passe2.ailleurs": "Chez quelqu'un",
   "passe2.emprunte": "Emprunté",
-  "parcours.commencer": "Voir les jeux",
   "parcours.voirTimeline": "Voir ma timeline",
   "parcours.chargement": "Chargement…",
   // Un échec n'est pas un chargement lent, et un catalogue vide n'est ni

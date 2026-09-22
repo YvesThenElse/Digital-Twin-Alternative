@@ -50,8 +50,9 @@ afterEach(() => vi.clearAllMocks());
 async function jusquALaSelection(utilisateur: ReturnType<typeof userEvent.setup>) {
   render(<App />);
   await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
-  await utilisateur.click(screen.getByRole("button", { name: "Plutôt une période" }));
-  await utilisateur.click(screen.getByRole("button", { name: "Voir les jeux" }));
+  // Une carte de décennie suffit : E01 en fait une réponse pleine, et
+  // l'affinage qui suit est facultatif.
+  await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
 }
 
 describe("App — l'état du chargement (principes §5)", () => {
@@ -143,11 +144,10 @@ describe("App — la fraîcheur de ce qui est relu", () => {
     faux.etatSelection.mockClear();
 
     await utilisateur.click(screen.getByRole("button", { name: /changer la période/i }));
-    // Le choix repart de zéro : l'écran de période ne remontre pas la
-    // période courante, il faut rechoisir le mode. Friction notée à l'item,
-    // ce n'est pas un mensonge — le contexte, lui, l'affiche toujours.
-    await utilisateur.click(screen.getByRole("button", { name: "Plutôt une période" }));
-    await utilisateur.click(screen.getByRole("button", { name: "Voir les jeux" }));
+    // Le choix repart de zéro : l'écran ne remontre pas la décennie
+    // courante. Friction notée à l'audit, ce n'est pas un mensonge — le
+    // contexte de saisie, lui, l'affiche toujours.
+    await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
 
     await waitFor(() => expect(faux.etatSelection).toHaveBeenCalled());
   });

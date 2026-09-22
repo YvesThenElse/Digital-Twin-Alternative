@@ -1,21 +1,26 @@
 import { useState } from "react";
+import { accentEpoque } from "../disposition/epoque";
 import { t } from "../i18n/t";
 import type { Plateforme } from "../selection/types";
 import type { PeriodeChoisie } from "./periode";
 
 /**
- * Le choix de période, entre la console et la liste de jeux (§24.3).
+ * E01, temps 2 — situer dans le temps, par décennie.
  *
- * <b>Trois choix, et chacun capture VRAIMENT une valeur.</b> Cet écran a
- * longtemps été un bouchon : trois boutons qui envoyaient des constantes —
- * 1995, ou 1993-1997 — sans jamais demander lesquelles. Tous les jeux d'un
- * profil portaient donc la même année, que personne n'avait choisie, et
- * l'incertitude temporelle, qui est la thèse du produit, ne venait pas de
- * l'utilisateur.
+ * <b>« Des cartes de décennie, pas un curseur. »</b> La fiche donne la
+ * raison et elle est mesurée : un curseur couvrant vingt-cinq ans sur
+ * 343 px donne douze pixels par année, « le pire contrôle tactile
+ * possible ». Un champ numérique n'est pas meilleur — c'est la
+ * <b>question nue</b> que §311 de la spécification nomme comme
+ * l'anti-motif : le référentiel doit travailler pour l'utilisateur au lieu
+ * de l'interroger à vide.
  *
- * <b>La confiance ne se demande pas, elle se déduit</b> de la granularité
- * choisie. Ajouter un curseur de fiabilité coûterait une décision par
- * saisie pour une information que ce choix donne déjà.
+ * Et surtout la granularité est <b>honnête</b> : « personne ne se souvient
+ * de l'année exacte de sa première console ». La valeur enregistrée est un
+ * intervalle sur la décennie, « une réponse parfaitement valide ».
+ *
+ * L'affinage n'apparaît qu'ensuite, et reste <b>facultatif</b> : on peut
+ * l'ignorer et continuer.
  */
 export function ChoixPeriode({
   machine,
@@ -25,110 +30,109 @@ export function ChoixPeriode({
   machine: Plateforme;
   /**
    * Requise, sans valeur par défaut. Lire l'horloge ici rendrait le
-   * composant intestable dans le temps — et un test qui dépend du jour où
-   * on le lance finit toujours par échouer un matin.
+   * composant intestable dans le temps — un test qui dépend du jour où on
+   * le lance finit toujours par échouer un matin.
    */
   anneeCourante: number;
   choisir: (periode: PeriodeChoisie) => void;
 }) {
-  // Une année plausible POUR CETTE MACHINE. Un défaut identique partout est
-  // exactement ce qui a produit le défaut : une valeur que rien ne rattache
-  // à ce que l'utilisateur est en train de faire.
-  const suggeree = Math.min(machine.launchYear + 2, anneeCourante);
+  const [decennie, setDecennie] = useState<number | null>(null);
 
-  const [mode, setMode] = useState<"annee" | "periode" | null>(null);
-  const [annee, setAnnee] = useState(suggeree);
-  const [debut, setDebut] = useState(machine.launchYear);
-  const [fin, setFin] = useState(Math.min(machine.launchYear + 5, anneeCourante));
-  const [erreur, setErreur] = useState<string | null>(null);
-
-  /** Une année impossible est refusée EN DISANT pourquoi, jamais corrigée en
-   *  silence : une valeur qui change toute seule se lit comme une panne. */
-  function refus(valeur: number): string | null {
-    if (valeur < machine.launchYear) {
-      return t("periode.avantLaMachine", {
-        machine: machine.nom,
-        annee: String(machine.launchYear),
-      });
-    }
-    if (valeur > anneeCourante) {
-      return t("periode.aVenir", { annee: String(anneeCourante) });
-    }
-    return null;
+  /**
+   * Les décennies où la machine a existé, bornées des deux côtés.
+   *
+   * Proposer « années 80 » sur une console de 1990 ferait perdre du temps à
+   * tout le monde — et les années 80 d'une NES commencent en 1983, pas en
+   * 1980 : la console n'existait pas avant.
+   */
+  const decennies: number[] = [];
+  for (
+    let d = Math.floor(machine.launchYear / 10) * 10;
+    d <= anneeCourante;
+    d += 10
+  ) {
+    decennies.push(d);
   }
 
-  function valider() {
-    if (mode === "annee") {
-      const probleme = refus(annee);
-      if (probleme !== null) return setErreur(probleme);
-      return choisir({ kind: "year", year: annee });
-    }
+  /**
+   * « Années 80 », « Années 2000 » — la forme qu'on dit à voix haute, celle
+   * des maquettes d'E01. « Années 1990 » n'est pas du français parlé, et ce
+   * qui se lit autrement qu'on ne le pense se lit plus lentement.
+   */
+  const nomDecennie = (d: number) => (d < 2000 ? String(d % 100) : String(d));
 
-    const probleme = refus(debut) ?? refus(fin);
-    if (probleme !== null) return setErreur(probleme);
-    // Une fin antérieure au début n'est pas une période ouverte : c'est une
-    // faute de saisie, et la refermer d'office inventerait une intention.
-    if (fin < debut) return setErreur(t("periode.finAvantDebut"));
-    return choisir({ kind: "range", from: debut, to: fin });
-  }
+  const debutDe = (d: number) => Math.max(d, machine.launchYear);
+  const finDe = (d: number) => Math.min(d + 9, anneeCourante);
 
   return (
     <section>
       <h2>{t("parcours.choisirPeriode")}</h2>
 
-      <button type="button" aria-pressed={mode === "annee"}
-              onClick={() => { setMode("annee"); setErreur(null); }}>
-        {t("parcours.periodeAnnee")}
-      </button>
-      <button type="button" aria-pressed={mode === "periode"}
-              onClick={() => { setMode("periode"); setErreur(null); }}>
-        {t("parcours.periodePeriode")}
-      </button>
+      <div className="grille-cartes">
+        {decennies.map((d) => {
+          // L'accent d'une décennie est celui de son milieu : la borne
+          // basse d'une décennie tombe pile sur un changement d'époque, et
+          // prendre le début ferait porter aux années 90 la couleur des
+          // 8 bits.
+          const epoque = accentEpoque(d + 5);
+          return (
+            <button
+              key={d}
+              type="button"
+              className="carte"
+              data-testid="carte-decennie"
+              data-epoque={epoque.nom}
+              aria-pressed={decennie === d}
+              onClick={() => {
+                setDecennie(d);
+                choisir({ kind: "range", from: debutDe(d), to: finDe(d) });
+              }}
+            >
+              <span className="carte-nom">{t("periode.decennie", { d: nomDecennie(d) })}</span>
+              <span className="carte-meta">
+                {t("periode.bornes", { debut: String(debutDe(d)), fin: String(finDe(d)) })}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* En UN geste : c'est la réponse la plus fréquente, et la plus
           honnête. Lui imposer une confirmation la ferait éviter, et
           l'utilisateur inventerait une date plutôt que de l'avouer. */}
-      <button type="button" onClick={() => choisir({ kind: "unknown" })}>
+      <button type="button" className="discret" onClick={() => choisir({ kind: "unknown" })}>
         {t("parcours.periodeInconnue")}
       </button>
 
-      {mode === "annee" ? (
-        <div>
-          {/* Le pas existe pour le pouce : saisir quatre chiffres au clavier
-              d'un téléphone coûte bien plus qu'un appui. */}
-          <button type="button" aria-label={t("periode.precedente")}
-                  onClick={() => setAnnee((a) => a - 1)}>−</button>
-          <input
-            type="number" inputMode="numeric"
-            aria-label={t("periode.annee")}
-            value={annee}
-            onChange={(e) => setAnnee(Number(e.target.value))}
-          />
-          <button type="button" aria-label={t("periode.suivante")}
-                  onClick={() => setAnnee((a) => a + 1)}>+</button>
+      {decennie !== null ? (
+        <div data-testid="affinage">
+          <p>{t("periode.affiner")}</p>
+          {/* Deux moitiés, et le refus d'affiner. Jamais une année exacte :
+              resserrer ne doit pas devenir affirmer. */}
+          {[0, 5].map((offset) => {
+            const debut = Math.max(decennie + offset, machine.launchYear);
+            const fin = Math.min(decennie + offset + 4, anneeCourante);
+            if (debut > fin) return null;
+            return (
+              <button
+                key={offset}
+                type="button"
+                onClick={() => choisir({ kind: "range", from: debut, to: fin })}
+              >
+                {t("periode.bornes", { debut: String(debut), fin: String(fin) })}
+              </button>
+            );
+          })}
+          <button
+            type="button"
+            className="discret"
+            onClick={() =>
+              choisir({ kind: "range", from: debutDe(decennie), to: finDe(decennie) })
+            }
+          >
+            {t("periode.quelquePart", { d: nomDecennie(decennie) })}
+          </button>
         </div>
-      ) : null}
-
-      {mode === "periode" ? (
-        <div>
-          <input
-            type="number" inputMode="numeric"
-            aria-label={t("periode.debut")}
-            value={debut}
-            onChange={(e) => setDebut(Number(e.target.value))}
-          />
-          <input
-            type="number" inputMode="numeric"
-            aria-label={t("periode.fin")}
-            value={fin}
-            onChange={(e) => setFin(Number(e.target.value))}
-          />
-        </div>
-      ) : null}
-
-      {erreur !== null ? <p role="alert">{erreur}</p> : null}
-
-      {mode !== null ? (
-        <button type="button" onClick={valider}>{t("parcours.commencer")}</button>
       ) : null}
     </section>
   );
