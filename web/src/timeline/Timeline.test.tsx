@@ -16,7 +16,6 @@ const moment = (
   targetKind: "work",
   targetId: `wrk_${id}`,
   targetLabel: label,
-  confidence: "Medium",
   occurredAt,
   memory: null,
 });

@@ -38,7 +38,7 @@
 
 - [x] **F10 — Les contrôles hors ligne se lancent.** (audit 37) `CLAUDE.md` en présente trois comme lançables ; deux réclament des fichiers absents du dépôt, le troisième n'accepte qu'un répertoire courant précis. **Un garde documenté et non lançable fait croire le sujet couvert.** *Acceptation : chacun se lance depuis un dépôt neuf, ou la documentation dit ce qu'il lui faut.*
 
-- [ ] **F11 — Le contrat entre l'API et le client est vérifié.** (audit 35) `lire<T>` fait un `as T` : un champ ajouté, renommé ou rendu facultatif disparaît côté front **sans qu'aucun outil ne puisse le dire**. L'inventaire des omissions est écrit dans `client.ts`, et rien ne le vérifie. *Acceptation : un champ que l'API rend et que le client ne déclare pas fait échouer un test.*
+- [x] **F11 — Le contrat entre l'API et le client est vérifié.** (audit 35) `lire<T>` fait un `as T` : un champ ajouté, renommé ou rendu facultatif disparaît côté front **sans qu'aucun outil ne puisse le dire**. L'inventaire des omissions est écrit dans `client.ts`, et rien ne le vérifie. *Acceptation : un champ que l'API rend et que le client ne déclare pas fait échouer un test.*
 
 ## Ce qui attend une décision — la boucle s'arrête et demande
 
@@ -208,3 +208,17 @@
   désormais **2**, « je n'ai pas pu », distinct de **1**, « j'ai trouvé une
   faute » — avec `0`, la commande d'ensemble annonçait « les quatre
   contrôles passent » sans avoir lu un seul fichier. Vérifié en l'essayant.
+
+- **F11** — `CONTRAT-API.json` est à la racine, parce qu'il doit se lire des
+  **deux** côtés : `ContratApiTests` confronte les champs réellement rendus
+  par les dix points d'entrée, `contrat.test.ts` exige que chaque champ
+  annoncé comme lu soit nommé dans le front et que chaque omission porte sa
+  raison. Le contrat a trouvé **quatre champs** que `POST /declarations` rend
+  et que personne n'avait inscrits — le front les jetait en silence depuis la
+  Phase 1 — et un champ déclaré côté front que personne ne lit
+  (`confidence` sur un moment), retiré. Ce qui est laissé : le contrat porte
+  sur des **noms**, pas sur des types ; une chaîne qui deviendrait un nombre
+  lui échapperait, et la dérive de type connue (`launchYear`) reste gardée
+  ailleurs. Et la moitié « aucun champ ignoré n'est lu » a été **retirée**
+  plutôt qu'aménagée : `batchId` et `targetId` sont aussi des champs de
+  requête, et une garde qui ne tient qu'à coups d'exceptions ne garde rien.

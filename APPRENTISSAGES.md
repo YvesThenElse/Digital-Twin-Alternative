@@ -2382,3 +2382,29 @@ contrôles passent » sur un dépôt où aucune jaquette n'existe.
 pu », et le faire nommer ce qui lui manque. Un binaire réussite/échec force
 le contrôle indisponible à mentir dans un sens ou dans l'autre — et le sens
 qui arrange est toujours le vert.
+
+### 75 — Un contrat que l'on n'écrit qu'en commentaire n'a pas de sens de lecture
+
+L'inventaire des champs ignorés vivait dans l'en-tête de `client.ts`. Il était
+juste, motivé, et **vérifié par rien**. Mis à l'épreuve d'un contrat exécutable,
+il s'est révélé incomplet de **quatre champs** : `POST /declarations` rend
+`alreadyRecorded`, `batchId`, `declarationsRecorded` et `eventIds`, qu'aucun
+écran ne lit et qu'aucune ligne n'avait inscrits. Le front les jetait en
+silence depuis la Phase 1.
+
+Ce qui a fait la différence n'est pas d'avoir écrit le contrat, mais de l'avoir
+rendu **lisible des deux côtés** : un fichier à la racine, comparé aux réponses
+RÉELLES côté API, et aux sources côté front.
+
+La seconde moitié a failli être fausse. J'ai d'abord exigé qu'aucun champ
+ignoré ne soit nommé dans le front — et `batchId` et `targetId` sont aussi des
+champs de **requête** : la recherche par nom ne distingue pas ce qu'on envoie
+de ce qu'on lit. Une garde qui ne se satisfait que par une liste d'exceptions
+ne garde plus rien ; elle a été retirée plutôt qu'aménagée, et la moitié qui
+compte — l'API bouge, le front l'ignore — reste entière côté serveur.
+
+**La règle** : un contrat entre deux côtés se place **entre les deux**, jamais
+dans l'un d'eux, et chaque côté le confronte à ce qu'il a réellement sous la
+main — des réponses pour celui qui répond, des sources pour celui qui lit. Et
+quand une des deux moitiés ne peut être tenue qu'à coups d'exceptions, la
+retirer vaut mieux que la maquiller.

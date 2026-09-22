@@ -1,0 +1,128 @@
+{
+  "_pourquoi": [
+    "Le client fait un `as T` sur chaque réponse : un champ ajouté, renommé ou",
+    "rendu facultatif disparaît côté front SANS qu'aucun outil ne puisse le dire",
+    "(audit, item 35 ; apprentissage 56). Faute de schéma partagé entre les deux",
+    "côtés, ce fichier EST le contrat, et deux gardes le tiennent :",
+    "",
+    "  · DigitalTwin.Api.Tests/ContratApiTests.cs compare les champs RÉELLEMENT",
+    "    rendus par chaque point d'entrée à `lit` + `ignore`. Un champ de plus,",
+    "    de moins, ou renommé fait échouer la suite en le nommant.",
+    "  · web/src/api/contrat.test.ts exige que chaque champ de `lit` soit lu par",
+    "    `client.ts`, et qu'aucun champ d'`ignore` ne le soit.",
+    "",
+    "`ignore` n'est pas une poubelle : chaque entrée y est une DÉCISION, et sa",
+    "raison est écrite à côté. Un champ qu'on ne sait pas classer n'a rien à y",
+    "faire — il attend d'être lu ou d'être retiré de l'API."
+  ],
+  "points": {
+    "GET /platforms": {
+      "": {
+        "lit": ["id", "name", "regionFree", "launchYear", "worksCount"],
+        "ignore": {}
+      }
+    },
+    "GET /platforms/{id}/works": {
+      "": {
+        "lit": ["id", "title", "notability", "releases", "regionStatus", "coverUrl"],
+        "ignore": {}
+      },
+      "releases[]": {
+        "lit": ["region", "date", "precision"],
+        "ignore": {
+          "confidence": "dérivée de la granularité, que `date` et `precision` donnent déjà"
+        }
+      }
+    },
+    "GET /selection/{user}/{platform}": {
+      "": {
+        "lit": ["workId", "played", "completion", "provenance", "neverPlayed"],
+        "ignore": {}
+      }
+    },
+    "GET /memories/{user}": {
+      "": {
+        "lit": ["targetKind", "targetId", "text", "title"],
+        "ignore": {
+          "updatedAt": "aucun écran ne montre la date d'écriture d'une note"
+        }
+      }
+    },
+    "GET /unresolved/{user}": {
+      "": {
+        "lit": ["id", "title", "platformId", "resolved"],
+        "ignore": {
+          "resolvedWorkId": "une revendication rattachée est déjà dans la liste du référentiel ; le drapeau suffit à l'écarter"
+        }
+      }
+    },
+    "GET /timeline/{user}": {
+      "": {
+        "lit": ["entries", "undated", "warnings"],
+        "ignore": {}
+      },
+      "entries[]": {
+        "lit": ["isEpisode", "interval", "moments"],
+        "ignore": {}
+      },
+      "entries[].interval": {
+        "lit": ["start", "end"],
+        "ignore": {}
+      },
+      "entries[].moments[]": {
+        "lit": ["id", "type", "targetKind", "targetId", "targetLabel", "occurredAt", "memory"],
+        "ignore": {
+          "confidence": "dérivée de la granularité (principes §3) ; l'axe rend la FORME de la date, jamais un niveau de confiance"
+        }
+      },
+      "warnings[]": {
+        "lit": ["expectedEarlierId", "expectedLaterId"],
+        "ignore": {
+          "message": "nomme les types du domaine ; le principe 9 l'interdit à l'écran, qui refait sa phrase"
+        }
+      }
+    },
+    "GET /health": {
+      "": {
+        "lit": ["status", "database"],
+        "ignore": {}
+      },
+      "database": {
+        "lit": ["status", "detail"],
+        "ignore": {}
+      }
+    },
+    "POST /declarations": {
+      "": {
+        "lit": ["claims"],
+        "ignore": {
+          "created": "le nombre d'événements écrits ; l'écran compte ses lignes, pas les événements qu'elles produisent",
+          "declarationsRecorded": "le nombre de jugements appliqués ; même raison",
+          "alreadyRecorded": "dit qu'un lot rejoué n'a rien ajouté ; l'affichage est optimiste et n'attend pas la réponse (§24.4), donc il n'en fait rien",
+          "eventIds": "les identifiants frappés par l'API ; seules les revendications en ont besoin côté écran, et elles voyagent dans `claims`",
+          "batchId": "l'écran l'a envoyé, il le connaît"
+        }
+      },
+      "claims[]": {
+        "lit": ["title", "id"],
+        "ignore": {}
+      }
+    },
+    "POST /declarations/retract": {
+      "": {
+        "lit": [],
+        "ignore": {
+          "retracted": "le nombre d'événements marqués ; l'écran a déjà décoché la ligne avant l'appel"
+        }
+      }
+    },
+    "POST /memories": {
+      "": {
+        "lit": [],
+        "ignore": {
+          "targetId": "l'appelant le connaît : c'est lui qui l'a envoyé"
+        }
+      }
+    }
+  }
+}

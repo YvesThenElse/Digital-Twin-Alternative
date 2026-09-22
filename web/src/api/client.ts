@@ -29,23 +29,26 @@ const BASE = "/api";
  * Ce que l'API rend et que ce client **ne déclare pas**, sciemment.
  *
  * `lire<T>` fait un `as T` : un champ non déclaré disparaît sans qu'aucun
- * outil ne puisse le dire (apprentissage 56). L'inventaire ci-dessous
- * transforme ces omissions silencieuses en décisions écrites — c'est le
- * seul garde possible tant qu'aucun contrat n'est partagé entre les deux
- * côtés (audit, item 35).
+ * outil ne puisse le dire (apprentissage 56). L'inventaire vivait ici, en
+ * commentaire, et **rien ne le vérifiait** (audit, item 35).
  *
- * | Point d'entrée | Champ ignoré | Pourquoi |
- * |---|---|---|
- * | `/platforms/{id}/works` | `releases[].confidence` | dérivée de la granularité, déjà rendue |
- * | `/memories/{user}` | `updatedAt` | aucun écran ne montre la date d'une note |
- * | `/timeline/{user}` | `warnings[].message` | nomme les types du domaine ; le principe 9 l'interdit à l'écran, qui refait sa phrase |
- * | `/unresolved/{user}` | `resolved`, `resolvedWorkId` | une revendication rattachée est déjà dans la liste du référentiel |
+ * Il vit désormais dans [`CONTRAT-API.json`](../../../CONTRAT-API.json), à
+ * la racine, parce qu'il doit être lu des DEUX côtés :
  *
- * Et une dérive de TYPE, latente : `/platforms` déclare `LaunchYear` comme
- * facultative côté API, ce client la déclare `number`. Un `null` traversé
- * donnerait une année suggérée de **2** et désarmerait le refus « avant la
- * machine ». L'hypothèse est gardée côté données, par
- * `ReferentielTests.Chaque_plateforme_expose_son_annee_de_lancement`.
+ * - `ContratApiTests` compare les champs réellement rendus par chaque point
+ *   d'entrée à ce qui y est déclaré. Un champ ajouté, renommé ou retiré fait
+ *   échouer la suite en le nommant.
+ * - `contrat.test.ts` exige que chaque champ annoncé comme lu soit
+ *   effectivement nommé dans ce front, et que chaque omission porte sa
+ *   raison.
+ *
+ * Une décision écrite que personne ne relit se périme ; celle-ci échoue.
+ *
+ * Reste une dérive de TYPE, que des noms de champs ne peuvent pas attraper :
+ * `/platforms` déclare `LaunchYear` comme facultative côté API, ce client la
+ * déclare `number`. Un `null` traversé donnerait une année suggérée de **2**
+ * et désarmerait le refus « avant la machine ». L'hypothèse est gardée côté
+ * données, par `ReferentielTests.Chaque_plateforme_expose_son_annee_de_lancement`.
  */
 
 async function lire<T>(chemin: string): Promise<T> {

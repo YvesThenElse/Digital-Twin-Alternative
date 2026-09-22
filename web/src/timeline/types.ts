@@ -15,7 +15,6 @@ export type MomentTimeline = {
   targetId: string;
   /** Le titre lisible, résolu par l'API : l'écran n'a pas le référentiel. */
   targetLabel: string;
-  confidence: string;
   occurredAt: ValeurTemporelle;
   /**
    * Le souvenir de la CIBLE, que l'API rend sur chacun de ses moments.
