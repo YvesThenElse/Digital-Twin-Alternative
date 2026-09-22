@@ -1,5 +1,9 @@
 import type { Oeuvre, Plateforme } from "../selection/types";
-import type { EntreeTimeline, MomentTimeline } from "../timeline/types";
+import type {
+  AvertissementTimeline,
+  EntreeTimeline,
+  MomentTimeline,
+} from "../timeline/types";
 import type {
   CibleSouvenir,
   EtatLigne,
@@ -33,7 +37,7 @@ const BASE = "/api";
  * |---|---|---|
  * | `/platforms/{id}/works` | `releases[].confidence` | dérivée de la granularité, déjà rendue |
  * | `/memories/{user}` | `updatedAt` | aucun écran ne montre la date d'une note |
- * | `/timeline/{user}` | `warnings` | **défaut** — §5.4 veut qu'ils soient vus (item 27) |
+ * | `/timeline/{user}` | `warnings[].message` | nomme les types du domaine ; le principe 9 l'interdit à l'écran, qui refait sa phrase |
  * | `/unresolved/{user}` | `resolved`, `resolvedWorkId` | une revendication rattachée est déjà dans la liste du référentiel |
  *
  * Et une dérive de TYPE, latente : `/platforms` déclare `LaunchYear` comme
@@ -222,7 +226,9 @@ export const client = {
     ),
 
   timeline: (userId: string) =>
-    lire<{ entries: EntreeTimeline[]; undated: MomentTimeline[] }>(
-      `/timeline/${userId}`,
-    ),
+    lire<{
+      entries: EntreeTimeline[];
+      undated: MomentTimeline[];
+      warnings: AvertissementTimeline[];
+    }>(`/timeline/${userId}`),
 };

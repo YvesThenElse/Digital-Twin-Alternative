@@ -827,6 +827,20 @@ figure[data-testid="bande-epoque"] figcaption {
   vertical-align: middle;
 }
 
+/* L'avertissement doux de §5.4 : « jamais en blocage ». Il informe, donc il
+   se lit ; il n'accuse pas, donc il ne crie pas. Ni rouge ni icône d'alerte :
+   le joueur n'a rien fait de mal, et le produit ne lui demande rien.
+
+   Sa propre rangée, comme le souvenir : coincé dans une colonne de la grille
+   du moment, il se réduirait à un filet illisible. */
+.avertissement {
+  grid-column: 1 / -1;
+  font: var(--meta);
+  color: var(--ink-2);
+  padding: var(--e1) 0 var(--e1) var(--e3);
+  border-inline-start: 2px solid var(--epoque-sans-date);
+}
+
 .moment [data-forme] {
   font: var(--meta);
   color: var(--ink-2);

@@ -27,6 +27,20 @@ export type MomentTimeline = {
   memory: SouvenirTimeline | null;
 };
 
+/**
+ * Une incohérence constatée entre deux moments du même jeu (§5.4).
+ *
+ * <b>Le message de l'API n'est pas repris.</b> Il nomme les types du
+ * domaine — « CompletedGame devrait précéder StartedGame » —, et le
+ * principe 9 interdit de faire remonter ce vocabulaire à l'écran. Les deux
+ * identifiants suffisent : l'écran retrouve les moments et fait sa propre
+ * phrase, avec les mots qu'il emploie partout ailleurs.
+ */
+export type AvertissementTimeline = {
+  expectedEarlierId: string;
+  expectedLaterId: string;
+};
+
 export type EntreeTimeline = {
   /** Plusieurs moments d'un même lot sur la même période (§4.4). */
   isEpisode: boolean;

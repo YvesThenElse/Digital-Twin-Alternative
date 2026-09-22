@@ -13,7 +13,11 @@ import {
   type TitreLibreRelu,
 } from "./selection/SelectionMassive";
 import { Timeline } from "./timeline/Timeline";
-import type { EntreeTimeline, MomentTimeline } from "./timeline/types";
+import type {
+  AvertissementTimeline,
+  EntreeTimeline,
+  MomentTimeline,
+} from "./timeline/types";
 import type { Oeuvre, Plateforme } from "./selection/types";
 
 /**
@@ -90,7 +94,8 @@ export function App() {
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
-  }>({ entries: [], undated: [] });
+    warnings: AvertissementTimeline[];
+  }>({ entries: [], undated: [], warnings: [] });
   const disposition = useDisposition();
 
   /**
@@ -258,7 +263,11 @@ export function App() {
       ) : null}
 
       {etape === "timeline" ? (
-        <Timeline entrees={timeline.entries} sansDate={timeline.undated} />
+        <Timeline
+          entrees={timeline.entries}
+          sansDate={timeline.undated}
+          avertissements={timeline.warnings}
+        />
       ) : null}
     </main>
   );

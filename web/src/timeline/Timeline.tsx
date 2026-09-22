@@ -4,7 +4,12 @@ import { t } from "../i18n/t";
 import { ZoneSansDate } from "../temporel/ZoneSansDate";
 import { Icone, type NomIcone } from "../icones/Icone";
 import { forme, libelle } from "../temporel/valeur";
-import type { EntreeTimeline, MomentTimeline, SouvenirTimeline } from "./types";
+import type {
+  AvertissementTimeline,
+  EntreeTimeline,
+  MomentTimeline,
+  SouvenirTimeline,
+} from "./types";
 
 /**
  * E03 — la timeline.
@@ -21,10 +26,35 @@ import type { EntreeTimeline, MomentTimeline, SouvenirTimeline } from "./types";
 export function Timeline({
   entrees,
   sansDate,
+  avertissements,
 }: {
   entrees: EntreeTimeline[];
   sansDate: MomentTimeline[];
+  /**
+   * Les incohérences que le domaine a constatées (§5.4).
+   *
+   * Requis, sans valeur par défaut : l'API les calculait et les rendait
+   * depuis la Phase 1, et le type du client ne déclarait pas le champ —
+   * personne ne les a jamais vues. Un défaut vide referait exactement ce
+   * silence.
+   */
+  avertissements: AvertissementTimeline[];
 }) {
+  // Par moment CONCERNÉ — celui dont la date contredit son propre
+  // prédécesseur. C'est lui qu'on regarde en se demandant ce qui cloche.
+  const parMoment = new Map<string, string>();
+  const typeDe = new Map<string, string>();
+  for (const entree of entrees) {
+    for (const moment of entree.moments) typeDe.set(moment.id, moment.type);
+  }
+  for (const a of avertissements) {
+    const avant = typeDe.get(a.expectedEarlierId);
+    // Un identifiant qu'on ne trouve pas ne produit rien : inventer une
+    // ligne pour lui ferait apparaître un avertissement sans sujet.
+    if (avant === undefined || !typeDe.has(a.expectedLaterId)) continue;
+    parMoment.set(a.expectedLaterId, libelleType(avant));
+  }
+
   return (
     <section>
       <h2>{t("timeline.titre")}</h2>
@@ -38,7 +68,11 @@ export function Timeline({
 
       <ol data-testid="axe" data-entrees={entrees.length}>
         {entrees.map((entree) => (
-          <Entree key={entree.moments[0].id} entree={entree} />
+          <Entree
+            key={entree.moments[0].id}
+            entree={entree}
+            avertissements={parMoment}
+          />
         ))}
       </ol>
 
@@ -67,6 +101,18 @@ const MARQUES: Record<string, NomIcone> = {
   AbandonedGame: "abandonne",
   AcquiredItem: "possede",
 };
+
+/**
+ * Le nom d'un type, dans les mots de l'écran.
+ *
+ * Un type sans marque rend son type brut : c'est la règle déjà tenue par la
+ * marque elle-même — dire qu'on ne sait pas est une information, contrairement
+ * à un faux.
+ */
+function libelleType(type: string): string {
+  const icone = MARQUES[type];
+  return icone === undefined ? type : t(`icone.${icone}`);
+}
 
 function Marque({ type }: { type: string }) {
   const icone = MARQUES[type];
@@ -108,7 +154,10 @@ function SouvenirDuMoment({ souvenir }: { souvenir: SouvenirTimeline }) {
   );
 }
 
-function Entree({ entree }: { entree: EntreeTimeline }) {
+function Entree({ entree, avertissements }: {
+  entree: EntreeTimeline;
+  avertissements: Map<string, string>;
+}) {
   const [deplie, setDeplie] = useState(false);
 
   // Les cibles dont le souvenir a déjà été rendu dans cette entrée. Reconstruit
@@ -172,6 +221,16 @@ function Entree({ entree }: { entree: EntreeTimeline }) {
                   l'agrégation d'épisode existe pour éviter (§4.4). */}
               {moment.memory !== null && premierPorteur(moment) ? (
                 <SouvenirDuMoment souvenir={moment.memory} />
+              ) : null}
+
+              {/* L'avertissement doux de §5.4 : il informe, il ne bloque
+                  rien, et le moment reste affiché tel qu'il a été déclaré.
+                  Réordonner ou masquer reviendrait à prétendre connaître le
+                  souvenir mieux que son auteur. */}
+              {avertissements.has(moment.id) ? (
+                <p className="avertissement" data-testid="avertissement">
+                  {t("timeline.avertissement", { avant: avertissements.get(moment.id)! })}
+                </p>
               ) : null}
             </li>
           ))}

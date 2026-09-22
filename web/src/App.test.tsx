@@ -66,7 +66,7 @@ beforeEach(() => {
   faux.titresLibres.mockResolvedValue([]);
   faux.retracter.mockResolvedValue({ retracted: 1 });
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
-  faux.timeline.mockResolvedValue({ entries: [], undated: [] });
+  faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
 });
 
 afterEach(() => vi.clearAllMocks());
@@ -152,6 +152,42 @@ describe("App — un geste qui échoue le dit (principes §5)", () => {
     await utilisateur.click(console);
 
     await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
+  });
+});
+
+describe("App — la timeline s'ouvre", () => {
+  it("passe les avertissements du domaine à l'axe (§5.4)", async () => {
+    // L'API les calcule et les rend depuis la Phase 1 ; le type du client ne
+    // déclarait pas le champ. Personne ne les a jamais vus — et rien ne
+    // pouvait le dire, puisque le calcul, lui, était juste.
+    const utilisateur = userEvent.setup();
+    faux.timeline.mockResolvedValue({
+      entries: [
+        { isEpisode: false, interval: { start: "1990-01-01", end: "1990-12-31" },
+          moments: [{ id: "fin", type: "CompletedGame", targetKind: "work",
+                      targetId: "w1", targetLabel: "Super Mario World",
+                      confidence: "Medium", occurredAt: { kind: "Year", year: 1990 },
+                      memory: null }] },
+        { isEpisode: false, interval: { start: "1995-01-01", end: "1995-12-31" },
+          moments: [{ id: "debut", type: "StartedGame", targetKind: "work",
+                      targetId: "w1", targetLabel: "Super Mario World",
+                      confidence: "Medium", occurredAt: { kind: "Year", year: 1995 },
+                      memory: null }] },
+      ],
+      undated: [],
+      warnings: [{ expectedEarlierId: "debut", expectedLaterId: "fin",
+                   message: "diagnostic du domaine, jamais affiché" }],
+    });
+
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    // Que la phrase soit dans le vocabulaire de l'écran est l'affaire du
+    // composant, qui le vérifie. Ce qu'on vérifie ICI est ce que lui seul
+    // voit : l'avertissement traverse le client — et le `message` de l'API,
+    // qui nomme les types du domaine, ne traverse PAS.
+    expect(await screen.findByTestId("avertissement")).toBeInTheDocument();
+    expect(screen.queryByText(/diagnostic du domaine/)).toBeNull();
   });
 });
 

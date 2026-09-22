@@ -24,7 +24,7 @@
 
 - [x] **F4 — Les titres saisis sont relus.** (audit 24 · §3.5) Une revendication ajoutée disparaît de la sélection au rechargement tout en restant sur la timeline. **Le moyen existe déjà et n'est jamais appelé** : `GET /unresolved/{user}`. *Acceptation : un titre saisi revient à l'écran après rechargement, marqué comme tel, avec son souvenir.*
 
-- [ ] **F5 — Les avertissements causals atteignent quelqu'un.** (audit 27 · §5.4) L'API les calcule et les rend ; le type du client ne déclare pas le champ, donc personne ne les voit. Ce sont des avertissements **doux** : ils informent, ils ne bloquent rien. *Acceptation : une incohérence déclarée — « fini » avant « commencé » — est visible sur l'axe, et rien n'est refusé à cause d'elle.*
+- [x] **F5 — Les avertissements causals atteignent quelqu'un.** (audit 27 · §5.4) L'API les calcule et les rend ; le type du client ne déclare pas le champ, donc personne ne les voit. Ce sont des avertissements **doux** : ils informent, ils ne bloquent rien. *Acceptation : une incohérence déclarée — « fini » avant « commencé » — est visible sur l'axe, et rien n'est refusé à cause d'elle.*
 
 - [ ] **F6 — Une jaquette qui disparaît ne casse plus la tuile.** (audit 29 · §19.2) « Une jaquette reprise est un emprunt révocable : **rien dans le produit ne doit cesser de marcher le jour où elle disparaît** ». Le catalogue ne filtre qu'à l'amorçage ; retirée ensuite, l'image donne un glyphe cassé. *Acceptation : une source invalide se replie sur la tuile composée, et un test le prouve.*
 
@@ -51,6 +51,17 @@
 - [ ] **F15 — Le tiroir sans date est une tâche, pas une poubelle.** (audit 32) « Dimensionné pour être vidé — la relance de session la moins coûteuse du produit » : il n'accepte aucun geste. C'est E14, la passe temporelle, et elle n'est inscrite dans aucun TODO de phase.
 
 ## Trouvé en chemin
+
+- [ ] **F17 — Aucun geste de Phase 1 ne produit d'incohérence causale.**
+  Constaté en faisant F5 : le traducteur de lot fait de « terminé » un
+  `StartedGame` **plus** un `CompletedGame`, à la même date — donc tout
+  achèvement a toujours un début qui le précède ou l'accompagne. Les
+  avertissements de §5.4 sont désormais rendus et testés, mais **rien dans
+  le produit livré ne peut en déclencher un** : il faudra E07, qui corrige
+  une date après coup. Ce n'est pas un défaut de F5 — c'est le même motif
+  que les sept types d'événements sans producteur, et il vaut mieux l'écrire
+  que de le laisser vert. *À trancher avec F12/F14 : offrir E07, ou inscrire
+  ces capacités comme différées.*
 
 - [ ] **F16 — Une construction du front qui échoue s'arrête en silence.**
   `services_front` fait `./web.sh build >/dev/null` : une erreur de
@@ -114,3 +125,15 @@
   cibles : les titres saisis ont désormais une ligne où les afficher. Ce qui
   est laissé : l'état de passe 2 d'un titre saisi n'est pas relu — l'API ne
   le rend que pour les œuvres.
+
+- **F5** — le client déclare enfin `warnings`, et l'axe rend l'avertissement
+  **sur le moment qu'il concerne** — celui dont la date contredit son propre
+  prédécesseur. Le `message` de l'API reste ignoré, et c'est écrit au tableau
+  des omissions : il nomme les types du domaine (« CompletedGame devrait
+  précéder StartedGame »), ce que le principe 9 interdit à l'écran. L'écran
+  refait donc sa phrase avec les mots qu'il emploie partout — « Joué »,
+  « Fini » —, et elle dit d'emblée que rien n'a été changé. Ni rouge ni
+  icône d'alerte : §5.4 veut un avertissement doux, et le joueur n'a rien
+  fait de mal. Ce qui est laissé : **le parcours ne peut pas en produire un**
+  — voir F17 —, donc la garde est au niveau du composant et de l'assemblage,
+  pas dans le navigateur.

@@ -33,12 +33,26 @@ const entree = (
 
 const axe = () => screen.getByTestId("axe");
 
+/**
+ * Le parcours incohérent de §5.4 : « terminé » entièrement avant
+ * « commencé ». C'est l'exemple que la spécification donne elle-même.
+ */
+const incoherence = () => ({
+  entrees: [
+    entree([moment("fin", "Chrono Trigger", { kind: "Year", year: 1990 }, "CompletedGame")],
+           "1990-01-01", "1990-12-31"),
+    entree([moment("debut", "Chrono Trigger", { kind: "Year", year: 1995 })],
+           "1995-01-01", "1995-12-31"),
+  ],
+  avertissements: [{ expectedEarlierId: "debut", expectedLaterId: "fin" }],
+});
+
 describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
   it("invite plutôt que de montrer un vide", () => {
     // Un axe vierge se lit comme une panne. « Racontez votre première
     // console » dit qu'il n'y a rien À CAUSE de l'histoire, pas à cause de
     // l'écran.
-    render(<Timeline entrees={[]} sansDate={[]} />);
+    render(<Timeline entrees={[]} sansDate={[]} avertissements={[]} />);
 
     expect(screen.getByText(/Racontez votre première console/)).toBeInTheDocument();
     expect(axe()).toHaveAttribute("data-entrees", "0");
@@ -55,6 +69,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
           entree([moment("b", "Second", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31"),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -72,6 +87,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
                  "1992-01-01", "1996-12-31"),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -89,6 +105,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
           entree([moment("b", "Moderne", { kind: "Year", year: 2020 })], "2020-01-01", "2020-12-31"),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -128,6 +145,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
           ),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -153,6 +171,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
           ),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -168,6 +187,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
       <Timeline
         entrees={[entree([moment("a", "Seul", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -184,6 +204,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
       <Timeline
         entrees={[]}
         sansDate={[moment("x", "Je ne sais plus", { kind: "Unknown" })]}
+        avertissements={[]}
       />,
     );
 
@@ -196,6 +217,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
       <Timeline
         entrees={[entree([moment("a", "Daté", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -209,6 +231,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
       <Timeline
         entrees={[entree([moment("a", "Daté", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[moment("x", "Sans date", { kind: "Unknown" })]}
+        avertissements={[]}
       />,
     );
 
@@ -238,6 +261,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
           ),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -261,6 +285,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
                  "2018-01-01", "2018-12-31"),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -283,6 +308,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
           ),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -298,6 +324,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
                  "2018-01-01", "2018-12-31"),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -316,6 +343,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
                  "1995-01-01", "1995-12-31"),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -355,6 +383,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
           ),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -377,6 +406,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
           ),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -401,6 +431,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
           ),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -419,6 +450,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
       <Timeline
         entrees={[entree(troisMoments(unSouvenir("L'été 1997")), "1995-01-01", "1995-12-31")]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
@@ -438,9 +470,76 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
                  "1995-01-01", "1995-12-31"),
         ]}
         sansDate={[]}
+        avertissements={[]}
       />,
     );
 
     expect(repere()).toBeNull();
+  });
+});
+
+describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
+  const avertissement = () => screen.queryByTestId("avertissement");
+
+  it("montre l'incohérence sur le moment qu'elle concerne", () => {
+    // L'API les calcule et les rend depuis la Phase 1 ; le type du client ne
+    // déclarait pas le champ, donc personne ne les voyait jamais. Un calcul
+    // juste et invisible ne signale rien.
+    const { entrees, avertissements } = incoherence();
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} />);
+
+    const porteur = screen.getAllByTestId("moment-titre")[0].closest("li")!;
+    expect(within(porteur).getByTestId("avertissement")).toBeInTheDocument();
+  });
+
+  it("nomme l'autre moment dans le vocabulaire de l'écran", () => {
+    // Principe 9 : le vocabulaire technique ne remonte pas dans l'interface.
+    // Le message de l'API dit « StartedGame » — c'est un diagnostic, pas une
+    // phrase à lire.
+    const { entrees, avertissements } = incoherence();
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} />);
+
+    expect(avertissement()).toHaveTextContent("Joué");
+    expect(avertissement()!.textContent).not.toMatch(/StartedGame|CompletedGame/);
+  });
+
+  it("ne bloque rien : le moment reste affiché tel qu'il a été déclaré", () => {
+    // §5.4 : « en avertissement doux et JAMAIS en blocage ». Réordonner ou
+    // masquer reviendrait à prétendre connaître le souvenir mieux que son
+    // auteur.
+    const { entrees, avertissements } = incoherence();
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} />);
+
+    expect(screen.getAllByTestId("moment-titre")).toHaveLength(2);
+    expect(screen.getByText("1990")).toBeInTheDocument();
+  });
+
+  it("n'en affiche aucun quand le parcours est cohérent", () => {
+    // Un avertissement par défaut ferait douter d'une histoire saine.
+    render(
+      <Timeline
+        entrees={[entree([moment("a", "Chrono Trigger", { kind: "Year", year: 1995 })],
+                         "1995-01-01", "1995-12-31")]}
+        sansDate={[]}
+        avertissements={[]}
+      />,
+    );
+
+    expect(avertissement()).toBeNull();
+  });
+
+  it("ne rend rien pour un avertissement dont le moment n'est pas à l'axe", () => {
+    // Le rendu ne doit pas tomber sur un identifiant qu'il ne trouve pas —
+    // et il ne doit pas inventer de ligne pour lui.
+    render(
+      <Timeline
+        entrees={[entree([moment("a", "Chrono Trigger", { kind: "Year", year: 1995 })],
+                         "1995-01-01", "1995-12-31")]}
+        sansDate={[]}
+        avertissements={[{ expectedEarlierId: "ailleurs", expectedLaterId: "introuvable" }]}
+      />,
+    );
+
+    expect(avertissement()).toBeNull();
   });
 });

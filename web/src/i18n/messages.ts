@@ -148,6 +148,11 @@ export const MESSAGES = {
   // Un souvenir sans repère reste un souvenir : l'axe le marque quand même,
   // faute de quoi écrire une phrase sans la titrer la ferait disparaître.
   "timeline.souvenirSansRepere": "Un souvenir",
+  // §5.4 : « en avertissement doux et JAMAIS en blocage ». La phrase informe
+  // et n'accuse pas — elle dit d'emblée que rien n'a été changé, sans quoi
+  // le joueur chercherait ce qu'il doit corriger.
+  "timeline.avertissement":
+    "« {avant} » vient d'ordinaire avant. La date déclarée le place après — c'est gardé tel quel.",
 
   // --- les régions (§3.4) ------------------------------------------------
   // Le nom, jamais le code : « PAL » ne dit rien à un joueur.
