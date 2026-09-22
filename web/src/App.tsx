@@ -61,6 +61,21 @@ export function App() {
   const [etape, setEtape] = useState<Etape>("machine");
   const [plateformes, setPlateformes] = useState<Plateforme[]>([]);
   const [machine, setMachine] = useState<Plateforme | null>(null);
+  /**
+   * La région du joueur — **une hypothèse, pas une réponse**.
+   *
+   * Aucun geste de l'utilisateur n'entre ici (audit, item 18). §3.4 dit ce
+   * que cela coûte : « un joueur PAL et un joueur NTSC-J n'ont pas connu le
+   * même catalogue SNES, ni les mêmes titres, ni les mêmes dates ». On
+   * assume donc l'Europe pour les premiers testeurs, et l'hypothèse est
+   * écrite là où elle sera lue avant une session — `PROTOCOLE-DE-TEST.md`
+   * §2, avec le critère de recrutement qui en découle.
+   *
+   * **Elle ne se pose qu'ICI** : `region/region-assumee.test.ts` échoue si
+   * un autre fichier du front décide d'une région. Éparpillée, le jour où
+   * un testeur n'est pas européen coûterait une relecture du frontend au
+   * lieu d'une ligne.
+   */
   const [region, setRegion] = useState("PAL");
   // La période est CHOISIE par l'utilisateur. Elle valait 1995 quoi qu'il
   // fasse, et tous ses jeux portaient donc la même année, que personne

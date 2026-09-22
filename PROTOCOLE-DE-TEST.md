@@ -54,6 +54,41 @@ Un testeur qui n'en nomme qu'une est reçu quand même, mais **marqué**, et
 ses résultats sont rapportés à part. Ne pas le marquer reviendrait à imputer
 au produit un trou du dataset.
 
+### L'hypothèse de région, et ce qu'elle engage
+
+**Le produit ne demande jamais sa région au joueur.** L'application en pose
+une — `PAL`, ou « mondiale » pour une machine sans zonage — et toute la
+sélection en dépend : ce sont les jeux montrés, leur statut de sortie, et
+**les dates affichées**. §3.4 dit ce que cela coûte : « un joueur PAL et un
+joueur NTSC-J n'ont pas connu le même catalogue SNES, ni les mêmes titres,
+ni les mêmes dates ». Mesuré sur le dataset : **97 œuvres sur 221** portent
+une année différente de leur année européenne, jusqu'à **six ans** d'écart.
+
+Ce n'est pas un oubli, c'est une **hypothèse assumée pour la Phase 2** —
+les premiers testeurs seront européens. Elle a trois conséquences
+opposables, et elles se vérifient **avant** la session :
+
+1. **Critère de recrutement.** Le testeur a joué **en Europe** pendant la
+   période qu'il va reconstituer. La question se pose telle quelle, avant
+   la session : *« Vos consoles, vous les avez eues en Europe ? »*
+2. **Un testeur qui n'est pas européen est reçu, mais pas tel quel.** On
+   change la région **avant** sa session — c'est **une ligne**, dans
+   `web/src/App.tsx`, et un test échoue si elle s'est éparpillée
+   (`web/src/region/region-assumee.test.ts`). Ses résultats sont rapportés
+   **à part** : le dataset est curé sur des sorties européennes, et sa
+   reconnaissance n'est pas comparable à celle des autres.
+3. **Ce qui invaliderait sa session sans qu'on le voie.** Un testeur NTSC-J
+   à qui l'on sert le catalogue PAL ne dira pas « la région est fausse » :
+   il dira **« je ne reconnais pas ces jeux »** ou **« les dates sont
+   fausses »**. C'est exactement le verdict que la porte de Phase 2 mesure,
+   et il serait imputé au produit au lieu de l'hypothèse. D'où la
+   vérification avant, et non l'interprétation après.
+
+> Ce que le POC **ne sait pas faire** : demander sa région au joueur, ou
+> l'enregistrer dans son profil. La sélection massive est régionale, le
+> profil ne l'est pas — à trancher quand le profil deviendra un livrable
+> (Phase 3).
+
 **Le dénominateur, fixé à l'avance.** Toutes les cibles de §22.3 portent sur
 les testeurs **recrutés**, pas sur ceux qui finissent. On inscrit donc la
 liste des recrutés **avant** la première session, et on n'en retire personne

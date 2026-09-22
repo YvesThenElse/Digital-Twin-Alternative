@@ -4,10 +4,11 @@
 > repris ici **dans l'ordre où ils comptent** : ce qui bloque un testeur
 > d'abord, la perte de richesse ensuite, l'outillage en dernier.
 >
-> Le verdict du 22 septembre 2026 tenait à quatre blocages. Ils sont
-> levés — l'apparence, la grille qui rend enfin une grille, le moment qui
-> dit ce qu'il est, la correction qui tient, et le souvenir qui arrive sur
-> l'axe. **Reste la région, qui attend d'être écrite plutôt que construite.**
+> Le verdict du 22 septembre 2026 tenait à quatre blocages. **Ils sont tous
+> levés** — l'apparence, la grille qui rend enfin une grille, le moment qui
+> dit ce qu'il est, la correction qui tient, le souvenir qui arrive sur
+> l'axe, et la région, assumée par écrit plutôt qu'en silence. Ce qui suit
+> enrichit le profil sans conditionner la session.
 >
 > La méthode est dans [`BOUCLE-FINITION.md`](./BOUCLE-FINITION.md).
 
@@ -15,7 +16,7 @@
 
 - [x] **F1 — Le souvenir atteint la timeline.** (audit 39 · §9.1, §9.2) **Décidé** : un **titre court** sert de repère sur l'axe, le texte complet s'ouvre au clic. §9.1 fait de cette section le porteur direct du « oui, ça me ressemble » — c'est-à-dire du critère de la porte. *Acceptation : `MemoryRow` porte un titre facultatif, l'API l'accepte et le rend, l'écran de sélection le propose sans l'imposer, et le parcours de bout en bout lit ce repère sur l'axe.*
 
-- [ ] **F2 — La région est assumée, et écrite.** (audit 18 · §3.4) **Décidé** : on garde `PAL` pour les premiers testeurs, qui seront européens, et on l'inscrit comme **hypothèse explicite** dans `PROTOCOLE-DE-TEST.md` — avec le critère de recrutement qui en découle et ce qu'il faudra faire le jour où un testeur ne l'est pas. *Acceptation : l'hypothèse est écrite là où elle sera lue, et un test échoue si une région littérale apparaît ailleurs que dans `App.tsx`.*
+- [x] **F2 — La région est assumée, et écrite.** (audit 18 · §3.4) **Décidé** : on garde `PAL` pour les premiers testeurs, qui seront européens, et on l'inscrit comme **hypothèse explicite** dans `PROTOCOLE-DE-TEST.md` — avec le critère de recrutement qui en découle et ce qu'il faudra faire le jour où un testeur ne l'est pas. *Acceptation : l'hypothèse est écrite là où elle sera lue, et un test échoue si une région littérale apparaît ailleurs que dans `App.tsx`.*
 
 ## Ce qui appauvrit le profil sans l'empêcher
 
@@ -64,3 +65,15 @@
   complet au clic. Ce qui est laissé : le souvenir n'est pas éditable depuis
   la timeline (c'est E07, différé), et le tiroir sans date le transporte
   côté API sans le montrer (F15).
+
+- **F2** — l'hypothèse est écrite dans `PROTOCOLE-DE-TEST.md` §2, au
+  recrutement : ce qu'elle engage, la question à poser avant la session, ce
+  qu'on fait d'un testeur non européen, et le symptôme qui l'imputerait au
+  produit — « je ne reconnais pas ces jeux », c'est-à-dire le verdict même
+  de la porte. `region/region-assumee.test.ts` garde la moitié que la prose
+  ne peut pas garder : un code de région écrit ailleurs que dans `App.tsx`
+  fait échouer la suite, et le garde a ses témoins — dont un qui exige que
+  la décision soit **toujours** dans `App.tsx`, faute de quoi l'exemption ne
+  protégerait plus rien. `WORLDWIDE` n'est pas policé : c'est l'absence de
+  zonage, un fait du dataset. Ce qui est laissé : aucun écran ne demande sa
+  région au joueur, et le profil ne l'enregistre pas (Phase 3).
