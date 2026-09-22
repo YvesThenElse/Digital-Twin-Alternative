@@ -40,6 +40,23 @@ export const MESSAGES = {
   "souvenir.repere": "Un repère court sur {titre} (facultatif)",
   "action.recharger": "Recharger la liste",
 
+  // Les quatre états obligatoires de E02 (principes §5). L'état vide est le
+  // plus important : c'est celui que voit un nouvel utilisateur.
+  //
+  // Le squelette est STRUCTUREL — « jamais un spinner centré » —, donc cette
+  // phrase n'est là que pour qui ne voit pas l'écran.
+  "selection.chargement": "Chargement de la liste des jeux…",
+  // Ce qui a échoué, ce qui est conservé, quoi faire : les trois choses que
+  // §5 exige d'un message d'erreur.
+  "selection.echec":
+    "La liste n'a pas pu être relue. Votre période est conservée ; réessayez.",
+  // Jamais une page blanche, et jamais une issue qui n'existe pas : la
+  // période ne filtre pas cette liste, et l'écran ne sait pas changer de
+  // région. Ce qu'il sait faire, il le propose.
+  "selection.vide":
+    "Aucun jeu à afficher pour cette machine. Réessayez le chargement, "
+    + "ou saisissez vos titres vous-même — c'est prévu.",
+
   // Le jeu absent est un CAS NOMINAL, pas une erreur (§3.5) : l'invitation
   // le dit comme une possibilité offerte, jamais comme un échec de recherche.
   "titreLibre.invite": "Un jeu manque à cette liste ?",

@@ -91,6 +91,16 @@ export function App() {
   const [souvenirsInitiaux, setSouvenirsInitiaux] =
     useState<Record<string, SouvenirEcrit>>({});
   const [titresLibresInitiaux, setTitresLibresInitiaux] = useState<TitreLibreRelu[]>([]);
+
+  /**
+   * Le lot courant — <b>le passage sur l'écran</b> (§4.4).
+   *
+   * Il vit ICI et non dans le composant : gardé dans une ref, il repartait à
+   * chaque remontage, et un simple rechargement de la liste détachait la
+   * suite de la saisie de l'épisode commencé. Un nouveau passage commence
+   * quand on entre dans la sélection, pas quand React refait un rendu.
+   */
+  const [lot, setLot] = useState(() => `bat_${Math.random().toString(36).slice(2, 12)}`);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -107,6 +117,22 @@ export function App() {
    * dit ce qui a échoué, pas que quelque chose est en cours.
    */
   const [chargement, setChargement] = useState<"en-cours" | "pret" | "echec">("en-cours");
+
+  /**
+   * Le même triptyque pour E02, et il lui appartient.
+   *
+   * <b>« Pret » à l'entrée</b> : on n'ouvre l'écran qu'une fois tout relu,
+   * parce que montrer les lignes avant l'état relu les afficherait toutes
+   * décochées sur un profil plein. L'attente se joue donc sur l'écran de
+   * période.
+   *
+   * Les deux autres états se voient au RECHARGEMENT, qui est un geste de cet
+   * écran-ci : la liste se vide, le squelette la remplace, et un échec se dit
+   * sur place avec ce qui est conservé — au lieu d'une alerte générale
+   * au-dessus d'une étape qu'on n'a pas quittée.
+   */
+  const [chargementSelection, setChargementSelection] =
+    useState<"en-cours" | "pret" | "echec">("pret");
 
   /**
    * Ce qui a échoué au dernier geste.
@@ -178,7 +204,11 @@ export function App() {
 
   async function ouvrirSelection(choisie: PeriodeChoisie, p: Plateforme) {
     setPeriode(choisie);
+    // Un nouveau passage : la période change ce qui sera attaché, donc les
+    // déclarations qui suivent ne font plus partie du même épisode.
+    setLot(`bat_${Math.random().toString(36).slice(2, 12)}`);
     await relireEtat(p);
+    setChargementSelection("pret");
     setEtape("selection");
   }
 
@@ -189,8 +219,14 @@ export function App() {
    * l'état local de la sélection.
    */
   async function rechargerListe(p: Plateforme) {
-    setOeuvres(await client.oeuvres(p.id, region));
-    await relireEtat(p);
+    setChargementSelection("en-cours");
+    try {
+      setOeuvres(await client.oeuvres(p.id, region));
+      await relireEtat(p);
+      setChargementSelection("pret");
+    } catch {
+      setChargementSelection("echec");
+    }
   }
 
   async function ouvrirTimeline() {
@@ -233,6 +269,13 @@ export function App() {
             changer={() => setEtape("periode")}
           />
           <SelectionMassive
+            // ⚠️ La CLÉ, et elle est load-bearing. `SelectionMassive` dérive
+            // ses états initiaux de ses props — lignes cochées, souvenirs,
+            // titres saisis. Monté pendant le chargement, il les aurait
+            // capturés VIDES, et l'écran serait revenu en montrant moins que
+            // ce que la base contient : le défaut même que la relecture a
+            // corrigé. Changer de clé le remonte avec les props arrivées.
+            key={chargementSelection}
             oeuvres={oeuvres}
             region={region}
             disposition={disposition}
@@ -248,13 +291,18 @@ export function App() {
             ecrireSouvenir={(cible, souvenir) =>
               client.souvenir(UTILISATEUR, cible, souvenir).then(() => undefined)
             }
-            recharger={() => { void essayer(() => rechargerListe(machine)); }}
+            // Pas d'`essayer` : l'échec se dit DANS l'écran, avec ce qui est
+            // conservé. Une alerte générale au-dessus dirait deux fois la
+            // même chose, et moins bien.
+            recharger={() => { void rechargerListe(machine); }}
             retracter={(workId) =>
               client.retracter(UTILISATEUR, machine.id, workId).then(() => undefined)
             }
             etatInitial={etatInitial}
             souvenirsInitiaux={souvenirsInitiaux}
             titresLibresInitiaux={titresLibresInitiaux}
+            chargement={chargementSelection}
+            lot={lot}
           />
           <button type="button" onClick={() => void essayer(ouvrirTimeline)}>
             {t("parcours.voirTimeline")}

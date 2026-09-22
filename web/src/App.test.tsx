@@ -212,6 +212,71 @@ describe("App — la fraîcheur de ce qui est relu", () => {
     await waitFor(() => expect(faux.etatSelection).toHaveBeenCalled());
   });
 
+  it("annonce le chargement DANS l'écran pendant un rechargement", async () => {
+    // Le rechargement est un geste de CET écran : l'attente lui appartient,
+    // et « squelette de la structure attendue » (§5) vaut mieux qu'une liste
+    // figée dont on ne sait pas si elle a bougé.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    let repondre: (liste: unknown[]) => void = () => {};
+    faux.oeuvres.mockReturnValue(new Promise((r) => { repondre = r; }));
+    await utilisateur.click(screen.getByRole("button", { name: "Recharger la liste" }));
+
+    expect(screen.getByTestId("squelette")).toBeInTheDocument();
+    repondre(OEUVRES);
+    await waitFor(() => expect(screen.queryByTestId("squelette")).toBeNull());
+  });
+
+  it("dit l'échec d'un rechargement DANS l'écran, et garde la période", async () => {
+    // « Ce qui a échoué, ce qui est conservé, quoi faire » perd son sens
+    // au-dessus d'une étape qu'on ne sait pas nommer.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    faux.oeuvres.mockRejectedValue(new Error("réseau"));
+    await utilisateur.click(screen.getByRole("button", { name: "Recharger la liste" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(/n'a pas pu être relue/);
+    // La période est toujours à l'écran, au-dessus : c'est ce qui est conservé.
+    expect(screen.getByTestId("contexte")).toBeInTheDocument();
+  });
+
+  it("garde le même lot à travers un rechargement", async () => {
+    // Le lot est le PASSAGE sur l'écran (§4.4). Gardé dans le composant, il
+    // repartait à chaque remontage : recharger la liste détachait la suite
+    // de la saisie de l'épisode commencé, et la timeline montrait deux
+    // bandes là où le joueur n'a fait qu'un passage.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+
+    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }));
+    const avant = faux.declarer.mock.calls[0][0].batchId;
+
+    await utilisateur.click(screen.getByRole("button", { name: "Recharger la liste" }));
+    await waitFor(() => expect(screen.queryByTestId("squelette")).toBeNull());
+    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Chrono Trigger$/ }));
+
+    expect(faux.declarer.mock.calls.at(-1)![0].batchId).toBe(avant);
+  });
+
+  it("remonte l'écran avec ce qui vient d'être relu", async () => {
+    // `SelectionMassive` dérive ses états initiaux de ses props. Sans
+    // remontage, un rechargement laisserait à l'écran les lignes de l'état
+    // PRÉCÉDENT : le joueur verrait sa correction défaite sans un mot.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+    expect(screen.queryByRole("button", { name: /^Déclaré : Super Mario World$/ })).toBeNull();
+
+    faux.etatSelection.mockResolvedValue([
+      { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+    ]);
+    await utilisateur.click(screen.getByRole("button", { name: "Recharger la liste" }));
+
+    expect(await screen.findByRole("button", { name: /^Déclaré : Super Mario World$/ }))
+      .toBeInTheDocument();
+  });
+
   it("relit les titres saisis, sur la plateforme affichée", async () => {
     // Le point d'entrée existait et n'était appelé par PERSONNE : une
     // revendication ajoutée disparaissait de l'écran au rechargement tout en

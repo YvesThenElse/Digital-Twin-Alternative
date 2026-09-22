@@ -38,6 +38,8 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
       etatInitial={[]}
       souvenirsInitiaux={{}}
       titresLibresInitiaux={[]}
+      chargement="pret"
+      lot="bat_du_test"
       {...surcharge}
     />,
   );
@@ -1328,5 +1330,103 @@ describe("SelectionMassive — relire les titres saisis (§3.5)", () => {
     await utilisateur.click(screen.getByRole("button", { name: /ajouter ce titre/i }));
 
     expect(lignesLibres()).toHaveLength(2);
+  });
+});
+
+describe("SelectionMassive — les quatre états obligatoires (principes §5)", () => {
+  const squelette = () => screen.queryByTestId("squelette");
+  const champLibre = () => screen.queryByRole("textbox", { name: /titre absent/i });
+
+  it("montre un SQUELETTE pendant le chargement, jamais un spinner", () => {
+    // « Squelette de la structure attendue, jamais un spinner centré. » Un
+    // spinner ne dit pas ce qui arrive ; le squelette annonce une liste, et
+    // l'œil sait déjà où regarder quand elle arrive.
+    monter({ chargement: "en-cours", oeuvres: [] });
+
+    expect(squelette()).toBeInTheDocument();
+    expect(squelette()!.querySelectorAll("li").length).toBeGreaterThan(3);
+    // Et il le dit à qui ne voit pas l'écran.
+    expect(screen.getByRole("status")).toHaveTextContent(/chargement/i);
+  });
+
+  it("ne montre pas la liste tant qu'elle n'est pas relue", () => {
+    // Montrer les lignes avant l'état relu les afficherait toutes décochées
+    // sur un profil plein : le testeur en conclurait qu'il a perdu sa saisie.
+    monter({ chargement: "en-cours" });
+
+    expect(screen.queryAllByRole("button", { name: /^Déclarer : / })).toHaveLength(0);
+  });
+
+  it("dit ce qui a échoué, ce qui est conservé, et quoi faire", () => {
+    // Les trois choses que §5 exige. Un écran figé sans message fait appuyer
+    // deux fois, puis partir.
+    monter({ chargement: "echec" });
+
+    const alerte = screen.getByRole("alert");
+    expect(alerte).toHaveTextContent(/n'a pas pu être relue/);
+    expect(alerte).toHaveTextContent(/conservée/);
+    expect(screen.getByRole("button", { name: "Recharger la liste" })).toBeInTheDocument();
+  });
+
+  it("réessaie depuis l'échec, sans quitter l'écran", () => {
+    // La liste n'est PAS là — c'est ce qui distingue cet état du nominal, où
+    // un bouton du même nom vit en bas de page. Sans cette moitié,
+    // l'assertion se contente de trouver ce bouton-là et ne prouve rien :
+    // vérifié, une mutation supprimant l'état d'échec la laissait verte.
+    const { recharger } = monter({ chargement: "echec" });
+
+    expect(screen.queryAllByRole("button", { name: /^Déclarer : / })).toHaveLength(0);
+    screen.getByRole("button", { name: "Recharger la liste" }).click();
+
+    expect(recharger).toHaveBeenCalled();
+  });
+
+  it("ne montre jamais une page blanche quand la liste est vide", () => {
+    // E02 interdit la page blanche, et §5 en fait l'état le plus important :
+    // c'est celui que voit un nouvel utilisateur.
+    monter({ oeuvres: [] });
+
+    expect(screen.getByText(/Aucun jeu à afficher/)).toBeInTheDocument();
+  });
+
+  it("ne propose depuis l'état vide que des issues qui EXISTENT", () => {
+    // E02 dit « proposer d'élargir la période ou de changer de région ».
+    // Aucune des deux n'agit sur cette liste : la période ne la filtre pas,
+    // et la région est une hypothèse posée une fois (F2). Offrir une issue
+    // qui ne change rien est pire qu'un cul-de-sac : elle fait tourner en
+    // rond.
+    monter({ oeuvres: [] });
+
+    expect(screen.queryByText(/région/i)).toBeNull();
+    // Ce que l'écran sait faire, il le propose : recharger, et saisir soi-même.
+    expect(screen.getByRole("button", { name: "Recharger la liste" })).toBeInTheDocument();
+    expect(champLibre()).toBeInTheDocument();
+  });
+
+  it("garde l'état vide silencieux quand la liste est pleine", () => {
+    // Une phrase d'état vide sous une liste de trois cent titres ferait
+    // douter de ce qu'on a sous les yeux.
+    monter();
+
+    expect(screen.queryByText(/Aucun jeu à afficher/)).toBeNull();
+    expect(squelette()).toBeNull();
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("reste en état PARTIEL sans le signaler : c'est l'état normal", () => {
+    // « La donnée est incomplète ou floue — c'est l'état normal de ce
+    // produit, pas une dégradation. » Un jeu sans date ni jaquette ne doit
+    // déclencher aucun message.
+    monter({
+      oeuvres: [
+        { id: "w9", titre: "Un jeu sans rien", rang: 1, sortie: null,
+          couverture: null, regions: [], statutRegional: {} },
+      ],
+    });
+
+    expect(screen.queryByRole("alert")).toBeNull();
+    expect(screen.queryByText(/Aucun jeu à afficher/)).toBeNull();
+    expect(screen.getByRole("button", { name: /^Déclarer : Un jeu sans rien$/ }))
+      .toBeInTheDocument();
   });
 });

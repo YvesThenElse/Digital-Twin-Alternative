@@ -28,7 +28,7 @@
 
 - [x] **F6 — Une jaquette qui disparaît ne casse plus la tuile.** (audit 29 · §19.2) « Une jaquette reprise est un emprunt révocable : **rien dans le produit ne doit cesser de marcher le jour où elle disparaît** ». Le catalogue ne filtre qu'à l'amorçage ; retirée ensuite, l'image donne un glyphe cassé. *Acceptation : une source invalide se replie sur la tuile composée, et un test le prouve.*
 
-- [ ] **F7 — La sélection a un état vide.** (audit 33 · E02) `oeuvres.length === 0` donnerait une **page blanche**, qu'E02 interdit — « proposer d'élargir la période ou de changer de région, jamais une page blanche ». Latent aujourd'hui. *Acceptation : l'état vide propose une issue qui existe, et le crible des quatre états passe sur E02 comme il passe sur E01.*
+- [x] **F7 — La sélection a un état vide.** (audit 33 · E02) `oeuvres.length === 0` donnerait une **page blanche**, qu'E02 interdit — « proposer d'élargir la période ou de changer de région, jamais une page blanche ». Latent aujourd'hui. *Acceptation : l'état vide propose une issue qui existe, et le crible des quatre états passe sur E02 comme il passe sur E01.*
 
 - [ ] **F8 — On peut changer de console.** (audit 34 · E02) Une fois la machine choisie, seul un rechargement ramène au choix. *E02 précise « période conservée » : à trancher en le faisant — revenir au choix de machine, ou changer de plateforme en gardant la période. Acceptation : un testeur qui se trompe de console s'en sort sans recharger.*
 
@@ -51,6 +51,15 @@
 - [ ] **F15 — Le tiroir sans date est une tâche, pas une poubelle.** (audit 32) « Dimensionné pour être vidé — la relance de session la moins coûteuse du produit » : il n'accepte aucun geste. C'est E14, la passe temporelle, et elle n'est inscrite dans aucun TODO de phase.
 
 ## Trouvé en chemin
+
+- [ ] **F18 — L'affinage de période n'est atteignable que par une course.**
+  Constaté en faisant F7 : le clic sur une carte de décennie **valide la
+  période ET navigue**. Le panneau d'affinage n'apparaît donc que le temps
+  des deux requêtes de relecture — sur une machine rapide, l'utilisateur
+  perd la course. Le parcours de bout en bout ne le voit pas : Playwright
+  clique plus vite qu'une main. *Acceptation : choisir une décennie montre
+  l'affinage sans naviguer, et « quelque part dans les années 90 » —
+  qui existe déjà — est ce qui continue.*
 
 - [ ] **F17 — Aucun geste de Phase 1 ne produit d'incohérence causale.**
   Constaté en faisant F5 : le traducteur de lot fait de « terminé » un
@@ -147,3 +156,20 @@
   le parcours révoque une jaquette au niveau du réseau, ce qu'aucun test de
   composant ne peut faire — jsdom ne demande aucune image, et un navigateur
   n'échoue pas sur une image cassée, il dessine un glyphe et se tait.
+
+- **F7** — les quatre états de §5 sont sur E02 comme sur E01. Le **vide** ne
+  propose que des issues qui existent : ni « élargir la période » (elle ne
+  filtre pas cette liste) ni « changer de région » (c'est une hypothèse posée
+  une fois, PROTOCOLE §2) — mais recharger, et saisir soi-même. Le
+  **chargement** est un squelette de la structure attendue, jamais un
+  spinner, et sa hauteur est mesurée **dans le navigateur** : huit lignes
+  sans feuille de style font huit éléments de hauteur zéro qu'un test de
+  composant compterait avec satisfaction. L'**échec** dit ce qui a échoué, ce
+  qui est conservé et quoi faire, à la place de la liste — et un réessai s'y
+  trouve. Le **partiel** ne signale rien : c'est l'état normal du produit.
+  Deux corrections de cycle de vie sont venues avec : l'écran est remonté
+  quand la relecture arrive, et le `batchId` a quitté le composant pour le
+  parcours — sinon un rechargement ouvrait un second épisode. Ce qui est
+  laissé : l'état de chargement à l'**entrée** dans l'écran n'existe pas ;
+  l'attente s'y joue encore sur l'écran de période, faute de pouvoir ouvrir
+  E02 plus tôt sans casser l'affinage (voir F18).

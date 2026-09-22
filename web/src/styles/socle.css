@@ -499,6 +499,25 @@ main {
   color: var(--ink-2);
 }
 
+/* --- les quatre états de §5 --------------------------------------------- */
+
+/*
+ * Le squelette : « la STRUCTURE attendue, jamais un spinner centré ». Des
+ * lignes vides à la hauteur réelle d'une ligne de liste — l'œil sait déjà où
+ * regarder quand la liste arrive, au lieu de fixer un disque qui tourne.
+ */
+[data-testid="squelette"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.ligne-squelette {
+  min-height: var(--ligne-liste);
+  border-radius: var(--r1);
+  background: var(--surface-2);
+}
+
 /* --- « jamais joué » : une déclaration, pas un abandon ------------------ */
 
 /*

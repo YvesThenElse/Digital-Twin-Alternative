@@ -2325,3 +2325,30 @@ l'absence de contrat entre deux descriptions du même objet.
 **La règle** : relier tout double — faux, bouchon, décor — à son original par
 une contrainte de type, et l'écrire au moment où l'on crée le double, pas au
 premier accident.
+
+### 73 — Un état initial dérivé des props se fige au montage, pas à l'arrivée des données
+
+`SelectionMassive` construit ses ensembles initiaux — lignes cochées,
+souvenirs, titres saisis — dans des initialiseurs `useState`. Ils ne
+s'exécutent **qu'une fois**, au montage. Tant que le parent n'ouvrait l'écran
+qu'après avoir tout relu, c'était invisible ; j'ai voulu l'ouvrir plus tôt
+pour rendre l'attente visible, et il a capturé des props **vides**. L'écran
+serait revenu en montrant moins que ce que la base contient — le défaut exact
+que la relecture avait corrigé.
+
+Le même piège dormait déjà dans « Recharger la liste » : les props changeaient,
+l'état local ne bougeait pas.
+
+Deux corrections, et la seconde n'est pas facultative :
+
+1. Une **clé** qui change quand les données arrivent, pour remonter le
+   composant avec elles.
+2. Sortir du composant **ce qui ne doit pas repartir** avec lui. Le `batchId`
+   vivait dans une `ref` : un remontage en ouvrait un second, et la timeline
+   aurait montré deux bandes là où le joueur n'a fait qu'un passage. Il
+   appartient au parcours, pas à l'instance React.
+
+**La règle** : quand un composant dérive son état initial de ses props,
+écrire dans le même geste **ce qui le remonte** et **ce qui doit lui
+survivre**. Une dérivation au montage est un contrat avec le cycle de vie —
+implicite, il se rompt à la première optimisation du parent.

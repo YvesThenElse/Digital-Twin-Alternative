@@ -329,6 +329,30 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // donc l'axe ne la confirmera pas.
   await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
 
+  // --- 3 quater. recharger, et voir le squelette -------------------------
+  //
+  // Les quatre états de §5 valent pour E02 comme pour E01. Le squelette est
+  // le seul qui ne puisse pas se vérifier hors du navigateur : huit lignes
+  // vides sans feuille de style font huit éléments de hauteur ZÉRO, et un
+  // test de composant les compterait avec satisfaction.
+  await page.route("**/api/platforms/*/works*", async (route) => {
+    await new Promise((r) => setTimeout(r, 500));
+    await route.continue();
+  });
+  await toucher(page.getByRole("button", { name: "Recharger la liste" }).click());
+
+  const squelette = page.getByTestId("squelette");
+  const hauteurSquelette = await squelette.locator("li").first()
+    .evaluate((n) => n.getBoundingClientRect().height);
+  expect(hauteurSquelette, "le squelette n'a aucune hauteur").toBeGreaterThan(40);
+
+  await page.unroute("**/api/platforms/*/works*");
+  await expect(squelette).toHaveCount(0);
+
+  // Et le travail est revenu tel qu'il était : le rechargement relit l'état
+  // au lieu de le perdre.
+  await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
+
   // --- 4. le jeu qui manque ----------------------------------------------
   await toucher(
     page.getByRole("textbox", { name: "Titre absent de la liste" }).fill(TITRE_ABSENT),
@@ -535,7 +559,9 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Un geste de plus : « jamais joué ». Il est FACULTATIF — « un utilisateur
   // qui l'ignore complètement n'est pas pénalisé » (E02) — mais le parcours
   // le paie, et le budget doit le voir.
-  const budget = TITRES_A_COCHER + 18;
+  // Un geste de plus : recharger la liste. Ce n'est pas un geste de saisie,
+  // mais c'en est un, et le budget doit le voir.
+  const budget = TITRES_A_COCHER + 19;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

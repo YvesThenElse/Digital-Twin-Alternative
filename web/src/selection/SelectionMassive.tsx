@@ -169,6 +169,29 @@ type Props = {
    * erreur ne le dise.
    */
   titresLibresInitiaux: TitreLibreRelu[];
+  /**
+   * Les quatre états obligatoires (principes §5), comme E01 les porte.
+   *
+   * <b>Requis, sans valeur par défaut</b>, pour la raison qui a valu à E01
+   * de les séparer : trois états rendus par une seule phrase, c'est trois
+   * fois la même information fausse.
+   *
+   * L'état <i>vide</i> n'est pas ici : il se déduit d'une liste vide une
+   * fois prête. Le demander en plus permettrait de l'annoncer à côté d'une
+   * liste pleine.
+   */
+  chargement: "en-cours" | "pret" | "echec";
+  /**
+   * L'identifiant du lot — <b>le passage sur l'écran, pas le geste</b>
+   * (§4.4). Douze titres cochés d'un coup forment un épisode.
+   *
+   * <b>Il vient du parent, et c'est ce qui le rend juste.</b> Gardé dans une
+   * ref, il repartait à chaque remontage du composant : un simple
+   * rechargement de la liste détachait la suite de la saisie de l'épisode
+   * commencé, et la timeline montrait deux bandes là où le joueur n'a fait
+   * qu'un passage.
+   */
+  lot: string;
 };
 
 /**
@@ -263,7 +286,7 @@ function ChampSouvenir({ titre, valeur, surSaisie, surSortie }: {
 
 export function SelectionMassive({
   oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger, retracter, etatInitial,
-  souvenirsInitiaux, titresLibresInitiaux,
+  souvenirsInitiaux, titresLibresInitiaux, chargement, lot,
 }: Props) {
   const [declarees, setDeclarees] = useState<Set<string>>(
     () => new Set([
@@ -339,10 +362,6 @@ export function SelectionMassive({
   const [saisie, setSaisie] = useState("");
   const compteurLibre = useRef(0);
 
-  // Le lot est le PASSAGE sur l'écran, pas le geste : douze titres cochés
-  // d'un coup forment un épisode (§4.4), pas douze points identiques.
-  const lot = useRef(`bat_${Math.random().toString(36).slice(2, 12)}`);
-
   // La bande compte les titres saisis comme les autres. Un geste qui ne
   // ferait pas bouger la récompense dirait à l'utilisateur qu'il n'a rien
   // produit — et c'est le geste le plus fragile de l'écran (§24.4). Sans
@@ -362,7 +381,7 @@ export function SelectionMassive({
       // Le MÊME lot : un affinage n'est pas un second passage sur l'écran.
       // En ouvrir un autre ferait deux épisodes là où le joueur a fait un
       // seul geste.
-      batchId: lot.current,
+      batchId: lot,
       entries: [{
         workId: oeuvre,
         completion: reponse.completion,
@@ -422,7 +441,7 @@ export function SelectionMassive({
       return;
     }
 
-    envoyer({ batchId: lot.current, entries: [{ workId: id }] }).catch(() => {
+    envoyer({ batchId: lot, entries: [{ workId: id }] }).catch(() => {
       setErreur(t("erreur.declaration"));
     });
   }
@@ -464,7 +483,7 @@ export function SelectionMassive({
 
     const marquer = () =>
       envoyer({
-        batchId: lot.current,
+        batchId: lot,
         entries: [{ workId: id, neverPlayed: true }],
       });
 
@@ -542,7 +561,7 @@ export function SelectionMassive({
     // Le MÊME lot que les titres cochés : le lot est le passage sur l'écran,
     // pas le geste. En ouvrir un second détacherait ce titre de l'épisode,
     // et la timeline le montrerait isolé alors qu'il vient du même passage.
-    envoyer({ batchId: lot.current, entries: [{ title: titre }] })
+    envoyer({ batchId: lot, entries: [{ title: titre }] })
       .then((reponse) => {
         const revendication = reponse.claims.find((c) => c.title === titre);
         // Un lot accepté qui ne rend pas la revendication est un succès
@@ -584,6 +603,38 @@ export function SelectionMassive({
 
   const ordonnees = [...oeuvres].sort((a, b) => a.rang - b.rang);
 
+  /**
+   * Le squelette : la STRUCTURE attendue, pas un spinner.
+   *
+   * Un spinner centré ne dit pas ce qui arrive ; le squelette annonce une
+   * liste, et l'œil sait déjà où regarder quand elle arrive. Huit lignes
+   * remplissent un écran de téléphone sans prétendre annoncer un nombre.
+   */
+  if (chargement === "en-cours") {
+    return (
+      <section>
+        <p role="status">{t("selection.chargement")}</p>
+        <ul data-testid="squelette" aria-hidden="true">
+          {Array.from({ length: 8 }, (_, i) => (
+            <li key={i} className="ligne-squelette" data-hauteur={56} />
+          ))}
+        </ul>
+      </section>
+    );
+  }
+
+  if (chargement === "echec") {
+    return (
+      <section>
+        {/* Ce qui a échoué, ce qui est conservé, quoi faire (§5). La période
+            reste à l'écran au-dessus : la dire conservée évite que le
+            testeur recommence tout par précaution. */}
+        <p role="alert">{t("selection.echec")}</p>
+        <button type="button" onClick={recharger}>{t("action.recharger")}</button>
+      </section>
+    );
+  }
+
   return (
     <section>
       {/* Repère B — « 147 jeux · 12 déclarés ». Le second nombre vient de
@@ -595,6 +646,13 @@ export function SelectionMassive({
           declares: String(declarees.size),
         })}
       </p>
+
+      {/* L'état VIDE — le plus important de §5, parce que c'est celui que
+          voit un nouvel utilisateur. Il ne propose que des issues qui
+          EXISTENT : la période ne filtre pas cette liste, et la région est
+          une hypothèse posée une fois pour toutes (PROTOCOLE §2). Proposer
+          de les changer ferait tourner en rond. */}
+      {oeuvres.length === 0 ? <p role="status">{t("selection.vide")}</p> : null}
 
       <ul data-disposition={disposition}>
         {ordonnees.map((oeuvre) => {
