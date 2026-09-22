@@ -47,7 +47,22 @@ public class PlayDeclarationMappingTests
 
         Assert.True(jugement.NeverPlayed);
         Assert.Equal(Provenance.Unknown, jugement.Provenance);
-        Assert.Equal(Affect.Indifferent, jugement.Affect);
+        Assert.Equal(Affect.Unstated, jugement.Affect);
+    }
+
+    [Fact]
+    public void Une_ligne_sans_affect_saisi_se_relit_comme_non_prononcee()
+    {
+        // La valeur par défaut de la colonne est ce qui portait le défaut :
+        // toute déclaration créée sans que la question soit posée repartait
+        // en base avec « sans plus ».
+        var ligne = new PlayDeclarationRow
+        {
+            UserId = "usr_defaut", WorkId = "wrk_x", PlatformId = "plt_x",
+        };
+
+        Assert.Equal(Affect.Unstated, PlayDeclarationMapping.ToDomain(ligne).Affect);
+        Assert.Equal("Unstated", ligne.Affect);
     }
 
     [Fact]

@@ -7,8 +7,21 @@ public enum Provenance { Unknown, Owned, Elsewhere, Borrowed }
 /// Ce que le jeu a représenté (§4.7). <b>Pas une note</b> : une note juge
 /// l'œuvre, l'affect enregistre une relation — et une échelle ferait dériver
 /// le produit vers le site de critiques.
+///
+/// <para><b><c>Unstated</c> vaut zéro, et ce n'est pas un détail.</b> Les
+/// trois réponses de l'écran — « sans plus », « j'ai adoré », « mon
+/// préféré » — sont des déclarations POSITIVES. « Sans plus » dit « ça ne
+/// m'a rien laissé » ; les principes transverses le rangent explicitement
+/// parmi les distinctions que ce modèle existe pour tenir, contre « il n'a
+/// rien dit ».</para>
+///
+/// <para>Sans quatrième valeur, l'absence de réponse tombait sur
+/// <c>Indifferent</c> : un profil de test portait « sans plus » sur quatre
+/// jeux dont la question n'avait jamais été posée. Sur une plateforme de
+/// mémoire, c'est l'inverse de ce qu'on veut supposer — et §14.2 en fait une
+/// entrée des recommandations.</para>
 /// </summary>
-public enum Affect { Indifferent, Loved, Favourite }
+public enum Affect { Unstated, Indifferent, Loved, Favourite }
 
 /// <summary>
 /// Un jugement permanent sur une œuvre — <b>sans date</b>
@@ -58,7 +71,10 @@ public sealed record PlayDeclaration
     {
         NeverPlayed = true,
         Provenance = Provenance.Unknown,
-        Affect = Affect.Indifferent,
+        // Effacé veut dire « pas prononcé ». « Je n'y ai jamais joué » ne dit
+        // rien de ce que le jeu aurait laissé : y répondre « sans plus » à sa
+        // place inventerait un avis.
+        Affect = Affect.Unstated,
     };
 
     /// <summary>

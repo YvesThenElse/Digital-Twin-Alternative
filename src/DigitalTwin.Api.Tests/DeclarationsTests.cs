@@ -627,6 +627,34 @@ public class DeclarationsTests(PostgresFixture bdd)
         Assert.Empty(await Journal("usr_partiel"));
     }
 
+    [Fact]
+    public async Task Une_declaration_sans_question_posee_ne_porte_aucun_affect()
+    {
+        // Le chemin réel du défaut : l'écran ne demande pas « ça vous a
+        // marqué ? », et la base enregistrait pourtant « sans plus » sur
+        // chaque ligne. Un test de session réelle l'a trouvé ; aucun des 709
+        // tests ne le voyait, parce qu'aucun ne regardait un champ que
+        // personne ne remplissait.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var (plateforme, oeuvres) = await Snes(client);
+
+        await client.PostAsJsonAsync("/declarations", Lot(
+            "bat_sans_affect", "usr_sans_affect", plateforme,
+            [new { workId = oeuvres[0], provenance = "owned" }]));
+
+        var jugements = await client.GetFromJsonAsync<JsonElement>(
+            "/declarations/usr_sans_affect");
+        var jugement = jugements[0];
+
+        // Ce point d'entrée rend le vocabulaire du DOMAINE (« Owned »), là
+        // où /selection rend celui de l'écran (« owned »). Deux vocabulaires
+        // pour un même fait : c'est un écart à surveiller, pas un défaut —
+        // le front ne lit que le second.
+        Assert.Equal("Owned", jugement.GetProperty("provenance").GetString());
+        Assert.Equal("Unstated", jugement.GetProperty("affect").GetString());
+    }
+
     // --------------------------------- la plateforme, pour la mesure §22.3
 
     [Fact]

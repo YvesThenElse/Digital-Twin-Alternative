@@ -1663,3 +1663,37 @@ prend une commande, là où le diagnostic prend un quart d'heure.
 
 Même famille que [[45]] : ce n'est pas le code qui manquait de garde, c'est
 la **convention** qui n'était vérifiée par rien.
+
+### 51 — Une valeur par défaut est une affirmation
+
+`PlayDeclarationRow.Affect` valait `"Indifferent"` par défaut. L'enum n'avait
+pas de valeur pour « pas prononcé », alors la colonne en a choisi une.
+
+Or `Indifferent` n'est pas neutre : c'est « **sans plus** », « ça ne m'a rien
+laissé ». Le dépôt le dit lui-même — trois déclarations existent
+*uniquement* pour distinguer un avis d'une absence d'avis. Le défaut de
+colonne en a écrasé une des trois.
+
+Ce qui rend le cas instructif, c'est que **rien ne pouvait le voir** :
+
+- aucun écran ne posait la question, donc aucun test d'interface ;
+- aucun test d'API ne lisait ce champ, puisque aucun code ne l'écrivait ;
+- le domaine était cohérent : `Indifferent` est une valeur légitime de
+  l'enum, et 389 tests passaient.
+
+Il a fallu **regarder les lignes d'une session réelle** pour le trouver.
+C'est le même geste que celui qui a trouvé les identifiants instables et les
+rééditions prises pour des sorties : lire des lignes, jamais des agrégats.
+
+**La règle** : un champ énuméré doit porter une valeur « **non renseigné** »,
+et elle doit valoir **zéro**. Sans elle, la première valeur déclarée de
+l'enum devient le défaut silencieux — et une valeur qui a un sens pour
+l'utilisateur se met à décrire des lignes où il n'a rien dit.
+
+Le test qui vérifie cela ne coûte rien : `Assert.Equal(X.Unstated,
+default(X))`. Il y en a un par énumération qui traverse la persistance.
+
+Et le corollaire de méthode, valable au-delà de ce champ : **un champ que
+personne ne remplit n'est pas un champ neutre**. [[41]] notait déjà qu'un
+champ sans producteur est un manque invisible ; celui-ci montre le degré
+au-dessus — sans producteur, il ne reste pas vide, il ment.

@@ -36,5 +36,10 @@ public sealed class PlayDeclarationRow
     public bool NeverPlayed { get; set; }
 
     public string Provenance { get; set; } = "Unknown";
-    public string Affect { get; set; } = "Indifferent";
+    /// <summary>
+    /// <c>Unstated</c>, jamais <c>Indifferent</c> : la valeur par défaut d'une
+    /// colonne ne doit affirmer aucune réponse. Celle-ci disait « sans plus »
+    /// sur toute déclaration dont la question n'avait pas été posée.
+    /// </summary>
+    public string Affect { get; set; } = "Unstated";
 }

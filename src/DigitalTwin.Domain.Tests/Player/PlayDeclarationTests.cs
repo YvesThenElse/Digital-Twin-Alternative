@@ -48,6 +48,34 @@ public class PlayDeclarationTests
     }
 
     [Fact]
+    public void Un_jugement_neuf_ne_porte_aucun_affect_declare()
+    {
+        // « Sans plus » est une RÉPONSE — « ça ne m'a rien laissé » —, pas
+        // l'absence de réponse. Les principes transverses rangent les deux
+        // parmi les distinctions que le modèle existe pour tenir : « ça ne
+        // lui a rien laissé » contre « il n'a rien dit ».
+        //
+        // L'enum n'avait pas de valeur pour la seconde, si bien que la ligne
+        // de base tombait sur `Indifferent` par défaut. Quatre jeux d'un
+        // profil de test portaient ainsi un avis que personne n'avait donné —
+        // et sur une plateforme de mémoire, « ça ne m'a rien laissé » est
+        // l'inverse de ce qu'on veut supposer.
+        var neuf = new PlayDeclaration("usr_yves", "wrk_ffvii", "plt_ps1");
+
+        Assert.Equal(Affect.Unstated, neuf.Affect);
+        Assert.NotEqual(Affect.Indifferent, neuf.Affect);
+    }
+
+    [Fact]
+    public void L_absence_de_reponse_est_la_valeur_par_defaut_de_l_enum()
+    {
+        // Elle doit valoir zéro : toute structure construite sans affect
+        // explicite y tombe, et c'est le seul moyen qu'aucun chemin
+        // n'invente « sans plus » en silence.
+        Assert.Equal(Affect.Unstated, default(Affect));
+    }
+
+    [Fact]
     public void Jamais_joue_efface_l_affect_et_la_provenance()
     {
         // Invariant 8. Les garder produirait une déclaration contradictoire :
@@ -57,7 +85,9 @@ public class PlayDeclarationTests
 
         Assert.True(jamais.NeverPlayed);
         Assert.Equal(Provenance.Unknown, jamais.Provenance);
-        Assert.Equal(Affect.Indifferent, jamais.Affect);
+        // Effacé veut dire « pas prononcé », pas « sans plus » : « je n'y ai
+        // jamais joué » ne dit rien de ce que le jeu lui a laissé.
+        Assert.Equal(Affect.Unstated, jamais.Affect);
     }
 
     [Fact]
