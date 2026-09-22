@@ -151,6 +151,26 @@ En ajout seul, partitionné par utilisateur.
 *Possession* — `AcquiredItem`, `SoldItem`, `LostItem`, `LentItem`, `BorrowedItem`, `ReturnedItem`
 *Matériel* — les mêmes, avec une `Platform` ou un `Accessory` pour cible (§4.3)
 
+> ⚠️ **Quatre de ces onze types ont un producteur ; sept n'en ont aucun.**
+> Constaté par l'audit des surfaces du 22 septembre 2026, en comptant les
+> membres puis leurs producteurs.
+>
+> | | |
+> |---|---|
+> | **Produits** par `/declarations` | `StartedGame`, `CompletedGame`, `AbandonedGame`, `AcquiredItem` |
+> | **Sans producteur** | `DiscoveredGame`, `ReplayedGame`, `SoldItem`, `LostItem`, `LentItem`, `BorrowedItem`, `ReturnedItem` |
+>
+> **Ce sont des capacités en avance sur leur interface, pas des
+> fonctionnalités livrées** — et c'est écrit ici parce que rien d'autre ne le
+> dit : le tri les ordonne, `CausalSequence` raisonne dessus, des tests les
+> couvrent. Leur présence dans le code est indiscernable d'un usage réel.
+>
+> Ils portent l'histoire d'une **collection** sur plusieurs décennies —
+> vendu, perdu, prêté, rendu — c'est-à-dire le cas de validation n°1 de §12.
+> Les brancher relève de la Phase 3, quand le profil devient un livrable ;
+> les retirer coûterait un travail de conception déjà validé. **Aucune des
+> deux n'est faite, et c'est un choix, pas un oubli.**
+
 ### `PlayDeclaration` — les déclarations permanentes
 
 Un enregistrement par triplet **utilisateur / œuvre / plateforme**, sans date.

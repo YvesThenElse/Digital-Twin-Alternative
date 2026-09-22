@@ -23,7 +23,12 @@ import json, os, time, urllib.parse, urllib.request
 UA = ("DigitalTwinAlternative-RnD/0.1 "
       "(https://github.com/YvesThenElse/Digital-Twin-Alternative; "
       "R&D prototype; contact via repository)")
-MAX_WIDTH = 512          # condition 1 de §3.3
+# La condition 1 de §3.3 écrit « 512 px de large au plus ». On demande **500**,
+# et ce n'est pas une approximation : Wikimedia ne sert qu'une **liste fixe**
+# de tailles de vignette, et 512 n'en fait pas partie. Une demande à 512 est
+# arrondie SILENCIEUSEMENT — à 960 pour Celeste, soit près du double du
+# plafond écrit. 500 est la taille autorisée immédiatement inférieure.
+MAX_WIDTH = 500
 OUT_DIR = "../dataset/covers"
 
 
@@ -86,11 +91,14 @@ def infobox_image(host, title):
 
 
 def thumbnail(host, filename):
-    """Vignette BORNÉE CÔTÉ SERVEUR, plus licence et régime du fichier.
+    """Vignette demandée au serveur, plus licence et régime du fichier.
 
-    `iiurlwidth` fait produire la vignette par le serveur : la condition de
-    basse résolution est donc tenue au téléchargement, et non par un
-    redimensionnement après coup qui aurait fait transiter l'original."""
+    `iiurlwidth` fait produire la vignette par le serveur, ce qui évite de
+    faire transiter l'original. **Mais la borne n'est pas garantie** : le
+    serveur arrondit à une taille de sa liste, et répond parfois
+    `thumbnail_unscaled` en servant l'original — c'est le cas des `.webp`.
+    Les largeurs du manifeste doivent donc être MESURÉES sur le fichier reçu,
+    jamais reprises de `thumbwidth` (apprentissage 64)."""
     d = api(host, {"action": "query", "titles": "File:" + filename,
                    "prop": "imageinfo",
                    "iiprop": "url|size|extmetadata",

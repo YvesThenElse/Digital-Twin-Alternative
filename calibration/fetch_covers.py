@@ -1,6 +1,7 @@
 """Parcourt le dataset, récupère une jaquette par œuvre, journalise tout."""
 import json, os, collections
 import covers
+import test_covers
 
 d = json.load(open("../dataset/poc.json"))
 works = d["works"]
@@ -39,7 +40,11 @@ for n, q in enumerate(qids, 1):
     manifest[cid_of[q]] = {
         "work": cid_of[q], "title": title_of[q], "external_id": q,
         "file": os.path.basename(path), "bytes": size,
-        "width": img.get("width"), "height": img.get("height"),
+        # MESURÉES sur le fichier reçu, jamais reprises de `thumbwidth` :
+        # le serveur arrondit et sert parfois l'original. Les 218 entrées du
+        # manifeste portaient « 512 » pour des fichiers de 213 à 960 px.
+        **dict(zip(("width", "height"),
+                   test_covers.dimensions(open(path, "rb").read()) or (None, None))),
         "source_url": img["url"], "source_file": img.get("file"),
         "source_article": "https://%s/wiki/%s" % (host, title.replace(" ", "_")),
         "licence": lic.get("licence"), "regime": lic["regime"],
