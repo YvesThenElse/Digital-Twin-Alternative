@@ -478,6 +478,21 @@ après un rechargement (F13).
 - **Les premières statistiques de §24.4** sont différées : la bande d'époque
   les devance pendant la saisie.
 
+#### Ce que ce verdict ne dit pas, et qu'il faut lire avec lui
+
+Les quatre blocages de l'audit sont levés. **Le périmètre écrit de la
+Phase 1 (§4), lui, contient trois lignes jamais livrées** — « recherche d'un
+jeu ou d'une console », « quelques statistiques », « page de profil
+simple » — et quatre fiches d'écran se déclarent « Phase 1 » sans exister :
+E04 (en-tête fusionné), E05, E06, E07. Mesuré le 22 septembre 2026, après la
+boucle de finition, et inscrit dans [`TODO-ECRANS.md`](./TODO-ECRANS.md).
+
+Deux d'entre elles portent directement la porte : l'en-tête de
+`/mon-histoire`, dont E04 dit que l'objectif est « produire le moment *oui,
+ça me ressemble* », et le **troisième temps d'E01**, où se joue le KPI
+*median time to first meaningful profile*. Les mesurer sur un écran à moitié
+construit mesurerait autre chose.
+
 #### Ce que la boucle a appris sur la façon de vérifier
 
 Les trois défauts les plus coûteux n'ont pas été trouvés en relisant du code,
