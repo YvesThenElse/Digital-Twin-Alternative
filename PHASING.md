@@ -435,6 +435,59 @@ testeurs. Recruter avant lui aurait mesuré une application sans apparence.
 **La feuille de style est le prochain chantier**, et le seul dont la durée
 ne se devine pas — les trois autres blocages sont des correctifs.
 
+### Sortie de la boucle de finition — 22 septembre 2026
+
+Dix-huit items, dix-neuf commits. Le verdict de l'audit est **levé** : la
+Phase 2 peut recruter.
+
+#### Les quatre blocages, et ce qui les a levés
+
+| Blocage | Levé par |
+|---|---|
+| Aucune feuille de style | `socle.css` — et deux gardes qui **mesurent dans le navigateur** au lieu de lire un attribut |
+| La grille rendait une liste | la disposition est mesurée, pas déclarée |
+| Un moment ne disait pas ce qu'il était | quatre marques nommées ; un type inconnu rend son type plutôt qu'un faux |
+| Le souvenir n'atteignait pas l'axe | F1 — un repère court sur l'axe, le texte au clic |
+
+#### Ce qui a été réparé au-delà, et qui se voyait à l'usage
+
+« Jamais joué » est **saisissable** au balayage et au clavier (F3) · les
+titres saisis **reviennent** avec leur souvenir (F4) · les avertissements de
+§5.4 **atteignent l'écran** (F5) · une jaquette révoquée **ne casse plus la
+tuile** (F6) · la sélection a ses **quatre états** (F7) · on **change de
+console** sans recharger, période conservée (F8) · le bandeau d'état répond
+enfin à « est-ce moi, ou est-ce le service ? » (F9) · la **première console
+déclenche une phrase de récit** (F12) · « toujours en cours » **revient**
+après un rechargement (F13).
+
+#### Ce qui reste assumé, et qu'un testeur ne doit pas se voir reprocher
+
+- **E07 n'existe pas.** Corriger une date après coup est impossible : la
+  passe 2 valide **une fois par ligne**. Un testeur qui change d'avis sur un
+  achèvement ne peut pas revenir dessus — c'est une friction connue, pas un
+  bug à lui imputer. Les **avertissements causals** attendent le même écran :
+  ils sont rendus, et aucun geste ne peut en déclencher un (mesuré).
+- **Le tiroir sans date n'accepte aucun geste.** Il affiche et compte ; le
+  vider est E14, en Phase 3.
+- **Quatre granularités sur sept** ne sont pas atteignables, dont l'âge et
+  la période ouverte. Voir le tableau du §6.
+- **La région est une hypothèse** : `PAL`. Le critère de recrutement qui en
+  découle est écrit dans `PROTOCOLE-DE-TEST.md` §2, et il se vérifie
+  **avant** la session — un testeur NTSC-J dirait « je ne reconnais pas ces
+  jeux », c'est-à-dire le verdict même de la porte.
+- **Les premières statistiques de §24.4** sont différées : la bande d'époque
+  les devance pendant la saisie.
+
+#### Ce que la boucle a appris sur la façon de vérifier
+
+Les trois défauts les plus coûteux n'ont pas été trouvés en relisant du code,
+mais en **changeant le temps ou le lieu** : ouvrir un écran plus tôt lui
+faisait capturer des props vides ; une construction qui échoue sortait sans un
+mot ; un affinage n'était atteignable que par une course que seul un automate
+gagne. Et deux contrats écrits pendant la boucle — celui de l'API et celui du
+faux client — ont trouvé, **dès leur première exécution**, des champs perdus
+en silence depuis la Phase 1.
+
 ## 5. Phase 2 — Validation utilisateur
 
 **Durée : 2 à 4 semaines.**
