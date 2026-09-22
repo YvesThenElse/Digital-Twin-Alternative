@@ -1,0 +1,316 @@
+/*
+ * Le socle visuel — ecrans/00-langage-visuel.md
+ * ============================================
+ *
+ * Ce fichier n'existait pas. L'audit des surfaces du 22 septembre 2026 l'a
+ * constaté en posant une question qu'aucun fichier ne pose : « où est le
+ * CSS ? » Le produit portait trois styles en ligne, des classes référencées
+ * qui n'existaient nulle part, et une suite entièrement verte — parce
+ * qu'elle assérait des attributs `data-*`, c'est-à-dire des intentions
+ * déclarées.
+ *
+ * Il porte le SOCLE et lui seul : jetons, neutres, palette d'époques,
+ * typographie, espacement, points de rupture, mouvement. La mise en page de
+ * chaque écran vient par-dessus.
+ *
+ * Deux règles tenues ici plutôt que répétées ailleurs :
+ *
+ * - **la densité vient du nombre d'éléments visibles, jamais de la
+ *   compression des cibles** (§6) — d'où une taille de cible minimale
+ *   déclarée une fois ;
+ * - **l'information n'est jamais portée par la seule couleur** (§10) — les
+ *   accents d'époque sont des fonds et des filets, jamais le seul signe.
+ */
+
+/* ------------------------------------------------------------------ jetons */
+
+:root {
+  /* Neutres — la base est CHAUDE, pas grise : un blanc cassé légèrement
+     papier, un noir légèrement brun. C'est ce qui distingue une archive
+     d'un outil (§2). */
+  --surface: #faf8f5;
+  --surface-2: #ffffff;
+  --line: #e5e0d8;
+  --ink: #1a1815;
+  --ink-2: #57524b;
+  --ink-3: #8a8279;
+
+  /* L'époque comme système — le parti pris central (§2). Gradient de
+     température : le passé est chaud et terreux, le présent froid et net.
+     Ces six valeurs sont MIROIR de `disposition/epoque.ts` ; un test le
+     vérifie, faute de quoi la palette vivrait à deux endroits. */
+  --epoque-8-bits: #a6572f;
+  --epoque-16-bits: #b0842b;
+  --epoque-32-64-bits: #6e7f4a;
+  --epoque-128-bits: #3f7a80;
+  --epoque-hd: #4a6ba8;
+  --epoque-moderne: #6b5ea8;
+
+  /* Ce qu'on peint quand on ne sait pas. Ni gris — une tuile grise au
+     milieu d'une grille colorée se lit comme un défaut d'affichage — ni
+     l'une des six, qui affirmerait une décennie. */
+  --epoque-sans-date: #e5e0d8;
+
+  /* Sémantique — il n'y a NI succès NI erreur dans le vocabulaire courant :
+     rien n'est un succès, rien n'est une faute (§2, principe 6). Deux
+     exceptions techniques seulement. */
+  --avertissement: #8a5a2b;
+  --echec: #9b3d3d;
+
+  /* Espacement — base 4, et rien en dehors (§6). */
+  --e1: 4px;
+  --e2: 8px;
+  --e3: 12px;
+  --e4: 16px;
+  --e6: 24px;
+  --e8: 32px;
+  --e12: 48px;
+  --e16: 64px;
+  --e24: 96px;
+
+  /* Typographie — deux familles, pas plus (§4). La serif installe le
+     registre « récit » ; elle ne sert JAMAIS à l'interface courante. */
+  --display: Georgia, "Times New Roman", serif;
+  --texte: system-ui, "Segoe UI", Roboto, sans-serif;
+
+  /* Échelle mobile ; le desktop la reprend plus bas. */
+  --display-1: 32px/40px var(--display);
+  --display-2: 24px/32px var(--display);
+  --title: 600 18px/24px var(--texte);
+  --body: 15px/22px var(--texte);
+  --meta: 13px/18px var(--texte);
+  --micro: 11px/16px var(--texte);
+
+  /* Mouvement — trois usages, rien d'autre (§7). */
+  --duree-bascule: 120ms;
+  --duree-panneau: 220ms;
+  --duree-ecran: 280ms;
+  --duree-moment: 400ms;
+  --courbe-panneau: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* La cible minimale. Le tableau de densité de §6 résout la tension entre
+     « E02 très dense » et « cibles ≥ 44 px » : la ligne de liste fait 56 px
+     et la cible occupe TOUTE sa largeur. */
+  --cible: 44px;
+  --ligne-liste: 56px;
+
+  /* Le cadre de la tuile, constant quelle que soit l'origine du visuel,
+     pour que la grille ne paraisse jamais rapiécée (§5). */
+  --ratio-tuile: 3 / 4;
+
+  --contenu-max: 1200px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #16140f;
+    --surface-2: #1e1b16;
+    --line: #2e2a26;
+    --ink: #f2efe9;
+    --ink-2: #a8a199;
+    --ink-3: #6e6862;
+    --epoque-sans-date: #2e2a26;
+  }
+}
+
+/* --------------------------------------------------------------- fondations */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font: var(--body);
+  /* Chasse tabulaire partout où des nombres s'alignent, pour que rien ne
+     saute pendant l'incrémentation (§4). */
+  font-variant-numeric: tabular-nums;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font: var(--display-1);
+}
+
+h2 {
+  font: var(--display-2);
+}
+
+h3 {
+  font: var(--title);
+}
+
+p {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Les contrôles héritent du texte : sans cela, un bouton retombe sur la
+   police du système et le registre se casse à chaque ligne. */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Toute cible tient la règle des 44 px. Déclarée une fois ici, elle n'a pas
+   à être répétée — ni oubliée — écran par écran. */
+button {
+  min-height: var(--cible);
+  border: 1px solid var(--line);
+  border-radius: var(--e2);
+  background: var(--surface-2);
+  padding: var(--e2) var(--e3);
+  cursor: pointer;
+  transition: background var(--duree-bascule) ease-out,
+    border-color var(--duree-bascule) ease-out;
+}
+
+button:hover {
+  border-color: var(--ink-3);
+}
+
+/* Le focus se voit, toujours. §10 : contraste AA, et l'information n'est
+   jamais portée par la seule couleur. */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+textarea,
+input {
+  min-height: var(--cible);
+  border: 1px solid var(--line);
+  border-radius: var(--e2);
+  background: var(--surface-2);
+  padding: var(--e2) var(--e3);
+}
+
+/* Le souvenir s'affiche en `body` ITALIQUE, jamais en `meta` : c'est le
+   contenu le plus précieux du produit, il ne se relègue pas en petits
+   caractères (§4). */
+textarea {
+  font-style: italic;
+  min-height: calc(var(--cible) * 2);
+  resize: vertical;
+  width: 100%;
+}
+
+/* ------------------------------------------------- l'époque, appliquée */
+
+/*
+ * Un seul endroit relie le nom d'époque à sa couleur. Les composants posent
+ * `data-epoque`, et n'ont pas à connaître la palette — c'est ce qui permet
+ * au test miroir de garder les deux listes alignées.
+ */
+[data-epoque] {
+  --accent: var(--epoque-sans-date);
+}
+[data-epoque="8 bits"] {
+  --accent: var(--epoque-8-bits);
+}
+[data-epoque="16 bits"] {
+  --accent: var(--epoque-16-bits);
+}
+[data-epoque="32/64 bits"] {
+  --accent: var(--epoque-32-64-bits);
+}
+[data-epoque="128 bits"] {
+  --accent: var(--epoque-128-bits);
+}
+[data-epoque="HD"] {
+  --accent: var(--epoque-hd);
+}
+[data-epoque="Moderne"] {
+  --accent: var(--epoque-moderne);
+}
+
+/* ------------------------------------------------------- la page elle-même */
+
+main {
+  max-width: var(--contenu-max);
+  margin: 0 auto;
+  padding: var(--e4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e6);
+}
+
+/* Points de rupture (§6) : 4 colonnes et 16 de marge sous 600, 8 et 24
+   jusqu'à 1023, 12 et 32 au-delà — contenu limité à 1200. */
+@media (min-width: 600px) {
+  main {
+    padding: var(--e6);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --display-1: 44px/52px var(--display);
+    --display-2: 28px/36px var(--display);
+    --title: 600 18px/26px var(--texte);
+    --body: 16px/24px var(--texte);
+  }
+
+  main {
+    padding: var(--e8);
+  }
+}
+
+/* Une alerte est un échec réel — perte de données, panne réseau — et elle
+   est la seule chose que le vocabulaire courant colore en rouge. */
+[role="alert"] {
+  border-left: 3px solid var(--echec);
+  padding: var(--e2) var(--e3);
+  color: var(--ink);
+  background: var(--surface-2);
+}
+
+[role="status"] {
+  color: var(--ink-2);
+  font: var(--meta);
+}
+
+/* ------------------------------------------------------ mouvement réduit */
+
+/*
+ * `prefers-reduced-motion` supprime les DÉPLACEMENTS et conserve uniquement
+ * les changements d'opacité (§7). On ne coupe donc pas toute transition :
+ * on ramène les durées à l'imperceptible et on neutralise les translations.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

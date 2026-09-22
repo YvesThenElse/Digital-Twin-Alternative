@@ -70,6 +70,31 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   const profil = `usr_e2e_${infos.project.name}_${Date.now()}`;
   await page.goto(`/?profil=${profil}`);
 
+  // --- 0. le socle visuel est SERVI --------------------------------------
+  //
+  // Le produit n'avait aucune feuille de style, et rien ne le signalait :
+  // la suite était verte parce qu'elle assérait des attributs `data-*`,
+  // c'est-à-dire des intentions déclarées. Un test de composant ne peut pas
+  // voir cela — il rend dans un document sans CSS. Seul le navigateur le
+  // peut, et c'est donc ici que la garde a sa place.
+  //
+  // On vérifie la base CHAUDE de §2, pas une couleur quelconque : « un
+  // blanc cassé légèrement papier », qui est précisément ce qui distingue
+  // une archive d'un outil — et ce que le défaut par défaut du navigateur,
+  // blanc pur, ne donne jamais.
+  const fond = await page.evaluate(
+    () => getComputedStyle(document.body).backgroundColor,
+  );
+  expect(fond, "le socle visuel n'est pas servi").toBe("rgb(250, 248, 245)");
+
+  // Et la règle des 44 px, déclarée une fois dans le socle : la densité
+  // vient du nombre d'éléments visibles, jamais de la compression des
+  // cibles (§6).
+  const hauteurBouton = await page
+    .getByRole("button", { name: "Super Nintendo Entertainment System" })
+    .evaluate((n) => n.getBoundingClientRect().height);
+  expect(hauteurBouton, "une cible sous 44 px").toBeGreaterThanOrEqual(44);
+
   // --- 1. la machine -----------------------------------------------------
   await expect(page.getByRole("heading", { name: /console/i })).toBeVisible();
   await toucher(

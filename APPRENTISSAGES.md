@@ -2183,3 +2183,32 @@ Le corollaire vaut pour l'inscription : un membre sans producteur n'est pas
 forcément une faute — il peut être une capacité en avance. Mais alors il
 doit être **écrit comme telle**, sinon son existence se lit comme une
 fonctionnalité livrée. Sept sur onze, aucun inscrit nulle part.
+
+### 68 — Le socle visuel a besoin d'une garde que seul le navigateur peut tenir
+
+Le produit n'avait aucune feuille de style, et **rien ne le signalait** —
+198 tests front verts, un parcours de bout en bout vert. En écrivant le
+socle, la question devient : qu'est-ce qui empêchera que cela recommence ?
+
+Trois niveaux de garde, et ils ne se remplacent pas :
+
+1. **Le test miroir**, en unité : les six accents de `socle.css` doivent
+   dire la même chose que `EPOQUES`, chacun doit être appliqué par un
+   sélecteur, et il ne doit pas y en avoir un septième. Il attrape la
+   divergence entre deux copies d'une même vérité.
+2. **Le parcours**, dans un vrai navigateur : le fond de page doit être le
+   blanc cassé chaud de §2, et un bouton doit mesurer au moins 44 px.
+   Retirer l'import du socle le fait échouer **en le nommant**.
+3. Rien d'autre. Un test de composant **ne peut pas** voir cela : il rend
+   dans un document sans CSS, et c'est exactement pourquoi les 198 tests
+   étaient verts.
+
+La leçon dépasse le CSS. À chaque fois qu'une couche entière peut être
+absente sans qu'un test ne bouge, il faut chercher **quel niveau de test la
+verrait** — et si la réponse est « aucun de ceux qu'on a », c'est le niveau
+qui manque, pas le test.
+
+Et le choix de l'assertion compte autant que son existence : vérifier « le
+fond n'est pas blanc » aurait laissé passer n'importe quelle couleur.
+Vérifier `rgb(250, 248, 245)` — « un blanc cassé légèrement papier », ce qui
+distingue une archive d'un outil — vérifie que **ce socle-là** est servi.
