@@ -19,6 +19,29 @@ import type { ValeurTemporelle } from "../temporel/valeur";
 
 const BASE = "/api";
 
+/**
+ * Ce que l'API rend et que ce client **ne déclare pas**, sciemment.
+ *
+ * `lire<T>` fait un `as T` : un champ non déclaré disparaît sans qu'aucun
+ * outil ne puisse le dire (apprentissage 56). L'inventaire ci-dessous
+ * transforme ces omissions silencieuses en décisions écrites — c'est le
+ * seul garde possible tant qu'aucun contrat n'est partagé entre les deux
+ * côtés (audit, item 35).
+ *
+ * | Point d'entrée | Champ ignoré | Pourquoi |
+ * |---|---|---|
+ * | `/platforms/{id}/works` | `releases[].confidence` | dérivée de la granularité, déjà rendue |
+ * | `/memories/{user}` | `updatedAt` | aucun écran ne montre la date d'une note |
+ * | `/timeline/{user}` | `warnings` | **défaut** — §5.4 veut qu'ils soient vus (item 27) |
+ * | `/unresolved/{user}` | *point d'entrée entier* | jamais appelé ; c'est pourtant le moyen de relire les titres saisis (item 24) |
+ *
+ * Et une dérive de TYPE, latente : `/platforms` déclare `LaunchYear` comme
+ * facultative côté API, ce client la déclare `number`. Un `null` traversé
+ * donnerait une année suggérée de **2** et désarmerait le refus « avant la
+ * machine ». L'hypothèse est gardée côté données, par
+ * `ReferentielTests.Chaque_plateforme_expose_son_annee_de_lancement`.
+ */
+
 async function lire<T>(chemin: string): Promise<T> {
   const reponse = await fetch(`${BASE}${chemin}`);
   if (!reponse.ok) {

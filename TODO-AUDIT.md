@@ -169,7 +169,27 @@ est aussi coûteux qu'un champ qui ment.
 Deux défauts sur trois se sont logés là où deux couches se rencontrent et où
 chacune avait raison séparément.
 
-- [ ] **12 — Le client HTTP.** `api/client.ts`. Cite : les points d'entrée de l'API. *Chaque champ rendu par l'API est-il traduit, ou jeté ? Chaque champ envoyé vient-il de l'écran ?*
+- [x] **12 — Le client HTTP.** `api/client.ts`. Cite : les points d'entrée de l'API. *Chaque champ rendu par l'API est-il traduit, ou jeté ? Chaque champ envoyé vient-il de l'écran ?*
+
+  **Comparaison champ par champ des deux côtés — quatre omissions, une dérive de type, un point d'entrée orphelin.**
+
+  | Point d'entrée | Rendu par l'API | Déclaré par le client | Verdict |
+  |---|---|---|---|
+  | `/platforms` | `LaunchYear` **`int?`** | `number` | **dérive de type**, latente |
+  | `/platforms/{id}/works` | `releases[].confidence` | absent | légitime — dérivée, déjà rendue |
+  | `/memories/{user}` | `updatedAt` | absent | légitime — aucun écran ne l'affiche |
+  | `/timeline/{user}` | `warnings` | absent | **défaut** (item 27) |
+  | `/unresolved/{user}` | point d'entrée entier | **jamais appelé** | c'est le moyen de l'item 24 |
+
+  **1 · Envoyé sans être saisi — RIEN.** Tout ce que le client poste vient d'un appelant ; `souvenir` a été corrigé à l'item 20 de la Phase 1 pour que le genre de cible vienne de l'écran et non d'une constante.
+
+  **2 · Rendu sans être lu — QUATRE, dont deux légitimes.** Inscrits dans `client.ts` sous forme de tableau : l'omission silencieuse devient une décision écrite, seul garde possible tant qu'aucun contrat n'est partagé. → **item 35**.
+
+  **3 · Écrit sans être dit — RIEN.** **4 · Dit sans être écrit — RIEN.** Le client ne décide ni ne persiste.
+
+  **La dérive de type mérite son détail.** `ReferenceModel.cs:59` déclare l'année de lancement **facultative**, et `DatasetLoader.cs:385` **saute l'invariant 03b** quand elle manque : une plateforme sans année serait chargée sans contrôle. Le client la déclare `number` — un `null` traversé donnerait, en JavaScript, `null + 2 === 2`, donc une année suggérée de **2**, et `1994 < null` étant faux, **plus rien ne refuserait** une date antérieure à la machine.
+
+  **Contrôle — quel test échouerait ?** `ReferentielTests.Chaque_plateforme_expose_son_annee_de_lancement` : il appelle `GetInt32()`, qui **lève** sur un `null`. La garde existait déjà — je l'ai découvert en mispréduisant une mutation (1 annoncé, 3 obtenus) et en cherchant l'écart. J'avais écrit un test redondant ; il est retiré, et la raison qui l'avait fait écrire est désormais inscrite dans la garde existante.
 
 - [ ] **13 — Le catalogue et les jaquettes.** `Reference/ReferenceEndpoints.cs`, `Reference/CoverEndpoints.cs`, `Reference/ReferenceCatalogSource.cs`. Cite : §3.3, §3.4, §19.2. *Le manifeste enregistre une acquisition, pas une présence.*
 
@@ -222,6 +242,8 @@ inscrit et ne les construit pas.
 
 - [ ] **34 — On ne peut pas changer de console.** (E02, actions) Une fois la machine choisie, aucun chemin ne ramène au choix ; seul un rechargement le permet. Le libellé existait et ne servait à rien. *E02 précise « période conservée », ce qui demande de décider si l'on revient au choix de machine ou si l'on change de plateforme en gardant la période. Acceptation : un testeur qui se trompe de console s'en sort sans recharger.*
 
+- [ ] **35 — Aucun contrat partagé entre l'API et le client.** `lire<T>` fait un `as T` : un champ que l'API ajoute, renomme ou rend facultatif disparaît côté front **sans qu'aucun outil ne puisse le dire**. Quatre omissions et une dérive de type l'ont montré. *Décision attendue : engendrer les types du client depuis l'API (OpenAPI, ou un schéma émis au build), ou tenir à la main l'inventaire des champs sciemment ignorés — il est écrit dans `client.ts`, mais rien ne le vérifie.*
+
 ---
 
 ## Journal
@@ -247,3 +269,5 @@ inscrit et ne les construit pas.
 - **10 — la zone sans date et le rendu temporel.** Le contraste de cette surface est instructif. §6 porte trois exigences : celle qui **nomme un algorithme** — « ordre du tiroir : `RecordedAt` décroissant » — est implémentée, gardée par deux tests du domaine dont un né d'une mutation survivante, **et par un test miroir à l'API**. Les deux qui **nomment une intention** — « le tiroir est une tâche, pas une poubelle, dimensionné pour être vidé » et « il compte dans les totaux du profil » — n'existent pas : le tiroir n'accepte aucun geste. Et en cherchant ce qu'aucun fichier ne réclame : **`Age` est un sous-système complet et inatteignable** — la variante, sa résolution par l'horizon, le paramètre `birthYear` de `/timeline` — que le front n'envoie jamais. Des sept granularités de §7.3, un événement de joueur ne peut en porter que trois.
 
 - **11 — le contexte de saisie et l'état du service.** Un défaut corrigé : **quatre chemins asynchrones sans `catch`**, si bien qu'un échec laissait l'écran figé et muet — le testeur appuie, rien ne se passe, il appuie encore. Mais l'itération vaut surtout par ce qu'une **prédiction fausse** a révélé. J'attendais quatre échecs de la mutation ; il y en a eu trois. Le quatrième devait venir du garde des libellés morts — qui, vérification faite, **ne pouvait pas échouer** : `messages.ts` figurait parmi les sources où l'on cherche un usage, et chaque clé s'y trouve par définition. Une clé fabriquée que personne n'utilisait passait. Le contrôle voisin avait son témoin ; celui-ci n'en avait pas. Réparé avec deux témoins — la logique, et l'exclusion du catalogue —, il a immédiatement trouvé un vrai mort : **`parcours.retour`, « Changer de console »**, dont le libellé existait sans que l'action existe. On ne peut pas changer de console sans recharger la page.
+
+- **12 — le client HTTP.** Comparaison champ par champ : **quatre omissions** — dont deux légitimes —, **une dérive de type** et **un point d'entrée orphelin**. `/unresolved/{user}` n'est jamais appelé alors que c'est précisément le moyen de relire les titres saisis (item 24). La dérive mérite son détail : l'année de lancement est **facultative** côté modèle, le chargeur **saute l'invariant 03b** quand elle manque, et le client la déclare `number` — un `null` traversé donnerait `null + 2 === 2`, donc une année suggérée de **2**, et plus rien ne refuserait une date antérieure à la machine. L'itération s'est réglée sur une **misprédiction** : j'annonçais un échec, il y en a eu trois, et l'écart a montré que **la garde existait déjà** — `GetInt32()` lève sur un `null`. Mon test était un doublon ; retiré, sa raison inscrite dans la garde existante. Les omissions sont désormais un tableau dans `client.ts` : faute de contrat partagé, une décision écrite vaut mieux qu'un silence.

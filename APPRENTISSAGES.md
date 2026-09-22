@@ -2036,3 +2036,35 @@ Deux règles, et la seconde est la plus utile :
 Le garde réparé a trouvé un vrai mort dans la minute : un libellé
 « Changer de console » dont l'action n'existe pas. Un garde qui ne peut pas
 échouer ne protège pas — il **cache**.
+
+### 63 — Le SENS de l'écart de mutation dit lequel des deux problèmes on a
+
+Deux mispréductions en deux itérations, et elles ne disaient pas la même
+chose.
+
+**Moins d'échecs qu'annoncé** (item 11 : trois au lieu de quatre) : un garde
+que je croyais actif ne l'était pas. `messages.ts` figurait dans les sources
+où l'on cherche un usage, et le contrôle des libellés morts ne pouvait pas
+échouer. **Mauvaise nouvelle, et la plus utile** — c'est un trou.
+
+**Plus d'échecs qu'annoncé** (item 12 : trois au lieu d'un) : une garde
+existait que j'ignorais. `GetInt32()` lève sur un `null`, donc l'hypothèse
+du front était déjà tenue. **Bonne nouvelle**, et elle m'a évité d'écrire un
+test redondant — que j'avais d'ailleurs déjà écrit, et qu'il a fallu
+retirer.
+
+D'où une lecture immédiate de l'écart, avant même d'en chercher la cause :
+
+| Écart | Ce que ça veut dire | Ce qu'on fait |
+|---|---|---|
+| moins d'échecs | un garde ne garde pas | le réparer, lui donner un témoin |
+| plus d'échecs | la couverture dépasse ce qu'on savait | **chercher le doublon qu'on s'apprêtait à écrire** |
+
+La seconde ligne est celle qu'on oublie : un test de plus paraît toujours
+gratuit. Il ne l'est pas — il dilue, il double la maintenance, et surtout il
+fait croire qu'un sujet est couvert par *le nouveau* alors qu'il l'était
+déjà, mieux, ailleurs.
+
+**La règle** : avant d'écrire une garde, chercher celle qui existe. Et quand
+une mutation fait tomber plus de tests que prévu, **lire leurs noms** : ils
+disent où le sujet était déjà traité.

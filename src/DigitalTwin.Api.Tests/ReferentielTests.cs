@@ -154,6 +154,14 @@ public class ReferentielTests
     {
         // L'écran de période s'en sert pour borner son curseur : proposer
         // 1985 sur une Nintendo 64 ferait perdre du temps à tout le monde.
+        //
+        // `GetInt32()` LÈVE sur un `null`, et c'est ce qui fait de ce test la
+        // garde de l'hypothèse du front. Elle est nécessaire parce que le
+        // modèle déclare l'année **facultative** (`ReferenceModel.cs:59`) et
+        // que le chargeur saute l'invariant 03b quand elle manque
+        // (`DatasetLoader.cs:385`) : une plateforme sans année passerait le
+        // chargement, et le client — qui déclare un `number` — en tirerait,
+        // en JavaScript, une année suggérée de **2**.
         using var usine = Usine();
         var plateformes = await Lire(usine.CreateClient(), "/platforms");
 
