@@ -243,7 +243,23 @@ chacune avait raison séparément.
 
   **Contrôle — quel test échouerait ?** Le nouveau, et la mutation l'a confirmé. Elle a d'abord **échoué à s'injecter** : créer une cinquième table à la main ne change rien, la suite **recrée sa base** à chaque exécution. C'est l'écart qui l'a dit — la garde était bonne, la mutation invalide. Un témoin de schéma doit passer par une migration, pas par une commande.
 
-- [ ] **16 — La timeline servie et les souvenirs.** `Timeline/TimelineEndpoints.cs`, `Memories/*.cs`. Cite : §7.5, §9. *Les avertissements causals reviennent-ils, et quelqu'un les lit-il ?*
+- [x] **16 — La timeline servie et les souvenirs.** `Timeline/TimelineEndpoints.cs`, `Memories/*.cs`. Cite : §7.5, §9. *Les avertissements causals reviennent-ils, et quelqu'un les lit-il ?*
+
+  **1 · Envoyé sans être saisi — RIEN.** Les deux libellés de repli — « Titre saisi, introuvable », « Œuvre inconnue du référentiel » — sont des **mots**, pas des données, et ils existent pour ne pas faire remonter un identifiant à l'écran. `Confidence` est **dérivée** (`PlayerEvent.cs:131`), jamais stockée : elle ne peut pas diverger de la granularité qu'elle résume.
+
+  **2 · Rendu sans être lu — RIEN côté serveur.** L'endpoint rend tout ce que le tri produit, avertissements compris ; c'est le client qui les jette (item 27). `MemoryRow.UpdatedAt` est rendu et ignoré, sciemment (item 12).
+
+  **3 · Écrit sans être dit — RIEN.** La timeline n'écrit pas ; `UpsertMemoryAsync` n'inscrit que ce qui est donné, plus l'horodatage, qui est un fait.
+
+  **4 · Dit sans être écrit — RIEN** à cette couche.
+
+  **Deux contrôles d'ENSEMBLE, et les deux échouent.**
+
+  **(a) Onze types d'événements déclarés, QUATRE atteignables.** `DiscoveredGame`, `ReplayedGame`, `SoldItem`, `LostItem`, `LentItem`, `BorrowedItem`, `ReturnedItem` n'ont **aucun producteur** : `/declarations` n'en fabrique que quatre. Le tri les ordonne, `CausalSequence` raisonne dessus, rien ne peut les créer. Or ce sont précisément ceux qui portent l'histoire d'une collection sur trente ans — vendu, perdu, prêté, rendu — c'est-à-dire le cas de validation n°1 du modèle. → **item 38**.
+
+  **(b) §9.2 porte TROIS exigences ; une est partielle, deux sont absentes.** « Une note libre attachée à un événement, à un jeu, **ou à une période de la timeline** » : seuls l'œuvre et le titre saisi sont des cibles possibles. « Optionnellement un **titre court, servant de repère sur la timeline** » : `MemoryRow` n'a pas de titre. « Visibilité contrôlée indépendamment » : rien. Et le plus lourd — **aucun souvenir n'apparaît sur la timeline** : zéro occurrence dans `TimelineEndpoints`. §9.1 dit pourtant que cette section existe parce qu'elle « porte directement le critère de validation du projet : faire dire à l'utilisateur *oui, ça me ressemble* ». → **item 39**.
+
+  **Contrôle — quel test échouerait ?** Aucun pour (a) et (b) : ce sont des absences, et rien ne compte les ensembles.
 
 ## Le dernier item
 
@@ -294,6 +310,10 @@ inscrit et ne les construit pas.
 
 - [ ] **37 — Les trois contrôles hors ligne documentés ne tournent pas.** `CLAUDE.md` les présente comme lançables ; deux réclament des fichiers intermédiaires absents du dépôt (`resolved.json`, `wp_wikitextes.json`) et le troisième n'accepte qu'un répertoire courant précis. *Un garde documenté et non lançable est pire qu'aucun : il fait croire le sujet couvert.*
 
+- [ ] **38 — Sept types d'événements sur onze n'ont aucun producteur.** `DiscoveredGame`, `ReplayedGame`, `SoldItem`, `LostItem`, `LentItem`, `BorrowedItem`, `ReturnedItem`. Le tri et la cohérence causale les traitent ; rien ne peut les créer. *Ce sont ceux qui portent l'histoire d'une collection sur trente ans — le cas de validation n°1. Décision attendue : les rendre atteignables, ou écrire qu'ils attendent leur phase.*
+
+- [ ] **39 — Le souvenir n'atteint jamais la timeline.** (§9.1, §9.2) Zéro occurrence dans `TimelineEndpoints`. §9.2 prévoyait un **titre court servant de repère sur la timeline** — `MemoryRow` n'a pas de titre — et une note attachable **à une période**, ce que le modèle de cible ne permet pas. *§9.1 fait de cette section le porteur direct du « oui, ça me ressemble » : c'est le critère même de la porte de Phase 2.*
+
 ---
 
 ## Journal
@@ -327,3 +347,5 @@ inscrit et ne les construit pas.
 - **14 — les déclarations et l'état relu.** Rien n'est inventé en chemin, et les valeurs par défaut porteuses de sens ont disparu avec l'item 24 de la Phase 1. Deux constats. Une **dérive de vocabulaire** : `/declarations/{userId}` rend les noms du domaine, `/selection` ceux de l'écran — sans conséquence aujourd'hui, mais c'est un piège pour le prochain appelant. Et surtout, **une garde qui n'existait que dans le navigateur** : l'écran refuse « 1985 sur Super Nintendo » et nomme l'année de sortie, l'API acceptait. Mesuré plutôt que supposé. Corrigé en ne refusant que **l'impossible certain** — on compare l'année la plus tardive que la période autorise —, de sorte qu'une imprécision qui chevauche l'impossible reste acceptée : « vers 1991 » sur une console de 1990 peut vouloir dire 1992, et refuser exigerait la précision que §7.3 interdit de demander.
 
 - **15 — la persistance.** Les vingt valeurs par défaut sont énumérées : dix-huit sont l'idiome C# `""`, jamais persisté ; les deux porteuses de sens sont justes depuis la correction de l'affect. Le manque était ailleurs, et il s'est trouvé en **mesurant le schéma** plutôt qu'en lisant le code : quatre tables portent un `user_id`, la purge en efface quatre, quatre tests l'éprouvent — **un par table** — et **aucun ne garantissait l'exhaustivité**. Une cinquième table serait oubliée en silence, sur un produit dont §19.4 fait de l'effacement une contrainte de conception. La garde interroge désormais `information_schema` et le compare à une liste écrite. Sa mutation a d'abord **échoué à s'injecter** — créer une table à la main ne change rien, la suite recrée sa base à chaque exécution : la garde était bonne, la mutation invalide, et seul l'écart l'a dit.
+
+- **16 — la timeline servie et les souvenirs.** La surface elle-même est saine : rien d'inventé, rien de jeté côté serveur, et la confiance est **dérivée** plutôt que stockée, donc incapable de diverger de ce qu'elle résume. Mais les deux contrôles d'**ensemble** échouent tous les deux. **Onze types d'événements sont déclarés, quatre sont atteignables** : vendu, perdu, prêté, rendu, redécouvert, rejoué n'ont aucun producteur, alors que ce sont eux qui portent l'histoire d'une collection sur trente ans. Et **§9.2 porte trois exigences dont deux sont absentes** — le titre court « servant de repère sur la timeline », et la note attachable à une période. Le plus lourd tient en un chiffre : **zéro occurrence de souvenir dans `TimelineEndpoints`**. La section qui, d'après §9.1, « porte directement le critère de validation du projet » n'atteint jamais l'écran censé produire ce jugement.

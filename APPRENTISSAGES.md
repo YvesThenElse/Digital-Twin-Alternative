@@ -2154,3 +2154,32 @@ suite recréant sa base à chaque exécution. Moins d'échecs qu'annoncé veut
 dire qu'un garde ne garde pas ([[63]]) — mais aussi, parfois, que la
 mutation n'a pas eu lieu. Vérifier que l'injection a bien pris fait partie
 de l'injection.
+
+### 67 — Compter les membres d'une énumération, et compter leurs producteurs
+
+Deux nombres, obtenus en deux commandes :
+
+- `PlayerEventType` déclare **onze** types d'événements ;
+- `src/DigitalTwin.Api/` en produit **quatre**.
+
+Sept n'ont aucun chemin de création. Le tri les ordonne, la cohérence
+causale raisonne dessus, des tests les couvrent — et rien, dans le produit,
+ne peut en fabriquer un. Ce sont `SoldItem`, `LostItem`, `LentItem`,
+`ReturnedItem`, `DiscoveredGame`, `ReplayedGame`, `BorrowedItem` :
+exactement ceux qui portent l'histoire d'une collection sur trente ans.
+
+Aucune relecture ne le voit. Un type d'événement est cité partout — dans le
+domaine, dans les tests, dans la documentation — et sa présence y est
+indiscernable d'un usage réel. Le seul signal fiable est **le rapport entre
+les deux comptes**.
+
+**La règle** : pour toute énumération qui traverse le produit, compter ses
+membres, puis compter ceux qu'un chemin réel produit. L'écart se mesure en
+deux `grep`, et il dit ce qu'aucune lecture ne dit — la même question que
+[[53]] posait d'un rendu (« quel geste produit cette valeur ? »), mais posée
+d'un coup à tout un ensemble.
+
+Le corollaire vaut pour l'inscription : un membre sans producteur n'est pas
+forcément une faute — il peut être une capacité en avance. Mais alors il
+doit être **écrit comme telle**, sinon son existence se lit comme une
+fonctionnalité livrée. Sept sur onze, aucun inscrit nulle part.
