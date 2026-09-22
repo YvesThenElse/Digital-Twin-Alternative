@@ -503,6 +503,37 @@ Ce que le modèle ou l'API portent depuis la Phase 1 **sans aucun producteur**
 s'inscrit ici plutôt que de rester vert et inatteignable — c'est le défaut
 que l'audit du 22 septembre 2026 a le plus souvent trouvé.
 
+#### Les sept granularités temporelles — où chacune en est
+
+`TemporalValue` en porte sept. **Quatre seulement sont produites par un geste
+de Phase 1** ; les trois autres sont construites, testées, et n'ont aucun
+producteur. Elles sont inscrites ici plutôt que laissées vertes, et
+`CapacitesTemporellesTests` échoue si ce tableau cesse de les nommer — ou si
+une huitième variante apparaît sans qu'on dise où elle va.
+
+| Variante | Produite par | Où |
+|---|---|---|
+| `Year` | l'affinage de période (E01 temps 2) | **Phase 1** |
+| `YearRange` | une carte de décennie, ou son affinage | **Phase 1** |
+| `Unknown` | « je ne sais plus », en un geste | **Phase 1** |
+| `ApproximateYear` | *rien* — l'API l'accepte (`approximate`), aucun écran ne l'envoie | **E07**, avec le repli de précision |
+| `Month` | *rien* — le domaine et l'axe la rendent | **E07** |
+| `ExactDate` | *rien* pour un événement de joueur ; le référentiel, lui, en produit | **E07** |
+| `Age` | *rien*, et `birthYear` avec elle | **E07**, après l'année de naissance |
+
+**La période OUVERTE est dans le même cas**, à l'intérieur de `YearRange` :
+une fin absente dit « depuis 1994 », l'API l'accepte, l'axe la rend — et le
+choix de période ne propose que des intervalles fermés. Elle appartient à
+E07 comme les trois autres.
+
+**Pourquoi elles ne sont pas dans le parcours d'amorce.** Les principes
+transverses (§2) montrent trois choix temporels et non sept : « exposer
+l'énumération complète ferait remonter le modèle dans l'interface ». Et
+`Age` demanderait l'**année de naissance** — sans elle, il se comporte comme
+`Unknown` (§7.6) et tous les moments tomberaient dans le tiroir. La demander
+à l'amorce est exactement le formulaire que §24.4 interdit : « ne jamais
+imposer un formulaire long avant le premier retour visible ».
+
 - **Les premières statistiques de §24.4.** « Les premières statistiques
   apparaissent après quelques jeux » : différé en Phase 1 au profit de la
   seule **phrase de récit**, qui arrive plus tôt — dès la console choisie —

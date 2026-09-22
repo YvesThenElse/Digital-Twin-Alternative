@@ -46,7 +46,7 @@
 
 - [x] **F13 — « Toujours en cours » est un jugement, pas un silence.** (audit 25 · §4.6) **Décidé** : on le **porte**. « J'y joue encore » est une vraie réponse, et elle sera fréquente sur les machines récentes ; la traiter comme une absence fait revenir la chip vierge et perdre ce que le testeur vient de dire. *Acceptation : `PlayDeclaration` porte l'achèvement déclaré, la migration existe, et la chip revient cochée après un rechargement — sans que « en cours » produise un événement, puisqu'il n'en est pas un.*
 
-- [ ] **F14 — Les capacités temporelles inatteignables sont inscrites.** (audit 21) **Décidé** : **différées**, pas offertes. La période ouverte et `Age` appartiennent à E07, qui est déjà différé ; les offrir au parcours d'amorce ajouterait une question que §24.4 déconseille. *Acceptation : `PHASING.md` dit lesquelles, où elles iront, et pourquoi elles ne sont pas dans le parcours — et un test le vérifie, ou le document est cité par celui qui les porte.*
+- [x] **F14 — Les capacités temporelles inatteignables sont inscrites.** (audit 21) **Décidé** : **différées**, pas offertes. La période ouverte et `Age` appartiennent à E07, qui est déjà différé ; les offrir au parcours d'amorce ajouterait une question que §24.4 déconseille. *Acceptation : `PHASING.md` dit lesquelles, où elles iront, et pourquoi elles ne sont pas dans le parcours — et un test le vérifie, ou le document est cité par celui qui les porte.*
 
 - [ ] **F15 — Le tiroir sans date entre dans une phase.** (audit 32) **Décidé** : **inscrit**, pas construit. Une session de Phase 2 est unique : la relance ne s'y joue pas, et un écran de plus à concevoir servirait un chemin qu'aucun testeur n'empruntera. *Acceptation : E14 — la passe temporelle — figure au TODO d'une phase avec sa raison, et `ecrans/E14` cesse d'être un écran que rien n'appelle.*
 
@@ -250,3 +250,15 @@
   masquer, donc une fermeture manquée y serait restée invisible jusqu'en
   Phase 3. Le parcours le pose sur une ligne, recharge, et vérifie qu'il
   revient — pendant qu'une ligne voisine, qui n'a rien dit, reste vierge.
+
+- **F14** — `PHASING.md` porte un tableau des **sept** granularités : ce qui
+  les produit, ou le fait qu'aucun geste ne les produise, et où elles iront
+  (E07). L'item n'en nommait que deux ; le tableau en trouve **trois** sans
+  producteur — `ApproximateYear`, `Month`, `ExactDate` — plus `Age` et la
+  période ouverte à l'intérieur de `YearRange`. Et il ne s'agit pas d'un
+  paragraphe de plus : `CapacitesTemporellesTests` demande l'ensemble à sa
+  **source d'autorité** — la hiérarchie scellée, par réflexion — et le
+  compare au tableau. Une huitième variante ajoutée demain fera échouer la
+  suite jusqu'à ce que quelqu'un dise où elle va. Deux témoins gardent le
+  garde : sept variantes trouvées, et un tableau réellement lu — sans eux, un
+  ensemble vide passerait pour une garantie.
