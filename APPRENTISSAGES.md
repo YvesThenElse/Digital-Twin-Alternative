@@ -1750,3 +1750,33 @@ interface est parfois un choix. Mais elle doit être **inscrite comme
 telle**, sinon elle se lit comme une fonctionnalité livrée. Ici, ni la
 spécification ni le TODO ne mentionnaient la période ouverte — elle
 existait, sans que personne l'ait décidée.
+
+### 54 — Réparer un mensonge en rend un autre visible
+
+Décocher une ligne n'a jamais rien envoyé au serveur. Le code est ainsi
+depuis le premier jour, et personne ne l'avait vu — moi compris, en écrivant
+l'écran, en l'auditant, et en y ajoutant la passe 2.
+
+La raison est mécanique : **tant que rien n'était relu, le mensonge n'avait
+pas de témoin.** L'écran affichait l'état local, et l'état local était
+cohérent avec lui-même. Décocher, recharger, retrouver la ligne cochée —
+personne ne pouvait le constater, puisque recharger montrait de toute façon
+une liste vierge.
+
+En rendant la relecture correcte (item 22), j'ai donné un témoin à un défaut
+plus ancien. **Le second défaut n'a pas été introduit ; il a été révélé.**
+
+**La règle** : après avoir réparé une couche qui mentait, reprendre les
+comportements qui s'appuyaient sur ce mensonge. Ils n'étaient pas justes —
+ils étaient **invérifiables**, ce qui n'est pas la même chose et se lit
+pareil.
+
+Le corollaire pour l'audit : une surface déjà corrigée mérite d'être
+recriblée **après** la correction de ses voisines. L'ordre dans lequel on
+répare change ce que l'on peut voir.
+
+Et un signe à reconnaître : le test qui couvrait le geste s'appelait
+« décocher rétrécit la bande — **la déclaration est révisable** » et
+n'assérait qu'un compteur local. Un nom de test est une affirmation ; quand
+il promet plus que ses assertions, il **empêche** de chercher. Voisin de
+[[44]] — nommer n'est pas rendre — appliqué cette fois aux tests eux-mêmes.

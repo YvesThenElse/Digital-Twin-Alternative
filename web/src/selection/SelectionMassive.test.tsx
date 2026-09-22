@@ -90,16 +90,28 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     expect(bande()).toHaveTextContent("1995");
   });
 
-  it("décocher rétrécit la bande — la déclaration est révisable", async () => {
-    // Invariant 10 : jamais de refus. Se tromper de ligne est le geste le
-    // plus fréquent d'un écran où l'on coche vite.
+  it("décocher rétrécit la bande — et ne va PAS plus loin que l'écran", async () => {
+    // Le nom de ce test disait « la déclaration est révisable ». Il
+    // n'assérait qu'un compteur local, et la révision ne quitte pas le
+    // navigateur : décocher ne rappelle jamais l'API.
+    //
+    // Tant que rien n'était relu, cela ne se voyait pas. Depuis que l'écran
+    // relit son état, le mensonge est VISIBLE : on décoche, on recharge, la
+    // ligne revient. E02 l'interdit — « chaque bascule est persistée
+    // immédiatement ».
+    //
+    // On épingle donc le comportement actuel, défaut compris, plutôt que de
+    // le taire : le jour où la rétractation existera (audit, item 22), ce
+    // test échouera, et c'est exactement ce qu'on veut de lui.
     const utilisateur = userEvent.setup();
-    monter();
+    const { envoyer } = monter();
 
     await utilisateur.click(lignes()[0]);
     await utilisateur.click(lignes()[0]);
 
     expect(bande()).toHaveAttribute("data-total", "0");
+    expect(envoyer, "décocher n'envoie rien — défaut connu, item 22")
+      .toHaveBeenCalledTimes(1);
   });
 
   it("la ligne entière est la cible, pas une case à cocher", async () => {
