@@ -2125,3 +2125,32 @@ ne refuse que l'**impossible certain** — l'année la plus tardive de la
 période. Un serveur qui rejetterait une imprécision légitime coûterait plus
 qu'il ne protège, sur un produit dont la thèse est justement que
 l'incertitude est une donnée.
+
+### 66 — Un test par cas ne fait pas une garantie d'exhaustivité
+
+Quatre tables portent les données d'un utilisateur. `PurgeUserAsync` les
+efface toutes les quatre, et **quatre tests l'éprouvent — un par table**. La
+couverture paraît complète : chaque table a son test, chaque test passe.
+
+Elle ne l'est pas. Une **cinquième** table serait oubliée sans que rien ne
+rougisse, parce que les quatre tests parlent des quatre tables qu'on
+connaît. Ils vérifient que ce qu'on a fait marche ; aucun ne vérifie qu'on
+n'a rien oublié.
+
+La distinction est celle entre **couvrir des cas** et **couvrir un
+ensemble**. Elle n'a de conséquence que là où l'ensemble peut grandir — et
+c'est précisément là qu'elle fait le plus mal : un effacement RGPD incomplet
+est le manquement le plus grave d'une archive personnelle.
+
+**La règle** : quand une opération doit porter sur *tout* un ensemble,
+demander l'ensemble à sa **source d'autorité** — ici `information_schema`,
+ailleurs le modèle EF, le dossier, l'énumération — et le comparer à une
+liste écrite. Ce n'est pas un test de plus à côté des quatre : c'est le seul
+qui dise quelque chose sur ce qui n'existe pas encore.
+
+Et une note de méthode payée comptant : la mutation de cette garde a
+**échoué à s'injecter**. Créer une table à la main ne changeait rien, la
+suite recréant sa base à chaque exécution. Moins d'échecs qu'annoncé veut
+dire qu'un garde ne garde pas ([[63]]) — mais aussi, parfois, que la
+mutation n'a pas eu lieu. Vérifier que l'injection a bien pris fait partie
+de l'injection.

@@ -289,6 +289,38 @@ public class EventStoreTests(PostgresFixture bdd)
         return PlayerEventMapping.ToDomain(ligne);
     }
 
+    [Fact]
+    public async Task Aucune_table_d_utilisateur_n_echappe_a_la_purge()
+    {
+        // §19.4 fait de l'effacement une contrainte de CONCEPTION, pas une
+        // fonctionnalité tardive : « l'effacement ne peut pas être une
+        // pierre tombale ». Quatre tests éprouvent la purge, un par table —
+        // mais **aucun ne garantissait l'exhaustivité**. Une cinquième table
+        // portant un `user_id` serait oubliée en silence, et le produit est
+        // une archive personnelle sur plusieurs décennies.
+        //
+        // On interroge donc le schéma RÉEL, et on le compare à une liste
+        // écrite. Ajouter une table ici fait échouer ce test : c'est le
+        // rappel qu'il faut étendre `PurgeUserAsync` en même temps.
+        var tables = new List<string>();
+        await using (var c = new NpgsqlConnection(bdd.ConnectionString))
+        {
+            await c.OpenAsync();
+            await using var cmd = new NpgsqlCommand(
+                """
+                SELECT table_name FROM information_schema.columns
+                WHERE table_schema = 'public' AND column_name = 'user_id'
+                ORDER BY table_name
+                """, c);
+            await using var lecteur = await cmd.ExecuteReaderAsync();
+            while (await lecteur.ReadAsync()) tables.Add(lecteur.GetString(0));
+        }
+
+        Assert.Equal(
+            ["memories", "play_declarations", "player_events", "unresolved_claims"],
+            tables);
+    }
+
     private async Task ExecuterSql(string sql)
     {
         await using var c = new NpgsqlConnection(bdd.ConnectionString);
