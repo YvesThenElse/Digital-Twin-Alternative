@@ -1869,3 +1869,37 @@ refuse. Les mutations doivent donc être des **substitutions**. Ce n'est pas
 un obstacle : c'est la mesure d'une garde que le compilateur offre
 gratuitement, et qu'il faut compter comme telle plutôt que la contourner
 sans le dire.
+
+### 58 — Un rendu aussi peut affirmer ce qu'on ignore
+
+Les défauts de cette famille étaient jusqu'ici des **données** : un champ par
+défaut, une constante envoyée, un geste perdu. Celui-ci est une **couleur**.
+
+`accentEpoque(null)` rendait la première époque. Une œuvre sans date était
+donc peinte en terre cuite et étiquetée « 8 bits » — dans un système dont le
+premier service déclaré est *« on sait où l'on est sur la timeline sans lire
+de date »*. La couleur **est** l'affirmation. La rendre par défaut affirme
+une décennie que la donnée ne porte pas, exactement comme `affect =
+Indifferent` affirmait un avis ([[51]]).
+
+Le repli avait pourtant une bonne raison, écrite dans le code : une tuile
+grise au milieu d'une grille colorée se lit comme un défaut d'affichage. La
+faute n'était pas de vouloir une couleur — c'était de **prendre celle d'une
+autre réponse** faute d'en avoir une propre. Le langage visuel en offrait
+une : la base est « chaude, pas grise ».
+
+**La règle** : quand un rendu encode une information — couleur, forme,
+position —, « ne pas savoir » a besoin de son **propre** signe. Réutiliser
+celui d'une valeur connue transforme une absence en réponse, et le rendu
+ment plus discrètement qu'un champ, parce que personne ne lit une couleur
+comme une donnée.
+
+Deux observations d'accompagnement :
+
+- **Le chemin était latent.** Aucune des 221 œuvres n'est sans date. Le
+  défaut n'aurait mordu qu'en grandissant — et le référentiel est un
+  chantier durable. Auditer ne se limite donc pas à ce qui casse aujourd'hui.
+- **Le test du repli passait avec le défaut.** Il exigeait « une couleur »,
+  c'est-à-dire un hexadécimal valide — ce que la mauvaise réponse était
+  aussi. Une assertion de **forme** ne vaut jamais une assertion de **sens**
+  ([[43]]).

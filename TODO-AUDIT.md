@@ -90,7 +90,19 @@ défaut sur l'un d'eux arrête tout ce qui suit.
 Ils ne transmettent rien, mais ils **affirment** — et un rendu qui invente
 est aussi coûteux qu'un champ qui ment.
 
-- [ ] **07 — La tuile et les époques.** `disposition/Tuile.tsx`, `disposition/epoque.ts`. Cite : `ecrans/00-langage-visuel.md` §3 et §7, §19.2. *Une jaquette absente doit se rendre par une tuile composée, jamais par un trou.*
+- [x] **07 — La tuile et les époques.** `disposition/Tuile.tsx`, `disposition/epoque.ts`. Cite : `ecrans/00-langage-visuel.md` §3 et §7, §19.2. *Une jaquette absente doit se rendre par une tuile composée, jamais par un trou.*
+
+  **1 · Envoyé sans être saisi — RIEN.** Composant de rendu pur : il ne transmet rien. `trameDuTitre` (`epoque.ts:57`) dérive du titre et non d'un tirage, ce que son test exige — une grille qui change d'aspect d'une visite à l'autre se lirait comme une perte de données.
+
+  **2 · Rendu sans être lu — RIEN.** Les trois propriétés servent : `titre` en `alt` et dans la tuile composée (`Tuile.tsx:41`, `:57`), `annee` pour l'accent (`:30`), `couverture` pour choisir la branche (`:32`).
+
+  **3 · Écrit sans être dit — UN, corrigé, et c'est une affirmation VISUELLE.** `accentEpoque(null)` rendait `EPOQUES[0]` : une œuvre non datée était peinte en terre cuite et étiquetée **« 8 bits »**. Or le premier service du système d'époques est « on sait où l'on est **sans lire de date** » — la couleur *affirme* une décennie, et l'affirmer sur une donnée absente est la faute de l'apprentissage 51, transposée au rendu. Corrigé par `SANS_EPOQUE`, le filet chaud du langage visuel §2 : ni gris — la raison d'être du repli tient toujours — ni l'une des six. **Aucune œuvre du dataset actuel n'est sans date** : le chemin était latent, et il ne le serait pas resté, le référentiel étant un chantier durable (§18.6).
+
+  **4 · Dit sans être écrit — RIEN.** Aucun geste.
+
+  **Contrôle — quel test échouerait ?** Deux tests neufs, une mutation annoncée et vérifiée. À noter : le test existant « donne une couleur même sans année connue » **passait** avec le défaut — il n'exigeait qu'un hexadécimal valide, ce que `EPOQUES[0]` est.
+
+  **Observation — un manque de §19.2.** `Tuile` n'a pas de repli si l'image **échoue à charger** : une jaquette empruntée est révocable, et §19.2 exige que « rien ne cesse de fonctionner quand l'une disparaît ». Le catalogue filtre à l'amorçage, donc un fichier retiré ensuite donne un glyphe cassé et non la tuile composée. → **item 29**.
 
 - [ ] **08 — Le statut régional.** `region/StatutRegional.tsx`, `region/statut.ts`. Cite : §3.4, `dataset/README.md`. *Quatre états, dont 22 non-sorties arbitrées et 32 inconnues. Aucun ne doit se rendre par l'absence d'indication.*
 
@@ -146,6 +158,8 @@ inscrit et ne les construit pas.
 
 - [ ] **28 — `EtatDuService` n'est monté nulle part.** Composant écrit et testé, jamais affiché — le même défaut que `ZoneSansDate` avant l'item 18. *Décision attendue : où montrer la santé du service, et à quelles conditions. Un bandeau permanent dirait « tout va bien » en continu, ce que les principes §5 ne demandent pas ; un bandeau à l'échec seulement risque de ne jamais s'afficher en test.*
 
+- [ ] **29 — Une jaquette qui disparaît casse la tuile.** (§19.2) Le catalogue ne filtre sur l'existence du fichier qu'à l'amorçage ; retiré ensuite, l'`<img>` échoue et le navigateur rend un glyphe cassé. *Acceptation : une image qui n'arrive pas se replie sur la tuile composée, et un test le prouve avec une source invalide.*
+
 ---
 
 ## Journal
@@ -161,3 +175,5 @@ inscrit et ne les construit pas.
 - **05 — la timeline.** Écran en lecture seule : rien d'envoyé, rien de persisté, aucun geste perdu. Mais **trois champs sont rendus par l'API et jetés par l'écran**. `type` d'abord, et c'est la cause exacte du symptôme signalé depuis un téléphone — vérifié en base, une œuvre du profil porte trois moments, `AcquiredItem`, `CompletedGame`, `StartedGame`, que l'écran affiche en trois lignes identiques. `targetKind` ensuite : un titre saisi se donne pour une œuvre curée. Et les **avertissements causals** de §5.4, que l'API calcule et que le type du client ne déclare pas. Ce dernier est structurellement invisible : `lire<T>` **caste** le JSON, donc aucun compilateur ne peut signaler un champ manquant à l'appel. `confidence`, en revanche, n'est pas un manque : elle se déduit de la granularité, déjà rendue.
 
 - **06 — l'assemblage du parcours.** **Quatre défauts, tous corrigés**, et une raison unique à leur survie : **`App.tsx` n'avait aucun test**. C'est pourtant là que vivent les valeurs qui traversent les écrans sans appartenir à aucun. L'état relu était **périmé** — chargé au seul choix de la machine, alors que changer la période démonte la sélection et emporte son état local, si bien qu'on revenait en voyant moins que ce que la base contenait. **« Recharger la liste » quittait l'écran**, le bouton appelant le choix de machine qui se termine par un retour à la période : un geste qui faisait autre chose que ce qu'il annonçait. Et surtout, **un échec réseau se rendait par un chargement éternel** — comme un catalogue vide : trois états pour une seule phrase, là où les principes §5 en exigent quatre distincts. Cinq tests neufs, deux mutations annoncées et vérifiées. Une observation sans défaut : `EtatDuService` est écrit, testé, et monté nulle part — le même défaut que `ZoneSansDate` avant l'item 18.
+
+- **07 — la tuile et les époques.** Un défaut, et c'est une affirmation **visuelle** : `accentEpoque(null)` rendait la première époque, si bien qu'une œuvre non datée était peinte en terre cuite et étiquetée « 8 bits ». Le premier service du système d'époques étant « on sait où l'on est **sans lire de date** », la couleur affirme une décennie — l'affirmer sur une donnée absente est l'apprentissage 51 transposé au rendu. Corrigé par un neutre **chaud** tiré du langage visuel, ni gris ni l'une des six. Deux détails valent d'être notés. D'abord le chemin était **latent** : aucune des 221 œuvres n'est sans date aujourd'hui, et il ne le serait pas resté. Ensuite le test qui couvrait ce repli **passait avec le défaut** — il n'exigeait qu'un hexadécimal valide, ce que la mauvaise réponse était aussi. Une observation inscrite : `Tuile` n'a pas de repli si l'image échoue à charger, alors que §19.2 exige que rien ne cesse de fonctionner quand une jaquette empruntée disparaît.

@@ -24,6 +24,22 @@ describe("accentEpoque — la couleur encode la décennie", () => {
     }
   });
 
+  it("ne peint PAS une date inconnue comme une décennie", () => {
+    // Le repli rendait `EPOQUES[0]` : une œuvre non datée était donc peinte
+    // en terre cuite et étiquetée « 8 bits ». Or le premier service du
+    // système d'époques est « on sait où l'on est sans lire de date » — la
+    // couleur *affirme* une décennie, et l'affirmer sur une donnée absente
+    // est la même faute que la valeur par défaut de l'affect.
+    //
+    // Aucune œuvre du dataset actuel n'est sans date : le chemin est latent.
+    // Il ne le restera pas — le référentiel est un chantier durable (§18.6),
+    // et un titre sans date y est un cas normal.
+    const sansDate = accentEpoque(null);
+
+    expect(EPOQUES.map((e) => e.nom)).not.toContain(sansDate.nom);
+    expect(EPOQUES.map((e) => e.accent)).not.toContain(sansDate.accent);
+  });
+
   it("donne une couleur même sans année connue", () => {
     // 31 sorties du dataset ne sont datées qu'à l'année, et quelques-unes pas
     // du tout. Une tuile sans accent serait grise au milieu d'une grille
@@ -32,7 +48,16 @@ describe("accentEpoque — la couleur encode la décennie", () => {
   });
 
   it("expose six époques et pas une de plus", () => {
+    // Le neutre n'en est pas une septième : il ne se range pas sur le
+    // gradient de température, il dit qu'on ne sait pas.
     expect(EPOQUES).toHaveLength(6);
+  });
+
+  it("garde le neutre chaud, jamais gris", () => {
+    // La raison d'être du repli tient toujours : une tuile grise au milieu
+    // d'une grille colorée se lirait comme un défaut d'affichage. La base du
+    // langage visuel est « chaude, pas grise » — on y prend son filet.
+    expect(accentEpoque(null).accent).toBe("#E5E0D8");
   });
 });
 
