@@ -288,7 +288,7 @@ public sealed class EventStore(PlayerEventDbContext db)
     /// </summary>
     public async Task UpsertMemoryAsync(
         string userId, string targetKind, string targetId, string texte,
-        CancellationToken ct = default)
+        string? titre = null, CancellationToken ct = default)
     {
         var ligne = await db.Memories.FirstOrDefaultAsync(
             m => m.UserId == userId && m.TargetKind == targetKind
@@ -304,6 +304,11 @@ public sealed class EventStore(PlayerEventDbContext db)
         }
 
         ligne.Text = texte;
+        // La requête porte le souvenir ENTIER, pas un correctif : effacer le
+        // repère à l'écran doit l'effacer en base. Le conserver ferait
+        // réapparaître sur l'axe une marque dont plus aucun geste ne
+        // débarrasserait.
+        ligne.Title = titre;
         // La date d'ÉCRITURE, jamais celle du fait raconté : celle-là vit
         // dans l'événement que le souvenir accompagne.
         ligne.UpdatedAt = DateTime.UtcNow;

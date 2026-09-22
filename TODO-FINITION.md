@@ -4,15 +4,16 @@
 > repris ici **dans l'ordre où ils comptent** : ce qui bloque un testeur
 > d'abord, la perte de richesse ensuite, l'outillage en dernier.
 >
-> Le verdict du 22 septembre 2026 tenait à quatre blocages. Trois sont
+> Le verdict du 22 septembre 2026 tenait à quatre blocages. Ils sont
 > levés — l'apparence, la grille qui rend enfin une grille, le moment qui
-> dit ce qu'il est, la correction qui tient. **Il en reste un.**
+> dit ce qu'il est, la correction qui tient, et le souvenir qui arrive sur
+> l'axe. **Reste la région, qui attend d'être écrite plutôt que construite.**
 >
 > La méthode est dans [`BOUCLE-FINITION.md`](./BOUCLE-FINITION.md).
 
 ## Ce qui bloque encore un test utilisateur
 
-- [ ] **F1 — Le souvenir atteint la timeline.** (audit 39 · §9.1, §9.2) **Décidé** : un **titre court** sert de repère sur l'axe, le texte complet s'ouvre au clic. §9.1 fait de cette section le porteur direct du « oui, ça me ressemble » — c'est-à-dire du critère de la porte. *Acceptation : `MemoryRow` porte un titre facultatif, l'API l'accepte et le rend, l'écran de sélection le propose sans l'imposer, et le parcours de bout en bout lit ce repère sur l'axe.*
+- [x] **F1 — Le souvenir atteint la timeline.** (audit 39 · §9.1, §9.2) **Décidé** : un **titre court** sert de repère sur l'axe, le texte complet s'ouvre au clic. §9.1 fait de cette section le porteur direct du « oui, ça me ressemble » — c'est-à-dire du critère de la porte. *Acceptation : `MemoryRow` porte un titre facultatif, l'API l'accepte et le rend, l'écran de sélection le propose sans l'imposer, et le parcours de bout en bout lit ce repère sur l'axe.*
 
 - [ ] **F2 — La région est assumée, et écrite.** (audit 18 · §3.4) **Décidé** : on garde `PAL` pour les premiers testeurs, qui seront européens, et on l'inscrit comme **hypothèse explicite** dans `PROTOCOLE-DE-TEST.md` — avec le critère de recrutement qui en découle et ce qu'il faudra faire le jour où un testeur ne l'est pas. *Acceptation : l'hypothèse est écrite là où elle sera lue, et un test échoue si une région littérale apparaît ailleurs que dans `App.tsx`.*
 
@@ -51,3 +52,15 @@
 ---
 
 ## Journal
+
+- **F1** — `MemoryRow.Title`, nullable et borné à 80 caractères par la
+  colonne autant que par le point d'entrée ; `POST /memories` accepte le
+  couple entier, `GET /memories/{user}` le rend, et `/timeline/{user}` joint
+  le souvenir de chaque cible sur ses moments — par le couple **genre +
+  identifiant**, jamais l'identifiant seul. L'écran de sélection propose le
+  repère **sous** la phrase et ne l'impose pas : une phrase seule part comme
+  avant, un repère seul ne part pas. L'axe le rend **une fois par cible** —
+  un jeu affiné porte trois moments et une seule phrase — et ouvre le texte
+  complet au clic. Ce qui est laissé : le souvenir n'est pas éditable depuis
+  la timeline (c'est E07, différé), et le tiroir sans date le transporte
+  côté API sans le montrer (F15).

@@ -4,7 +4,7 @@ import { t } from "../i18n/t";
 import { ZoneSansDate } from "../temporel/ZoneSansDate";
 import { Icone, type NomIcone } from "../icones/Icone";
 import { forme, libelle } from "../temporel/valeur";
-import type { EntreeTimeline, MomentTimeline } from "./types";
+import type { EntreeTimeline, MomentTimeline, SouvenirTimeline } from "./types";
 
 /**
  * E03 — la timeline.
@@ -77,8 +77,51 @@ function Marque({ type }: { type: string }) {
   );
 }
 
+/**
+ * Le souvenir sur l'axe (§9.2, E03 repère C).
+ *
+ * <b>Un repère, puis le texte au clic.</b> §9.2 donne au titre court ce rôle
+ * exact : « servant de repère sur la timeline ». Déplier trente phrases
+ * d'office ferait de l'écran de LECTURE un mur de texte, et l'axe — ce qu'on
+ * vient voir — disparaîtrait ; ne rien montrer du tout laisserait en base le
+ * seul contenu qui ne soit pas généré.
+ *
+ * <b>Sans repère, la marque reste.</b> Le titre est facultatif : faire
+ * disparaître de l'axe la phrase de qui ne l'a pas titrée punirait un champ
+ * qu'on annonce facultatif.
+ */
+function SouvenirDuMoment({ souvenir }: { souvenir: SouvenirTimeline }) {
+  const [ouvert, setOuvert] = useState(false);
+  return (
+    <div className="souvenir">
+      <button
+        type="button"
+        className="souvenir-repere"
+        data-testid="souvenir-repere"
+        aria-expanded={ouvert}
+        onClick={() => setOuvert((o) => !o)}
+      >
+        {souvenir.title ?? t("timeline.souvenirSansRepere")}
+      </button>
+      {ouvert ? <p className="souvenir-texte">{souvenir.text}</p> : null}
+    </div>
+  );
+}
+
 function Entree({ entree }: { entree: EntreeTimeline }) {
   const [deplie, setDeplie] = useState(false);
+
+  // Les cibles dont le souvenir a déjà été rendu dans cette entrée. Reconstruit
+  // à chaque rendu, et parcouru dans l'ordre d'affichage : la première ligne
+  // du jeu porte la phrase, les suivantes ne la répètent pas.
+  const porteurs = new Set<string>();
+  const premierPorteur = (moment: MomentTimeline) => {
+    const cle = `${moment.targetKind}/${moment.targetId}`;
+    if (porteurs.has(cle)) return false;
+    porteurs.add(cle);
+    return true;
+  };
+
   const annee = Number(entree.interval.start.slice(0, 4));
   const epoque = accentEpoque(Number.isNaN(annee) ? null : annee);
   const visible = entree.isEpisode ? deplie : true;
@@ -122,6 +165,14 @@ function Entree({ entree }: { entree: EntreeTimeline }) {
               <span data-forme={forme(moment.occurredAt)}>
                 {libelle(moment.occurredAt)}
               </span>
+              {/* UNE fois par cible, pas une fois par moment. Le souvenir est
+                  attaché au JEU (MODELE §5) : un titre affiné en porte trois,
+                  et l'API rend le même sur les trois. Les afficher tous ferait
+                  croire à trois phrases distinctes — le défaut exact que
+                  l'agrégation d'épisode existe pour éviter (§4.4). */}
+              {moment.memory !== null && premierPorteur(moment) ? (
+                <SouvenirDuMoment souvenir={moment.memory} />
+              ) : null}
             </li>
           ))}
         </ul>

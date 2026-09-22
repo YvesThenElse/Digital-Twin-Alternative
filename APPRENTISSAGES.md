@@ -2242,3 +2242,23 @@ ressemble à une garantie.
 Le test qui l'accompagne se pose la même question : il ne vérifie pas que
 telle colonne est protégée, il vérifie qu'**une colonne ajoutée après le
 déclencheur** l'est.
+
+### 70 — Un compte trop élevé nomme ce qu'on avait oublié de construire
+
+Le parcours devait lire **une** marque de souvenir sur l'axe — celle du jeu
+affiné, dont les trois moments ne doivent en produire qu'une. Il en a trouvé
+deux, et ma première réaction a été de corriger le nombre.
+
+La seconde venait du **titre saisi**, à qui le parcours écrit une phrase sans
+jamais lui donner de repère. Cette marque-là prouvait, de bout en bout, que
+le repère est réellement facultatif — la moitié de l'acceptation que je
+croyais couverte par un seul test de composant.
+
+C'est la règle des mutations appliquée à un rendu : un écart de compte a un
+**sens**, et le sens dépend du signe. Moins, c'est un chemin qui ne passe
+pas ; plus, c'est un chemin qu'on ne savait pas avoir.
+
+**La règle** : devant un compte plus élevé qu'annoncé, nommer chaque élément
+supplémentaire avant de toucher au nombre — puis remplacer le nombre par des
+assertions qui les nomment. `toHaveCount(2)` seul serait redevenu faux au
+premier souvenir ajouté au parcours, sans rien dire de ce qui a changé.

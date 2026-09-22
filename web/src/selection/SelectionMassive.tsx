@@ -49,6 +49,21 @@ export type CibleSouvenir = {
 };
 
 /**
+ * Un souvenir tel qu'il se saisit : une phrase, et un <b>repère</b> court et
+ * facultatif (§9.2).
+ *
+ * <b>Un seul objet, jamais deux champs parallèles.</b> Deux tableaux indexés
+ * par la même clé finiraient par diverger — une ligne aurait un repère sans
+ * phrase, et l'axe annoncerait un texte introuvable.
+ *
+ * Le repère absent est la chaîne VIDE ici, et `null` en base : l'écran tient
+ * une saisie, la base tient un fait. Le client fait la traduction, une fois.
+ */
+export type SouvenirEcrit = { texte: string; titre: string };
+
+const SANS_SOUVENIR: SouvenirEcrit = { texte: "", titre: "" };
+
+/**
  * Ce dont l'utilisateur s'est déjà prononcé sur cette plateforme.
  *
  * <b>Relu à l'ouverture.</b> L'écran ne le lisait pas : un rechargement
@@ -94,7 +109,7 @@ type Props = {
    * Enregistre un souvenir. Requis, sans valeur par défaut : un rappel
    * facultatif absent rendrait le champ muet sans que rien ne le signale.
    */
-  ecrireSouvenir: (cible: CibleSouvenir, texte: string) => Promise<void>;
+  ecrireSouvenir: (cible: CibleSouvenir, souvenir: SouvenirEcrit) => Promise<void>;
   /**
    * Recharger la liste. **Ne doit jamais être appelé en réponse à un clic** :
    * un aller-retour par ligne ruinerait le budget d'un tap par jeu.
@@ -124,7 +139,7 @@ type Props = {
    * un appelant qui l'oublie verrait un écran vide sans qu'aucune erreur ne
    * le dise.
    */
-  souvenirsInitiaux: Record<string, string>;
+  souvenirsInitiaux: Record<string, SouvenirEcrit>;
 };
 
 /**
@@ -178,17 +193,32 @@ function Question({ intitule, choix, valeur, repondre }: {
  */
 function ChampSouvenir({ titre, valeur, surSaisie, surSortie }: {
   titre: string;
-  valeur: string;
-  surSaisie: (texte: string) => void;
+  valeur: SouvenirEcrit;
+  surSaisie: (souvenir: SouvenirEcrit) => void;
   surSortie: () => void;
 }) {
   return (
-    <textarea
-      aria-label={t("souvenir.invite", { titre })}
-      value={valeur}
-      onChange={(e) => surSaisie(e.target.value)}
-      onBlur={surSortie}
-    />
+    <div className="souvenir-saisie">
+      <textarea
+        aria-label={t("souvenir.invite", { titre })}
+        value={valeur.texte}
+        onChange={(e) => surSaisie({ ...valeur, texte: e.target.value })}
+        onBlur={surSortie}
+      />
+      {/* APRÈS la phrase, et pas avant : placé en tête, le repère se lirait
+          comme une première étape à franchir, et §9.2 le veut facultatif.
+          La longueur MIROITE la borne de l'API — qui reste seule juge : une
+          règle portée par l'écran seul n'existe pas. */}
+      <input
+        type="text"
+        className="souvenir-repere-saisie"
+        aria-label={t("souvenir.repere", { titre })}
+        maxLength={80}
+        value={valeur.titre}
+        onChange={(e) => surSaisie({ ...valeur, titre: e.target.value })}
+        onBlur={surSortie}
+      />
+    </div>
   );
 }
 
@@ -223,7 +253,8 @@ export function SelectionMassive({
   // ligne ne doit pas détruire une phrase. Se tromper de ligne est le geste
   // le plus fréquent de cet écran, et perdre du texte à cause d'un tap mal
   // placé serait impardonnable sur le seul contenu non régénérable.
-  const [souvenirs, setSouvenirs] = useState<Record<string, string>>(souvenirsInitiaux);
+  const [souvenirs, setSouvenirs] =
+    useState<Record<string, SouvenirEcrit>>(souvenirsInitiaux);
 
   // Les titres saisis. Ils vivent à part des œuvres du référentiel : les
   // mélanger leur donnerait un rang, une notoriété et un statut régional
@@ -376,12 +407,15 @@ export function SelectionMassive({
    * saisi, dont l'identifiant local ne quitte jamais le navigateur.
    */
   function enregistrerSouvenir(cle: string, cible: CibleSouvenir) {
-    const texte = (souvenirs[cle] ?? "").trim();
+    const brouillon = souvenirs[cle] ?? SANS_SOUVENIR;
+    const texte = brouillon.texte.trim();
     // Rien à garder : un souvenir vide occuperait une place à l'écran et
-    // ferait croire à une phrase écrite.
+    // ferait croire à une phrase écrite. Un repère SEUL ne fait pas un
+    // souvenir non plus — il annoncerait sur l'axe un texte inexistant, et
+    // l'API le refuserait. Il reste à l'écran, sous les yeux.
     if (texte.length === 0) return;
 
-    ecrireSouvenir(cible, texte).catch(() => {
+    ecrireSouvenir(cible, { texte, titre: brouillon.titre.trim() }).catch(() => {
       setErreur(t("erreur.souvenir"));
     });
   }
@@ -479,9 +513,9 @@ export function SelectionMassive({
               {declare ? (
                 <ChampSouvenir
                   titre={oeuvre.titre}
-                  valeur={souvenirs[oeuvre.id] ?? ""}
-                  surSaisie={(texte) =>
-                    setSouvenirs((s) => ({ ...s, [oeuvre.id]: texte }))
+                  valeur={souvenirs[oeuvre.id] ?? SANS_SOUVENIR}
+                  surSaisie={(souvenir) =>
+                    setSouvenirs((s) => ({ ...s, [oeuvre.id]: souvenir }))
                   }
                   surSortie={() => enregistrerSouvenir(oeuvre.id, { kind: "work", id: oeuvre.id })}
                 />
@@ -533,9 +567,9 @@ export function SelectionMassive({
               {revendication !== null ? (
                 <ChampSouvenir
                   titre={libre.titre}
-                  valeur={souvenirs[libre.id] ?? ""}
-                  surSaisie={(texte) =>
-                    setSouvenirs((s) => ({ ...s, [libre.id]: texte }))
+                  valeur={souvenirs[libre.id] ?? SANS_SOUVENIR}
+                  surSaisie={(souvenir) =>
+                    setSouvenirs((s) => ({ ...s, [libre.id]: souvenir }))
                   }
                   surSortie={() =>
                     enregistrerSouvenir(libre.id, {

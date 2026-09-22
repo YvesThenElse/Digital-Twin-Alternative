@@ -53,12 +53,35 @@ public class TimelineTests(PostgresFixture bdd)
 
     private static PlayerEvent Ev(
         string id, string user, string type, string cible, TemporalValue quand,
-        int jourSaisie = 15, string? lot = null)
-        => new(id, user, type, new EventTarget("work", cible), quand,
+        int jourSaisie = 15, string? lot = null, string genre = "work")
+        => new(id, user, type, new EventTarget(genre, cible), quand,
                new DateTime(2026, 1, jourSaisie, 12, 0, 0, DateTimeKind.Utc))
         {
             BatchId = lot,
         };
+
+    /// <summary>Une œuvre réellement au catalogue — <c>/memories</c> refuse les autres.</summary>
+    private static async Task<string> UneOeuvre(HttpClient c)
+    {
+        var plateformes = await c.GetFromJsonAsync<JsonElement>("/platforms");
+        var id = plateformes[0].GetProperty("id").GetString()!;
+        var oeuvres = await c.GetFromJsonAsync<JsonElement>($"/platforms/{id}/works");
+        return oeuvres[0].GetProperty("id").GetString()!;
+    }
+
+    private static Task<HttpResponseMessage> EcrireSouvenir(
+        HttpClient c, string user, string genre, string cible, string texte, string? titre)
+        => c.PostAsJsonAsync("/memories", new
+        {
+            userId = user,
+            targetKind = genre,
+            targetId = cible,
+            text = texte,
+            title = titre,
+        });
+
+    private static JsonElement PremierMoment(JsonElement timeline)
+        => timeline.GetProperty("entries")[0].GetProperty("moments")[0];
 
     private async Task Semer(params PlayerEvent[] evenements)
     {
@@ -401,6 +424,151 @@ public class TimelineTests(PostgresFixture bdd)
         var intervalle = rendu.GetProperty("entries")[0].GetProperty("interval");
         Assert.Equal("1994-01-01", intervalle.GetProperty("start").GetString());
         Assert.Equal("1994-12-31", intervalle.GetProperty("end").GetString());
+    }
+
+    // ------------------------------------------- le souvenir sur l'axe (§9.2)
+
+    [Fact]
+    public async Task Un_moment_porte_le_souvenir_ecrit_sur_sa_cible()
+    {
+        // §9.1 fait du journal le porteur DIRECT du « oui, ça me ressemble » —
+        // le critère de la porte de Phase 2. Écrit en base et jamais rendu, il
+        // ne porte rien : une liste de jeux cochés est statistiquement
+        // identique à celle de milliers d'autres joueurs.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var oeuvre = await UneOeuvre(client);
+        var user = "usr_tl_souvenir";
+        await Semer(Ev("s1", user, PlayerEventType.StartedGame, oeuvre, new Year(1997)));
+
+        await EcrireSouvenir(client, user, "work", oeuvre,
+            "On l'a fini à deux avec mon frère.", "L'été 1997");
+
+        var souvenir = PremierMoment(await Timeline(client, user)).GetProperty("memory");
+        Assert.Equal("L'été 1997", souvenir.GetProperty("title").GetString());
+        Assert.Equal("On l'a fini à deux avec mon frère.",
+            souvenir.GetProperty("text").GetString());
+    }
+
+    [Fact]
+    public async Task Un_moment_sans_souvenir_n_en_invente_pas()
+    {
+        // Un objet vide se rendrait comme un repère muet : l'axe annoncerait
+        // une phrase là où personne n'en a écrit. Une valeur par défaut est
+        // une affirmation.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var user = "usr_tl_sans_souvenir";
+        await Semer(Ev("n1", user, PlayerEventType.StartedGame, "wrk_a", new Year(1997)));
+
+        var moment = PremierMoment(await Timeline(client, user));
+        Assert.Equal(JsonValueKind.Null, moment.GetProperty("memory").ValueKind);
+    }
+
+    [Fact]
+    public async Task Un_souvenir_sans_titre_atteint_l_axe_quand_meme()
+    {
+        // Le titre est facultatif (§9.2) : un souvenir qui n'en a pas ne doit
+        // pas disparaître de l'axe pour autant — ce serait punir celui qui
+        // n'a fait qu'écrire sa phrase.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var oeuvre = await UneOeuvre(client);
+        var user = "usr_tl_sans_titre";
+        await Semer(Ev("t1", user, PlayerEventType.StartedGame, oeuvre, new Year(1997)));
+
+        await EcrireSouvenir(client, user, "work", oeuvre, "Juste une phrase.", null);
+
+        var souvenir = PremierMoment(await Timeline(client, user)).GetProperty("memory");
+        Assert.Equal(JsonValueKind.Null, souvenir.GetProperty("title").ValueKind);
+        Assert.Equal("Juste une phrase.", souvenir.GetProperty("text").GetString());
+    }
+
+    [Fact]
+    public async Task Le_souvenir_d_un_titre_saisi_atteint_aussi_l_axe()
+    {
+        // C'est là que §3.5 place le contenu le plus personnel : un jeu absent
+        // du référentiel est souvent celui dont on se souvient le mieux. Le
+        // joindre par l'identifiant seul, sans le genre, attacherait le
+        // souvenir d'une revendication à une œuvre homonyme.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var user = "usr_tl_libre";
+        await Semer(Ev("l1", user, PlayerEventType.StartedGame, "ucl_XYZ",
+            new Year(1997), genre: "unresolvedClaim"));
+
+        await EcrireSouvenir(client, user, "unresolvedClaim", "ucl_XYZ",
+            "Le dragon était bleu.", "Chez mon cousin");
+
+        var souvenir = PremierMoment(await Timeline(client, user)).GetProperty("memory");
+        Assert.Equal("Chez mon cousin", souvenir.GetProperty("title").GetString());
+    }
+
+    [Fact]
+    public async Task Le_genre_de_la_cible_compte_dans_la_jointure()
+    {
+        // Les deux espaces d'identifiants — `wrk_` et `ucl_` — ne se
+        // croisent que par convention. Joindre sur l'identifiant seul ferait
+        // porter à une revendication le souvenir d'une œuvre le jour où cette
+        // convention changerait, et l'axe attribuerait à un titre saisi une
+        // phrase écrite sur un autre jeu.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var oeuvre = await UneOeuvre(client);
+        var user = "usr_tl_genres";
+        // Un moment dont la CIBLE porte le même identifiant, mais pas le
+        // même genre, que celui du souvenir écrit juste après.
+        await Semer(Ev("g1", user, PlayerEventType.StartedGame, oeuvre,
+            new Year(1997), genre: "unresolvedClaim"));
+
+        await EcrireSouvenir(client, user, "work", oeuvre, "Sur l'œuvre.", "Repère");
+
+        var moment = PremierMoment(await Timeline(client, user));
+        Assert.Equal(JsonValueKind.Null, moment.GetProperty("memory").ValueKind);
+    }
+
+    [Fact]
+    public async Task Un_moment_sans_date_garde_aussi_son_souvenir()
+    {
+        // Le tiroir n'est pas une poubelle : c'est la tâche de relance la
+        // moins coûteuse du produit (ORDONNANCEMENT §6). Un moment qui y
+        // tombe emporte sa phrase — sans quoi dater un souvenir le ferait
+        // apparaître sur l'axe comme s'il venait d'être écrit.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var oeuvre = await UneOeuvre(client);
+        var user = "usr_tl_tiroir_souvenir";
+        await Semer(Ev("u1", user, PlayerEventType.StartedGame, oeuvre, Unknown.Instance));
+
+        await EcrireSouvenir(client, user, "work", oeuvre, "Sans date, mais pas sans phrase.", null);
+
+        var moment = (await Timeline(client, user)).GetProperty("undated")[0];
+        Assert.Equal("Sans date, mais pas sans phrase.",
+            moment.GetProperty("memory").GetProperty("text").GetString());
+    }
+
+    [Fact]
+    public async Task Le_souvenir_d_une_cible_ne_deborde_pas_sur_une_autre()
+    {
+        // Une jointure sur le seul utilisateur mettrait la même phrase sur
+        // tous ses moments — et l'axe dirait qu'il a écrit trente souvenirs.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var oeuvre = await UneOeuvre(client);
+        var user = "usr_tl_deux_cibles";
+        await Semer(
+            Ev("d1", user, PlayerEventType.StartedGame, oeuvre, new Year(1997)),
+            Ev("d2", user, PlayerEventType.StartedGame, "wrk_autre", new Year(1997)));
+
+        await EcrireSouvenir(client, user, "work", oeuvre, "Sur celui-ci.", "Repère");
+
+        var moments = (await Timeline(client, user)).GetProperty("entries")
+            .EnumerateArray().SelectMany(e => e.GetProperty("moments").EnumerateArray())
+            .ToList();
+        var avecSouvenir = moments
+            .Where(m => m.GetProperty("memory").ValueKind != JsonValueKind.Null)
+            .Select(m => m.GetProperty("targetId").GetString()).ToList();
+        Assert.Equal([oeuvre], avecSouvenir);
     }
 
     [Fact]

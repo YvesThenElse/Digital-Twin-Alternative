@@ -36,13 +36,18 @@ afterEach(() => {
 
 describe("client.souvenir — la cible porte son genre", () => {
   it("écrit un souvenir d'œuvre sur une œuvre", async () => {
-    await client.souvenir("usr_1", { kind: "work", id: "wrk_42" }, "Noël 1994.");
+    await client.souvenir(
+      "usr_1", { kind: "work", id: "wrk_42" }, { texte: "Noël 1994.", titre: "" });
 
     expect(appels[0].corps).toEqual({
       userId: "usr_1",
       targetKind: "work",
       targetId: "wrk_42",
       text: "Noël 1994.",
+      // NUL, jamais `""` : l'écran tient une saisie, la base tient un fait.
+      // Un repère vide s'afficherait sur l'axe comme une marque annonçant
+      // une phrase introuvable.
+      title: null,
     });
   });
 
@@ -52,7 +57,8 @@ describe("client.souvenir — la cible porte son genre", () => {
     // identifiant que l'écran n'affiche jamais — et le contenu le plus
     // personnel du produit se perdrait derrière un message incompréhensible.
     await client.souvenir(
-      "usr_1", { kind: "unresolvedClaim", id: "ucl_ABC" }, "Le dragon était bleu.");
+      "usr_1", { kind: "unresolvedClaim", id: "ucl_ABC" },
+      { texte: "Le dragon était bleu.", titre: "" });
 
     expect(appels[0].corps).toMatchObject({
       targetKind: "unresolvedClaim",
@@ -64,8 +70,10 @@ describe("client.souvenir — la cible porte son genre", () => {
     // Les deux tests ci-dessus passeraient encore si le client envoyait le
     // genre reçu ET un second champ figé. On exige donc que les deux
     // requêtes DIFFÈRENT sur ce champ.
-    await client.souvenir("usr_1", { kind: "work", id: "wrk_42" }, "A");
-    await client.souvenir("usr_1", { kind: "unresolvedClaim", id: "ucl_ABC" }, "B");
+    await client.souvenir(
+      "usr_1", { kind: "work", id: "wrk_42" }, { texte: "A", titre: "" });
+    await client.souvenir(
+      "usr_1", { kind: "unresolvedClaim", id: "ucl_ABC" }, { texte: "B", titre: "" });
 
     const genres = appels.map((a) => (a.corps as { targetKind: string }).targetKind);
     expect(new Set(genres).size).toBe(2);
@@ -75,13 +83,15 @@ describe("client.souvenir — la cible porte son genre", () => {
 describe("client.souvenirs — relire ce qui a été écrit", () => {
   it("indexe les souvenirs par cible", async () => {
     reponse = [
-      { targetKind: "work", targetId: "wrk_1", text: "Noël 1992." },
-      { targetKind: "work", targetId: "wrk_2", text: "Chez mon cousin." },
+      { targetKind: "work", targetId: "wrk_1", text: "Noël 1992.", title: "Le premier Noël" },
+      { targetKind: "work", targetId: "wrk_2", text: "Chez mon cousin.", title: null },
     ];
 
     expect(await client.souvenirs("usr_1")).toEqual({
-      wrk_1: "Noël 1992.",
-      wrk_2: "Chez mon cousin.",
+      wrk_1: { texte: "Noël 1992.", titre: "Le premier Noël" },
+      // Le repère absent devient une SAISIE vide : le champ doit s'ouvrir
+      // vide, pas afficher « null ».
+      wrk_2: { texte: "Chez mon cousin.", titre: "" },
     });
   });
 
@@ -90,11 +100,12 @@ describe("client.souvenirs — relire ce qui a été écrit", () => {
     // souvenir n'aurait nulle part où s'afficher, et l'indexer ferait croire
     // à une ligne qui n'existe pas.
     reponse = [
-      { targetKind: "work", targetId: "wrk_1", text: "Gardé." },
-      { targetKind: "unresolvedClaim", targetId: "ucl_1", text: "Écarté." },
+      { targetKind: "work", targetId: "wrk_1", text: "Gardé.", title: null },
+      { targetKind: "unresolvedClaim", targetId: "ucl_1", text: "Écarté.", title: null },
     ];
 
-    expect(await client.souvenirs("usr_1")).toEqual({ wrk_1: "Gardé." });
+    expect(await client.souvenirs("usr_1"))
+      .toEqual({ wrk_1: { texte: "Gardé.", titre: "" } });
   });
 
   it("rend un objet vide, jamais une erreur, pour un profil vierge", async () => {
@@ -168,7 +179,7 @@ describe("client — les adresses et les verbes", () => {
     // Le mandataire de Vite ne relaie que ce préfixe. Une adresse sans lui
     // recevrait le HTML du front en guise de JSON — c'est le défaut que le
     // parcours a trouvé sur les jaquettes.
-    await client.souvenir("usr_1", { kind: "work", id: "w" }, "x");
+    await client.souvenir("usr_1", { kind: "work", id: "w" }, { texte: "x", titre: "" });
     reponse = { entries: [], undated: [] };
     await client.timeline("usr_1");
 

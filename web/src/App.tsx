@@ -6,7 +6,11 @@ import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
 import type { PeriodeChoisie } from "./periode/periode";
-import { SelectionMassive, type EtatLigne } from "./selection/SelectionMassive";
+import {
+  SelectionMassive,
+  type EtatLigne,
+  type SouvenirEcrit,
+} from "./selection/SelectionMassive";
 import { Timeline } from "./timeline/Timeline";
 import type { EntreeTimeline, MomentTimeline } from "./timeline/types";
 import type { Oeuvre, Plateforme } from "./selection/types";
@@ -64,7 +68,8 @@ export function App() {
   const [periode, setPeriode] = useState<PeriodeChoisie>({ kind: "unknown" });
   const [oeuvres, setOeuvres] = useState<Oeuvre[]>([]);
   const [etatInitial, setEtatInitial] = useState<EtatLigne[]>([]);
-  const [souvenirsInitiaux, setSouvenirsInitiaux] = useState<Record<string, string>>({});
+  const [souvenirsInitiaux, setSouvenirsInitiaux] =
+    useState<Record<string, SouvenirEcrit>>({});
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -213,8 +218,8 @@ export function App() {
                 entries: lot.entries,
               })
             }
-            ecrireSouvenir={(cible, texte) =>
-              client.souvenir(UTILISATEUR, cible, texte).then(() => undefined)
+            ecrireSouvenir={(cible, souvenir) =>
+              client.souvenir(UTILISATEUR, cible, souvenir).then(() => undefined)
             }
             recharger={() => { void essayer(() => rechargerListe(machine)); }}
             retracter={(workId) =>

@@ -23,13 +23,28 @@ public sealed record TemporalView(
     int? Margin = null,
     int? Age = null);
 
+/// <summary>
+/// Le souvenir attaché à la cible du moment (§9.2).
+///
+/// <para><b>Nul quand il n'y en a pas</b>, jamais un objet vide : l'axe
+/// afficherait un repère annonçant une phrase introuvable.</para>
+/// </summary>
+public sealed record MemoryView(string? Title, string Text);
+
 /// <param name="TargetLabel">
 /// Le titre lisible. L'écran ne peut pas le résoudre : il n'a chargé qu'une
 /// plateforme, et la timeline les traverse toutes.
 /// </param>
+/// <param name="Memory">
+/// Le souvenir écrit sur la CIBLE, pas sur le moment : le modèle l'attache à
+/// un jeu (MODELE §5), et trois moments du même titre en portent donc le
+/// même. Le rendre une fois par cible est une décision d'écran, pas de
+/// l'API — qui dirait alors laquelle des trois lignes est la bonne.
+/// </param>
 public sealed record MomentView(
     string Id, string Type, string TargetKind, string TargetId,
-    string TargetLabel, string Confidence, TemporalView OccurredAt);
+    string TargetLabel, string Confidence, TemporalView OccurredAt,
+    MemoryView? Memory = null);
 
 public sealed record IntervalView(string Start, string End);
 
@@ -61,6 +76,18 @@ public static class TimelineEndpoints
             var revendications = (await magasin.ReadClaimsAsync(userId, ct))
                 .ToDictionary(c => c.Id, c => c.Title, StringComparer.Ordinal);
 
+            // Indexés par le COUPLE genre + identifiant. L'identifiant seul
+            // rapprocherait un jour le souvenir d'une revendication de celui
+            // d'une œuvre — deux espaces de noms distincts que rien
+            // n'empêche de se croiser.
+            var souvenirs = (await magasin.ReadMemoriesAsync(userId, ct))
+                .ToDictionary(
+                    m => (m.TargetKind, m.TargetId),
+                    m => new MemoryView(m.Title, m.Text));
+
+            MemoryView? Souvenir(PlayerEvent e)
+                => souvenirs.GetValueOrDefault((e.Target.Kind, e.Target.Id));
+
             string Libelle(PlayerEvent e) => e.Target.Kind switch
             {
                 "unresolvedClaim" => revendications.GetValueOrDefault(e.Target.Id)
@@ -91,8 +118,8 @@ public static class TimelineEndpoints
                     new IntervalView(
                         e.Interval.Start.ToString("yyyy-MM-dd"),
                         e.Interval.End.ToString("yyyy-MM-dd")),
-                    [.. e.Moments.Select(m => Voir(m, Libelle(m)))]))],
-                [.. tri.Undated.Select(m => Voir(m, Libelle(m)))],
+                    [.. e.Moments.Select(m => Voir(m, Libelle(m), Souvenir(m)))]))],
+                [.. tri.Undated.Select(m => Voir(m, Libelle(m), Souvenir(m)))],
                 [.. tri.Warnings.Select(w => new WarningView(
                     w.ExpectedEarlierId, w.ExpectedLaterId, w.Message))]));
         });
@@ -100,9 +127,9 @@ public static class TimelineEndpoints
         return routes;
     }
 
-    private static MomentView Voir(PlayerEvent e, string libelle)
+    private static MomentView Voir(PlayerEvent e, string libelle, MemoryView? souvenir)
         => new(e.Id, e.Type, e.Target.Kind, e.Target.Id, libelle,
-               e.Confidence.ToString(), Voir(e.OccurredAt));
+               e.Confidence.ToString(), Voir(e.OccurredAt), souvenir);
 
     /// <summary>
     /// Traduit la valeur temporelle <b>sans l'aplatir</b>.

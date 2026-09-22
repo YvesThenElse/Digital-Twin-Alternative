@@ -269,6 +269,21 @@ input {
   padding: var(--e2) var(--e3);
 }
 
+/* La saisie du souvenir : la phrase, puis son repère facultatif. En colonne,
+   le repère SOUS la phrase — placé au-dessus, il se lirait comme une
+   première étape à franchir, alors que §9.2 le veut facultatif. */
+.souvenir-saisie {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+}
+
+/* Contenu d'utilisateur, comme la phrase : même italique. */
+.souvenir-repere-saisie {
+  font-style: italic;
+  width: 100%;
+}
+
 /* Le souvenir s'affiche en `body` ITALIQUE, jamais en `meta` : c'est le
    contenu le plus précieux du produit, il ne se relègue pas en petits
    caractères (§4). */
@@ -745,6 +760,36 @@ figure[data-testid="bande-epoque"] figcaption {
 .moment [data-forme] {
   font: var(--meta);
   color: var(--ink-2);
+}
+
+/* E03 repère C — le souvenir sur l'axe.
+ *
+ * « C'est le seul contenu de la timeline qui ne soit pas généré : il doit
+ * DOMINER visuellement les éléments automatiques. » D'où `body` italique et
+ * l'encre pleine, là où la date et la marque se tiennent en `meta` gris —
+ * le langage visuel §4 l'interdit explicitement en petits caractères.
+ *
+ * Il occupe sa propre rangée : la grille du moment a trois colonnes, et
+ * coincer une phrase dans l'une d'elles la réduirait à un filet. */
+.souvenir {
+  grid-column: 1 / -1;
+}
+
+.souvenir-repere {
+  font: var(--body);
+  font-style: italic;
+  color: var(--ink);
+  padding-inline: 0;
+}
+
+.souvenir-texte {
+  font: var(--body);
+  font-style: italic;
+  color: var(--ink);
+  /* Décalé sous son repère : on voit d'un coup d'œil à quel moment il
+     appartient, sans avoir à relire la ligne au-dessus. */
+  padding: var(--e1) 0 var(--e2) var(--e3);
+  border-inline-start: 2px solid var(--line);
 }
 
 /* Le tiroir — séparé, jamais masqué. « Une tâche, pas une poubelle » :

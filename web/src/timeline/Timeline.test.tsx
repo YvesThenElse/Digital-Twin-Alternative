@@ -18,6 +18,7 @@ const moment = (
   targetLabel: label,
   confidence: "Medium",
   occurredAt,
+  memory: null,
 });
 
 const entree = (
@@ -320,5 +321,126 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
 
     expect(screen.queryByRole("img", { name: "Joué" })).toBeNull();
     expect(screen.getByTestId("moment-marque")).toHaveTextContent("SoldItem");
+  });
+});
+
+describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
+  /** Le même jeu, vu trois fois : un jeu déclaré puis affiné en porte trois. */
+  const troisMoments = (souvenir: MomentTimeline["memory"]): MomentTimeline[] =>
+    ["StartedGame", "CompletedGame", "AcquiredItem"].map((type, i) => ({
+      ...moment(`m${i}`, "Chrono Trigger", { kind: "Year", year: 1995 }, type),
+      targetId: "wrk_chrono",
+      memory: souvenir,
+    }));
+
+  const unSouvenir = (titre: string | null) => ({
+    title: titre,
+    text: "On l'a fini à deux avec mon frère pendant les vacances.",
+  });
+
+  const repere = () => screen.queryByTestId("souvenir-repere");
+
+  it("porte le repère du souvenir sur l'axe", () => {
+    // §9.1 fait du journal le porteur DIRECT du « oui, ça me ressemble » —
+    // le critère de la porte de Phase 2. Écrit en base et jamais rendu, il
+    // ne porte rien : une liste de jeux cochés est statistiquement identique
+    // à celle de milliers d'autres joueurs de la même génération.
+    render(
+      <Timeline
+        entrees={[
+          entree(
+            [{ ...moment("a", "Chrono Trigger", { kind: "Year", year: 1995 }),
+               memory: unSouvenir("L'été 1997") }],
+            "1995-01-01", "1995-12-31",
+          ),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    expect(repere()).toHaveTextContent("L'été 1997");
+  });
+
+  it("n'ouvre le texte complet qu'au clic", async () => {
+    // « Un titre court sert de repère sur l'axe, le texte complet s'ouvre au
+    // clic. » Déplier trente phrases d'office ferait de l'écran de LECTURE
+    // un mur de texte, et l'axe — ce qu'on vient voir — disparaîtrait.
+    const utilisateur = userEvent.setup();
+    const souvenir = unSouvenir("L'été 1997");
+    render(
+      <Timeline
+        entrees={[
+          entree(
+            [{ ...moment("a", "Chrono Trigger", { kind: "Year", year: 1995 }),
+               memory: souvenir }],
+            "1995-01-01", "1995-12-31",
+          ),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    expect(screen.queryByText(souvenir.text)).toBeNull();
+    await utilisateur.click(repere()!);
+    expect(screen.getByText(souvenir.text)).toBeInTheDocument();
+  });
+
+  it("marque quand même un souvenir sans repère", async () => {
+    // Le titre est FACULTATIF (§9.2). Sans marque, écrire sa phrase sans la
+    // titrer la ferait disparaître de l'axe — une punition pour avoir sauté
+    // un champ qu'on annonce facultatif.
+    const utilisateur = userEvent.setup();
+    const souvenir = unSouvenir(null);
+    render(
+      <Timeline
+        entrees={[
+          entree(
+            [{ ...moment("a", "Chrono Trigger", { kind: "Year", year: 1995 }),
+               memory: souvenir }],
+            "1995-01-01", "1995-12-31",
+          ),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    expect(repere()).toHaveTextContent("Un souvenir");
+    await utilisateur.click(repere()!);
+    expect(screen.getByText(souvenir.text)).toBeInTheDocument();
+  });
+
+  it("ne répète pas le souvenir sur chaque moment du même jeu", async () => {
+    // Le souvenir est attaché à la CIBLE, pas au moment : un jeu affiné en
+    // porte trois, et l'API rend le même sur les trois. Les afficher tous
+    // ferait croire à trois phrases distinctes — exactement le défaut que
+    // l'agrégation d'épisode existe pour éviter (§4.4).
+    const utilisateur = userEvent.setup();
+    render(
+      <Timeline
+        entrees={[entree(troisMoments(unSouvenir("L'été 1997")), "1995-01-01", "1995-12-31")]}
+        sansDate={[]}
+      />,
+    );
+
+    await utilisateur.click(screen.getByRole("button", { name: /Déplier/ }));
+
+    expect(screen.getAllByTestId("moment-titre")).toHaveLength(3);
+    expect(screen.getAllByTestId("souvenir-repere")).toHaveLength(1);
+  });
+
+  it("n'invente pas de souvenir là où il n'y en a pas", () => {
+    // Un rendu par défaut est une affirmation : une marque vide dirait qu'une
+    // phrase attend, et le lecteur cliquerait sur rien.
+    render(
+      <Timeline
+        entrees={[
+          entree([moment("a", "Chrono Trigger", { kind: "Year", year: 1995 })],
+                 "1995-01-01", "1995-12-31"),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    expect(repere()).toBeNull();
   });
 });

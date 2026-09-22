@@ -105,6 +105,10 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
         m.Property(x => x.TargetKind).HasColumnName("target_kind").IsRequired();
         m.Property(x => x.TargetId).HasColumnName("target_id").IsRequired();
         m.Property(x => x.Text).HasColumnName("text").IsRequired();
+        // Facultatif, et donc NULLABLE : une colonne non nulle avec un défaut
+        // vide ne saurait plus distinguer « pas de repère » de « repère
+        // effacé », et l'axe afficherait une marque vide.
+        m.Property(x => x.Title).HasColumnName("title").HasMaxLength(80);
         m.Property(x => x.UpdatedAt).HasColumnName("updated_at")
             .HasColumnType("timestamp with time zone").IsRequired();
         m.HasIndex(x => x.UserId);

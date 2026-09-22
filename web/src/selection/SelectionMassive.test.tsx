@@ -414,8 +414,12 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
 
   // ------------------------------------------------ le souvenir (§9)
 
+  // La ligne porte DEUX champs depuis le repère de §9.2 : on nomme celui
+  // qu'on veut, sans quoi la recherche en trouve deux et échoue sur la
+  // multiplicité plutôt que sur ce qu'elle teste.
   const souvenirDe = (titre: string) =>
-    within(lignePour(titre).closest("li")!).queryByRole("textbox");
+    within(lignePour(titre).closest("li")!)
+      .queryByRole("textbox", { name: `Un souvenir sur ${titre} ?` });
 
   it("ne propose pas d'écrire un souvenir sur une ligne non déclarée", async () => {
     // L'écran le plus dense du produit : une zone de texte par ligne non
@@ -446,7 +450,8 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     await utilisateur.tab();
 
     expect(ecrireSouvenir).toHaveBeenCalledWith(
-      { kind: "work", id: "w1" }, "Noël 1992, chez ma grand-mère.");
+      { kind: "work", id: "w1" },
+      { texte: "Noël 1992, chez ma grand-mère.", titre: "" });
   });
 
   it("n'enregistre rien quand le champ reste vide", async () => {
@@ -736,7 +741,8 @@ describe("SelectionMassive — un souvenir sur un titre saisi (§9)", () => {
     await utilisateur.tab();
 
     expect(ecrireSouvenir).toHaveBeenCalledWith(
-      { kind: "unresolvedClaim", id: "ucl_faux_0" }, "Le dragon était bleu.");
+      { kind: "unresolvedClaim", id: "ucl_faux_0" },
+      { texte: "Le dragon était bleu.", titre: "" });
   });
 
   it("n'offre pas le champ quand la déclaration a échoué, et le dit", async () => {
@@ -766,7 +772,8 @@ describe("SelectionMassive — un souvenir sur un titre saisi (§9)", () => {
 
     expect(ecrireSouvenir).toHaveBeenCalledTimes(1);
     expect(ecrireSouvenir).toHaveBeenCalledWith(
-      { kind: "unresolvedClaim", id: "ucl_faux_0" }, "Chez mon cousin.");
+      { kind: "unresolvedClaim", id: "ucl_faux_0" },
+      { texte: "Chez mon cousin.", titre: "" });
   });
 });
 
@@ -943,7 +950,7 @@ describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () =>
       etatInitial: [
         { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
       ],
-      souvenirsInitiaux: { w1: "Noël 1992, chez ma grand-mère." },
+      souvenirsInitiaux: { w1: { texte: "Noël 1992, chez ma grand-mère.", titre: "" } },
     });
 
     expect(souvenirDe("Super Mario World")).toHaveValue("Noël 1992, chez ma grand-mère.");
@@ -951,7 +958,7 @@ describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () =>
 
   it("laisse vide une ligne sans souvenir, plutôt que d'en inventer un", async () => {
     const utilisateur = userEvent.setup();
-    monter({ souvenirsInitiaux: { w2: "Sur une autre ligne." } });
+    monter({ souvenirsInitiaux: { w2: { texte: "Sur une autre ligne.", titre: "" } } });
 
     await utilisateur.click(lignes()[0]);
 
@@ -964,12 +971,112 @@ describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () =>
       etatInitial: [
         { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
       ],
-      souvenirsInitiaux: { w1: "Une phrase déjà écrite." },
+      souvenirsInitiaux: { w1: { texte: "Une phrase déjà écrite.", titre: "" } },
     });
 
     await utilisateur.click(lignes()[0]);
     await utilisateur.click(lignes()[0]);
 
     expect(souvenirDe("Super Mario World")).toHaveValue("Une phrase déjà écrite.");
+  });
+});
+
+describe("SelectionMassive — le repère du souvenir (§9.2)", () => {
+  const souvenirDe = (titre: string) =>
+    screen.queryByRole("textbox", { name: `Un souvenir sur ${titre} ?` });
+  const repereDe = (titre: string) =>
+    screen.queryByRole("textbox", { name: `Un repère court sur ${titre} (facultatif)` });
+  const champ = () => screen.getByRole("textbox", { name: /titre absent/i });
+  const ajouter = () => screen.getByRole("button", { name: /ajouter ce titre/i });
+
+  it("propose un repère à côté du souvenir", async () => {
+    // « Optionnellement un titre court, servant de repère sur la timeline. »
+    // Sans geste pour le poser, la colonne resterait vide et l'axe n'aurait
+    // jamais rien à montrer.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+
+    expect(repereDe("Super Mario World")).toBeInTheDocument();
+  });
+
+  it("envoie le repère avec le texte, en un seul souvenir", async () => {
+    const utilisateur = userEvent.setup();
+    const { ecrireSouvenir } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.type(souvenirDe("Super Mario World")!, "Noël 1992.");
+    await utilisateur.type(repereDe("Super Mario World")!, "Le premier Noël");
+    await utilisateur.tab();
+
+    expect(ecrireSouvenir).toHaveBeenCalledWith(
+      { kind: "work", id: "w1" },
+      { texte: "Noël 1992.", titre: "Le premier Noël" });
+  });
+
+  it("n'impose pas le repère : la phrase seule part quand même", async () => {
+    // C'est la moitié « sans l'imposer » de l'item. Exiger un titre ajouterait
+    // un champ obligatoire au seul contenu que personne ne réécrira s'il est
+    // perdu.
+    const utilisateur = userEvent.setup();
+    const { ecrireSouvenir } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.type(souvenirDe("Super Mario World")!, "Noël 1992.");
+    await utilisateur.tab();
+
+    expect(ecrireSouvenir).toHaveBeenCalledWith(
+      { kind: "work", id: "w1" }, { texte: "Noël 1992.", titre: "" });
+  });
+
+  it("n'envoie rien quand seul le repère est rempli", async () => {
+    // Un repère sans phrase annoncerait sur l'axe un texte qui n'existe pas.
+    // L'API le refuserait ; l'écran ne doit pas l'essayer, et il garde la
+    // saisie sous les yeux plutôt que de la faire disparaître dans une alerte.
+    const utilisateur = userEvent.setup();
+    const { ecrireSouvenir } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.type(repereDe("Super Mario World")!, "Le premier Noël");
+    await utilisateur.tab();
+
+    expect(ecrireSouvenir).not.toHaveBeenCalled();
+    expect(repereDe("Super Mario World")).toHaveValue("Le premier Noël");
+  });
+
+  it("remontre le repère écrit lors d'une visite précédente", async () => {
+    // Le même défaut que pour la phrase : revenu vide alors qu'il est en
+    // base, le testeur en conclut qu'il l'a perdu.
+    monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+      ],
+      souvenirsInitiaux: { w1: { texte: "Noël 1992.", titre: "Le premier Noël" } },
+    });
+
+    expect(repereDe("Super Mario World")).toHaveValue("Le premier Noël");
+  });
+
+  it("offre le repère sur un titre saisi comme sur une œuvre", async () => {
+    // §3.5 : c'est là que vit souvent le souvenir le plus personnel. Un
+    // repère réservé au référentiel les trierait par origine.
+    const utilisateur = userEvent.setup();
+    const { ecrireSouvenir } = monter();
+
+    await utilisateur.type(champ(), "Le jeu de mon cousin");
+    await utilisateur.click(ajouter());
+    await utilisateur.type(
+      screen.getByRole("textbox", { name: "Un souvenir sur Le jeu de mon cousin ?" }),
+      "Le dragon était bleu.");
+    await utilisateur.type(
+      screen.getByRole("textbox",
+        { name: "Un repère court sur Le jeu de mon cousin (facultatif)" }),
+      "Chez mon cousin");
+    await utilisateur.tab();
+
+    expect(ecrireSouvenir).toHaveBeenCalledWith(
+      { kind: "unresolvedClaim", id: "ucl_faux_0" },
+      { texte: "Le dragon était bleu.", titre: "Chez mon cousin" });
   });
 });

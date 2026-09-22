@@ -28,6 +28,10 @@ export const MESSAGES = {
   "ligne.declare": "Déclaré : {titre}",
   "ligne.dateInconnue": "date inconnue",
   "souvenir.invite": "Un souvenir sur {titre} ?",
+  // Le repère de §9.2 — « un titre court, servant de repère sur la
+  // timeline ». « Facultatif » est DIT : un champ muet à côté d'une zone de
+  // texte se lit comme une étape à franchir avant d'écrire.
+  "souvenir.repere": "Un repère court sur {titre} (facultatif)",
   "action.recharger": "Recharger la liste",
 
   // Le jeu absent est un CAS NOMINAL, pas une erreur (§3.5) : l'invitation
@@ -135,6 +139,9 @@ export const MESSAGES = {
   "timeline.titre": "Ma timeline",
   "timeline.invitation": "Racontez votre première console.",
   "timeline.deplier": "Déplier : {n} jeux déclarés ensemble",
+  // Un souvenir sans repère reste un souvenir : l'axe le marque quand même,
+  // faute de quoi écrire une phrase sans la titrer la ferait disparaître.
+  "timeline.souvenirSansRepere": "Un souvenir",
 
   // --- les régions (§3.4) ------------------------------------------------
   // Le nom, jamais le code : « PAL » ne dit rien à un joueur.

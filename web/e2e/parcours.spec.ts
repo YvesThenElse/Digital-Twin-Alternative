@@ -26,6 +26,17 @@ const TITRE_ABSENT = "Le jeu de mon cousin, jamais retrouvé le nom";
 const SOUVENIR_LIBRE = "Jamais retrouvé le nom, mais le dragon était bleu.";
 
 /**
+ * La phrase écrite sur la ligne cochée, et son <b>repère</b> (§9.2).
+ *
+ * C'est le seul contenu du produit qui ne soit pas généré, et §9.1 en fait
+ * le porteur direct du « oui, ça me ressemble » — le critère de la porte de
+ * Phase 2. Le parcours vérifie donc qu'il TRAVERSE : saisi sur E02, relu sur
+ * l'axe de E03.
+ */
+const SOUVENIR_OEUVRE = "On l'a fini à deux avec mon frère, l'été 1995.";
+const REPERE = "L'été chez mon frère";
+
+/**
  * La période saisie, et ce qu'elle doit donner à lire.
  *
  * Le tiret est un TIRET DEMI-CADRATIN, celui que rend `libelle` : écrire un
@@ -234,7 +245,13 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
 
   // --- 5. deux souvenirs -------------------------------------------------
   const souvenir = page.getByRole("textbox", { name: /^Un souvenir sur/ }).first();
-  await toucher(souvenir.fill("On l'a fini à deux avec mon frère, l'été 1995."));
+  await toucher(souvenir.fill(SOUVENIR_OEUVRE));
+  // Le repère : un titre court, FACULTATIF, qui servira de marque sur l'axe.
+  // Les vingt-neuf autres lignes n'y touchent pas et restent des
+  // déclarations valables.
+  await toucher(
+    page.getByRole("textbox", { name: /^Un repère court sur/ }).first().fill(REPERE),
+  );
   await toucher(page.getByRole("heading", { level: 1 }).click()); // perte de focus
 
   // Et un souvenir sur le titre SAISI — c'est là que §9 place le contenu le
@@ -264,8 +281,14 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
 
   // Et celui de la ligne cochée est bien sur l'ŒUVRE : une cible unique pour
   // les deux dirait que le genre n'a servi à rien.
-  expect(souvenirs.filter((s: { targetKind: string }) => s.targetKind === "work"))
-    .toHaveLength(1);
+  const surLOeuvre = souvenirs.filter(
+    (s: { targetKind: string }) => s.targetKind === "work",
+  );
+  expect(surLOeuvre).toHaveLength(1);
+  // Le repère est parti AVEC la phrase, en une seule écriture — et le titre
+  // saisi, qui n'en a pas reçu, n'en a pas inventé.
+  expect(surLOeuvre[0].title).toBe(REPERE);
+  expect(surLeTitreSaisi[0].title).toBeNull();
 
   // --- 5 bis. RECHARGER ---------------------------------------------------
   //
@@ -323,6 +346,48 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await expect(page.getByRole("img", { name: "Je l'avais" })).toHaveCount(1);
   await expect(page.getByRole("img", { name: "Joué" })).toHaveCount(TITRES_A_COCHER + 1);
 
+  // --- 6 bis. le souvenir atteint l'axe (§9.2) ----------------------------
+  //
+  // Il était écrit en base et rendu NULLE PART : le seul contenu non généré
+  // du produit — celui dont §9.1 fait le porteur du « oui, ça me ressemble »
+  // — n'arrivait jamais sous les yeux de celui qui l'avait écrit.
+  // DEUX souvenirs ont été écrits, donc deux marques — et pas une de plus.
+  // Le jeu affiné porte trois moments, et le souvenir est attaché au JEU :
+  // trois marques feraient croire à trois phrases distinctes.
+  const reperes = page.getByTestId("souvenir-repere");
+  await expect(reperes).toHaveCount(2);
+
+  const repere = reperes.filter({ hasText: REPERE });
+  await expect(repere).toHaveCount(1);
+
+  // Et celui du titre saisi, à qui personne n'a donné de repère, est marqué
+  // quand même : le titre est facultatif, et écrire sans titrer ne doit pas
+  // faire disparaître la phrase de l'axe.
+  await expect(reperes.filter({ hasText: "Un souvenir" })).toHaveCount(1);
+
+  // **Et il DOMINE les éléments automatiques**, ce qu'aucun test de composant
+  // ne peut voir — il rend dans un document sans CSS. E03 repère C : « le
+  // seul contenu de la timeline qui ne soit pas généré : il doit dominer
+  // visuellement les éléments automatiques », et le langage visuel §4 le lui
+  // interdit en `meta`. On mesure donc, au lieu de lire une classe.
+  const rendus = await repere.evaluate((n) => {
+    const auto = n.closest("li")!.querySelector("[data-forme]")!;
+    return {
+      style: getComputedStyle(n).fontStyle,
+      taille: parseFloat(getComputedStyle(n).fontSize),
+      tailleAuto: parseFloat(getComputedStyle(auto).fontSize),
+    };
+  });
+  expect(rendus.style, "le souvenir n'est pas en italique").toBe("italic");
+  expect(rendus.taille, "le souvenir se relègue en petits caractères")
+    .toBeGreaterThan(rendus.tailleAuto);
+
+  // Le texte complet s'ouvre AU CLIC : déplier trente phrases d'office ferait
+  // de l'écran de lecture un mur de texte.
+  await expect(page.getByText(SOUVENIR_OEUVRE)).toHaveCount(0);
+  await toucher(repere.click());
+  await expect(page.getByText(SOUVENIR_OEUVRE)).toBeVisible();
+
   // Et la date lue est CELLE QU'ON A SAISIE. C'est le défaut signalé depuis
   // un téléphone : la timeline montrait une année que l'utilisateur n'avait
   // jamais donnée. Une assertion sur « il y a une date » n'aurait rien vu.
@@ -344,7 +409,10 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // testeur, c'est une vérification que seul ce test peut faire.
   // Les deux gestes de la correction — cocher par erreur, décocher — sont
   // comptés : c'est un geste réel, et le budget doit le voir.
-  const budget = TITRES_A_COCHER + 15;
+  // Deux gestes de plus que le budget d'origine : poser le repère, et ouvrir
+  // le souvenir sur l'axe. Le premier est FACULTATIF — aucune des vingt-neuf
+  // autres lignes ne le paie — et le second est une lecture, pas une saisie.
+  const budget = TITRES_A_COCHER + 17;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

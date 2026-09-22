@@ -5,6 +5,7 @@ import type {
   EtatLigne,
   EntreeDeclaration,
   ReponseDeclaration,
+  SouvenirEcrit,
 } from "../selection/SelectionMassive";
 import type { ValeurTemporelle } from "../temporel/valeur";
 
@@ -146,7 +147,7 @@ export const client = {
     entries: EntreeDeclaration[];
   }) => ecrire<{ created: number } & ReponseDeclaration>("/declarations", lot),
 
-  souvenir: (userId: string, cible: CibleSouvenir, texte: string) =>
+  souvenir: (userId: string, cible: CibleSouvenir, souvenir: SouvenirEcrit) =>
     ecrire<unknown>("/memories", {
       userId,
       // Le GENRE vient de l'appelant. Le figer à « work » ici écrirait tous
@@ -155,7 +156,11 @@ export const client = {
       // jamais.
       targetKind: cible.kind,
       targetId: cible.id,
-      text: texte,
+      text: souvenir.texte,
+      // L'écran tient une SAISIE, où l'absence est la chaîne vide ; la base
+      // tient un FAIT, où elle est nulle. La traduction se fait ici, une
+      // fois : envoyer `""` écrirait un repère muet sur l'axe.
+      title: souvenir.titre.length === 0 ? null : souvenir.titre,
     }),
 
   /**
@@ -183,11 +188,13 @@ export const client = {
    * pas à l'écran et leurs souvenirs n'auraient nulle part où s'afficher.
    */
   souvenirs: (userId: string) =>
-    lire<{ targetKind: string; targetId: string; text: string }[]>(
+    lire<{ targetKind: string; targetId: string; text: string; title: string | null }[]>(
       `/memories/${userId}`,
-    ).then((liste) =>
+    ).then((liste): Record<string, SouvenirEcrit> =>
       Object.fromEntries(
-        liste.filter((m) => m.targetKind === "work").map((m) => [m.targetId, m.text]),
+        liste
+          .filter((m) => m.targetKind === "work")
+          .map((m) => [m.targetId, { texte: m.text, titre: m.title ?? "" }]),
       ),
     ),
 
