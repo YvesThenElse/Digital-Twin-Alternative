@@ -150,7 +150,19 @@ est aussi coûteux qu'un champ qui ment.
 
   **Contrôle — quel test échouerait ?** Pour l'ordre du tiroir, trois — dont le miroir d'API. Pour les deux exigences manquantes, aucun : elles ne sont encodées nulle part.
 
-- [ ] **11 — Le contexte de saisie et l'état du service.** `periode/ContexteDeSaisie.tsx`, `EtatDuService.tsx`. Cite : E02 repère A, `ecrans/00-principes-transverses.md` §5. *Les quatre états obligatoires — vide, partiel, chargement, erreur — sont-ils rendus, ou seulement les deux faciles ?*
+- [x] **11 — Le contexte de saisie et l'état du service.** `periode/ContexteDeSaisie.tsx`, `EtatDuService.tsx`. Cite : E02 repère A, `ecrans/00-principes-transverses.md` §5. *Les quatre états obligatoires — vide, partiel, chargement, erreur — sont-ils rendus, ou seulement les deux faciles ?*
+
+  **§5 fait des quatre états une obligation. Deux manquaient, dont un corrigé.**
+
+  **Erreur — DÉFAUT, corrigé.** Quatre chemins asynchrones de `App.tsx` n'avaient **aucun `catch`** : `choisirMachine`, `ouvrirSelection`, `rechargerListe`, `ouvrirTimeline`. Un échec laissait l'écran figé sur l'étape courante, sans message : le testeur appuie sur une console ou sur « Voir ma timeline », **rien ne se passe**, il appuie encore. §5 demande trois choses — ce qui a échoué, ce qui est conservé, quoi faire — dont aucune n'était dite. Corrigé par `essayer`, qui enveloppe les quatre et efface l'alerte dès que le geste suivant aboutit. Trois tests, une mutation annoncée.
+
+  **Vide — latent.** `SelectionMassive` ne traite pas `oeuvres.length === 0` : ce serait une **page blanche**, qu'E02 interdit — « proposer d'élargir la période ou de changer de région ». Inatteignable aujourd'hui (aucune plateforme n'est vide, aucun filtre ne s'applique), et l'une des deux issues qu'E02 propose n'existe pas : la région n'est pas choisissable (item 18). → **item 33**.
+
+  **Chargement et partiel — présents.** Le squelette de liste d'E02 n'existe pas, mais l'attente est celle d'un seul appel ; le partiel est l'état nominal et il est rendu partout.
+
+  **Ce que le crible a trouvé en chemin, et qui vaut plus que l'item.** La mutation du `catch` devait faire échouer **quatre** tests : les trois neufs, **et** le garde des libellés morts, la clé n'étant plus référencée. Il n'en a fait échouer que trois. Vérifié : **le garde des libellés morts ne pouvait pas échouer**. `messages.ts` figurait parmi les sources où l'on cherche un usage, et chaque clé y est définie sous la forme `"cle": "valeur"` — donc toujours trouvée. Une clé fabriquée que personne n'utilisait passait. Le contrôle voisin avait son témoin ; celui-ci n'en avait pas. Réparé, avec **deux** témoins : un qui éprouve la logique, un qui éprouve l'exclusion du catalogue.
+
+  **Et le garde réparé a trouvé un vrai mort : `parcours.retour` — « Changer de console ».** Le libellé existait, **l'action non** : une fois une console choisie, on ne peut plus en changer sans recharger la page, alors qu'E02 l'inscrit à ses actions. Libellé retiré — le catalogue n'est pas une liste de tâches — et le manque inscrit. → **item 34**.
 
 ## Les frontières
 
@@ -206,6 +218,10 @@ inscrit et ne les construit pas.
 
 - [ ] **32 — Le tiroir est une poubelle, pas une tâche.** (`ORDONNANCEMENT-TEMPOREL.md` §6) « Dimensionné pour être vidé — la relance de session la moins coûteuse du produit » : il n'accepte aucun geste, on ne peut pas y dater un moment. *C'est E14, la passe temporelle, et elle n'est inscrite dans aucun TODO. Décision attendue : Phase 1 — le tiroir est le seul endroit où un profil se complète sans repasser par la sélection — ou différé explicitement.*
 
+- [ ] **33 — La sélection n'a pas d'état vide.** (E02) `oeuvres.length === 0` donnerait une page blanche. Latent — aucune plateforme n'est vide et aucun filtre ne s'applique — et l'une des deux issues qu'E02 propose, changer de région, n'existe pas. *À traiter avec l'item 18.*
+
+- [ ] **34 — On ne peut pas changer de console.** (E02, actions) Une fois la machine choisie, aucun chemin ne ramène au choix ; seul un rechargement le permet. Le libellé existait et ne servait à rien. *E02 précise « période conservée », ce qui demande de décider si l'on revient au choix de machine ou si l'on change de plateforme en gardant la période. Acceptation : un testeur qui se trompe de console s'en sort sans recharger.*
+
 ---
 
 ## Journal
@@ -229,3 +245,5 @@ inscrit et ne les construit pas.
 - **09 — la bande d'époque.** Le composant est juste : ses quatre champs sont rendus, et il dit même ce qu'il ne place pas. Deux constats, et le second est le plus lourd de l'audit. D'abord **§24.4 porte trois promesses et une seule est tenue** — les premières statistiques et la phrase de récit ne sont ni construites ni inscrites, alors que cette section est la réponse au risque produit numéro un. Ensuite : **il n'y a aucune feuille de style dans le projet**. Aucun fichier CSS, aucun lien, aucun import, trois styles en ligne au total — et la bande référence des classes qui n'existent pas, si bien que ses barres sont des `<span>` de hauteur relative dans un conteneur sans hauteur. Le langage visuel appelle pourtant ce mouvement « le mouvement le plus important du produit ». Et rien ne le signale : la bande est testée par ses attributs, le parcours les assère, tout dit que la récompense fonctionne pendant que rien n'est visible.
 
 - **10 — la zone sans date et le rendu temporel.** Le contraste de cette surface est instructif. §6 porte trois exigences : celle qui **nomme un algorithme** — « ordre du tiroir : `RecordedAt` décroissant » — est implémentée, gardée par deux tests du domaine dont un né d'une mutation survivante, **et par un test miroir à l'API**. Les deux qui **nomment une intention** — « le tiroir est une tâche, pas une poubelle, dimensionné pour être vidé » et « il compte dans les totaux du profil » — n'existent pas : le tiroir n'accepte aucun geste. Et en cherchant ce qu'aucun fichier ne réclame : **`Age` est un sous-système complet et inatteignable** — la variante, sa résolution par l'horizon, le paramètre `birthYear` de `/timeline` — que le front n'envoie jamais. Des sept granularités de §7.3, un événement de joueur ne peut en porter que trois.
+
+- **11 — le contexte de saisie et l'état du service.** Un défaut corrigé : **quatre chemins asynchrones sans `catch`**, si bien qu'un échec laissait l'écran figé et muet — le testeur appuie, rien ne se passe, il appuie encore. Mais l'itération vaut surtout par ce qu'une **prédiction fausse** a révélé. J'attendais quatre échecs de la mutation ; il y en a eu trois. Le quatrième devait venir du garde des libellés morts — qui, vérification faite, **ne pouvait pas échouer** : `messages.ts` figurait parmi les sources où l'on cherche un usage, et chaque clé s'y trouve par définition. Une clé fabriquée que personne n'utilisait passait. Le contrôle voisin avait son témoin ; celui-ci n'en avait pas. Réparé avec deux témoins — la logique, et l'exclusion du catalogue —, il a immédiatement trouvé un vrai mort : **`parcours.retour`, « Changer de console »**, dont le libellé existait sans que l'action existe. On ne peut pas changer de console sans recharger la page.

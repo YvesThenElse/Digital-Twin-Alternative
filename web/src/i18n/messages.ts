@@ -104,7 +104,6 @@ export const MESSAGES = {
   "passe2.ailleurs": "Chez quelqu'un",
   "passe2.emprunte": "Emprunté",
   "parcours.commencer": "Voir les jeux",
-  "parcours.retour": "Changer de console",
   "parcours.voirTimeline": "Voir ma timeline",
   "parcours.chargement": "Chargement…",
   // Un échec n'est pas un chargement lent, et un catalogue vide n'est ni
@@ -112,6 +111,9 @@ export const MESSAGES = {
   "parcours.echecCatalogue":
     "Le catalogue n'a pas pu être chargé. Vos déclarations sont conservées ; réessayez dans un instant.",
   "parcours.catalogueVide": "Aucune console dans le catalogue.",
+  // §5 demande les trois : ce qui a échoué, ce qui est conservé, quoi faire.
+  "parcours.echecAction":
+    "L'action n'a pas abouti. Ce que vous avez déjà déclaré est conservé ; réessayez.",
   "parcours.machine": "{machine} · {region}",
   "timeline.titre": "Ma timeline",
   "timeline.invitation": "Racontez votre première console.",

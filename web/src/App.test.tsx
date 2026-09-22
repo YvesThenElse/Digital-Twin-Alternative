@@ -85,6 +85,51 @@ describe("App — l'état du chargement (principes §5)", () => {
   });
 });
 
+describe("App — un geste qui échoue le dit (principes §5)", () => {
+  it("dit qu'une console n'a pas pu s'ouvrir, au lieu de ne rien faire", async () => {
+    // Quatre chemins asynchrones n'avaient aucun `catch` : un échec laissait
+    // l'écran figé sur l'étape courante, sans message. Le testeur appuie,
+    // rien ne se passe, il appuie encore. « Erreur : ce qui a échoué, ce qui
+    // est conservé, quoi faire » — aucun des trois n'était dit.
+    const utilisateur = userEvent.setup();
+    faux.oeuvres.mockRejectedValue(new Error("réseau"));
+    render(<App />);
+
+    await utilisateur.click(await screen.findByRole("button", { name: "Super Nintendo" }));
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+  });
+
+  it("dit que la timeline n'a pas pu s'ouvrir, et garde la sélection", async () => {
+    // Ce qui est CONSERVÉ fait partie du message : les déclarations sont en
+    // base, et l'écran doit rester là où l'utilisateur travaillait.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+    faux.timeline.mockRejectedValue(new Error("réseau"));
+
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }))
+      .toBeInTheDocument();
+  });
+
+  it("efface l'alerte dès que le geste suivant aboutit", async () => {
+    // Une alerte qui reste après la réparation ferait douter d'un état sain.
+    const utilisateur = userEvent.setup();
+    faux.oeuvres.mockRejectedValueOnce(new Error("réseau"));
+    render(<App />);
+
+    const console = await screen.findByRole("button", { name: "Super Nintendo" });
+    await utilisateur.click(console);
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+
+    await utilisateur.click(console);
+
+    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
+  });
+});
+
 describe("App — la fraîcheur de ce qui est relu", () => {
   it("relit l'état en revenant à la sélection après un changement de période", async () => {
     // La période se change depuis le contexte de saisie (E02 repère A). Le

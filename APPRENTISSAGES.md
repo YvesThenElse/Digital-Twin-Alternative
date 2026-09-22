@@ -1999,3 +1999,40 @@ explicitement, avec une acceptation, même si l'inscription dit « différé ».
 
 C'est la mécanique derrière [[59]] : une règle citée à moitié est une règle
 à moitié appliquée — et la moitié qui tombe est toujours la même.
+
+### 62 — Une prédiction de mutation fausse vaut mieux qu'une mutation réussie
+
+J'annonçais quatre échecs : trois tests neufs, **et** le garde des libellés
+morts, puisque la mutation retirait le dernier usage d'une clé. Il y en a eu
+trois.
+
+L'écart aurait pu se classer « tant mieux, l'essentiel est mort ». C'est
+l'écart qui instruit, pas le compte — et celui-ci disait que **le garde des
+libellés morts ne pouvait pas échouer**. Vérifié en une minute : une clé
+fabriquée, que personne n'utilisait, passait.
+
+La cause est une conclusion **indûment étendue**. Le fichier porte ce
+commentaire :
+
+> « Pas d'exception pour `messages.ts` : une mutation a montré que l'exclure
+> ne changeait rien. »
+
+C'était vrai du **détecteur de texte en dur** — il ne lit que le JSX et les
+attributs visibles, et le catalogue n'en a pas. Ce n'était pas vrai du
+**second contrôle**, qui lit la même chaîne de sources et y cherche l'usage
+des clés : chaque clé est définie dans le catalogue sous la forme
+`"cle": "valeur"`, donc toujours trouvée.
+
+Deux règles, et la seconde est la plus utile :
+
+1. **Deux contrôles dans un même fichier ne partagent pas leurs
+   conclusions.** Une exception justifiée pour l'un doit être re-justifiée
+   pour l'autre, séparément.
+2. **Le témoin est par contrôle, pas par fichier.** Celui-ci en avait un —
+   « détecte bien ce qu'il prétend détecter » — et sa présence a fait croire
+   les deux couverts. [[14]] avait posé la règle ; elle n'a été appliquée
+   qu'à moitié, et c'est la moitié sans témoin qui est morte.
+
+Le garde réparé a trouvé un vrai mort dans la minute : un libellé
+« Changer de console » dont l'action n'existe pas. Un garde qui ne peut pas
+échouer ne protège pas — il **cache**.

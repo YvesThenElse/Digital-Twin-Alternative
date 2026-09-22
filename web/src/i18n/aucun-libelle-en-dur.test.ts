@@ -21,10 +21,18 @@ import { MESSAGES } from "./messages";
 // relativement à la racine Vite, ce qui donne « /src » et non le chemin réel.
 const RACINE = join(process.cwd(), "src");
 
-// Pas d'exception pour `messages.ts` : une mutation a montré que l'exclure
-// ne changeait rien — le détecteur ne regarde que le texte JSX et les
-// attributs visibles, et le catalogue n'a ni l'un ni l'autre. Une ligne qui
-// prétend protéger sans rien protéger vaut moins que pas de ligne.
+// Pour le DÉTECTEUR de texte en dur, pas d'exception pour `messages.ts` :
+// une mutation a montré que l'exclure ne changeait rien — il ne regarde que
+// le texte JSX et les attributs visibles, et le catalogue n'a ni l'un ni
+// l'autre.
+//
+// **Cette conclusion a été indûment étendue au second contrôle**, celui des
+// libellés morts, qui lit la même chaîne de sources. Comme chaque clé est
+// définie dans `messages.ts` sous la forme `"cle": "valeur"`, elle s'y
+// trouvait toujours : le contrôle **ne pouvait pas échouer**. Vérifié — une
+// clé que personne n'utilisait passait. Le catalogue est donc exclu des
+// sources où l'on cherche un USAGE, et lui seul.
+const CATALOGUE = join(RACINE, "i18n", "messages.ts");
 
 function fichiersSources(dossier: string): string[] {
   const trouves: string[] = [];
@@ -68,6 +76,27 @@ const ATTRIBUTS_VISIBLES = /\b(aria-label|alt|title|placeholder)\s*=\s*(["'])(.*
 const TEXTE_JSX = /(?<=[\w"'}\/\]])>\s*([^<>{}\n][^<>{}\n]*?)\s*[<{]/g;
 
 type Faute = { fichier: string; ligne: number; texte: string };
+
+/** Les sources où l'on cherche un USAGE — le catalogue exclu. */
+function sourcesHorsCatalogue(): string {
+  return fichiersSources(RACINE)
+    .filter((f) => f !== CATALOGUE)
+    .map((f) => readFileSync(f, "utf8"))
+    .join("\n");
+}
+
+/**
+ * Les clés que personne n'affiche. Extraite pour être **éprouvable** : la
+ * version en ligne ne pouvait pas échouer, et rien ne le disait.
+ */
+function mortes(cles: string[], sources: string): string[] {
+  return cles.filter((cle) => {
+    // Les clés de mois sont construites dynamiquement : `mois.${n}`.
+    if (/^mois\.\d+$/.test(cle)) return !sources.includes("`mois.${");
+    if (/^region\.(PAL|NTSC-)/.test(cle)) return !sources.includes("`region.${");
+    return !sources.includes(`"${cle}"`);
+  });
+}
 
 function libellesEnDur(chemin: string): Faute[] {
   const source = readFileSync(chemin, "utf8");
@@ -113,18 +142,29 @@ describe("§20 — aucun libellé en dur", () => {
     // et il fait croire que l'écran dit quelque chose qu'il ne dit pas.
     // C'est la même règle que pour un champ de modèle qu'aucun producteur ne
     // remplit.
-    const sources = fichiersSources(RACINE)
-      .map((f) => readFileSync(f, "utf8"))
-      .join("\n");
+    expect(mortes(Object.keys(MESSAGES), sourcesHorsCatalogue())).toEqual([]);
+  });
 
-    const mortes = Object.keys(MESSAGES).filter((cle) => {
-      // Les clés de mois sont construites dynamiquement : `mois.${n}`.
-      if (/^mois\.\d+$/.test(cle)) return !sources.includes("`mois.${");
-      if (/^region\.(PAL|NTSC-)/.test(cle)) return !sources.includes("`region.${");
-      return !sources.includes(`"${cle}"`);
-    });
+  it("détecte bien un libellé mort", () => {
+    // Le contrôle voisin avait son témoin ; celui-ci n'en avait pas, et il
+    // était inopérant — vérifié : une clé que personne n'utilisait passait.
+    // C'est la règle de l'apprentissage 14 appliquée à un garde sur deux.
+    //
+    // Le témoin éprouve la LOGIQUE, pas une chaîne : on lui donne une clé
+    // fabriquée, et on exige qu'il la nomme.
+    expect(mortes(["cette.cle.n.existe.nulle.part"], sourcesHorsCatalogue()))
+      .toEqual(["cette.cle.n.existe.nulle.part"]);
+  });
 
-    expect(mortes).toEqual([]);
+  it("exclut le CATALOGUE des sources où l on cherche un usage", () => {
+    // Sans cette exclusion, le contrôle ne peut pas échouer : chaque clé est
+    // définie dans le catalogue sous la forme `"cle": "valeur"`, et s y
+    // trouve donc toujours. C est ce qui le rendait inopérant.
+    expect(sourcesHorsCatalogue()).not.toContain('"parcours.titre": ');
+  });
+
+  it("ne dénonce pas une clé réellement employée", () => {
+    expect(mortes(["parcours.titre"], sourcesHorsCatalogue())).toEqual([]);
   });
 
   it("détecte bien ce qu'il prétend détecter", () => {

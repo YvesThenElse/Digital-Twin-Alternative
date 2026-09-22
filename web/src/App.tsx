@@ -80,6 +80,30 @@ export function App() {
    */
   const [chargement, setChargement] = useState<"en-cours" | "pret" | "echec">("en-cours");
 
+  /**
+   * Ce qui a échoué au dernier geste.
+   *
+   * Quatre chemins asynchrones n'avaient aucun `catch` : un échec laissait
+   * l'écran figé sur l'étape courante, **sans message**. Le testeur appuie,
+   * rien ne se passe, il appuie encore. Les principes §5 demandent les trois
+   * choses qu'aucune n'était dite : ce qui a échoué, ce qui est conservé,
+   * quoi faire.
+   */
+  const [panne, setPanne] = useState<string | null>(null);
+
+  /**
+   * Enveloppe un geste. L'alerte s'efface dès que le suivant aboutit : une
+   * alerte qui survit à la réparation ferait douter d'un état sain.
+   */
+  async function essayer(action: () => Promise<void>) {
+    setPanne(null);
+    try {
+      await action();
+    } catch {
+      setPanne(t("parcours.echecAction"));
+    }
+  }
+
   useEffect(() => {
     client.plateformes()
       .then((liste) => { setPlateformes(liste); setChargement("pret"); })
@@ -145,6 +169,10 @@ export function App() {
     <main>
       <h1>{t("parcours.titre")}</h1>
 
+      {/* Au-dessus de l'étape courante, qui reste en place : ce qui est
+          conservé fait partie du message. */}
+      {panne !== null ? <p role="alert">{panne}</p> : null}
+
       {etape === "machine" ? (
         <section>
           <h2>{t("parcours.choisirMachine")}</h2>
@@ -158,7 +186,7 @@ export function App() {
           <ul>
             {plateformes.map((p) => (
               <li key={p.id}>
-                <button type="button" onClick={() => { void choisirMachine(p); }}>
+                <button type="button" onClick={() => { void essayer(() => choisirMachine(p)); }}>
                   {p.nom}
                 </button>
               </li>
@@ -173,7 +201,7 @@ export function App() {
           // L'horloge est lue ICI, une fois : le composant ne la lit pas
           // lui-même, sans quoi ses tests dépendraient du jour.
           anneeCourante={new Date().getFullYear()}
-          choisir={(choisie) => { void ouvrirSelection(choisie, machine); }}
+          choisir={(choisie) => { void essayer(() => ouvrirSelection(choisie, machine)); }}
         />
       ) : null}
 
@@ -201,11 +229,11 @@ export function App() {
             ecrireSouvenir={(cible, texte) =>
               client.souvenir(UTILISATEUR, cible, texte).then(() => undefined)
             }
-            recharger={() => { void rechargerListe(machine); }}
+            recharger={() => { void essayer(() => rechargerListe(machine)); }}
             etatInitial={etatInitial}
             souvenirsInitiaux={souvenirsInitiaux}
           />
-          <button type="button" onClick={() => void ouvrirTimeline()}>
+          <button type="button" onClick={() => void essayer(ouvrirTimeline)}>
             {t("parcours.voirTimeline")}
           </button>
         </section>
