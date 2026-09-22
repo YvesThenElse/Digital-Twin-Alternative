@@ -40,15 +40,15 @@
 
 - [x] **F11 — Le contrat entre l'API et le client est vérifié.** (audit 35) `lire<T>` fait un `as T` : un champ ajouté, renommé ou rendu facultatif disparaît côté front **sans qu'aucun outil ne puisse le dire**. L'inventaire des omissions est écrit dans `client.ts`, et rien ne le vérifie. *Acceptation : un champ que l'API rend et que le client ne déclare pas fait échouer un test.*
 
-## Ce qui attend une décision — la boucle s'arrête et demande
+## Tranché le 22 septembre 2026 — la boucle s'est arrêtée et a demandé
 
-- [ ] **F12 — Les deux autres récompenses de §24.4.** (audit 30) « Les premières statistiques apparaissent après quelques jeux » et « la première console saisie déclenche déjà une phrase de récit » ne sont ni construites ni différées par écrit. §24.4 est la réponse au risque produit numéro un.
+- [ ] **F12 — La première console déclenche une phrase de récit.** (audit 30 · §24.4) **Décidé** : on construit **la phrase seule**. C'est la récompense la moins chère et la plus précoce — elle arrive dès la machine choisie, avant la liste —, et elle fait parler le produit de l'utilisateur au lieu de son propre compteur. Les **premières statistiques** sont **différées par écrit** : la bande d'époque les devance pendant la saisie, et E04/E10 les porteront mieux. *Acceptation : choisir une console produit une phrase qui parle de CETTE console et de rien d'autre, elle n'invente aucun chiffre, et le report des statistiques est écrit dans `PHASING.md` avec sa raison.*
 
-- [ ] **F13 — « Toujours en cours ».** (audit 25 · §4.6) L'écran l'offre, le traducteur le traite comme une absence de réponse : la chip revient vierge au rechargement. Le porter comme jugement permanent — `PlayDeclaration` n'a pas de champ d'achèvement — ou cesser de l'offrir.
+- [ ] **F13 — « Toujours en cours » est un jugement, pas un silence.** (audit 25 · §4.6) **Décidé** : on le **porte**. « J'y joue encore » est une vraie réponse, et elle sera fréquente sur les machines récentes ; la traiter comme une absence fait revenir la chip vierge et perdre ce que le testeur vient de dire. *Acceptation : `PlayDeclaration` porte l'achèvement déclaré, la migration existe, et la chip revient cochée après un rechargement — sans que « en cours » produise un événement, puisqu'il n'en est pas un.*
 
-- [ ] **F14 — Les capacités temporelles inatteignables.** (audit 21) La période **ouverte** — rendue « depuis 1994 », acceptée par l'API, qu'aucun geste ne produit — et **`Age` tout entier**, sa résolution et le paramètre `birthYear`. Les offrir, ou les inscrire comme différées.
+- [ ] **F14 — Les capacités temporelles inatteignables sont inscrites.** (audit 21) **Décidé** : **différées**, pas offertes. La période ouverte et `Age` appartiennent à E07, qui est déjà différé ; les offrir au parcours d'amorce ajouterait une question que §24.4 déconseille. *Acceptation : `PHASING.md` dit lesquelles, où elles iront, et pourquoi elles ne sont pas dans le parcours — et un test le vérifie, ou le document est cité par celui qui les porte.*
 
-- [ ] **F15 — Le tiroir sans date est une tâche, pas une poubelle.** (audit 32) « Dimensionné pour être vidé — la relance de session la moins coûteuse du produit » : il n'accepte aucun geste. C'est E14, la passe temporelle, et elle n'est inscrite dans aucun TODO de phase.
+- [ ] **F15 — Le tiroir sans date entre dans une phase.** (audit 32) **Décidé** : **inscrit**, pas construit. Une session de Phase 2 est unique : la relance ne s'y joue pas, et un écran de plus à concevoir servirait un chemin qu'aucun testeur n'empruntera. *Acceptation : E14 — la passe temporelle — figure au TODO d'une phase avec sa raison, et `ecrans/E14` cesse d'être un écran que rien n'appelle.*
 
 ## Trouvé en chemin
 
