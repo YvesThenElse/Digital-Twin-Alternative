@@ -368,6 +368,73 @@ La passe 2 et « jamais joué » ne sont **pas** construits avant le test. Les
 ajouter maintenant supposerait de savoir ce qui manque au profil pour qu'il
 ressemble à quelqu'un — ce que seul le test dira.
 
+### Audit des surfaces — 22 septembre 2026
+
+> **Non. Le POC ne peut pas être montré à un testeur — pour une raison qui
+> n'était dans aucun bilan précédent : il n'a pas d'apparence.**
+
+Seize surfaces criblées, une par itération, chacune avec ses réponses,
+fichier et ligne à l'appui, dans [`TODO-AUDIT.md`](./TODO-AUDIT.md). Le
+crible venait de trois défauts que l'usage réel avait trouvés et que 709
+tests n'avaient pas vus ; il en a trouvé vingt-trois de plus, et a gagné une
+quatrième question en chemin.
+
+#### Ce qui bloque
+
+| | Pourquoi c'est bloquant |
+|---|---|
+| **Aucune feuille de style** (31) | Pas un fichier CSS, trois styles en ligne, des classes référencées qui n'existent pas. Les six sections du langage visuel ne sont pas implémentées : ni la palette d'époques, ni le cadre 3:4, ni les cibles de 56 px, ni la densité par point de rupture, ni le mouvement. **`data-disposition="grille"` et `"liste"` rendent la même chose** — le parcours de bout en bout vérifie un attribut, pas une disposition. La bande d'époque, que §24.4 désigne comme la seule réponse à « pourquoi passer deux heures à saisir », est **invisible** : ses barres n'ont pas de conteneur. |
+| **Décocher ne se persiste pas** (22) | Le geste le plus fréquent de l'écran — le dépôt le dit lui-même — ne quitte pas le navigateur. Depuis que l'état est relu, la correction se défait sous les yeux du testeur au premier rechargement. |
+| **Le moment ne dit pas ce qu'il est** (26) | Un jeu affiné apparaît en trois lignes identiques : `type` et `targetKind` sont rendus par l'API et jetés par l'écran. Le testeur lit une duplication, pas une histoire. |
+| **Le souvenir n'atteint jamais la timeline** (39) | §9.1 fait de cette section le porteur direct du « oui, ça me ressemble » — c'est-à-dire du critère même de la porte. Zéro occurrence dans la vue. |
+
+Les trois derniers se corrigent en heures. Le premier est un chantier, et
+c'est lui qui décide du calendrier.
+
+#### Ce qui a été corrigé pendant l'audit
+
+Huit défauts, chacun avec son test et son contrôle par mutation :
+les souvenirs jamais relus ; l'état de sélection périmé au changement de
+période ; « Recharger la liste » qui quittait l'écran ; l'échec réseau rendu
+par un chargement éternel ; quatre chemins asynchrones sans `catch` ; la
+date de sortie qui ignorait la région — **97 œuvres sur 221**, jusqu'à six
+ans d'écart ; l'accent d'époque qui peignait « 8 bits » une date inconnue ;
+la période antérieure à la machine, refusée par l'écran et acceptée par
+l'API.
+
+Et deux artefacts remis d'aplomb : **le manifeste des jaquettes**, qui
+inscrivait `width: 512` pour les 218 visuels quand ils mesurent 213 à 960 px
+— la taille *demandée*, pas obtenue —, et le **garde des libellés morts**,
+qui ne pouvait pas échouer.
+
+#### Ce qui est une perte de richesse, pas un obstacle
+
+La passe 2 incomplète (25, 30), « jamais joué » absent (23), les titres
+saisis non relus (24), le compteur de jeux (19), le changement de console
+(34), l'état du service non monté (28), le tiroir qui ne se vide pas (32).
+
+#### Ce que l'audit dit du dépôt, au-delà des défauts
+
+Trois chiffres, obtenus en mesurant plutôt qu'en lisant :
+
+- **7 types d'événements sur 11** n'ont aucun producteur — vendu, perdu,
+  prêté, rendu : exactement ceux qui portent une collection sur trente ans ;
+- **3 granularités temporelles sur 7** sont atteignables pour un événement
+  de joueur ; `Age`, son horizon et le paramètre `birthYear` forment un
+  sous-système complet que rien n'appelle ;
+- **les 3 contrôles hors ligne documentés** dans `CLAUDE.md` ne tournent pas.
+
+Le motif est constant et vaut d'être nommé : **ce dépôt construit plus de
+capacité qu'il n'en branche**, et rien ne le signale parce qu'une capacité
+non branchée est testée, documentée, et verte.
+
+#### Décision
+
+L'audit a fait ce qu'on lui demandait : il a protégé les créneaux de
+testeurs. Recruter avant lui aurait mesuré une application sans apparence.
+**La feuille de style est le prochain chantier**, et le seul dont la durée
+ne se devine pas — les trois autres blocages sont des correctifs.
+
 ## 5. Phase 2 — Validation utilisateur
 
 **Durée : 2 à 4 semaines.**
