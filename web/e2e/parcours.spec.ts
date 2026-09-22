@@ -293,6 +293,15 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await expect(page.getByTestId("moment-titre").filter({ hasText: TITRE_ABSENT }))
     .toHaveCount(1);
 
+  // **Le jeu affiné ne se lit plus en trois lignes identiques.** C'est le
+  // symptôme signalé depuis un téléphone : `type` était rendu par l'API et
+  // jeté par l'écran. Les trois moments du même titre portent désormais
+  // trois marques distinctes, chacune NOMMÉE — une icône sans nom
+  // accessible se déchiffre au lieu de se reconnaître (§10).
+  await expect(page.getByRole("img", { name: "Fini" })).toHaveCount(1);
+  await expect(page.getByRole("img", { name: "Je l'avais" })).toHaveCount(1);
+  await expect(page.getByRole("img", { name: "Joué" })).toHaveCount(TITRES_A_COCHER + 1);
+
   // Et la date lue est CELLE QU'ON A SAISIE. C'est le défaut signalé depuis
   // un téléphone : la timeline montrait une année que l'utilisateur n'avait
   // jamais donnée. Une assertion sur « il y a une date » n'aurait rien vu.

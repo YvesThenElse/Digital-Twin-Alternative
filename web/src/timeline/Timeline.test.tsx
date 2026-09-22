@@ -9,9 +9,10 @@ const moment = (
   id: string,
   label: string,
   occurredAt: MomentTimeline["occurredAt"],
+  type = "StartedGame",
 ): MomentTimeline => ({
   id,
-  type: "StartedGame",
+  type,
   targetKind: "work",
   targetId: `wrk_${id}`,
   targetLabel: label,
@@ -214,5 +215,110 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
     expect(within(axe()).queryByText("Sans date")).toBeNull();
     expect(within(screen.getByTestId("zone-sans-date")).getByText("Sans date"))
       .toBeInTheDocument();
+  });
+});
+
+describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
+  it("distingue les types d'un même jeu, au lieu de trois lignes identiques", async () => {
+    // Le symptôme signalé depuis un téléphone : « le même titre trois fois
+    // à la même date ». La cause n'était pas une duplication de données —
+    // `type` était rendu par l'API et **jeté par l'écran**.
+    render(
+      <Timeline
+        entrees={[
+          entree(
+            [
+              moment("a", "Celeste", { kind: "Year", year: 2018 }, "StartedGame"),
+              moment("b", "Celeste", { kind: "Year", year: 2018 }, "CompletedGame"),
+              moment("c", "Celeste", { kind: "Year", year: 2018 }, "AcquiredItem"),
+            ],
+            "2018-01-01",
+            "2018-12-31",
+          ),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    // Trois moments d'un même lot forment un ÉPISODE, donc replié : c'est
+    // exactement le cas signalé — on déplie, et on doit voir trois lignes
+    // qui se distinguent, pas trois fois la même.
+    await userEvent.setup().click(screen.getByRole("button", { name: /Déplier/ }));
+
+    const marques = screen.getAllByRole("img").map((n) => n.getAttribute("aria-label"));
+    expect(marques).toEqual(["Joué", "Fini", "Je l'avais"]);
+  });
+
+  it("nomme chaque type, jamais la seule icône", () => {
+    // « L'information n'est jamais portée par la seule couleur » (§10), ce
+    // qui vaut aussi pour la forme : une icône sans nom accessible se
+    // déchiffre au lieu de se reconnaître.
+    render(
+      <Timeline
+        entrees={[
+          entree([moment("a", "Celeste", { kind: "Year", year: 2018 }, "CompletedGame")],
+                 "2018-01-01", "2018-12-31"),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    expect(screen.getByRole("img", { name: "Fini" })).toBeInTheDocument();
+  });
+
+  it("marque un titre saisi comme tel, jamais comme une œuvre curée", () => {
+    // E02 le marque « hors du référentiel » ; l'axe le donnait pour une
+    // œuvre du catalogue. `targetKind` était jeté lui aussi.
+    render(
+      <Timeline
+        entrees={[
+          entree(
+            [{
+              ...moment("a", "Le jeu de mon cousin", { kind: "Year", year: 1995 }),
+              targetKind: "unresolvedClaim",
+            }],
+            "1995-01-01",
+            "1995-12-31",
+          ),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    expect(screen.getByTestId("moment-titre"))
+      .toHaveAttribute("data-canonique", "false");
+  });
+
+  it("ne marque pas une œuvre du référentiel", () => {
+    render(
+      <Timeline
+        entrees={[
+          entree([moment("a", "Celeste", { kind: "Year", year: 2018 })],
+                 "2018-01-01", "2018-12-31"),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    expect(screen.getByTestId("moment-titre"))
+      .toHaveAttribute("data-canonique", "true");
+  });
+
+  it("ne ment pas sur un type qu'il ne connaît pas", () => {
+    // Sept types sur onze n'ont pas encore de producteur. Le jour où l'un
+    // arrivera, l'axe ne doit pas le peindre en « joué » : il dit qu'il ne
+    // sait pas, ce qui est une information, contrairement à un faux.
+    render(
+      <Timeline
+        entrees={[
+          entree([moment("a", "Un jeu", { kind: "Year", year: 1995 }, "SoldItem")],
+                 "1995-01-01", "1995-12-31"),
+        ]}
+        sansDate={[]}
+      />,
+    );
+
+    expect(screen.queryByRole("img", { name: "Joué" })).toBeNull();
+    expect(screen.getByTestId("moment-marque")).toHaveTextContent("SoldItem");
   });
 });

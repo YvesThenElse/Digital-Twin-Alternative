@@ -94,6 +94,9 @@ function mortes(cles: string[], sources: string): string[] {
     // Les clés de mois sont construites dynamiquement : `mois.${n}`.
     if (/^mois\.\d+$/.test(cle)) return !sources.includes("`mois.${");
     if (/^region\.(PAL|NTSC-)/.test(cle)) return !sources.includes("`region.${");
+    // Les noms d'icônes aussi : `t(\`icone.${nom}\`)`. La clé est le nom de
+    // l'icône, et le composant les parcourt par son type.
+    if (/^icone\./.test(cle)) return !sources.includes("`icone.${");
     return !sources.includes(`"${cle}"`);
   });
 }

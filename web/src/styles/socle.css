@@ -105,9 +105,14 @@
      ne les imite pas. Des rayons généreux et une ombre basse donnent le
      registre d'aujourd'hui sans toucher à la couleur, qui reste le signe
      temporel. */
-  --r1: 10px;
-  --r2: 16px;
-  --r3: 24px;
+  /* §3 le dit et le justifie : « petits rayons — une archive, pas une
+     application de messagerie ». 4 px pour les tuiles et les champs, 10 px
+     pour les cartes et panneaux, plein pour les pastilles. J'avais
+     sur-arrondi en cherchant une facture contemporaine : la modernité vient
+     de la respiration et de la hiérarchie, pas du rayon. */
+  --r1: 4px;
+  --r2: 10px;
+  --r3: 999px;
 
   /* Une seule ombre, deux intensités. Une élévation qui se voit à peine
      suffit à détacher une carte du papier ; au-delà, on fabrique du
@@ -666,5 +671,106 @@ figure[data-testid="bande-epoque"] figcaption {
 
 [data-canonique="false"] > span:nth-child(2) {
   font: var(--micro);
+  color: var(--ink-3);
+}
+
+/* ===================================================================
+ * E03 — la timeline
+ *
+ * Un écran de LECTURE, pas un tableau de bord : les chiffres appartiennent
+ * à E04 et E10, ici l'unité est le moment. L'axe porte le repérage
+ * temporel par la couleur — « on sait où l'on est sans lire de date ».
+ * =================================================================== */
+
+[data-testid="axe"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+}
+
+/* Chaque entrée porte l'accent de son époque en filet vertical : c'est le
+   premier des trois services que le système de couleur rend. */
+[data-testid="axe"] > li {
+  border-inline-start: 3px solid var(--accent, var(--line));
+  border-radius: 0 var(--r2) var(--r2) 0;
+  background: var(--surface-2);
+  box-shadow: var(--ombre-1);
+  padding: var(--e3) var(--e4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+}
+
+/* Un épisode est UNE bande, pas une pile : douze titres cochés d'un coup
+   formeraient douze points identiques et l'axe deviendrait illisible dès le
+   premier passage en sélection massive (§4.4). */
+[data-testid="axe"] > li[data-episode="true"] > button {
+  align-self: flex-start;
+  font: var(--meta);
+  color: var(--ink-2);
+  padding: var(--e1) var(--e2);
+}
+
+.moment {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: baseline;
+  gap: var(--e3);
+  padding: var(--e1) 0;
+}
+
+/* La marque prend l'accent du contexte : les icônes héritent de
+   `currentColor` (§3). */
+.moment-marque {
+  color: var(--accent, var(--ink-3));
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  font: var(--micro);
+}
+
+/* Un titre saisi se distingue d'une œuvre curée — sans le reléguer : c'est
+   là que vit souvent le souvenir le plus personnel (§3.5). */
+[data-canonique="false"][data-testid="moment-titre"]::after {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-inline-start: var(--e2);
+  border-radius: var(--r3);
+  background: var(--ink-3);
+  vertical-align: middle;
+}
+
+.moment [data-forme] {
+  font: var(--meta);
+  color: var(--ink-2);
+}
+
+/* Le tiroir — séparé, jamais masqué. « Une tâche, pas une poubelle » :
+   il est dimensionné pour être vidé (ORDONNANCEMENT §6). */
+[data-testid="zone-sans-date"] {
+  border: 1px dashed var(--line);
+  border-radius: var(--r2);
+  padding: var(--e3) var(--e4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+}
+
+[data-testid="zone-sans-date"] h2 {
+  font: var(--title);
+  color: var(--ink-2);
+}
+
+[data-testid="zone-sans-date"] li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e2) var(--e3);
+  padding: var(--e1) 0;
+}
+
+[data-testid="zone-sans-date"] [data-forme="hors-axe"] {
+  font: var(--meta);
   color: var(--ink-3);
 }

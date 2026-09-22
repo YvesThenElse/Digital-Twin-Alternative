@@ -115,6 +115,21 @@ export const MESSAGES = {
   // l'API calculait et que personne n'affichait.
   "selection.compte": "{jeux} jeux · {declares} déclarés",
   "machine.resume": "{annee} · {jeux} jeux",
+
+  // Les noms accessibles des icônes (§3). Une icône seule n'informe pas :
+  // « l'information n'est jamais portée par la seule couleur », ce qui vaut
+  // aussi pour la forme.
+  "icone.joue": "Joué",
+  "icone.fini": "Fini",
+  "icone.en-cours": "Toujours en cours",
+  "icone.abandonne": "Abandonné",
+  "icone.jamais-joue": "Jamais joué",
+  "icone.possede": "Je l'avais",
+  "icone.ailleurs": "Chez quelqu'un",
+  "icone.emprunte": "Emprunté",
+  "icone.sans-plus": "Sans plus",
+  "icone.adore": "J'ai adoré",
+  "icone.prefere": "Mon préféré",
   "timeline.titre": "Ma timeline",
   "timeline.invitation": "Racontez votre première console.",
   "timeline.deplier": "Déplier : {n} jeux déclarés ensemble",

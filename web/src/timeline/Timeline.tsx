@@ -2,6 +2,7 @@ import { useState } from "react";
 import { accentEpoque } from "../disposition/epoque";
 import { t } from "../i18n/t";
 import { ZoneSansDate } from "../temporel/ZoneSansDate";
+import { Icone, type NomIcone } from "../icones/Icone";
 import { forme, libelle } from "../temporel/valeur";
 import type { EntreeTimeline, MomentTimeline } from "./types";
 
@@ -52,6 +53,30 @@ export function Timeline({
   );
 }
 
+/**
+ * Ce qu'un type d'événement montre de lui-même.
+ *
+ * <b>Quatre types sur onze ont un producteur</b> ; les sept autres sont des
+ * capacités en avance, inscrites comme telles dans le modèle. Le jour où
+ * l'un arrivera, l'axe ne doit pas le peindre en « joué » : il dit qu'il ne
+ * sait pas, ce qui est une information — contrairement à un faux.
+ */
+const MARQUES: Record<string, NomIcone> = {
+  StartedGame: "joue",
+  CompletedGame: "fini",
+  AbandonedGame: "abandonne",
+  AcquiredItem: "possede",
+};
+
+function Marque({ type }: { type: string }) {
+  const icone = MARQUES[type];
+  return (
+    <span className="moment-marque" data-testid="moment-marque">
+      {icone === undefined ? type : <Icone nom={icone} />}
+    </span>
+  );
+}
+
 function Entree({ entree }: { entree: EntreeTimeline }) {
   const [deplie, setDeplie] = useState(false);
   const annee = Number(entree.interval.start.slice(0, 4));
@@ -84,8 +109,16 @@ function Entree({ entree }: { entree: EntreeTimeline }) {
       {visible ? (
         <ul>
           {entree.moments.map((moment) => (
-            <li key={moment.id}>
-              <span data-testid="moment-titre">{moment.targetLabel}</span>
+            <li key={moment.id} className="moment">
+              <Marque type={moment.type} />
+              {/* Un titre saisi n'est pas une œuvre curée : E02 le marque,
+                  l'axe le donnait pour une entrée du catalogue. */}
+              <span
+                data-testid="moment-titre"
+                data-canonique={String(moment.targetKind === "work")}
+              >
+                {moment.targetLabel}
+              </span>
               <span data-forme={forme(moment.occurredAt)}>
                 {libelle(moment.occurredAt)}
               </span>
