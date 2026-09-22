@@ -72,7 +72,7 @@
   que de le laisser vert. *À trancher avec F12/F14 : offrir E07, ou inscrire
   ces capacités comme différées.*
 
-- [ ] **F16 — Une construction du front qui échoue s'arrête en silence.**
+- [x] **F16 — Une construction du front qui échoue s'arrête en silence.**
   `services_front` fait `./web.sh build >/dev/null` : une erreur de
   typage fait sortir `e2e.sh` avec le code 1 **sans une ligne d'explication**,
   après avoir affiché « ── front ». Trouvé en F3, en croyant à une panne du
@@ -272,3 +272,13 @@
   qu'aucune phase ne prévoit est une porte qui n'existera jamais. Trois
   témoins, dont un qui vérifie qu'une **sortie** n'est pas prise pour une
   entrée.
+
+- **F16** — les étapes lourdes passent par `services_etape` : muettes tant
+  qu'elles réussissent, bavardes quand elles échouent. **Deux** étaient
+  silencieuses, pas une : la construction du front et la **migration de la
+  base**, qui aurait fait sortir le script tout aussi muet. Éprouvé en
+  cassant vraiment le typage : le parcours nomme maintenant le fichier, la
+  ligne et l'erreur. `orchestration.test.ts` refuse qu'une construction ou
+  une migration reparte dans le vide — et il recolle les continuations avant
+  d'inspecter, sans quoi il ne verrait que des fragments et passerait sur
+  tout ce qui est bien écrit.

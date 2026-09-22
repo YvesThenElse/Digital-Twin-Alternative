@@ -67,6 +67,27 @@ services_vivant() {
   [ "$(docker inspect -f '{{.State.Running}}' "$1" 2>/dev/null)" = "true" ]
 }
 
+# Une étape MUETTE tant qu'elle réussit, BAVARDE quand elle échoue.
+#
+# ⚠️ Jeter la sortie d'une construction est un piège qui s'est refermé :
+# `./web.sh build >/dev/null` envoyait les erreurs de typage dans le vide, et
+# `set -e` faisait sortir `e2e.sh` avec un code 1 **sans un mot**, juste après
+# avoir affiché « ── front ». On cherche alors le défaut dans le produit alors
+# qu'il est dans l'outillage — c'est la famille de l'item F10 : un garde qui
+# échoue sans le dire fait chercher ailleurs.
+#
+# `tail` plutôt que tout : une construction ratée peut cracher des centaines
+# de lignes, et la dernière est presque toujours celle qui nomme la cause.
+services_etape() {
+  local quoi="$1"; shift
+  local sortie
+  if ! sortie="$("$@" 2>&1)"; then
+    echo "$quoi a échoué :" >&2
+    printf '%s\n' "$sortie" | tail -30 >&2
+    return 1
+  fi
+}
+
 services_postgres() {
   echo "── PostgreSQL"
   docker compose -f "$SERVICES_RACINE/docker-compose.yml" up -d postgres >/dev/null
@@ -83,8 +104,9 @@ services_postgres() {
 
 services_migrations() {
   echo "── migrations"
-  (cd "$SERVICES_RACINE" && ./dotnet.sh dotnet-ef database update \
-     --project src/DigitalTwin.Api >/dev/null)
+  services_etape "La migration de la base" \
+    "$SERVICES_RACINE/dotnet.sh" dotnet-ef database update \
+    --project src/DigitalTwin.Api || return 1
 }
 
 services_api() {
@@ -112,7 +134,7 @@ services_api() {
 services_front() {
   echo "── front"
   services_port_libre "$FRONT_URL/" "front" || return 1
-  (cd "$SERVICES_RACINE" && ./web.sh build >/dev/null)
+  services_etape "La construction du front" "$SERVICES_RACINE/web.sh" build || return 1
   docker run --rm -d --name "$WEB_CONTENEUR" \
     --network host --user "$(id -u):$(id -g)" \
     -v "$SERVICES_RACINE:/work" -w /work/web \
