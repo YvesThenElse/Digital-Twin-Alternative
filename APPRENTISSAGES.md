@@ -1933,3 +1933,39 @@ la mauvaise date » est une inquiétude ; « 97 œuvres sur 221, jusqu'à six an
 d'écart, *Adventure Island* annoncé 1986 pour 1992 » est un fait, et il se
 lit en cinq lignes de script. C'est le même geste que [[41]] et que l'affect
 fabriqué : lire des lignes, jamais des agrégats.
+
+### 60 — Une suite verte bâtie sur des attributs ne prouve rien de visible
+
+Le produit n'a **aucune feuille de style**. Pas un fichier CSS, pas un lien
+dans `index.html`, pas un import dans `main.tsx` — trois styles en ligne
+dans tout le front. Les six sections du langage visuel ne sont pas
+implémentées.
+
+Rien ne le signalait. Au contraire, tout affirmait le contraire :
+
+- la bande d'époque est testée sur `data-total`, `data-tranches`,
+  `data-sans-date`, et le parcours de bout en bout assère ces attributs ;
+- `dispositionPour` est couvert par huit cas, et l'e2e vérifie
+  `data-disposition="grille"` d'un côté, `"liste"` de l'autre — **alors que
+  les deux rendent exactement la même chose** ;
+- la tuile porte `data-ratio="3:4"`, qui ne contraint aucun ratio.
+
+Les attributs ont été introduits pour une bonne raison ([[01]] :
+« indisponible » contient « disponible »). Mais **ils ont cessé d'être une
+sonde pour devenir le sujet**. Un attribut est une intention déclarée ; la
+tester vérifie qu'on a bien déclaré son intention.
+
+**La règle** : un attribut de machine ne vaut que comme *complément* d'une
+assertion sur l'effet. Là où il n'y a pas d'effet observable à asserter —
+une couleur, une hauteur, une disposition —, la question à se poser n'est
+pas « le test passe-t-il ? » mais « **qu'est-ce qui, dans ce dépôt, rend
+cette chose ?** ». Si la réponse est « rien », le test mesure un vœu.
+
+C'est [[44]] — nommer n'est pas rendre — à l'échelle du produit entier, et
+la raison pour laquelle [[44]] a été trouvé par une mutation et pas par une
+relecture : on ne doute pas de ce qui est vert.
+
+Corollaire pour l'audit : **chercher ce qui n'existe pas est plus difficile
+que chercher ce qui est faux.** Les huit premières surfaces ont été criblées
+fichier par fichier ; celle-ci s'est trouvée en posant une question qu'aucun
+fichier ne pose — *où est le CSS ?*

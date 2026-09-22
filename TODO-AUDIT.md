@@ -118,7 +118,21 @@ est aussi coûteux qu'un champ qui ment.
 
   **Observation pour l'item 12.** L'API peut émettre `"released"` dans `regionStatus` (`ReferenceEndpoints.cs:105`) ; le type du client n'en déclare que deux (`client.ts:49`). Latent — le dataset ne porte que `absent` et `inconnu` — mais c'est la famille de l'apprentissage 56, et l'item 12 est sa place.
 
-- [ ] **09 — La bande d'époque.** `selection/BandeDEpoque.tsx`, `selection/bande.ts`. Cite : §24.4, langage visuel §7. *La récompense pendant la saisie. Ce qu'elle compte doit être ce que l'utilisateur croit avoir fait.*
+- [x] **09 — La bande d'époque.** `selection/BandeDEpoque.tsx`, `selection/bande.ts`. Cite : §24.4, langage visuel §7. *La récompense pendant la saisie. Ce qu'elle compte doit être ce que l'utilisateur croit avoir fait.*
+
+  **1 · Envoyé sans être saisi — RIEN.** Composant de rendu pur.
+
+  **2 · Rendu sans être lu — RIEN dans le composant.** Les quatre champs de `Bande` servent : `tranches` en barres (`BandeDEpoque.tsx:28`), `periode` et `total` en légende (`:40`, `:48`), `sansDate` quand il y en a (`:53`) — « comptés, jamais placés », et le dire évite que l'écart passe pour une erreur.
+
+  **3 · Écrit sans être dit — RIEN.** Aucune persistance.
+
+  **4 · Dit sans être écrit — RIEN.** Aucun geste.
+
+  **Mais §24.4 porte TROIS promesses, et une seule est tenue.** « La timeline se remplit à mesure que l'on coche » ✓ ; « **les premières statistiques apparaissent après quelques jeux** » ✗ ; « **la première console saisie déclenche déjà une phrase de récit** » ✗. Les deux absentes ne sont inscrites nulle part — ni au TODO de Phase 1, ni au bilan de clôture. → **item 30**.
+
+  **Et surtout : LA BANDE EST INVISIBLE.** `BandeDEpoque` pose `className="bande"` et `"bande-tranche"` (`:27`, `:31`) — **ces classes n'existent pas**. Il n'y a **aucune feuille de style dans le projet** : `find` n'en trouve aucune, `index.html` n'en lie aucune, `main.tsx` n'en importe aucune, et le front entier compte **trois** styles en ligne. Les barres sont donc des `<span>` avec une hauteur en pourcentage dans un conteneur sans hauteur : elles ne s'affichent pas. Or le langage visuel §7 appelle ce mouvement « **le mouvement le plus important du produit** », et §24.4 en fait la seule réponse à « pourquoi passer deux heures à saisir ». → **item 31**.
+
+  **Contrôle — quel test échouerait ?** Aucun, et c'est le cœur du problème : la bande est **testée** — `data-total`, `data-tranches`, `data-sans-date` — et le parcours de bout en bout assère ses attributs. Tout dit « la récompense fonctionne » pendant que rien n'est visible.
 
 - [ ] **10 — La zone sans date et le rendu temporel.** `temporel/ZoneSansDate.tsx`, `temporel/valeur.ts`. Cite : §7.3, `ORDONNANCEMENT-TEMPOREL.md` §6. *Les sept granularités, et les trois interdits.*
 
@@ -172,6 +186,10 @@ inscrit et ne les construit pas.
 
 - [ ] **29 — Une jaquette qui disparaît casse la tuile.** (§19.2) Le catalogue ne filtre sur l'existence du fichier qu'à l'amorçage ; retiré ensuite, l'`<img>` échoue et le navigateur rend un glyphe cassé. *Acceptation : une image qui n'arrive pas se replie sur la tuile composée, et un test le prouve avec une source invalide.*
 
+- [ ] **30 — §24.4 promet trois récompenses, une seule existe.** Les premières statistiques après quelques jeux, et la phrase de récit à la première console, ne sont ni construites ni inscrites. *Décision attendue : les porter en Phase 1 — §24.4 est la réponse au risque produit numéro un — ou les différer explicitement, ce qui n'a jamais été fait.*
+
+- [ ] **31 — Le produit n'a AUCUNE feuille de style.** 🔴 Aucun fichier CSS, aucun lien dans `index.html`, aucun import dans `main.tsx`, trois styles en ligne au total — et `BandeDEpoque` référence des classes qui n'existent pas. Les six sections du langage visuel ne sont donc pas implémentées : ni la palette d'époques comme design, ni les neutres chauds, ni le cadre 3:4, ni les cibles de 56 px, ni le tableau de densité par point de rupture, ni le mouvement. **`data-disposition="grille"` et `"liste"` rendent la même chose** : le parcours de bout en bout vérifie un attribut, pas une disposition. *C'est le blocage le plus probable d'un test utilisateur, et il ne se voit dans aucune suite.*
+
 ---
 
 ## Journal
@@ -191,3 +209,5 @@ inscrit et ne les construit pas.
 - **07 — la tuile et les époques.** Un défaut, et c'est une affirmation **visuelle** : `accentEpoque(null)` rendait la première époque, si bien qu'une œuvre non datée était peinte en terre cuite et étiquetée « 8 bits ». Le premier service du système d'époques étant « on sait où l'on est **sans lire de date** », la couleur affirme une décennie — l'affirmer sur une donnée absente est l'apprentissage 51 transposé au rendu. Corrigé par un neutre **chaud** tiré du langage visuel, ni gris ni l'une des six. Deux détails valent d'être notés. D'abord le chemin était **latent** : aucune des 221 œuvres n'est sans date aujourd'hui, et il ne le serait pas resté. Ensuite le test qui couvrait ce repli **passait avec le défaut** — il n'exigeait qu'un hexadécimal valide, ce que la mauvaise réponse était aussi. Une observation inscrite : `Tuile` n'a pas de repli si l'image échoue à charger, alors que §19.2 exige que rien ne cesse de fonctionner quand une jaquette empruntée disparaît.
 
 - **08 — le statut régional.** Les quatre états étaient déjà solides : leurs tests exigent la marque de chacun et qu'aucun ne se rende par une absence. Mais §3.4 ne parle pas que du statut — « elle conditionne **aussi les dates de sortie affichées** » — et l'écran prenait **la sortie la plus ancienne du monde**. Mesuré plutôt que supposé : **97 œuvres sur 221** affichaient une année différente de leur année PAL, jusqu'à **six ans d'écart**, *Adventure Island* étant annoncé 1986 pour une parution européenne de 1992. Sur l'écran dont toute la mécanique repose sur la reconnaissance, le joueur voyait une date qu'il n'avait jamais vue. La sortie de sa région passe devant ; à défaut, la plus ancienne, que le statut régional qualifie alors. Quatre tests de client, une mutation annoncée et vérifiée.
+
+- **09 — la bande d'époque.** Le composant est juste : ses quatre champs sont rendus, et il dit même ce qu'il ne place pas. Deux constats, et le second est le plus lourd de l'audit. D'abord **§24.4 porte trois promesses et une seule est tenue** — les premières statistiques et la phrase de récit ne sont ni construites ni inscrites, alors que cette section est la réponse au risque produit numéro un. Ensuite : **il n'y a aucune feuille de style dans le projet**. Aucun fichier CSS, aucun lien, aucun import, trois styles en ligne au total — et la bande référence des classes qui n'existent pas, si bien que ses barres sont des `<span>` de hauteur relative dans un conteneur sans hauteur. Le langage visuel appelle pourtant ce mouvement « le mouvement le plus important du produit ». Et rien ne le signale : la bande est testée par ses attributs, le parcours les assère, tout dit que la récompense fonctionne pendant que rien n'est visible.
