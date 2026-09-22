@@ -107,6 +107,11 @@ export const MESSAGES = {
   "parcours.retour": "Changer de console",
   "parcours.voirTimeline": "Voir ma timeline",
   "parcours.chargement": "Chargement…",
+  // Un échec n'est pas un chargement lent, et un catalogue vide n'est ni
+  // l'un ni l'autre. Trois états, trois phrases.
+  "parcours.echecCatalogue":
+    "Le catalogue n'a pas pu être chargé. Vos déclarations sont conservées ; réessayez dans un instant.",
+  "parcours.catalogueVide": "Aucune console dans le catalogue.",
   "parcours.machine": "{machine} · {region}",
   "timeline.titre": "Ma timeline",
   "timeline.invitation": "Racontez votre première console.",

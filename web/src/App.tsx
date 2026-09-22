@@ -70,29 +70,67 @@ export function App() {
   }>({ entries: [], undated: [] });
   const disposition = useDisposition();
 
+  /**
+   * Trois états distincts, jamais une seule phrase pour les trois.
+   *
+   * Un échec réseau se rendait par « Chargement… » — définitivement. Le
+   * testeur en conclut que l'application est lente, attend, puis part. Les
+   * principes transverses §5 font des quatre états une obligation : l'erreur
+   * dit ce qui a échoué, pas que quelque chose est en cours.
+   */
+  const [chargement, setChargement] = useState<"en-cours" | "pret" | "echec">("en-cours");
+
   useEffect(() => {
-    client.plateformes().then(setPlateformes).catch(() => setPlateformes([]));
+    client.plateformes()
+      .then((liste) => { setPlateformes(liste); setChargement("pret"); })
+      .catch(() => setChargement("echec"));
   }, []);
 
-  async function chargerOeuvres(p: Plateforme) {
-    setMachine(p);
-    // Relu AVANT d'afficher : montrer les lignes vierges puis les cocher
-    // ferait clignoter l'écran, et un chargement lent laisserait le joueur
-    // recocher ce qui l'était déjà.
-    // Les deux relectures ensemble : montrer les lignes avant les souvenirs
-    // ferait clignoter les champs, et un chargement lent laisserait croire
-    // la phrase perdue le temps qu'elle arrive.
+  /**
+   * Relit ce que la base sait de cette plateforme.
+   *
+   * Appelé à **chaque entrée** dans la sélection, et non une fois au choix
+   * de la machine : changer la période démonte le composant de sélection, et
+   * son état local — les lignes cochées depuis — part avec lui. Sans
+   * relecture, l'écran revient en montrant moins que ce que la base contient.
+   *
+   * Les deux lectures ensemble : montrer les lignes avant les souvenirs
+   * ferait clignoter les champs, et un chargement lent laisserait croire la
+   * phrase perdue le temps qu'elle arrive.
+   */
+  async function relireEtat(p: Plateforme) {
     const [etat, notes] = await Promise.all([
       client.etatSelection(UTILISATEUR, p.id),
       client.souvenirs(UTILISATEUR),
     ]);
     setEtatInitial(etat);
     setSouvenirsInitiaux(notes);
+  }
+
+  async function choisirMachine(p: Plateforme) {
+    setMachine(p);
     // Une machine sans zonage n'a pas de région : forcer « PAL » y
     // afficherait « sortie européenne inconnue » sur des titres mondiaux.
     setRegion(p.regionFree ? "WORLDWIDE" : "PAL");
     setOeuvres(await client.oeuvres(p.id));
     setEtape("periode");
+  }
+
+  async function ouvrirSelection(choisie: PeriodeChoisie, p: Plateforme) {
+    setPeriode(choisie);
+    await relireEtat(p);
+    setEtape("selection");
+  }
+
+  /**
+   * Recharger la liste **sans quitter l'écran**. Le bouton appelait le choix
+   * de machine, qui se termine par un retour à l'écran de période : le geste
+   * faisait donc autre chose que ce qu'il annonçait, et emportait au passage
+   * l'état local de la sélection.
+   */
+  async function rechargerListe(p: Plateforme) {
+    setOeuvres(await client.oeuvres(p.id));
+    await relireEtat(p);
   }
 
   async function ouvrirTimeline() {
@@ -107,11 +145,17 @@ export function App() {
       {etape === "machine" ? (
         <section>
           <h2>{t("parcours.choisirMachine")}</h2>
-          {plateformes.length === 0 ? <p>{t("parcours.chargement")}</p> : null}
+          {chargement === "en-cours" ? <p>{t("parcours.chargement")}</p> : null}
+          {chargement === "echec" ? (
+            <p role="alert">{t("parcours.echecCatalogue")}</p>
+          ) : null}
+          {chargement === "pret" && plateformes.length === 0 ? (
+            <p role="status">{t("parcours.catalogueVide")}</p>
+          ) : null}
           <ul>
             {plateformes.map((p) => (
               <li key={p.id}>
-                <button type="button" onClick={() => chargerOeuvres(p)}>
+                <button type="button" onClick={() => { void choisirMachine(p); }}>
                   {p.nom}
                 </button>
               </li>
@@ -126,7 +170,7 @@ export function App() {
           // L'horloge est lue ICI, une fois : le composant ne la lit pas
           // lui-même, sans quoi ses tests dépendraient du jour.
           anneeCourante={new Date().getFullYear()}
-          choisir={(choisie) => { setPeriode(choisie); setEtape("selection"); }}
+          choisir={(choisie) => { void ouvrirSelection(choisie, machine); }}
         />
       ) : null}
 
@@ -154,7 +198,7 @@ export function App() {
             ecrireSouvenir={(cible, texte) =>
               client.souvenir(UTILISATEUR, cible, texte).then(() => undefined)
             }
-            recharger={() => { void chargerOeuvres(machine); }}
+            recharger={() => { void rechargerListe(machine); }}
             etatInitial={etatInitial}
             souvenirsInitiaux={souvenirsInitiaux}
           />

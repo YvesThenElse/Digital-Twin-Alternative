@@ -1837,3 +1837,35 @@ Le corollaire vaut pour l'audit : les trois frontières de ce dépôt
 sans qu'aucune machine ne s'en aperçoive. [[42]] et [[17]] le disaient déjà
 des défauts ; celui-ci dit pourquoi : la frontière est là où les garanties
 s'arrêtent.
+
+### 57 — Le fichier qui assemble est celui qu'on ne teste pas
+
+`App.tsx` portait quatre défauts. Tous les composants qu'il assemble ont des
+tests — la sélection en a plus de quarante, la période onze, la timeline
+dix. Lui n'en avait **aucun**.
+
+La raison est prosaïque : un fichier d'assemblage ne « fait » rien
+d'identifiable. Il n'a pas de règle à éprouver, il branche. Et brancher
+paraît trop trivial pour mériter un test — jusqu'à ce qu'on regarde ce qui
+y vit réellement :
+
+- l'**état du chargement**, qui n'appartient à aucun écran ;
+- la **fraîcheur** de ce qui est relu, qui dépend de quand on relit ;
+- ce que **fait** un bouton dont le libellé vit ailleurs.
+
+Les trois sont invisibles depuis un test de composant, parce qu'un composant
+reçoit ses données déjà chargées, déjà fraîches, et ne sait pas ce que son
+rappel déclenchera.
+
+**La règle** : le fichier qui assemble mérite ses propres tests, et ils
+portent sur des questions que seul lui peut poser — *que voit-on pendant le
+chargement, après un échec, en revenant sur ses pas, et que fait ce bouton
+vraiment ?* Un client simulé suffit.
+
+Corollaire de mutation, constaté trois fois dans cette boucle : dans un
+projet typé strictement, **une mutation par suppression ne compile pas** —
+retirer un usage rend une prop ou une fonction inutilisée et le compilateur
+refuse. Les mutations doivent donc être des **substitutions**. Ce n'est pas
+un obstacle : c'est la mesure d'une garde que le compilateur offre
+gratuitement, et qu'il faut compter comme telle plutôt que la contourner
+sans le dire.

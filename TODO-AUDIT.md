@@ -69,7 +69,21 @@ défaut sur l'un d'eux arrête tout ce qui suit.
 
   **Contrôle — quel test échouerait ?** Aucun pour les trois champs jetés, et le troisième est structurellement invisible : `lire<T>` **caste** le JSON, donc le compilateur ne peut pas signaler un champ non déclaré.
 
-- [ ] **06 — L'assemblage du parcours.** `App.tsx` dans son ensemble : états, transitions, profil, disposition. Cite : `ecrans/PARCOURS-ET-LIENS.md`, `ecrans/PLAN-DU-SITE.md`. *C'est là que vivent les valeurs qui traversent les écrans sans appartenir à aucun.*
+- [x] **06 — L'assemblage du parcours.** `App.tsx` dans son ensemble : états, transitions, profil, disposition. Cite : `ecrans/PARCOURS-ET-LIENS.md`, `ecrans/PLAN-DU-SITE.md`. *C'est là que vivent les valeurs qui traversent les écrans sans appartenir à aucun.*
+
+  **1 · Envoyé sans être saisi — UN, déjà inscrit.** La région (item 18). Le reste vient de l'utilisateur ou d'un fait : `UTILISATEUR` de `?profil=` avec `usr_local` par défaut (`App.tsx:25`, mécanisme assumé faute de compte), `anneeCourante` de l'horloge, `periode` du choix.
+
+  **2 · Rendu sans être lu — DEUX, corrigés.** (a) **L'état relu était périmé** : il n'était chargé qu'au choix de la machine, alors que changer la période **démonte** le composant de sélection et emporte son état local. On revenait donc en voyant **moins** que ce que la base contenait. Relu à chaque entrée désormais. (b) `worksCount` et les avertissements — items 19 et 27.
+
+  **3 · Écrit sans être dit — RIEN.** `App` ne persiste rien directement.
+
+  **4 · Dit sans être écrit — UN, corrigé, et il n'était pas là où je le cherchais.** **« Recharger la liste » quittait l'écran** : le bouton appelait `chargerOeuvres`, qui se termine par `setEtape("periode")`. Le geste faisait autre chose que ce qu'il annonçait, et emportait au passage les lignes cochées. Scindé en `choisirMachine` et `rechargerListe`.
+
+  **En prime — un mensonge d'état.** `catch(() => setPlateformes([]))` puis `length === 0 ? "Chargement…"` : **un échec réseau se rendait par un chargement éternel**, et un catalogue vide aussi. Trois états rendus par une phrase, alors que les principes §5 en font quatre obligatoires. Séparés : chargement, erreur (`role="alert"`, ce qui a échoué et ce qui est conservé), vide (`role="status"`).
+
+  **Contrôle — quel test échouerait ?** `App.tsx` **n'avait aucun test**, et c'est pourquoi quatre défauts y ont survécu à cinq surfaces auditées. Cinq tests neufs, deux mutations annoncées et vérifiées.
+
+  **Observations sans défaut.** Revenir à l'écran de période le **réinitialise** : il faut rechoisir le mode, la période courante n'étant pas remontrée. Friction, pas mensonge — le contexte de saisie, lui, l'affiche toujours. Et `EtatDuService` est écrit, testé, **monté nulle part** → **item 28**.
 
 ## Les composants de rendu
 
@@ -130,6 +144,8 @@ inscrit et ne les construit pas.
 
 - [ ] **27 — Les avertissements causals n'atteignent personne.** (§5.4) L'API les calcule et les rend ; le type du client n'a pas le champ. *Acceptation : une incohérence déclarée — « fini » avant « commencé » — est visible à l'écran comme un avertissement doux, et ne bloque rien.*
 
+- [ ] **28 — `EtatDuService` n'est monté nulle part.** Composant écrit et testé, jamais affiché — le même défaut que `ZoneSansDate` avant l'item 18. *Décision attendue : où montrer la santé du service, et à quelles conditions. Un bandeau permanent dirait « tout va bien » en continu, ce que les principes §5 ne demandent pas ; un bandeau à l'échec seulement risque de ne jamais s'afficher en test.*
+
 ---
 
 ## Journal
@@ -143,3 +159,5 @@ inscrit et ne les construit pas.
 - **04 — la passe 2 et les titres libres.** Rien n'est envoyé à l'insu de l'utilisateur. Un défaut **corrigé** : les souvenirs n'étaient jamais relus, et le champ revenait vide alors que la phrase était en base — sur le contenu que §9 dit « le seul qui ne soit pas régénérable ». Six tests neufs, deux mutations annoncées et vérifiées ; l'une d'elles **n'a pas compilé**, le typage refusant une prop devenue inutilisée, ce qui fait du compilateur une garde faible mais réelle. Deux défauts inscrits, tous deux de la forme **dit sans être écrit**, comme celui de l'item 03 : « toujours en cours » est offert puis traité comme une absence de réponse, et les **titres saisis ne sont pas relus** — ils disparaissent de la sélection au rechargement tout en restant sur la timeline. Le crible aura donc trouvé cette forme trois fois en deux surfaces, alors qu'elle ne figurait pas dans ses trois questions.
 
 - **05 — la timeline.** Écran en lecture seule : rien d'envoyé, rien de persisté, aucun geste perdu. Mais **trois champs sont rendus par l'API et jetés par l'écran**. `type` d'abord, et c'est la cause exacte du symptôme signalé depuis un téléphone — vérifié en base, une œuvre du profil porte trois moments, `AcquiredItem`, `CompletedGame`, `StartedGame`, que l'écran affiche en trois lignes identiques. `targetKind` ensuite : un titre saisi se donne pour une œuvre curée. Et les **avertissements causals** de §5.4, que l'API calcule et que le type du client ne déclare pas. Ce dernier est structurellement invisible : `lire<T>` **caste** le JSON, donc aucun compilateur ne peut signaler un champ manquant à l'appel. `confidence`, en revanche, n'est pas un manque : elle se déduit de la granularité, déjà rendue.
+
+- **06 — l'assemblage du parcours.** **Quatre défauts, tous corrigés**, et une raison unique à leur survie : **`App.tsx` n'avait aucun test**. C'est pourtant là que vivent les valeurs qui traversent les écrans sans appartenir à aucun. L'état relu était **périmé** — chargé au seul choix de la machine, alors que changer la période démonte la sélection et emporte son état local, si bien qu'on revenait en voyant moins que ce que la base contenait. **« Recharger la liste » quittait l'écran**, le bouton appelant le choix de machine qui se termine par un retour à la période : un geste qui faisait autre chose que ce qu'il annonçait. Et surtout, **un échec réseau se rendait par un chargement éternel** — comme un catalogue vide : trois états pour une seule phrase, là où les principes §5 en exigent quatre distincts. Cinq tests neufs, deux mutations annoncées et vérifiées. Une observation sans défaut : `EtatDuService` est écrit, testé, et monté nulle part — le même défaut que `ZoneSansDate` avant l'item 18.
