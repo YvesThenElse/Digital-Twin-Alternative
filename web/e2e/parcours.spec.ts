@@ -159,6 +159,21 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // champ numérique en coûtait quatre — et la granularité reste honnête :
   // ce qui part est un intervalle, jamais une année inventée.
   await toucher(page.getByRole("button", { name: /Années 90/ }).click());
+
+  // **On reste sur l'écran de période**, et c'est tout l'item F18 : le clic
+  // sur une décennie validait ET naviguait, si bien que l'affinage
+  // n'apparaissait que le temps des deux requêtes de relecture. Ce parcours
+  // ne pouvait pas le voir — Playwright clique plus vite qu'une main —, donc
+  // on l'affirme désormais explicitement.
+  // Une fois le réseau calme : si l'écran devait partir de lui-même, il
+  // serait parti. `toBeVisible` seul passerait au premier tick, avant la
+  // navigation — c'est-à-dire exactement pendant la course que cet item
+  // supprime.
+  await page.waitForLoadState("networkidle");
+  await expect(page.getByRole("heading", { name: /quand/i })).toBeVisible();
+  await expect(page.getByTestId("affinage")).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Déclarer : / })).toHaveCount(0);
+
   await toucher(page.getByRole("button", { name: `${DEBUT} – ${FIN}` }).click());
 
   // Le contexte de saisie (E02 repère A) annonce ce qui sera attaché.
@@ -483,7 +498,12 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // où ce défaut se voit — aucun test de composant ne recharge une page.
   await page.goto(`/?profil=${profil}`);
   await page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }).click();
+  // Les deux mêmes gestes qu'à l'aller : la décennie ouvre l'affinage, et
+  // c'est l'affinage qui continue. Ces gestes-ci ne comptent pas au budget —
+  // ce n'est pas le parcours d'un testeur, c'est une vérification que seul
+  // ce test peut faire.
   await page.getByRole("button", { name: /Années 90/ }).click();
+  await page.getByRole("button", { name: `${DEBUT} – ${FIN}` }).click();
 
   await expect(page.getByRole("button", { name: /^Déclaré : / }))
     .toHaveCount(TITRES_A_COCHER);

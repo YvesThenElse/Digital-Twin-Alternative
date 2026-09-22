@@ -53,16 +53,37 @@ describe("ChoixPeriode — des cartes de décennie, pas un curseur (E01)", () =>
     expect(carte(/Années 80/)).toBeInTheDocument();
   });
 
-  it("envoie une PÉRIODE sur la décennie, pas une année inventée", () => {
-    // « La valeur enregistrée est alors un Range sur la décennie, ce qui est
-    // une réponse parfaitement valide » (E01). Une année exacte
-    // affirmerait une précision que personne n'a donnée.
+  it("ne décide RIEN au clic sur une décennie", async () => {
+    // Le clic validait la période ET faisait naviguer. L'affinage
+    // n'apparaissait donc que le temps des deux requêtes de relecture : sur
+    // une machine rapide, l'utilisateur perdait la course, et E01 promet
+    // pourtant un affinage « facultatif » — pas inatteignable.
+    //
+    // Le parcours de bout en bout ne pouvait pas le voir : Playwright clique
+    // plus vite qu'une main.
     const utilisateur = userEvent.setup();
     const { choisir } = monter();
 
-    return utilisateur.click(carte(/Années 90/)).then(() => {
-      expect(choisir).toHaveBeenCalledWith({ kind: "range", from: 1990, to: 1999 });
-    });
+    await utilisateur.click(carte(/Années 90/));
+
+    expect(choisir).not.toHaveBeenCalled();
+    expect(screen.getByTestId("affinage")).toBeInTheDocument();
+  });
+
+  it("envoie une PÉRIODE sur la décennie, pas une année inventée", async () => {
+    // « La valeur enregistrée est alors un Range sur la décennie, ce qui est
+    // une réponse parfaitement valide » (E01). Une année exacte
+    // affirmerait une précision que personne n'a donnée.
+    //
+    // C'est « quelque part dans les années 90 » qui continue — le bouton
+    // existait déjà, et il devient le chemin de qui ne veut pas affiner.
+    const utilisateur = userEvent.setup();
+    const { choisir } = monter();
+
+    await utilisateur.click(carte(/Années 90/));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
+
+    expect(choisir).toHaveBeenCalledWith({ kind: "range", from: 1990, to: 1999 });
   });
 
   it("borne la première décennie à la sortie de la machine", async () => {
@@ -72,6 +93,7 @@ describe("ChoixPeriode — des cartes de décennie, pas un curseur (E01)", () =>
     const { choisir } = monter(nes);
 
     await utilisateur.click(carte(/Années 80/));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
 
     expect(choisir).toHaveBeenCalledWith({ kind: "range", from: 1983, to: 1989 });
   });
@@ -81,6 +103,7 @@ describe("ChoixPeriode — des cartes de décennie, pas un curseur (E01)", () =>
     const { choisir } = monter();
 
     await utilisateur.click(carte(/Années 2020/));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
 
     expect(choisir).toHaveBeenCalledWith({ kind: "range", from: 2020, to: 2026 });
   });
@@ -143,7 +166,6 @@ describe("ChoixPeriode — des cartes de décennie, pas un curseur (E01)", () =>
     const { choisir } = monter();
 
     await utilisateur.click(carte(/Années 90/));
-    choisir.mockClear();
     await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
 
     expect(choisir).toHaveBeenCalledWith({ kind: "range", from: 1990, to: 1999 });
@@ -154,6 +176,7 @@ describe("ChoixPeriode — des cartes de décennie, pas un curseur (E01)", () =>
     const { choisir } = monter();
 
     await utilisateur.click(carte(/Années 90/));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
 
     expect(Object.keys(choisir.mock.calls[0][0]).sort()).toEqual(["from", "kind", "to"]);
   });

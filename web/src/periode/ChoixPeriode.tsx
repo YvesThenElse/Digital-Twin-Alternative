@@ -83,10 +83,17 @@ export function ChoixPeriode({
               data-testid="carte-decennie"
               data-epoque={epoque.nom}
               aria-pressed={decennie === d}
-              onClick={() => {
-                setDecennie(d);
-                choisir({ kind: "range", from: debutDe(d), to: finDe(d) });
-              }}
+              // ⚠️ Le clic NE DÉCIDE RIEN : il ouvre l'affinage, il ne
+              // navigue pas. Décider ici faisait valider la période ET
+              // quitter l'écran, si bien que le panneau d'affinage
+              // n'apparaissait que le temps des deux requêtes de relecture —
+              // sur une machine rapide, l'utilisateur perdait la course, et
+              // l'affinage « facultatif » d'E01 devenait inatteignable.
+              //
+              // C'est « quelque part dans les années 90 » qui continue, et
+              // il existait déjà : E01 le décrit comme la réponse de qui
+              // veut ignorer l'affinage.
+              onClick={() => setDecennie(d)}
             >
               <span className="carte-nom">{t("periode.decennie", { d: nomDecennie(d) })}</span>
               <span className="carte-meta">

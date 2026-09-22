@@ -4,6 +4,9 @@
 > repris ici **dans l'ordre où ils comptent** : ce qui bloque un testeur
 > d'abord, la perte de richesse ensuite, l'outillage en dernier.
 >
+> **Les dix-huit items sont faits.** Ce qui reste écrit ici est le journal de
+> ce qu'ils ont changé, et de ce que chacun a laissé.
+>
 > Le verdict du 22 septembre 2026 tenait à quatre blocages. **Ils sont tous
 > levés** — l'apparence, la grille qui rend enfin une grille, le moment qui
 > dit ce qu'il est, la correction qui tient, le souvenir qui arrive sur
@@ -52,7 +55,7 @@
 
 ## Trouvé en chemin
 
-- [ ] **F18 — L'affinage de période n'est atteignable que par une course.**
+- [x] **F18 — L'affinage de période n'est atteignable que par une course.**
   Constaté en faisant F7 : le clic sur une carte de décennie **valide la
   période ET navigue**. Le panneau d'affinage n'apparaît donc que le temps
   des deux requêtes de relecture — sur une machine rapide, l'utilisateur
@@ -293,3 +296,12 @@
   et la Phase 1 s'est close sans lui.** `PHASING.md` le situe désormais en
   Phase 3 avec les trois capacités qui l'attendent, et les deux fiches qui
   affirmaient le contraire sont corrigées.
+
+- **F18** — le clic sur une décennie **ne décide plus rien** : il ouvre
+  l'affinage, et c'est « quelque part dans les années 90 » — qui existait
+  déjà — qui continue. E01 promet un affinage « facultatif », pas
+  inatteignable. La garde du navigateur attend que **le réseau se taise**
+  avant de demander si l'écran est toujours là : posée au premier instant,
+  elle serait vraie même pendant la course qu'elle doit interdire. Ce qui est
+  laissé : ignorer l'affinage coûte un geste de plus qu'avant — c'est le prix
+  d'un panneau qu'on peut réellement atteindre.

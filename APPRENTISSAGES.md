@@ -2483,3 +2483,27 @@ regarder ».
 vide, rien d'affiché — enchaîne immédiatement sur un cas où la chose DOIT
 apparaître, dans le même montage. Sans cela, son vert ne dit rien de plus que
 « le test s'est exécuté ».
+
+### 79 — Un parcours automatisé ne perd jamais une course que l'humain perd
+
+L'affinage de période était **inatteignable en pratique** : le clic sur une
+carte de décennie validait la période ET faisait naviguer, si bien que le
+panneau n'existait que le temps de deux requêtes. Sur une machine rapide,
+personne n'avait le temps de cliquer dedans.
+
+Le parcours de bout en bout, lui, passait — et il passait pour une raison qui
+n'a rien à voir avec le produit : **Playwright clique plus vite qu'une main**.
+Il gagnait la course à chaque exécution, et il l'a gagnée pendant des
+semaines.
+
+Le défaut n'a pas été trouvé en lisant le code ni en jouant le parcours, mais
+en essayant de déplacer l'ouverture d'un écran — c'est-à-dire en changeant le
+*temps*. Une fois la garde écrite, elle ne pouvait pas être « la page a
+navigué » : `toBeVisible` passe au premier instant, donc pendant la course.
+Il a fallu attendre que **le réseau se taise**, et alors seulement demander si
+l'écran est toujours là.
+
+**La règle** : quand une assertion porte sur le fait qu'un écran RESTE, la
+poser une fois tout calme — jamais au premier instant, où elle est vraie même
+dans le cas qu'on veut interdire. Et se méfier d'un parcours vert sur un geste
+enchaîné : l'automate ne vit pas au rythme d'une main.

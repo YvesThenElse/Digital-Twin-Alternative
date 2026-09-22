@@ -83,9 +83,12 @@ afterEach(() => vi.clearAllMocks());
 async function jusquALaSelection(utilisateur: ReturnType<typeof userEvent.setup>) {
   render(<App />);
   await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
-  // Une carte de décennie suffit : E01 en fait une réponse pleine, et
-  // l'affinage qui suit est facultatif.
+  // Une carte de décennie OUVRE l'affinage sans naviguer ; « quelque part
+  // dans les années 90 » est ce qui continue. E01 en fait une réponse
+  // pleine — et c'est ce qui rend l'affinage atteignable, au lieu d'une
+  // course que l'utilisateur perd sur une machine rapide.
   await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
+  await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
 }
 
 describe("App — l'état du chargement (principes §5)", () => {
@@ -376,6 +379,7 @@ describe("App — la fraîcheur de ce qui est relu", () => {
     // courante. Friction notée à l'audit, ce n'est pas un mensonge — le
     // contexte de saisie, lui, l'affiche toujours.
     await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
 
     await waitFor(() => expect(faux.etatSelection).toHaveBeenCalled());
   });
