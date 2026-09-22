@@ -111,8 +111,11 @@ export function App() {
     setMachine(p);
     // Une machine sans zonage n'a pas de région : forcer « PAL » y
     // afficherait « sortie européenne inconnue » sur des titres mondiaux.
-    setRegion(p.regionFree ? "WORLDWIDE" : "PAL");
-    setOeuvres(await client.oeuvres(p.id));
+    const zone = p.regionFree ? "WORLDWIDE" : "PAL";
+    setRegion(zone);
+    // La région conditionne AUSSI les dates affichées (§3.4), pas seulement
+    // le statut de sortie : elle voyage donc avec la requête.
+    setOeuvres(await client.oeuvres(p.id, zone));
     setEtape("periode");
   }
 
@@ -129,7 +132,7 @@ export function App() {
    * l'état local de la sélection.
    */
   async function rechargerListe(p: Plateforme) {
-    setOeuvres(await client.oeuvres(p.id));
+    setOeuvres(await client.oeuvres(p.id, region));
     await relireEtat(p);
   }
 

@@ -104,6 +104,65 @@ describe("client.souvenirs — relire ce qui a été écrit", () => {
   });
 });
 
+describe("client.oeuvres — la date affichée suit la RÉGION du joueur (§3.4)", () => {
+  const oeuvre = (releases: { region: string | null; date: string; precision: string }[]) => ({
+    id: "wrk_1", title: "Un jeu", notability: 1,
+    releases: releases.map((r) => ({ ...r, confidence: "High" })),
+    regionStatus: {}, coverUrl: null,
+  });
+
+  it("montre la sortie de la région, pas la plus ancienne du monde", async () => {
+    // « Un joueur PAL et un joueur NTSC-J n'ont pas connu le même catalogue,
+    // ni les mêmes titres, ni les mêmes dates » (§3.4). Sur le dataset réel,
+    // 97 œuvres sur 221 portaient une année différente de leur année PAL —
+    // jusqu'à six ans d'écart. L'écran dont toute la mécanique repose sur la
+    // reconnaissance montrait au joueur une date qu'il n'a jamais vue.
+    reponse = [oeuvre([
+      { region: "NTSC-J", date: "1986-09-12", precision: "day" },
+      { region: "PAL", date: "1992-04-15", precision: "day" },
+    ])];
+
+    const [lu] = await client.oeuvres("plt_1", "PAL");
+
+    expect(lu.sortie).toEqual({ kind: "ExactDate", date: "1992-04-15" });
+  });
+
+  it("retombe sur la plus ancienne quand la région n'a pas de sortie", async () => {
+    // Le statut régional dit alors « jamais sorti » ou « inconnu » : la date
+    // étrangère devient un repère, pas un mensonge. L'effacer priverait le
+    // joueur du seul point d'ancrage dont il dispose.
+    reponse = [oeuvre([{ region: "NTSC-J", date: "1994-03-15", precision: "day" }])];
+
+    const [lu] = await client.oeuvres("plt_1", "PAL");
+
+    expect(lu.sortie).toEqual({ kind: "ExactDate", date: "1994-03-15" });
+  });
+
+  it("garde la granularité de la sortie régionale", async () => {
+    // Une sortie régionale datée à l'année ne doit pas emprunter la
+    // précision au jour d'une autre région.
+    reponse = [oeuvre([
+      { region: "NTSC-J", date: "1990-11-21", precision: "day" },
+      { region: "PAL", date: "1992-01-01", precision: "year" },
+    ])];
+
+    const [lu] = await client.oeuvres("plt_1", "PAL");
+
+    expect(lu.sortie).toEqual({ kind: "Year", year: 1992 });
+  });
+
+  it("prend la plus ancienne DE LA RÉGION quand il y en a plusieurs", async () => {
+    reponse = [oeuvre([
+      { region: "PAL", date: "1993-06-01", precision: "day" },
+      { region: "PAL", date: "1992-04-15", precision: "day" },
+    ])];
+
+    const [lu] = await client.oeuvres("plt_1", "PAL");
+
+    expect(lu.sortie).toEqual({ kind: "ExactDate", date: "1992-04-15" });
+  });
+});
+
 describe("client — les adresses et les verbes", () => {
   it("préfixe toutes les requêtes par /api", async () => {
     // Le mandataire de Vite ne relaie que ce préfixe. Une adresse sans lui

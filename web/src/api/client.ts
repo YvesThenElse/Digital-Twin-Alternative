@@ -56,10 +56,20 @@ type OeuvreApi = {
  * Une date au jour rendue comme une année perdrait ce que la source donne ;
  * une année rendue comme un jour affirmerait ce qu'elle ne donne pas.
  */
-function sortieDe(oeuvre: OeuvreApi): ValeurTemporelle | null {
-  // La plus ancienne : c'est la première parution sur cette machine, celle
-  // dont le joueur se souvient.
-  const premiere = [...oeuvre.releases].sort((a, b) => a.date.localeCompare(b.date))[0];
+function sortieDe(oeuvre: OeuvreApi, region: string): ValeurTemporelle | null {
+  const parDate = [...oeuvre.releases].sort((a, b) => a.date.localeCompare(b.date));
+
+  // **La sortie de SA région d'abord.** §3.4 : « un joueur PAL et un joueur
+  // NTSC-J n'ont pas connu le même catalogue, ni les mêmes titres, ni les
+  // mêmes dates ». Sur le dataset réel, 97 œuvres sur 221 portaient une
+  // année différente de leur année PAL — jusqu'à six ans d'écart — et
+  // l'écran dont toute la mécanique repose sur la reconnaissance montrait
+  // au joueur une date qu'il n'a jamais vue.
+  //
+  // À défaut, la plus ancienne du monde : le statut régional dit alors
+  // « jamais sorti » ou « inconnu », ce qui fait de cette date un repère et
+  // non un mensonge. L'effacer priverait le joueur de son seul ancrage.
+  const premiere = parDate.find((r) => r.region === region) ?? parDate[0];
   if (premiere === undefined) return null;
 
   const annee = Number(premiere.date.slice(0, 4));
@@ -87,13 +97,13 @@ export const client = {
       })),
     ),
 
-  oeuvres: (plateformeId: string) =>
+  oeuvres: (plateformeId: string, region: string) =>
     lire<OeuvreApi[]>(`/platforms/${plateformeId}/works`).then((liste): Oeuvre[] =>
       liste.map((o) => ({
         id: o.id,
         titre: o.title,
         rang: o.notability,
-        sortie: sortieDe(o),
+        sortie: sortieDe(o, region),
         // L'adresse rendue par l'API est relative À L'API (« /covers/… »).
         // Le navigateur, lui, parle au mandataire : sans préfixe, il
         // demandait la page du front et recevait du HTML à la place d'une

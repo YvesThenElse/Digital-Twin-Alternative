@@ -1903,3 +1903,33 @@ Deux observations d'accompagnement :
   c'est-à-dire un hexadécimal valide — ce que la mauvaise réponse était
   aussi. Une assertion de **forme** ne vaut jamais une assertion de **sens**
   ([[43]]).
+
+### 59 — Une règle citée à moitié est une règle à moitié appliquée
+
+§3.4 tient en deux phrases. La première — « un joueur PAL et un joueur
+NTSC-J n'ont pas connu le même catalogue » — a été implémentée avec soin :
+quatre états régionaux, vingt-deux non-sorties arbitrées à la main, des
+tests qui exigent la marque de chacun.
+
+La seconde, dans le même paragraphe, dit : « elle conditionne **aussi les
+dates de sortie affichées**, qui diffèrent parfois de plusieurs années entre
+régions ». Celle-là n'a jamais été lue. L'écran prenait la sortie la plus
+ancienne du monde, et 97 œuvres sur 221 portaient une année que le joueur
+n'avait jamais vue.
+
+Le mécanisme est ordinaire et c'est ce qui le rend dangereux : **une section
+paraît traitée dès qu'on en a traité l'idée principale.** La citation qu'on
+garde en tête devient le résumé, et le reste du paragraphe cesse d'exister.
+Il n'y a pas d'erreur de raisonnement — seulement une lecture qui s'est
+arrêtée quand elle a cru comprendre.
+
+**La règle** : quand une section de spécification est citée dans un item, la
+**relire entière au moment de cocher**, pas au moment de commencer. Et
+compter ses exigences : §3.4 en porte deux, et une seule était faite.
+
+Le corollaire est la méthode qui l'a trouvée : **mesurer sur les données
+réelles** plutôt que raisonner sur le principe. « L'écran montre peut-être
+la mauvaise date » est une inquiétude ; « 97 œuvres sur 221, jusqu'à six ans
+d'écart, *Adventure Island* annoncé 1986 pour 1992 » est un fait, et il se
+lit en cinq lignes de script. C'est le même geste que [[41]] et que l'affect
+fabriqué : lire des lignes, jamais des agrégats.
