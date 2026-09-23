@@ -429,6 +429,32 @@ describe("App — E05, la fiche de jeu s'ouvre depuis l'axe", () => {
     expect(faux.ficheOeuvre).not.toHaveBeenCalled();
   });
 
+  it("retrouve l'épisode DÉPLIÉ en revenant de la fiche", async () => {
+    // E03 : « clic sur un jeu → E05, en CONSERVANT la position ». Le
+    // repliage vivait dans l'entrée : ouvrir une fiche démonte l'axe, et
+    // l'état partait avec lui. C'est l'apprentissage 73 — ce qui doit
+    // survivre à un remontage s'écrit hors du composant.
+    const utilisateur = userEvent.setup();
+    faux.timeline.mockResolvedValue({
+      entries: [{ isEpisode: true, interval: { start: "1990-01-01", end: "1990-12-31" },
+        moments: AXE.entries[0].moments }],
+      undated: [],
+      warnings: [],
+    });
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    await screen.findByTestId("axe");
+
+    await utilisateur.click(screen.getByRole("button", { name: /Déplier/ }));
+    await utilisateur.click(screen.getByRole("button", { name: "Chrono Trigger" }));
+    await screen.findByTestId("fiche");
+    await utilisateur.click(screen.getByRole("button", { name: /Revenir/ }));
+
+    // Les titres sont là : l'épisode n'a pas été refermé.
+    expect(screen.getByRole("button", { name: "Chrono Trigger" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Super Mario World" })).toBeInTheDocument();
+  });
+
   it("revient à l'axe : la fiche n'est pas un cul-de-sac", async () => {
     const utilisateur = userEvent.setup();
     await jusquALAxe(utilisateur);

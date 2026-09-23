@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
@@ -47,12 +48,35 @@ const incoherence = () => ({
   avertissements: [{ expectedEarlierId: "debut", expectedLaterId: "fin" }],
 });
 
+/**
+ * Un axe qui TIENT son repliage, pour les tests qui déplient.
+ *
+ * Le repliage a quitté l'entrée : il vit chez le parent, parce qu'il doit
+ * survivre au démontage de l'axe — ouvrir une fiche de jeu le démonte, et
+ * E03 promet « → E05 en conservant la position ». Les tests qui l'exercent
+ * jouent donc ce parent.
+ */
+function AxeDepliable(props: Omit<Parameters<typeof Timeline>[0], "deplies" | "basculerDepli">) {
+  const [deplies, setDeplies] = useState<ReadonlySet<string>>(new Set());
+  return (
+    <Timeline
+      {...props}
+      deplies={deplies}
+      basculerDepli={(cle) => setDeplies((precedents: ReadonlySet<string>) => {
+        const s = new Set(precedents);
+        if (!s.delete(cle)) s.add(cle);
+        return s;
+      })}
+    />
+  );
+}
+
 describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
   it("invite plutôt que de montrer un vide", () => {
     // Un axe vierge se lit comme une panne. « Racontez votre première
     // console » dit qu'il n'y a rien À CAUSE de l'histoire, pas à cause de
     // l'écran.
-    render(<Timeline entrees={[]} sansDate={[]} avertissements={[]} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} />);
+    render(<Timeline entrees={[]} sansDate={[]} avertissements={[]} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}} />);
 
     expect(screen.getByText(/Racontez votre première console/)).toBeInTheDocument();
     expect(axe()).toHaveAttribute("data-entrees", "0");
@@ -70,7 +94,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -89,7 +113,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -108,7 +132,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -151,7 +175,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -165,7 +189,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
   it("déplie un épisode au clic", async () => {
     const utilisateur = userEvent.setup();
     render(
-      <Timeline
+      <AxeDepliable
         entrees={[
           entree(
             [
@@ -191,7 +215,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
   it("n'offre pas de dépliage pour un moment isolé", () => {
     // Un bouton qui ne fait rien apprend à ignorer les boutons.
     render(
-      <Timeline
+      <AxeDepliable
         entrees={[entree([moment("a", "Seul", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[]}
@@ -213,7 +237,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         entrees={[]}
         sansDate={[moment("x", "Je ne sais plus", { kind: "Unknown" })]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -227,7 +251,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         entrees={[entree([moment("a", "Daté", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -242,7 +266,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         entrees={[entree([moment("a", "Daté", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[moment("x", "Sans date", { kind: "Unknown" })]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -259,7 +283,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
     // à la même date ». La cause n'était pas une duplication de données —
     // `type` était rendu par l'API et **jeté par l'écran**.
     render(
-      <Timeline
+      <AxeDepliable
         entrees={[
           entree(
             [
@@ -298,7 +322,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -322,7 +346,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -339,7 +363,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -359,7 +383,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -400,7 +424,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -424,7 +448,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -450,7 +474,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -466,7 +490,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
     // l'agrégation d'épisode existe pour éviter (§4.4).
     const utilisateur = userEvent.setup();
     render(
-      <Timeline
+      <AxeDepliable
         entrees={[entree(troisMoments(unSouvenir("L'été 1997")), "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[]}
@@ -491,7 +515,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -507,7 +531,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
     // déclarait pas le champ, donc personne ne les voyait jamais. Un calcul
     // juste et invisible ne signale rien.
     const { entrees, avertissements } = incoherence();
-    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} />);
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}} />);
 
     const porteur = screen.getAllByTestId("moment-titre")[0].closest("li")!;
     expect(within(porteur).getByTestId("avertissement")).toBeInTheDocument();
@@ -518,7 +542,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
     // Le message de l'API dit « StartedGame » — c'est un diagnostic, pas une
     // phrase à lire.
     const { entrees, avertissements } = incoherence();
-    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} />);
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}} />);
 
     expect(avertissement()).toHaveTextContent("Joué");
     expect(avertissement()!.textContent).not.toMatch(/StartedGame|CompletedGame/);
@@ -529,7 +553,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
     // masquer reviendrait à prétendre connaître le souvenir mieux que son
     // auteur.
     const { entrees, avertissements } = incoherence();
-    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} />);
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}} />);
 
     expect(screen.getAllByTestId("moment-titre")).toHaveLength(2);
     expect(screen.getByText("1990")).toBeInTheDocument();
@@ -543,7 +567,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
                          "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -559,7 +583,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
                          "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[{ expectedEarlierId: "ailleurs", expectedLaterId: "introuvable" }]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -589,7 +613,7 @@ describe("Timeline — les trous sont des invitations (E03)", () => {
         avertissements={[]}
         ouvrirFiche={() => {}}
         anneeCourante={2019}
-        completer={() => {}} corriger={() => {}}
+        completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -606,7 +630,7 @@ describe("Timeline — les trous sont des invitations (E03)", () => {
         avertissements={[]}
         ouvrirFiche={() => {}}
         anneeCourante={2026}
-        completer={() => {}} corriger={() => {}}
+        completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -629,7 +653,7 @@ describe("Timeline — les trous sont des invitations (E03)", () => {
         avertissements={[]}
         ouvrirFiche={() => {}}
         anneeCourante={2019}
-        completer={() => {}} corriger={() => {}}
+        completer={() => {}} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 
@@ -649,7 +673,7 @@ describe("Timeline — les trous sont des invitations (E03)", () => {
         avertissements={[]}
         ouvrirFiche={() => {}}
         anneeCourante={2023}
-        completer={completer} corriger={() => {}}
+        completer={completer} corriger={() => {}} deplies={new Set()} basculerDepli={() => {}}
       />,
     );
 

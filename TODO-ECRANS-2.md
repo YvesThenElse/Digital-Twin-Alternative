@@ -27,7 +27,7 @@ chemin a laissé.
 
 ## Ce qui se construit sans rien trancher
 
-- [ ] **T1 — Revenir de la fiche ne replie plus l'épisode.** (E03, actions ·
+- [x] **T1 — Revenir de la fiche ne replie plus l'épisode.** (E03, actions ·
   E05) E03 promet « clic sur un jeu → E05, **en conservant la position** ».
   E05 est une page : l'axe est démonté puis remonté, et l'état « déplié »
   part avec lui. Le parcours le **constate** aujourd'hui — une assertion
@@ -125,3 +125,18 @@ tranchent.
 ---
 
 ## Journal
+
+- **T1** — le repliage a quitté l'entrée. Il vit chez le parent, parce qu'il
+  doit **survivre** au démontage de l'axe : ouvrir la fiche d'un jeu remonte
+  la timeline, et un état local repartait avec elle. C'est la seconde moitié
+  de l'apprentissage 73 — « écrire dans le même geste ce qui remonte un
+  composant et ce qui doit lui survivre » —, appliquée cette fois à une vue
+  de lecture plutôt qu'à une saisie.
+
+  L'assertion que le parcours portait depuis S6, écrite pour **échouer le
+  jour de la correction**, a échoué. Elle est retirée, et le geste qu'elle
+  coûtait quitte le budget : `TITRES_A_COCHER + 43`.
+
+  Les tests d'axe qui déplient jouent désormais un petit parent qui tient
+  l'état — sans lui, ils auraient mesuré un composant à qui l'on a retiré sa
+  mémoire sans la lui rendre.

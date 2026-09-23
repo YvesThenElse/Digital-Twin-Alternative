@@ -63,7 +63,7 @@ Le rail de décennies desktop est plus qu'un raccourci : coloré selon le systè
 | `✎` sur un moment | E07 en mode édition (corriger la date, l'état) |
 | `🗨` | ajouter ou éditer un souvenir (E07, onglet souvenir) |
 | Clic sur une bande agrégée | déplie les jeux qu'elle contient |
-| Clic sur un jeu | → E05 |
+| Clic sur un jeu | → E05, **en conservant la position** — le repliage des épisodes survit au retour |
 | Zone vide d'une période | → E02 préfiltré sur cette période, « compléter ces années » |
 | Tiroir sans-date | dater en lot |
 

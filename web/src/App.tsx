@@ -189,6 +189,19 @@ export function App() {
    * quoi porter.
    */
   const [etatDuJeu, setEtatDuJeu] = useState<EtatDuJeu | null>(null);
+
+  /**
+   * Les épisodes dépliés de l'axe — <b>tenus ici parce qu'ils doivent
+   * survivre</b>.
+   *
+   * Le repliage vivait dans l'entrée, en état local. Ouvrir la fiche d'un
+   * jeu démonte l'axe, et l'état partait avec lui : on revenait sur un
+   * épisode refermé, alors qu'E03 promet « → E05 en CONSERVANT la
+   * position ». C'est la seconde moitié de l'apprentissage 73 — ce qui doit
+   * survivre à un remontage s'écrit hors du composant, dans le même geste
+   * que ce qui le remonte.
+   */
+  const [deplies, setDeplies] = useState<ReadonlySet<string>>(new Set());
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -712,6 +725,12 @@ export function App() {
             anneeCourante={new Date().getFullYear()}
             completer={completerLaPeriode}
             corriger={ouvrirPanneau}
+            deplies={deplies}
+            basculerDepli={(cle) => setDeplies((precedents) => {
+              const suivants = new Set(precedents);
+              if (!suivants.delete(cle)) suivants.add(cle);
+              return suivants;
+            })}
           />
 
           {/* Superposé, jamais à la place : l'axe reste monté derrière, donc

@@ -32,6 +32,8 @@ export function Timeline({
   anneeCourante,
   completer,
   corriger,
+  deplies,
+  basculerDepli,
 }: {
   entrees: EntreeTimeline[];
   sansDate: MomentTimeline[];
@@ -63,6 +65,17 @@ export function Timeline({
    * encyclopédie quand on voulait changer une date.
    */
   corriger: (moment: MomentTimeline) => void;
+  /**
+   * Les épisodes dépliés, <b>tenus par le parent</b>.
+   *
+   * Le repliage vivait dans l'entrée, en état local. Ouvrir la fiche d'un
+   * jeu (E05) démonte l'axe, et l'état partait avec lui : on revenait sur un
+   * épisode refermé, alors qu'E03 promet « → E05 en CONSERVANT la
+   * position ». C'est l'apprentissage 73 — écrire dans le même geste ce qui
+   * remonte un composant et ce qui doit lui survivre.
+   */
+  deplies: ReadonlySet<string>;
+  basculerDepli: (cle: string) => void;
   /**
    * Les incohérences que le domaine a constatées (§5.4).
    *
@@ -108,6 +121,8 @@ export function Timeline({
               avertissements={parMoment}
               ouvrirFiche={ouvrirFiche}
               corriger={corriger}
+              deplie={deplies.has(element.entree.moments[0].id)}
+              basculer={() => basculerDepli(element.entree.moments[0].id)}
             />
           ) : (
             <li
@@ -210,13 +225,15 @@ function SouvenirDuMoment({ souvenir }: { souvenir: SouvenirTimeline }) {
   );
 }
 
-function Entree({ entree, avertissements, ouvrirFiche, corriger }: {
+function Entree({ entree, avertissements, ouvrirFiche, corriger, deplie, basculer }: {
   entree: EntreeTimeline;
   avertissements: Map<string, string>;
   ouvrirFiche: (moment: MomentTimeline) => void;
   corriger: (moment: MomentTimeline) => void;
+  /** Reçu, jamais local : il doit survivre au démontage de l'axe. */
+  deplie: boolean;
+  basculer: () => void;
 }) {
-  const [deplie, setDeplie] = useState(false);
 
   // Les cibles dont le souvenir a déjà été rendu dans cette entrée. Reconstruit
   // à chaque rendu, et parcouru dans l'ordre d'affichage : la première ligne
@@ -251,7 +268,7 @@ function Entree({ entree, avertissements, ouvrirFiche, corriger }: {
         <button
           type="button"
           aria-expanded={deplie}
-          onClick={() => setDeplie((d) => !d)}
+          onClick={basculer}
         >
           {t("timeline.deplier", { n: entree.moments.length })}
         </button>

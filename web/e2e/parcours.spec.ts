@@ -952,16 +952,12 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await toucher(page.getByRole("button", { name: /Revenir/ }).click());
   await expect(page.getByTestId("axe")).toBeVisible();
 
-  // ⚠️ **Revenir de la fiche REPLIE l'épisode.** E05 est une page, et l'axe
-  // est démonté puis remonté : l'état « déplié » part avec lui. E03 demande
-  // pourtant « → E05 en CONSERVANT la position ». On le CONSTATE ici plutôt
-  // que de le masquer — le jour où ce sera corrigé, cette assertion échouera
-  // et le contournement d'en dessous s'en ira avec elle. Inscrit dans
-  // TODO-ECRANS.md.
-  await expect(page.getByTestId("moment-titre"),
-    "l'épisode est resté déplié : le défaut est corrigé, retirez ce bloc")
-    .toHaveCount(0);
-  await toucher(page.getByRole("button", { name: /Déplier/ }).click());
+  // **L'épisode est resté déplié.** E03 promet « → E05 en CONSERVANT la
+  // position », et l'axe est pourtant démonté par la fiche : c'est le parent
+  // qui tient le repliage, précisément pour qu'il survive au remontage.
+  //
+  // Ce bloc CONSTATAIT le défaut inverse jusqu'au 23 septembre, avec une
+  // assertion écrite pour échouer le jour de la correction. Elle a échoué.
   await expect(page.getByTestId("moment-titre")).toHaveCount(MOMENTS_ATTENDUS);
 
   // --- 7 bis. corriger une date, et voir naître l'avertissement (E07) ----
@@ -1149,9 +1145,6 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // éprouver que la section se referme et se rouvre —, et enregistrer. C'est
   // de la CORRECTION, pas de la saisie ; le budget de §22.3 mesure l'effort
   // de reconstruction, mais un geste reste un geste.
-  // Un geste de plus : redéplier l'épisode au retour de la fiche. Il est le
-  // PRIX d'un défaut connu, pas d'une fonctionnalité — et le laisser dans le
-  // budget est ce qui le rendra visible quand il disparaîtra.
   // Quatre gestes de plus : rouvrir le panneau, déplier « préciser »,
   // choisir « un mois précis », enregistrer. Le repli est FACULTATIF — rien
   // dans le parcours nominal ne l'ouvre —, mais ce qu'il coûte doit se voir.
@@ -1160,7 +1153,7 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // quatre derniers sont une vérification que seul ce test peut faire ; ils
   // sont comptés quand même, parce qu'un budget qui choisit ce qu'il compte
   // ne mesure plus rien.
-  const budget = TITRES_A_COCHER + 44;
+  const budget = TITRES_A_COCHER + 43;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });
