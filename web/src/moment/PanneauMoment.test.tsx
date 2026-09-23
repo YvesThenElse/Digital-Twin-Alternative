@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { PanneauMoment } from "./PanneauMoment";
@@ -29,18 +29,24 @@ const moment = (quand: ValeurTemporelle): MomentTimeline => ({
   memory: null,
 });
 
-function poser(quand: ValeurTemporelle = { kind: "Year", year: 1998 }) {
+function poser(
+  quand: ValeurTemporelle = { kind: "Year", year: 1998 },
+  anneeDeNaissance: number | null = 1980,
+) {
   const enregistrer = vi.fn();
+  const enregistrerNaissance = vi.fn();
   const fermer = vi.fn();
   render(
     <PanneauMoment
       moment={moment(quand)}
       anneeCourante={2026}
+      anneeDeNaissance={anneeDeNaissance}
       enregistrer={enregistrer}
+      enregistrerNaissance={enregistrerNaissance}
       fermer={fermer}
     />,
   );
-  return { enregistrer, fermer };
+  return { enregistrer, enregistrerNaissance, fermer };
 }
 
 const annee = () => screen.getByRole("spinbutton", { name: /^Année$/ });
@@ -77,14 +83,15 @@ describe("PanneauMoment — trois choix visibles, l'année d'abord (E07)", () =>
     expect(screen.getByRole("radio", { name: /ne sais plus/i })).toBeChecked();
   });
 
-  it("se replie sur l'année pour une granularité qu'il ne sait pas encore dire", () => {
-    // Mois, date exacte, « vers », âge : le repli de précision est S7. En
-    // attendant, le panneau ouvre sur l'année NOMINALE plutôt que sur un
-    // champ vide — et aucun geste de la Phase 1 ne produit ces valeurs, donc
-    // ce repli n'est pas atteignable par le produit livré.
+  it("ouvre sur « vers » quand c'est ce qui est enregistré", () => {
+    // La granularité affichée est celle qui a été enregistrée : rouvrir un
+    // « vers 1994 ± 2 » sur une année nue effacerait l'imprécision déclarée
+    // au premier enregistrement.
     poser({ kind: "ApproximateYear", year: 1994, margin: 2 });
 
     expect(annee()).toHaveValue(1994);
+    expect(screen.getByRole("radio", { name: /à peu près/i })).toBeChecked();
+    expect(screen.getByRole("spinbutton", { name: /années près/i })).toHaveValue(2);
   });
 
   // ------------------------------------------------------ les trois sorties
@@ -165,5 +172,121 @@ describe("PanneauMoment — trois choix visibles, l'année d'abord (E07)", () =>
     poser({ kind: "Year", year: 1998 });
 
     expect(annee()).toHaveAttribute("max", "2026");
+  });
+});
+
+describe("PanneauMoment — le repli de précision (E07 repère B)", () => {
+  const repli = () => screen.getByTestId("panneau-repli");
+
+  it("est REPLIÉ par défaut", () => {
+    // « Replié par défaut, il n'est jamais nécessaire. » Mois et date exacte
+    // sont rarissimes pour un souvenir de trente ans.
+    poser();
+
+    expect(repli()).not.toHaveAttribute("open");
+  });
+
+  it("enregistre un mois", async () => {
+    const utilisateur = userEvent.setup();
+    const { enregistrer } = poser({ kind: "Year", year: 1998 });
+
+    await utilisateur.click(screen.getByRole("radio", { name: /Un mois précis/ }));
+    await utilisateur.selectOptions(
+      screen.getByRole("combobox", { name: /Mois/ }), "11");
+    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer$/ }));
+
+    expect(enregistrer).toHaveBeenCalledWith({ kind: "month", year: 1998, month: 11 });
+  });
+
+  it("enregistre une date exacte", async () => {
+    const utilisateur = userEvent.setup();
+    const { enregistrer } = poser({ kind: "ExactDate", date: "1998-11-08" });
+
+    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer$/ }));
+
+    expect(enregistrer).toHaveBeenCalledWith({ kind: "date", date: "1998-11-08" });
+  });
+
+  it("enregistre un « vers », et jamais une marge nulle", async () => {
+    // Une marge nulle dirait exactement ce que dit une année, et deux façons
+    // d'exprimer la même chose finissent toujours par diverger.
+    const utilisateur = userEvent.setup();
+    const { enregistrer } = poser({ kind: "Year", year: 1994 });
+
+    await utilisateur.click(screen.getByRole("radio", { name: /à peu près/i }));
+    const marge = screen.getByRole("spinbutton", { name: /années près/i });
+    // `fireEvent.change` pose la valeur EXACTE : `type` l'ajouterait à ce qui
+    // est déjà là, et « 0 » derrière « 2 » ferait 20 — on mesurerait la
+    // frappe au lieu de la règle.
+    fireEvent.change(marge, { target: { value: "0" } });
+    expect(marge, "la marge nulle n'a pas été ramenée à un").toHaveValue(1);
+
+    fireEvent.change(marge, { target: { value: "4" } });
+    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer$/ }));
+
+    expect(enregistrer).toHaveBeenCalledWith(
+      { kind: "approximate", year: 1994, margin: 4 });
+  });
+
+  it("pose une période OUVERTE", async () => {
+    // « Depuis 1994 » : l'API l'accepte, l'axe la rend, et aucun écran ne la
+    // posait. La refermer sur son début inventerait une fin.
+    const utilisateur = userEvent.setup();
+    const { enregistrer } = poser({ kind: "YearRange", year: 1994, endYear: 1997 });
+
+    await utilisateur.click(screen.getByRole("checkbox", { name: /fin n'est pas connue/i }));
+    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer$/ }));
+
+    expect(enregistrer).toHaveBeenCalledWith({ kind: "range", from: 1994, to: null });
+  });
+
+  // ------------------------------------------------- l'âge et sa condition
+
+  it("n'offre PAS l'âge sans année de naissance", async () => {
+    // §7.6 : sans elle, un âge se comporte comme « je ne sais plus » et le
+    // moment tombe dans le tiroir. L'offrir quand même ferait disparaître le
+    // moment de l'axe sans que rien ne l'explique.
+    poser({ kind: "Year", year: 1998 }, null);
+
+    expect(screen.queryByRole("radio", { name: /vers mes/i })).toBeNull();
+    // Le témoin (78) : l'année connue, l'option est là.
+    poser({ kind: "Year", year: 1998 }, 1980);
+    expect(screen.getAllByRole("radio", { name: /vers mes/i })).not.toHaveLength(0);
+  });
+
+  it("propose de renseigner l'année de naissance, en DISANT à quoi elle sert", async () => {
+    // « Jamais un champ de plus sans justification. » Un champ nu au milieu
+    // d'un panneau de date se lit comme une demande arbitraire.
+    const utilisateur = userEvent.setup();
+    const { enregistrerNaissance } = poser({ kind: "Year", year: 1998 }, null);
+
+    const invitation = screen.getByTestId("panneau-naissance");
+    expect(invitation.textContent).toMatch(/jamais publiée/i);
+
+    const champ = screen.getByRole("spinbutton", { name: /Année de naissance/ });
+    await utilisateur.clear(champ);
+    await utilisateur.type(champ, "1982");
+    await utilisateur.click(
+      screen.getByRole("button", { name: /Enregistrer mon année de naissance/ }));
+
+    expect(enregistrerNaissance).toHaveBeenCalledWith(1982);
+  });
+
+  it("enregistre un âge, brut", async () => {
+    // MODELE §3, règle 3 : stocké brut, jamais converti à l'écriture — c'est
+    // ce qui permet à une correction de l'année de naissance de replacer
+    // tous les moments concernés.
+    const utilisateur = userEvent.setup();
+    const { enregistrer } = poser({ kind: "Age", age: 12 }, 1980);
+
+    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer$/ }));
+
+    expect(enregistrer).toHaveBeenCalledWith({ kind: "age", age: 12 });
+  });
+
+  it("ouvre sur l'âge quand c'est ce qui est enregistré", () => {
+    poser({ kind: "Age", age: 12 }, 1980);
+
+    expect(screen.getByRole("spinbutton", { name: /^Âge$/ })).toHaveValue(12);
   });
 });

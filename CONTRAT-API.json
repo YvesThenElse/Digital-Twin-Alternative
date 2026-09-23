@@ -84,7 +84,7 @@
     },
     "GET /profile/{user}": {
       "": {
-        "lit": ["moments", "figures", "opening"],
+        "lit": ["moments", "birthYear", "figures", "opening"],
         "ignore": {}
       },
       "figures": {
@@ -137,6 +137,14 @@
         "lit": [],
         "ignore": {
           "retracted": "le nombre d'événements marqués ; l'écran a déjà décoché la ligne avant l'appel"
+        }
+      }
+    },
+    "POST /profile/{user}/birth-year": {
+      "": {
+        "lit": [],
+        "ignore": {
+          "birthYear": "l'écho de ce qu'on vient d'écrire ; l'écran relit le profil entier ensuite, parce que l'année replace aussi les moments datés par un âge"
         }
       }
     },

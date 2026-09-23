@@ -337,7 +337,8 @@ public class EventStoreTests(PostgresFixture bdd)
         }
 
         Assert.Equal(
-            ["memories", "play_declarations", "player_events", "unresolved_claims"],
+            ["memories", "play_declarations", "player_events", "player_profiles",
+             "unresolved_claims"],
             tables);
     }
 

@@ -37,6 +37,14 @@ export type SyntheseDuProfil = {
    * proposer de tout recommencer à qui a déjà trois déclarations.
    */
   moments: number;
+  /**
+   * L'année de naissance, ou `null` tant qu'elle n'a pas été donnée.
+   *
+   * Elle ne s'affiche nulle part — §12.3 : « jamais publiée ». Elle dit au
+   * repli de précision d'E07 s'il peut proposer « vers mes … ans » : sans
+   * elle, un âge n'a pas de place sur l'axe (§7.6).
+   */
+  birthYear: number | null;
   /** `null` quand le profil est trop maigre pour qu'un chiffre veuille dire
    * quelque chose. L'API ne les envoie pas ; l'écran n'en invente pas. */
   figures: ChiffresDuProfil | null;

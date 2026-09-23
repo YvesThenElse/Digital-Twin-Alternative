@@ -294,6 +294,31 @@ export const MESSAGES = {
   // (principe 6), pas un renoncement.
   "moment.inconnu": "Je ne sais plus",
   "moment.enregistrer": "Enregistrer",
+  // Le repli « préciser » : replié par défaut, « il n'est jamais
+  // nécessaire ». Mois et date exacte sont rarissimes pour un souvenir de
+  // trente ans — ils n'ont rien à faire au premier plan.
+  "moment.preciser": "Préciser",
+  "moment.mois": "Un mois précis",
+  "moment.moisChamp": "Mois",
+  "moment.dateExacte": "Une date exacte",
+  "moment.dateChamp": "Date",
+  // La marge n'est pas affichée sur l'axe — « vers 1994 » dit
+  // l'imprécision —, mais elle se RÈGLE ici : c'est la seule façon de dire
+  // « à peu près » sans mentir sur l'ampleur du à-peu-près.
+  "moment.vers": "Vers cette année-là, à peu près",
+  "moment.marge": "À combien d'années près",
+  "moment.age": "Vers mes … ans",
+  "moment.ageChamp": "Âge",
+  // La période OUVERTE : « depuis 1994 ». La refermer sur son début
+  // inventerait une fin que personne n'a déclarée.
+  "moment.finInconnue": "La fin n'est pas connue",
+  // §7.6 : « le repli propose d'abord de la renseigner en expliquant à quoi
+  // elle sert — jamais un champ de plus sans justification ».
+  "moment.naissanceInvite":
+    "Pour situer « vers mes … ans », il faut votre année de naissance. "
+    + "Elle ne sert qu'à placer vos souvenirs, et n'est jamais publiée.",
+  "moment.naissanceChamp": "Année de naissance",
+  "moment.naissanceEnregistrer": "Enregistrer mon année de naissance",
   "moment.fermer": "Fermer sans corriger",
   // Sur l'axe : le geste qui ouvre le panneau, distinct du titre — celui-ci
   // ouvre la fiche du jeu (E05), celui-là corrige le moment (E07).

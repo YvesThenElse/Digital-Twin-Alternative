@@ -1010,6 +1010,27 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // un nouvel événement, elle ne réécrit pas l'ancien.
   await expect(page.getByText(`${DEBUT - 5}`).first()).toBeVisible();
 
+  // --- 7 ter. le repli de précision (E07 repère B) -----------------------
+  //
+  // Quatre granularités du modèle étaient construites, testées, rendues par
+  // l'axe — et AUCUN écran ne les envoyait. Le repli les rend atteignables
+  // sans les imposer : « mois et date exacte sont rarissimes pour un
+  // souvenir de trente ans ».
+  await toucher(ligneFinie.getByTestId("moment-corriger").click());
+  const repli = page.getByTestId("panneau-repli");
+  await expect(repli).toBeVisible();
+  // REPLIÉ : il n'est jamais nécessaire.
+  await expect(repli).not.toHaveAttribute("open", "");
+
+  await toucher(repli.locator("summary").click());
+  await toucher(page.getByRole("radio", { name: /Un mois précis/ }).click());
+  await page.getByRole("combobox", { name: /Mois/ }).selectOption("11");
+  await toucher(page.getByRole("button", { name: /^Enregistrer$/ }).click());
+
+  await expect(page.getByTestId("panneau-moment")).toHaveCount(0);
+  // Le mois est SUR L'AXE, dans les mots de l'écran — pas « 1990-11 ».
+  await expect(page.getByText(/novembre/).first()).toBeVisible();
+
   // --- 8. les trous sont des invitations (E03) ---------------------------
   //
   // « Une décennie vide n'est pas un défaut d'affichage : c'est l'endroit
@@ -1102,7 +1123,10 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Un geste de plus : redéplier l'épisode au retour de la fiche. Il est le
   // PRIX d'un défaut connu, pas d'une fonctionnalité — et le laisser dans le
   // budget est ce qui le rendra visible quand il disparaîtra.
-  const budget = TITRES_A_COCHER + 35;
+  // Quatre gestes de plus : rouvrir le panneau, déplier « préciser »,
+  // choisir « un mois précis », enregistrer. Le repli est FACULTATIF — rien
+  // dans le parcours nominal ne l'ouvre —, mais ce qu'il coûte doit se voir.
+  const budget = TITRES_A_COCHER + 39;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

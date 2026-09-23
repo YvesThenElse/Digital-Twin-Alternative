@@ -198,6 +198,16 @@ export const client = {
   corrigerDate: (userId: string, eventId: string, periode: PeriodeChoisie) =>
     ecrire<unknown>(`/moments/${eventId}/date`, { userId, period: periode }),
 
+  /**
+   * L'année de naissance (§7.6) — <b>écrite au moment où elle sert</b>.
+   *
+   * Elle n'est demandée que par le repli de précision d'E07, en expliquant à
+   * quoi elle sert. À l'amorce, ce serait le formulaire que §24.4 interdit
+   * avant le premier retour visible.
+   */
+  anneeDeNaissance: (userId: string, annee: number) =>
+    ecrire<unknown>(`/profile/${userId}/birth-year`, { birthYear: annee }),
+
   /** Retire une déclaration : l'événement reste, marqué (§5.3). */
   retracter: (userId: string, platformId: string, workId: string) =>
     ecrire<{ retracted: number }>("/declarations/retract", {

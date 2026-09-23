@@ -50,19 +50,36 @@ public sealed record OpeningView(int? Years, string? Platform, TemporalView Occu
 /// disparaît sous le seuil du portrait, ferait proposer de tout recommencer
 /// à qui a déjà trois déclarations.
 /// </param>
+/// <param name="BirthYear">
+/// <c>null</c> tant qu'elle n'a pas été donnée, et c'est l'état normal.
+/// Elle n'est pas un chiffre du portrait : elle dit au repli de précision
+/// d'E07 s'il peut proposer « vers mes … ans » — sans elle, un âge n'a pas
+/// de place sur l'axe (§7.6).
+/// </param>
 public sealed record ProfileView(
-    int Moments, FiguresView? Figures, OpeningView? Opening);
+    int Moments, int? BirthYear, FiguresView? Figures, OpeningView? Opening);
+
+/// <summary>
+/// L'année de naissance, seule — <b>jamais publiée</b> (§12.3), et demandée
+/// au moment où elle sert : le repli de précision d'E07.
+/// </summary>
+public sealed record AnneeDeNaissance(int? BirthYear);
 
 public static class ProfileEndpoints
 {
     public static IEndpointRouteBuilder MapProfile(this IEndpointRouteBuilder routes)
     {
         routes.MapGet("/profile/{userId}", async (
-            string userId, int? birthYear, EventStore magasin,
+            string userId, EventStore magasin,
             ReferenceCatalogSource source, CancellationToken ct) =>
         {
             var journal = await magasin.ReadAsync(userId, ct);
             var souvenirs = await magasin.ReadMemoriesAsync(userId, ct);
+            // Lue en base, plus reçue en paramètre : une année de naissance
+            // que l'appelant fournit à chaque requête finirait par différer
+            // d'un écran à l'autre, et les mêmes moments changeraient de
+            // place selon la page.
+            var birthYear = await magasin.BirthYearAsync(userId, ct);
 
             // Le même horizon qu'à la lecture de l'axe, construit avec
             // l'année de naissance du MOMENT : renseignée plus tard, elle
@@ -81,6 +98,7 @@ public static class ProfileEndpoints
 
             return Results.Ok(new ProfileView(
                 synthese.Moments,
+                birthYear,
                 synthese.MakesAPortrait
                     ? new FiguresView(
                         synthese.Consoles, synthese.GamesDeclared,
@@ -98,6 +116,34 @@ public static class ProfileEndpoints
                     : null));
         });
 
+        routes.MapPost("/profile/{userId}/birth-year", async (
+            string userId, AnneeDeNaissance donnee, EventStore magasin,
+            CancellationToken ct) =>
+        {
+            // Bornée aux deux extrémités : une année au-delà d'aujourd'hui
+            // placerait tous les âges dans l'avenir, et une année
+            // invraisemblablement basse ferait la même chose à l'envers. On
+            // refuse en NOMMANT, plutôt que de corriger en silence.
+            var aujourdhui = DateTime.UtcNow.Year;
+            if (donnee.BirthYear is { } annee
+                && (annee < aujourdhui - MaxAge || annee > aujourdhui))
+            {
+                return Results.BadRequest(new
+                {
+                    error = $"Année de naissance invraisemblable : {annee}. "
+                            + $"Attendu entre {aujourdhui - MaxAge} et {aujourdhui}.",
+                });
+            }
+
+            await magasin.SetBirthYearAsync(userId, donnee.BirthYear, ct);
+            return Results.Ok(new AnneeDeNaissance(donnee.BirthYear));
+        });
+
         return routes;
     }
+
+    /// <summary>
+    /// La borne de vraisemblance, la même que celle du domaine pour un âge.
+    /// </summary>
+    private const int MaxAge = 150;
 }

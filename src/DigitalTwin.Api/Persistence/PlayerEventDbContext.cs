@@ -32,8 +32,20 @@ public sealed class PlayerEventDbContext(DbContextOptions<PlayerEventDbContext> 
     /// </summary>
     public DbSet<PlayDeclarationRow> PlayDeclarations => Set<PlayDeclarationRow>();
 
+    /// <summary>
+    /// Ce que le joueur a donné de lui-même : l'année de naissance, et rien
+    /// d'autre pour l'instant (§7.6).
+    /// </summary>
+    public DbSet<PlayerProfileRow> PlayerProfiles => Set<PlayerProfileRow>();
+
     protected override void OnModelCreating(ModelBuilder b)
     {
+        var profil = b.Entity<PlayerProfileRow>();
+        profil.ToTable("player_profiles");
+        profil.HasKey(x => x.UserId);
+        profil.Property(x => x.UserId).HasColumnName("user_id").IsRequired();
+        profil.Property(x => x.BirthYear).HasColumnName("birth_year");
+
         var e = b.Entity<PlayerEventRow>();
         e.ToTable("player_events");
 

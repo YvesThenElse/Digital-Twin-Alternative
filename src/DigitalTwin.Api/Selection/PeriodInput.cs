@@ -16,17 +16,27 @@ namespace DigitalTwin.Api.Selection;
 /// <b>défaut appliqué aux déclarations suivantes</b>. La modifier ne réécrit
 /// pas celles déjà faites (E02, repère A).</para>
 /// </summary>
-/// <param name="Kind">year · range · approximate · unknown</param>
-/// <param name="Year">Pour year et approximate.</param>
+/// <param name="Kind">
+/// year · range · approximate · month · date · age · unknown — <b>les sept
+/// du modèle</b>. La sélection massive n'en envoie que trois ; le repli de
+/// précision d'E07 ouvre les quatre autres.
+/// </param>
+/// <param name="Year">Pour year, approximate et month.</param>
 /// <param name="From">Début, pour range.</param>
 /// <param name="To">Fin, pour range. <c>null</c> = période encore ouverte.</param>
 /// <param name="Margin">Marge de « vers ». Jamais nulle — voir ci-dessous.</param>
+/// <param name="Month">Le mois, pour month. 1 à 12.</param>
+/// <param name="Date">La date exacte, pour date, au format <c>yyyy-MM-dd</c>.</param>
+/// <param name="Age">L'âge déclaré, pour age. <b>Stocké brut</b> (§7.6).</param>
 public sealed record PeriodInput(
     string Kind,
     int? Year = null,
     int? From = null,
     int? To = null,
-    int? Margin = null)
+    int? Margin = null,
+    int? Month = null,
+    string? Date = null,
+    int? Age = null)
 {
     /// <summary>
     /// La marge retenue quand l'écran dit « vers » sans la préciser.
@@ -61,11 +71,30 @@ public sealed record PeriodInput(
             Exige(Year, "year"),
             Margin is { } m && m >= 1 ? m : MargeParDefaut),
 
+        "month" => new Month(Exige(Year, "year"), Exige(Month, "month")),
+
+        // La date exacte est la SEULE granularité qui affirme un jour. Elle
+        // est refusée si elle n'est pas lisible plutôt que repliée sur son
+        // année : replier ferait dire au joueur autre chose que ce qu'il a
+        // saisi, sans trace.
+        "date" => new ExactDate(
+            DateOnly.TryParseExact(
+                Date, "yyyy-MM-dd", null,
+                System.Globalization.DateTimeStyles.None, out var jour)
+                ? jour
+                : throw new ArgumentException(
+                    $"Date illisible : « {Date} ». Attendu : yyyy-MM-dd.")),
+
+        // BRUT, jamais converti à l'écriture (MODELE §3, règle 3) : corriger
+        // l'année de naissance doit recalculer tous les moments concernés,
+        // ce qu'une conversion anticipée rendrait impossible.
+        "age" => new Age(Exige(Age, "age")),
+
         "unknown" => Unknown.Instance,
 
         _ => throw new ArgumentException(
             $"Genre de période inconnu : « {Kind} ». Attendu : year, range, "
-            + "approximate ou unknown."),
+            + "approximate, month, date, age ou unknown."),
     };
 
     private int Exige(int? valeur, string champ)

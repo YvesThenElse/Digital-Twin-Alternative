@@ -179,7 +179,7 @@ du périmètre n'ont jamais été livrées.
   incohérence ainsi créée fait apparaître l'avertissement que F5 rend déjà —
   ce qui donne enfin un producteur à §5.4.*
 
-- [ ] **S7 — E07 porte le repli de précision.** (E07 · `PHASING.md` §6)
+- [x] **S7 — E07 porte le repli de précision.** (E07 · `PHASING.md` §6)
   Referme ce que F14 a inscrit : mois, date exacte, « vers », âge et période
   ouverte. « Dix contrôles pour dater un souvenir » est l'anti-motif que la
   fiche corrige : trois choix visibles, le reste derrière « préciser ».
@@ -320,6 +320,32 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   Reprendre coûte **un** geste au lieu de quatre ; l'ignorer laisse les trois
   temps entiers. Ce qui est laissé : la redirection annoncée en tête de
   fiche, qui attend S5.
+
+- **S7** — le repli « préciser » est là, et **les sept granularités ont un
+  producteur** : mois, date exacte, « vers … à peu près », « vers mes … ans »
+  — plus la **période ouverte**, « la fin n'est pas connue ». Replié par
+  défaut : « mois et date exacte sont rarissimes pour un souvenir de trente
+  ans, ils n'ont rien à faire au premier plan ». Le tableau de `PHASING.md`
+  est réécrit, et `CapacitesTemporellesTests` le lit.
+
+  **L'année de naissance existe enfin**, et ce repli en est l'unique
+  producteur : il la demande **au moment où elle sert**, en disant à quoi
+  elle sert — la demander à l'amorce serait le formulaire que §24.4 interdit.
+  Une table à part, jamais dans le journal ; jamais publiée (§12.3) ;
+  effacée avec le profil — et c'est le garde d'exhaustivité de la purge, qui
+  lit `information_schema`, qui l'a exigé **avant** qu'une ligne ne la lise.
+  L'âge restant **brut**, la corriger ne réécrit rien : elle replace tous les
+  moments concernés à la lecture, et le test le mesure en deux lectures
+  successives.
+
+  Trois refus valent d'être notés : une marge nulle est ramenée à un — elle
+  dirait ce que dit une année —, une date illisible est refusée plutôt que
+  repliée sur son année, et une année de naissance invraisemblable est
+  refusée **en la nommant**.
+
+  Au passage : `?birthYear=` disparaît de `/timeline`. Reçue à chaque appel,
+  elle pouvait différer d'un écran à l'autre et les mêmes moments changeaient
+  de place selon la page. Une seule source, lue en base.
 
 - **S6** — E07 s'ouvre en **panneau** depuis le crayon d'un moment, et l'axe
   reste à l'écran derrière : « naviguer pour dater un souvenir puis revenir

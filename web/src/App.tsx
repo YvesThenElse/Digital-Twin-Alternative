@@ -487,6 +487,20 @@ export function App() {
     await relireAxe();
   }
 
+  /**
+   * L'année de naissance, donnée depuis le repli d'E07 (§7.6).
+   *
+   * <b>On relit l'axe entier ensuite</b>, et ce n'est pas un excès de
+   * prudence : l'âge est stocké BRUT, donc renseigner l'année ne corrige
+   * aucun événement — elle les REPLACE tous, à la lecture. Un moment
+   * jusque-là dans le tiroir rejoint l'axe sans qu'une seule ligne ait été
+   * réécrite.
+   */
+  async function enregistrerNaissance(annee: number) {
+    await client.anneeDeNaissance(UTILISATEUR, annee);
+    await relireAxe();
+  }
+
   async function ouvrirTimeline() {
     // Les deux ENSEMBLE, et l'étape ne change qu'après. L'en-tête arrivant
     // après l'axe ferait sauter l'écran au moment précis où le joueur
@@ -645,6 +659,12 @@ export function App() {
             <PanneauMoment
               moment={momentCorrige}
               anneeCourante={new Date().getFullYear()}
+              // Elle vient du profil, jamais d'une copie locale : c'est elle
+              // qui décide si le repli peut proposer « vers mes … ans ».
+              anneeDeNaissance={synthese?.birthYear ?? null}
+              enregistrerNaissance={(annee) => {
+                void essayer(() => enregistrerNaissance(annee));
+              }}
               enregistrer={(periode) => {
                 void essayer(() => corrigerLaDate(momentCorrige, periode));
               }}

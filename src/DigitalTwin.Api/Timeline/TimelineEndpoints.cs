@@ -77,7 +77,7 @@ public static class TimelineEndpoints
     public static IEndpointRouteBuilder MapTimeline(this IEndpointRouteBuilder routes)
     {
         routes.MapGet("/timeline/{userId}", async (
-            string userId, int? birthYear, EventStore magasin,
+            string userId, EventStore magasin,
             ReferenceCatalogSource source, CancellationToken ct) =>
         {
             var journal = await magasin.ReadAsync(userId, ct);
@@ -115,8 +115,12 @@ public static class TimelineEndpoints
             // du moment. C'est ce qui permet de la renseigner plus tard et de
             // replacer tous les moments concernés — sans réécrire un seul
             // événement, ce que le journal en ajout seul interdirait.
+            // Lue en base, une seule source : reçue en paramètre, elle
+            // pouvait différer d'un écran à l'autre, et les mêmes moments
+            // changeaient de place selon la page.
             var horizon = new TemporalHorizon(
-                DateOnly.FromDateTime(DateTime.UtcNow), birthYear);
+                DateOnly.FromDateTime(DateTime.UtcNow),
+                await magasin.BirthYearAsync(userId, ct));
 
             // Aucun ordonnancement ici. Le domaine en a 387 tests ; le
             // réimplémenter, même partiellement, le ferait diverger sans que

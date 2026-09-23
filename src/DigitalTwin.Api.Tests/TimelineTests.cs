@@ -89,13 +89,21 @@ public class TimelineTests(PostgresFixture bdd)
         await new EventStore(db).AppendAsync(evenements);
     }
 
+    /// <summary>
+    /// L'année de naissance n'est plus un paramètre de requête : elle est
+    /// STOCKÉE, et l'horizon la lit en base. Reçue à chaque appel, elle
+    /// pouvait différer d'un écran à l'autre, et les mêmes moments changeaient
+    /// de place selon la page.
+    /// </summary>
     private static async Task<JsonElement> Timeline(
         HttpClient c, string userId, int? naissance = null)
     {
-        var url = naissance is null
-            ? $"/timeline/{userId}"
-            : $"/timeline/{userId}?birthYear={naissance}";
-        return await c.GetFromJsonAsync<JsonElement>(url);
+        if (naissance is not null)
+        {
+            await c.PostAsJsonAsync(
+                $"/profile/{userId}/birth-year", new { birthYear = naissance });
+        }
+        return await c.GetFromJsonAsync<JsonElement>($"/timeline/{userId}");
     }
 
     private static List<string> SurAxe(JsonElement timeline)

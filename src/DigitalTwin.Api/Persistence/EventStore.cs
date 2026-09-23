@@ -283,7 +283,45 @@ public sealed class EventStore(PlayerEventDbContext db)
         // grave au droit à l'effacement.
         var souvenirs = await db.Memories
             .Where(m => m.UserId == userId).ExecuteDeleteAsync(ct);
-        return evenements + declarations + revendications + souvenirs;
+        // L'année de naissance : §12.3 en fait une donnée qui n'est jamais
+        // publiée, ce qui n'en fait pas une donnée qu'on garde.
+        var profils = await db.PlayerProfiles
+            .Where(p => p.UserId == userId).ExecuteDeleteAsync(ct);
+        return evenements + declarations + revendications + souvenirs + profils;
+    }
+
+    /// <summary>
+    /// L'année de naissance du profil, ou <c>null</c> — <b>l'état normal</b>.
+    ///
+    /// <para>Elle n'est lue qu'au moment de construire l'horizon : la figer à
+    /// l'écriture empêcherait qu'une correction replace tous les moments
+    /// datés par un âge (§7.6).</para>
+    /// </summary>
+    public async Task<int?> BirthYearAsync(string userId, CancellationToken ct = default)
+        => (await db.PlayerProfiles.AsNoTracking()
+            .SingleOrDefaultAsync(p => p.UserId == userId, ct))?.BirthYear;
+
+    /// <summary>
+    /// Écrit ou corrige l'année de naissance.
+    ///
+    /// <para><b>Mutable, contrairement au journal.</b> Ce n'est pas un
+    /// souvenir : c'est un fait sur la personne, et le chaîner comme une
+    /// révision ferait porter à l'audit une information qui n'en relève
+    /// pas.</para>
+    /// </summary>
+    public async Task SetBirthYearAsync(
+        string userId, int? annee, CancellationToken ct = default)
+    {
+        var ligne = await db.PlayerProfiles.SingleOrDefaultAsync(p => p.UserId == userId, ct);
+        if (ligne is null)
+        {
+            db.PlayerProfiles.Add(new PlayerProfileRow { UserId = userId, BirthYear = annee });
+        }
+        else
+        {
+            ligne.BirthYear = annee;
+        }
+        await db.SaveChangesAsync(ct);
     }
 
     /// <summary>

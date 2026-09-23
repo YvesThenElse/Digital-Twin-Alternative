@@ -1462,3 +1462,52 @@ figure[data-testid="bande-epoque"] figcaption {
 .moment-corriger:hover {
   color: var(--ink);
 }
+
+/* --- E07, le repli de précision ------------------------------------------ */
+
+/*
+ * « Replié par défaut, il n'est jamais nécessaire. » Mois et date exacte sont
+ * rarissimes pour un souvenir de trente ans : ils n'ont rien à faire au
+ * premier plan, et le repli est ce qui permet de les garder sans les imposer.
+ */
+.panneau-repli {
+  border-block-start: 1px solid var(--line);
+  padding-block-start: var(--e3);
+}
+
+.panneau-repli summary {
+  min-block-size: var(--cible);
+  display: flex;
+  align-items: center;
+  font: var(--body);
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+/*
+ * L'invitation à donner son année de naissance. Elle EXPLIQUE — « jamais un
+ * champ de plus sans justification » (§7.6) — et elle reste discrète : ce
+ * n'est pas ce qu'on est venu faire.
+ */
+.panneau-naissance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+  padding: var(--e3);
+  border-radius: var(--r2);
+  background: var(--surface);
+}
+
+.panneau-naissance p {
+  font: var(--meta);
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.panneau-champ select {
+  min-height: var(--cible);
+  border: 1px solid var(--line);
+  border-radius: var(--e2);
+  background: var(--surface-2);
+  padding: var(--e2) var(--e3);
+}

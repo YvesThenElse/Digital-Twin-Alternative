@@ -1,11 +1,19 @@
 import { useState } from "react";
+import type { CleMessage } from "../i18n/messages";
 import { t } from "../i18n/t";
 import type { PeriodeChoisie } from "../periode/periode";
 import { anneeDe } from "../temporel/valeur";
 import type { MomentTimeline } from "../timeline/types";
 
-/** Les trois réponses que l'écran montre — le modèle en garde sept. */
-type Mode = "annee" | "periode" | "inconnu";
+/**
+ * Les sept réponses — <b>trois au premier plan, quatre dans le repli</b>.
+ *
+ * « Réduire l'interface à trois choix ne réduit pas `TemporalValue` : les
+ * sept variantes existent, restent enregistrables, et sont accessibles par
+ * le repli. C'est l'exposition qui est hiérarchisée, pas le modèle qui est
+ * amputé. »
+ */
+type Mode = "annee" | "periode" | "inconnu" | "mois" | "date" | "vers" | "age";
 
 /**
  * Comment ouvrir le panneau sur ce qui a été enregistré.
@@ -22,9 +30,15 @@ type Mode = "annee" | "periode" | "inconnu";
  * nominale que sur un champ vide.
  */
 function modeInitial(moment: MomentTimeline): Mode {
-  if (moment.occurredAt.kind === "Unknown") return "inconnu";
-  if (moment.occurredAt.kind === "YearRange") return "periode";
-  return "annee";
+  switch (moment.occurredAt.kind) {
+    case "Unknown": return "inconnu";
+    case "YearRange": return "periode";
+    case "Month": return "mois";
+    case "ExactDate": return "date";
+    case "ApproximateYear": return "vers";
+    case "Age": return "age";
+    case "Year": return "annee";
+  }
 }
 
 /**
@@ -51,7 +65,9 @@ function modeInitial(moment: MomentTimeline): Mode {
 export function PanneauMoment({
   moment,
   anneeCourante,
+  anneeDeNaissance,
   enregistrer,
+  enregistrerNaissance,
   fermer,
 }: {
   moment: MomentTimeline;
@@ -60,7 +76,17 @@ export function PanneauMoment({
    * qui dépendent du jour où on les lance.
    */
   anneeCourante: number;
+  /**
+   * L'année de naissance connue, ou `null`.
+   *
+   * <b>Elle décide de ce que le repli propose</b> : sans elle, « vers mes …
+   * ans » n'a pas de place sur l'axe (§7.6), et l'offrir ferait tomber le
+   * moment dans le tiroir sans que rien ne l'explique. Le repli propose
+   * alors de la renseigner, en disant à quoi elle sert.
+   */
+  anneeDeNaissance: number | null;
   enregistrer: (periode: PeriodeChoisie) => void;
+  enregistrerNaissance: (annee: number) => void;
   fermer: () => void;
 }) {
   const [mode, setMode] = useState<Mode>(() => modeInitial(moment));
@@ -72,13 +98,40 @@ export function PanneauMoment({
       ? moment.occurredAt.endYear
       : (anneeDe(moment.occurredAt) ?? anneeCourante),
   );
+  /** « Depuis 1994 » : une fin absente, jamais une fin égale au début. */
+  const [finInconnue, setFinInconnue] = useState(
+    () => moment.occurredAt.kind === "YearRange" && moment.occurredAt.endYear === null,
+  );
+  const [mois, setMois] = useState(
+    () => (moment.occurredAt.kind === "Month" ? moment.occurredAt.month : 1),
+  );
+  const [date, setDate] = useState(() =>
+    moment.occurredAt.kind === "ExactDate"
+      ? moment.occurredAt.date
+      : `${anneeDe(moment.occurredAt) ?? anneeCourante}-01-01`,
+  );
+  const [marge, setMarge] = useState(() =>
+    moment.occurredAt.kind === "ApproximateYear" ? moment.occurredAt.margin : 2,
+  );
+  const [age, setAge] = useState(
+    () => (moment.occurredAt.kind === "Age" ? moment.occurredAt.age : 12),
+  );
+  const [naissance, setNaissance] = useState(anneeDeNaissance ?? 1980);
 
   function valider() {
     switch (mode) {
       case "annee":
         return enregistrer({ kind: "year", year: debut });
       case "periode":
-        return enregistrer({ kind: "range", from: debut, to: fin });
+        return enregistrer({ kind: "range", from: debut, to: finInconnue ? null : fin });
+      case "mois":
+        return enregistrer({ kind: "month", year: debut, month: mois });
+      case "date":
+        return enregistrer({ kind: "date", date });
+      case "vers":
+        return enregistrer({ kind: "approximate", year: debut, margin: marge });
+      case "age":
+        return enregistrer({ kind: "age", age });
       case "inconnu":
         return enregistrer({ kind: "unknown" });
     }
@@ -101,7 +154,7 @@ export function PanneauMoment({
         {/* « Je ne sais plus » REFERME la section : laisser un champ d'année
             visible sous une réponse qui dit l'ignorer se lirait comme une
             contradiction. */}
-        {mode !== "inconnu" ? (
+        {mode !== "inconnu" && mode !== "date" && mode !== "age" ? (
           <div className="panneau-annees">
             <label className="panneau-champ">
               <span>{t("moment.annee")}</span>
@@ -116,7 +169,7 @@ export function PanneauMoment({
               />
             </label>
 
-            {mode === "periode" ? (
+            {mode === "periode" && !finInconnue ? (
               <label className="panneau-champ">
                 <span>{t("moment.finPeriode")}</span>
                 <input
@@ -127,7 +180,70 @@ export function PanneauMoment({
                 />
               </label>
             ) : null}
+
+            {mode === "mois" ? (
+              <label className="panneau-champ">
+                <span>{t("moment.moisChamp")}</span>
+                <select value={mois} onChange={(e) => setMois(Number(e.target.value))}>
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((m) => (
+                    <option key={m} value={m}>{t(`mois.${m}` as CleMessage)}</option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
+
+            {mode === "vers" ? (
+              <label className="panneau-champ">
+                <span>{t("moment.marge")}</span>
+                <input
+                  type="number"
+                  value={marge}
+                  // Jamais zéro : une marge nulle dirait exactement ce que
+                  // dit une année, et deux façons d'exprimer la même chose
+                  // finissent toujours par diverger.
+                  min={1}
+                  onChange={(e) => setMarge(Math.max(1, Number(e.target.value)))}
+                />
+              </label>
+            ) : null}
           </div>
+        ) : null}
+
+        {/* « Depuis 1994 » : la fin est FACULTATIVE, et la refermer sur son
+            début inventerait une information. */}
+        {mode === "periode" ? (
+          <label className="panneau-echappatoire">
+            <input
+              type="checkbox"
+              checked={finInconnue}
+              onChange={(e) => setFinInconnue(e.target.checked)}
+            />
+            <span>{t("moment.finInconnue")}</span>
+          </label>
+        ) : null}
+
+        {mode === "date" ? (
+          <label className="panneau-champ">
+            <span>{t("moment.dateChamp")}</span>
+            <input
+              type="date"
+              value={date}
+              max={`${anneeCourante}-12-31`}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </label>
+        ) : null}
+
+        {mode === "age" ? (
+          <label className="panneau-champ">
+            <span>{t("moment.ageChamp")}</span>
+            <input
+              type="number"
+              value={age}
+              min={0}
+              onChange={(e) => setAge(Number(e.target.value))}
+            />
+          </label>
         ) : null}
 
         {/* Les deux échappatoires, au MÊME niveau que l'année. Les reléguer
@@ -152,6 +268,80 @@ export function PanneauMoment({
           />
           <span>{t("moment.inconnu")}</span>
         </label>
+
+        {/* Le REPLI. « Mois et date exacte sont rarissimes pour un souvenir
+            de trente ans : ils n'ont rien à faire au premier plan. » Replié
+            par défaut, il n'est jamais nécessaire. */}
+        <details className="panneau-repli" data-testid="panneau-repli">
+          <summary>{t("moment.preciser")}</summary>
+
+          <label className="panneau-echappatoire">
+            <input
+              type="radio"
+              name="granularite"
+              checked={mode === "mois"}
+              onChange={() => setMode("mois")}
+            />
+            <span>{t("moment.mois")}</span>
+          </label>
+
+          <label className="panneau-echappatoire">
+            <input
+              type="radio"
+              name="granularite"
+              checked={mode === "date"}
+              onChange={() => setMode("date")}
+            />
+            <span>{t("moment.dateExacte")}</span>
+          </label>
+
+          <label className="panneau-echappatoire">
+            <input
+              type="radio"
+              name="granularite"
+              checked={mode === "vers"}
+              onChange={() => setMode("vers")}
+            />
+            <span>{t("moment.vers")}</span>
+          </label>
+
+          {/* §7.6 : l'âge ne s'offre QU'AVEC l'année de naissance. Sans elle
+              il se comporte comme « je ne sais plus », et le moment
+              tomberait dans le tiroir sans que rien ne l'explique. Le repli
+              propose alors de la renseigner, en disant à quoi elle sert —
+              « jamais un champ de plus sans justification ». */}
+          {anneeDeNaissance !== null ? (
+            <label className="panneau-echappatoire">
+              <input
+                type="radio"
+                name="granularite"
+                checked={mode === "age"}
+                onChange={() => setMode("age")}
+              />
+              <span>{t("moment.age")}</span>
+            </label>
+          ) : (
+            <div className="panneau-naissance" data-testid="panneau-naissance">
+              <p>{t("moment.naissanceInvite")}</p>
+              <label className="panneau-champ">
+                <span>{t("moment.naissanceChamp")}</span>
+                <input
+                  type="number"
+                  value={naissance}
+                  max={anneeCourante}
+                  onChange={(e) => setNaissance(Number(e.target.value))}
+                />
+              </label>
+              <button
+                type="button"
+                className="discret"
+                onClick={() => enregistrerNaissance(naissance)}
+              >
+                {t("moment.naissanceEnregistrer")}
+              </button>
+            </div>
+          )}
+        </details>
       </fieldset>
 
       {/* Un seul geste. « Aucun avertissement ni confirmation pour modifier

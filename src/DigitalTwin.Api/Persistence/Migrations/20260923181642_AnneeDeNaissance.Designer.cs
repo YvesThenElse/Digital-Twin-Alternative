@@ -3,6 +3,7 @@ using System;
 using DigitalTwin.Api.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DigitalTwin.Api.Persistence.Migrations
 {
     [DbContext(typeof(PlayerEventDbContext))]
-    partial class PlayerEventDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260923181642_AnneeDeNaissance")]
+    partial class AnneeDeNaissance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,20 +1,29 @@
 import type { ValeurTemporelle } from "../temporel/valeur";
 
 /**
- * La période choisie à la passe 1 (§24.3).
+ * Une période, telle que l'écran l'envoie (§24.3).
  *
- * <b>Trois formes, pas sept.</b> Le modèle en compte sept ; exposer
- * l'énumération complète ferait remonter le modèle dans l'écran. Le repli
- * de précision — mois, date exacte, « vers », âge — vit dans E07.
+ * <b>Sept formes, et trois seulement au premier plan.</b> La sélection
+ * massive n'en produit que trois — une année, une période, « je ne sais
+ * plus » — parce qu'exposer l'énumération complète ferait remonter le modèle
+ * dans l'écran (principe 9). Les quatre autres vivent derrière le repli
+ * « préciser » d'E07 : « c'est l'exposition qui est hiérarchisée, pas le
+ * modèle qui est amputé ».
  *
- * Le vocabulaire est celui que l'API attend en ENTRÉE (`year` · `range` ·
- * `unknown`), distinct de celui qu'elle rend en sortie (`Year` ·
- * `YearRange` · `Unknown`). Les deux ne se confondent pas, et
- * `versValeurTemporelle` est le seul pont entre eux.
+ * Le vocabulaire est celui que l'API attend en ENTRÉE (`year` · `range` · …),
+ * distinct de celui qu'elle rend en sortie (`Year` · `YearRange` · …). Les
+ * deux ne se confondent pas, et `versValeurTemporelle` est le seul pont
+ * entre eux.
  */
 export type PeriodeChoisie =
   | { kind: "year"; year: number }
-  | { kind: "range"; from: number; to: number }
+  /** `to: null` — « depuis 1994 » : une fin absente n'est pas une fin égale au début. */
+  | { kind: "range"; from: number; to: number | null }
+  | { kind: "approximate"; year: number; margin: number }
+  | { kind: "month"; year: number; month: number }
+  | { kind: "date"; date: string }
+  /** L'âge, <b>brut</b> : la résolution appartient à l'horizon (§7.6). */
+  | { kind: "age"; age: number }
   | { kind: "unknown" };
 
 /**
@@ -32,6 +41,17 @@ export function versValeurTemporelle(periode: PeriodeChoisie): ValeurTemporelle 
       return { kind: "Year", year: periode.year };
     case "range":
       return { kind: "YearRange", year: periode.from, endYear: periode.to };
+    case "approximate":
+      return { kind: "ApproximateYear", year: periode.year, margin: periode.margin };
+    case "month":
+      return { kind: "Month", year: periode.year, month: periode.month };
+    case "date":
+      return { kind: "ExactDate", date: periode.date };
+    // Brut, jamais résolu ici : l'horizon du domaine sait seul si une année
+    // de naissance permet de le placer, et le résoudre à l'écran
+    // dupliquerait cette règle avec une chance de diverger.
+    case "age":
+      return { kind: "Age", age: periode.age };
     case "unknown":
       return { kind: "Unknown" };
   }
@@ -53,9 +73,21 @@ export function versValeurTemporelle(periode: PeriodeChoisie): ValeurTemporelle 
 export function periodeTenable(periode: PeriodeChoisie, anneeDeLancement: number): boolean {
   switch (periode.kind) {
     case "year":
+    case "month":
       return periode.year >= anneeDeLancement;
+    case "date":
+      return Number(periode.date.slice(0, 4)) >= anneeDeLancement;
+    // Une fin absente ne s'oppose à rien : « depuis 1994 » court jusqu'à
+    // aujourd'hui, donc au-delà de n'importe quelle sortie de machine.
     case "range":
-      return periode.to >= anneeDeLancement;
+      return periode.to === null || periode.to >= anneeDeLancement;
+    // « Vers 1991 » sur une console de 1990 peut vouloir dire 1992 : on ne
+    // refuse que l'impossible CERTAIN, comme l'API.
+    case "approximate":
+      return periode.year + periode.margin >= anneeDeLancement;
+    // Sans année de naissance, un âge ne se situe pas : rien ne permet de le
+    // déclarer impossible, et refuser serait affirmer plus que ce qu'on sait.
+    case "age":
     case "unknown":
       return true;
   }
@@ -75,9 +107,15 @@ export function periodeTenable(periode: PeriodeChoisie, anneeDeLancement: number
 export function decennieDe(periode: PeriodeChoisie): number | null {
   switch (periode.kind) {
     case "year":
+    case "month":
+    case "approximate":
       return Math.floor(periode.year / 10) * 10;
     case "range":
       return Math.floor(periode.from / 10) * 10;
+    case "date":
+      return Math.floor(Number(periode.date.slice(0, 4)) / 10) * 10;
+    // Un âge n'a de décennie que par l'horizon, que cet écran n'a pas.
+    case "age":
     case "unknown":
       return null;
   }

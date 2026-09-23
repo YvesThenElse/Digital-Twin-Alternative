@@ -272,6 +272,10 @@ public class ContratApiTests(PostgresFixture bdd)
                     { PlatformId = "plt_contrat" })]);
         }
 
+        // L'année de naissance est écrite d'abord : sans elle, le contrat
+        // décrirait un `birthYear` nul et ne vérifierait rien de sa présence.
+        await client.PostAsJsonAsync($"/profile/{user}/birth-year", new { birthYear = 1982 });
+
         var profil = await Lire(client, $"/profile/{user}");
         Assert.Equal(JsonValueKind.Object, profil.GetProperty("figures").ValueKind);
         Assert.Equal(JsonValueKind.Object, profil.GetProperty("opening").ValueKind);
@@ -331,6 +335,11 @@ public class ContratApiTests(PostgresFixture bdd)
             new { userId = user, period = new { kind = "year", year = 1996 } });
         Confronter("POST /moments/{id}/date",
             await correction.Content.ReadFromJsonAsync<JsonElement>());
+
+        var naissance = await client.PostAsJsonAsync(
+            $"/profile/{user}/birth-year", new { birthYear = 1982 });
+        Confronter("POST /profile/{user}/birth-year",
+            await naissance.Content.ReadFromJsonAsync<JsonElement>());
     }
 
     [Fact]
@@ -362,6 +371,7 @@ public class ContratApiTests(PostgresFixture bdd)
             ("POST /declarations/retract", "\"/declarations/retract\""),
             ("POST /memories", "\"/memories\""),
             ("POST /moments/{id}/date", "/date`"),
+            ("POST /profile/{user}/birth-year", "/birth-year`"),
         };
 
         var contrat = Contrat();

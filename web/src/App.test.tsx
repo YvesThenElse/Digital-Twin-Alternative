@@ -29,6 +29,7 @@ const faux = vi.hoisted(() => ({
   synthese: vi.fn(),
   ficheOeuvre: vi.fn(),
   corrigerDate: vi.fn(),
+  anneeDeNaissance: vi.fn(),
 }));
 
 vi.mock("./api/client", () => ({ client: faux }));
@@ -79,8 +80,9 @@ beforeEach(() => {
   });
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
-  faux.synthese.mockResolvedValue({ moments: 0, figures: null, opening: null });
+  faux.synthese.mockResolvedValue({ moments: 0, birthYear: null, figures: null, opening: null });
   faux.corrigerDate.mockResolvedValue(undefined);
+  faux.anneeDeNaissance.mockResolvedValue(undefined);
   faux.ficheOeuvre.mockResolvedValue({
     id: "w1", title: "Super Mario World", coverUrl: null,
     editions: [{ platformId: "plt_snes", platformName: "Super Nintendo",
@@ -224,6 +226,7 @@ describe("App — la timeline s'ouvre", () => {
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
       moments: 52,
+      birthYear: null,
       figures: { consoles: 2, gamesDeclared: 40, finished: 9, memoriesWritten: 3 },
       opening: { years: 35, platform: "Game Boy",
                  occurredAt: { kind: "ApproximateYear", year: 1991, margin: 2 } },
@@ -250,6 +253,7 @@ describe("App — la timeline s'ouvre", () => {
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
       moments: 160,
+      birthYear: null,
       figures: { consoles: 4, gamesDeclared: 128, finished: 31, memoriesWritten: 7 },
       opening: null,
     });
@@ -285,7 +289,7 @@ describe("App — la timeline s'ouvre", () => {
     // que ça me ressemble ? ».
     const utilisateur = userEvent.setup();
     faux.synthese
-      .mockResolvedValueOnce({ moments: 0, figures: null, opening: null })
+      .mockResolvedValueOnce({ moments: 0, birthYear: null, figures: null, opening: null })
       .mockResolvedValue({
         moments: 33,
         figures: { consoles: 1, gamesDeclared: 30, finished: 2, memoriesWritten: 1 },
@@ -478,7 +482,7 @@ describe("App — E07, corriger une date sans quitter l'axe", () => {
     const champ = screen.getByRole("spinbutton", { name: /^Année$/ });
     await utilisateur.clear(champ);
     await utilisateur.type(champ, "1998");
-    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /^Enregistrer$/ }));
 
     expect(faux.corrigerDate).toHaveBeenCalledWith(
       expect.any(String), "m1", { kind: "year", year: 1998 });
@@ -505,7 +509,7 @@ describe("App — E07, corriger une date sans quitter l'axe", () => {
     faux.corrigerDate.mockRejectedValue(new Error("réseau"));
     await jusquAuPanneau(utilisateur);
 
-    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /^Enregistrer$/ }));
 
     expect(await screen.findByRole("alert")).toBeInTheDocument();
   });
@@ -596,7 +600,7 @@ describe("App — E01, le visiteur qui revient", () => {
   });
 
   it("propose de reprendre quand l'historique n'est pas vide", async () => {
-    faux.synthese.mockResolvedValue({ moments: 33, figures: null, opening: null });
+    faux.synthese.mockResolvedValue({ moments: 33, birthYear: null, figures: null, opening: null });
     render(<App />);
 
     expect(await screen.findByTestId("reprise")).toHaveTextContent("33");
@@ -620,6 +624,7 @@ describe("App — E01, le visiteur qui revient", () => {
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
       moments: 33,
+      birthYear: null,
       figures: { consoles: 1, gamesDeclared: 30, finished: 2, memoriesWritten: 1 },
       opening: { years: 31, platform: "Super Nintendo",
                  occurredAt: { kind: "Year", year: 1995 } },
@@ -636,7 +641,7 @@ describe("App — E01, le visiteur qui revient", () => {
 
   it("laisse l'accueil intact quand on ignore l'offre", async () => {
     const utilisateur = userEvent.setup();
-    faux.synthese.mockResolvedValue({ moments: 33, figures: null, opening: null });
+    faux.synthese.mockResolvedValue({ moments: 33, birthYear: null, figures: null, opening: null });
     render(<App />);
     await screen.findByTestId("reprise");
 

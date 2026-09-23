@@ -598,9 +598,9 @@ que l'audit du 22 septembre 2026 a le plus souvent trouvé.
 
 #### Les sept granularités temporelles — où chacune en est
 
-`TemporalValue` en porte sept. **Quatre seulement sont produites par un geste
-de Phase 1** ; les trois autres sont construites, testées, et n'ont aucun
-producteur. Elles sont inscrites ici plutôt que laissées vertes, et
+`TemporalValue` en porte sept. **Les sept sont désormais produites par un
+geste**, depuis le 23 septembre 2026 ; trois l'étaient au premier passage de
+la Phase 1, les quatre autres attendaient le repli de précision d'E07.
 `CapacitesTemporellesTests` échoue si ce tableau cesse de les nommer — ou si
 une huitième variante apparaît sans qu'on dise où elle va.
 
@@ -609,15 +609,22 @@ une huitième variante apparaît sans qu'on dise où elle va.
 | `Year` | l'affinage de période (E01 temps 2) | **Phase 1** |
 | `YearRange` | une carte de décennie, ou son affinage | **Phase 1** |
 | `Unknown` | « je ne sais plus », en un geste | **Phase 1** |
-| `ApproximateYear` | *rien* — l'API l'accepte (`approximate`), aucun écran ne l'envoie | **E07**, avec le repli de précision |
-| `Month` | *rien* — le domaine et l'axe la rendent | **E07** |
-| `ExactDate` | *rien* pour un événement de joueur ; le référentiel, lui, en produit | **E07** |
-| `Age` | *rien*, et `birthYear` avec elle | **E07**, après l'année de naissance |
+| `ApproximateYear` | **le repli « préciser » d'E07** — « vers cette année-là, à peu près » | **Phase 1**, avancé |
+| `Month` | le repli « préciser » d'E07 | **Phase 1**, avancé |
+| `ExactDate` | le repli « préciser » d'E07 ; le référentiel en produit aussi | **Phase 1**, avancé |
+| `Age` | le repli « préciser » d'E07, **une fois l'année de naissance donnée** | **Phase 1**, avancé |
 
-**La période OUVERTE est dans le même cas**, à l'intérieur de `YearRange` :
-une fin absente dit « depuis 1994 », l'API l'accepte, l'axe la rend — et le
-choix de période ne propose que des intervalles fermés. Elle appartient à
-E07 comme les trois autres.
+**La période OUVERTE l'est aussi**, à l'intérieur de `YearRange` : « la fin
+n'est pas connue » est une case du panneau, et une fin absente dit « depuis
+1994 » plutôt qu'une fin égale au début.
+
+**L'année de naissance a enfin un producteur, et un seul** : le repli
+d'E07, qui la demande **au moment où elle sert** en disant à quoi elle sert
+(§7.6). La demander à l'amorce serait le formulaire que §24.4 interdit avant
+le premier retour visible. Elle est stockée — une table à part, jamais dans
+le journal —, elle n'est **jamais publiée** (§12.3), et elle entre dans la
+purge de §10.1. Comme l'âge est conservé **brut**, la corriger REPLACE tous
+les moments concernés à la lecture, sans réécrire un seul événement.
 
 **Pourquoi elles ne sont pas dans le parcours d'amorce.** Les principes
 transverses (§2) montrent trois choix temporels et non sept : « exposer

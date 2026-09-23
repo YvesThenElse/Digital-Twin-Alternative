@@ -16,7 +16,7 @@
 > |---|---|
 > | Le panneau, ouvert depuis l'axe sans le quitter | **livré** |
 > | **A** — l'année, « plutôt une période », « je ne sais plus » | **livré** |
-> | **B** — le repli de précision (mois, date exacte, « vers », âge) | à venir |
+> | **B** — le repli de précision (mois, date exacte, « vers », âge), et la période **ouverte** | **livré** |
 > | **B bis** — achèvement, provenance, affect | à venir |
 > | **C** — le souvenir | à venir ; il se saisit aujourd'hui depuis E02 |
 > | **D** — l'avertissement doux, *dans* le panneau | l'axe le montre ; le panneau, pas encore |
@@ -91,6 +91,14 @@ Mois et date exacte sont rarissimes pour un souvenir de trente ans : ils n'ont r
 **B — Le repli « préciser »** contient ce qui reste : un mois, une date exacte, une marge d'incertitude (`vers 1998 ± 2 ans`), et « vers mes … ans » lorsqu'une année de naissance est connue. Replié par défaut, il n'est jamais nécessaire.
 
 L'option « vers mes … ans » n'apparaît **que** si l'année de naissance est renseignée. Sinon, le repli propose d'abord de la renseigner en expliquant à quoi elle sert (§7.6) — jamais un champ de plus sans justification.
+
+> **Livré le 23 septembre 2026.** Les sept granularités du modèle ont désormais un producteur, et `PHASING.md` §6 le dit. Trois choses méritent d'être notées :
+>
+> - **la période ouverte** — « la fin n'est pas connue » — est dans ce repli : une fin absente dit « depuis 1994 », et la refermer sur son début inventerait une information ;
+> - **la marge n'est jamais nulle.** Une marge de zéro dirait exactement ce que dit une année, et deux façons d'exprimer la même chose finissent toujours par diverger ;
+> - **une date illisible est refusée**, jamais repliée sur son année : replier ferait dire au joueur autre chose que ce qu'il a saisi, sans trace.
+>
+> **L'année de naissance est stockée** — une table à part, jamais dans le journal, jamais publiée (§12.3), et effacée avec le profil (§10.1). L'âge, lui, reste **brut** : corriger l'année ne réécrit aucun événement, elle les **replace** tous à la lecture. C'est ce repli qui est son unique producteur : la demander à l'amorce serait le formulaire que §24.4 interdit avant le premier retour visible.
 
 **B bis — Achèvement, provenance, affect.** Quand le panneau s'ouvre sur un moment lié à un jeu, il porte aussi les trois lignes de chips de E02 (§4.5 à §4.7). C'est le second endroit où elles se règlent : E02 pendant la saisie en masse, E07 plus tard, en relisant sa timeline. Les deux écrans partagent le même composant — une divergence entre eux serait un défaut.
 

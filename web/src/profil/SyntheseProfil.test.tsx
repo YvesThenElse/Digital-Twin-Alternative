@@ -19,6 +19,7 @@ import { SyntheseProfil, type SyntheseDuProfil } from "./SyntheseProfil";
  */
 const DEBUT: SyntheseDuProfil = {
   moments: 52,
+  birthYear: null,
   figures: { consoles: 4, gamesDeclared: 128, finished: 31, memoriesWritten: 7 },
   opening: {
     years: 35,
@@ -119,7 +120,7 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
     // Un profil sans rien n'a pas un taux de zéro : il n'en a pas. L'en-tête
     // disparaît plutôt que d'afficher une coquille.
     const { container } = render(
-      <SyntheseProfil synthese={{ moments: 0, figures: null, opening: null }} />,
+      <SyntheseProfil synthese={{ moments: 0, birthYear: null, figures: null, opening: null }} />,
     );
 
     expect(container.textContent).toBe("");
