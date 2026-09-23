@@ -63,11 +63,16 @@
 
 ## Conditions d'arrêt
 
-- ⚠️ **S1, S2 et S2 bis sont cochés** — c'est le lot décidé avant la session
-  de test. Arrête-toi là, dis-le, et propose la session : ce que les testeurs
-  diront ordonne S3 à S9. Ne continue que si on te le demande explicitement.
-  (S2 bis a été ajouté au lot le 23 septembre, sur décision, parce que S2 a
-  fait apparaître que le visiteur qui revient rejoue tout l'accueil.)
+- ~~**S1, S2 et S2 bis sont cochés**~~ — condition **levée le 23 septembre**.
+  Le lot d'avant-session est livré, et la décision a été prise de poursuivre
+  sur S3 **sans attendre** la session de test. Reprends donc la liste dans
+  l'ordre.
+
+  > ⚠️ Ce que cela change, et qu'il faut garder en tête : S3 à S9 devaient
+  > être **ordonnés par le verdict des testeurs**, et `PHASING.md` §11 dit
+  > que si la porte se ferme la réponse est d'itérer sur la Phase 1, pas
+  > d'avancer. On construit donc plus loin sans savoir si ce qui est déjà
+  > là produit « oui, ça me ressemble ». C'est assumé — pas oublié.
 - tous les items sont cochés ;
 - l'item courant est de la section **« attend une décision »** ;
 - un attendu de la spécification paraît faux ou contradictoire ;

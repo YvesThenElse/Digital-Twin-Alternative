@@ -41,6 +41,15 @@ du périmètre n'ont jamais été livrées.
 > E07 compris, ce qui tranche D2. `PHASING.md` §11 le rappelle : si la porte
 > se ferme, la réponse est d'itérer sur la Phase 1, pas d'avancer.
 >
+> **Amendement n° 2 du 23 septembre 2026 : la boucle continue sans attendre.**
+> Le lot d'avant-session — S1, S2, S2 bis — est livré, et la décision a été
+> prise de **poursuivre sur S3** plutôt que de tester maintenant. Ce que cela
+> coûte est écrit ici pour ne pas être découvert plus tard : S3 à S9 devaient
+> être ordonnés par ce que diraient les testeurs, et `PHASING.md` §11 fait
+> de la porte fermée un motif d'itérer sur la Phase 1, pas d'avancer. On
+> construit donc plus loin sans savoir si ce qui est là produit « oui, ça me
+> ressemble ».
+>
 > **Amendement du 23 septembre 2026 : S2 bis entre dans le lot.** S2 a fait
 > apparaître que le visiteur qui revient rejoue tout l'accueil. Décision
 > prise de le corriger **avant** la session : un testeur qui recharge est un
