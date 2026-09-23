@@ -133,3 +133,25 @@ export function decennieDe(periode: PeriodeChoisie): number | null {
 export function nomDecennie(d: number): string {
   return d < 2000 ? String(d % 100) : String(d);
 }
+
+/**
+ * La date d'un moment, retraduite vers le vocabulaire d'ENTRÉE.
+ *
+ * E07 règle l'état d'un jeu en passant par le point d'entrée de la sélection
+ * massive, qui attache une période aux événements qu'il produit. La période
+ * juste est celle du moment d'où l'on vient : lui en donner une autre —
+ * celle du parcours, ou aujourd'hui — daterait l'achèvement d'un souvenir de
+ * 1995 à la date de sa correction.
+ */
+export function periodeDuMoment(quand: ValeurTemporelle): PeriodeChoisie {
+  switch (quand.kind) {
+    case "Year": return { kind: "year", year: quand.year };
+    case "YearRange": return { kind: "range", from: quand.year, to: quand.endYear };
+    case "ApproximateYear":
+      return { kind: "approximate", year: quand.year, margin: quand.margin };
+    case "Month": return { kind: "month", year: quand.year, month: quand.month };
+    case "ExactDate": return { kind: "date", date: quand.date };
+    case "Age": return { kind: "age", age: quand.age };
+    case "Unknown": return { kind: "unknown" };
+  }
+}

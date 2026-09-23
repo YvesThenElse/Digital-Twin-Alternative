@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { PanneauMoment } from "./PanneauMoment";
+import { PanneauMoment, type EtatDuJeu } from "./PanneauMoment";
 import type { ValeurTemporelle } from "../temporel/valeur";
 import type { MomentTimeline } from "../timeline/types";
 
@@ -29,24 +29,30 @@ const moment = (quand: ValeurTemporelle): MomentTimeline => ({
   memory: null,
 });
 
+const SANS_ETAT: EtatDuJeu = { completion: null, provenance: null, affect: null };
+
 function poser(
   quand: ValeurTemporelle = { kind: "Year", year: 1998 },
   anneeDeNaissance: number | null = 1980,
+  etat: EtatDuJeu | null = SANS_ETAT,
 ) {
   const enregistrer = vi.fn();
   const enregistrerNaissance = vi.fn();
+  const reglerEtat = vi.fn();
   const fermer = vi.fn();
   render(
     <PanneauMoment
       moment={moment(quand)}
       anneeCourante={2026}
       anneeDeNaissance={anneeDeNaissance}
+      etat={etat}
+      reglerEtat={reglerEtat}
       enregistrer={enregistrer}
       enregistrerNaissance={enregistrerNaissance}
       fermer={fermer}
     />,
   );
-  return { enregistrer, enregistrerNaissance, fermer };
+  return { enregistrer, enregistrerNaissance, reglerEtat, fermer };
 }
 
 const annee = () => screen.getByRole("spinbutton", { name: /^Année$/ });
@@ -288,5 +294,76 @@ describe("PanneauMoment — le repli de précision (E07 repère B)", () => {
     poser({ kind: "Age", age: 12 }, 1980);
 
     expect(screen.getByRole("spinbutton", { name: /^Âge$/ })).toHaveValue(12);
+  });
+});
+
+/**
+ * E07 repère B bis — achèvement, provenance, affect.
+ *
+ * « C'est le second endroit où elles se règlent : E02 pendant la saisie en
+ * masse, E07 plus tard, en relisant sa timeline. **Les deux écrans partagent
+ * le même composant — une divergence entre eux serait un défaut.** »
+ */
+describe("PanneauMoment — corriger l'état (E07 repère B bis)", () => {
+  it("porte les trois questions de la passe 2", () => {
+    poser();
+
+    expect(screen.getByRole("group", { name: /fini/i })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: /marqué/i })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: /Comment/i })).toBeInTheDocument();
+  });
+
+  it("montre ce qui a DÉJÀ été dit", () => {
+    // Rouvrir vierge ferait disparaître ce que le joueur vient de dire :
+    // c'est exactement ce que « toujours en cours » a déjà coûté.
+    poser({ kind: "Year", year: 1998 }, 1980,
+      { completion: "finished", provenance: "owned", affect: "favourite" });
+
+    expect(screen.getByRole("button", { name: "Fini" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Je l'avais" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Mon préféré" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("règle l'affect — saisissable pour la première fois (§4.7)", async () => {
+    // La colonne existait, la lecture la rendait, le domaine savait qu'elle
+    // lève « jamais joué » — et AUCUN geste ne l'écrivait.
+    const utilisateur = userEvent.setup();
+    const { reglerEtat } = poser();
+
+    await utilisateur.click(screen.getByRole("button", { name: "J'ai adoré" }));
+
+    expect(reglerEtat).toHaveBeenCalledWith("affect", "loved");
+  });
+
+  it("règle l'achèvement et la provenance", async () => {
+    const utilisateur = userEvent.setup();
+    const { reglerEtat } = poser();
+
+    await utilisateur.click(screen.getByRole("button", { name: "Abandonné" }));
+    await utilisateur.click(screen.getByRole("button", { name: "Emprunté" }));
+
+    expect(reglerEtat).toHaveBeenCalledWith("completion", "abandoned");
+    expect(reglerEtat).toHaveBeenCalledWith("provenance", "borrowed");
+  });
+
+  it("persiste au clic, sans sauvegarde explicite", async () => {
+    // E02 : « aucune sauvegarde explicite, chaque bascule est persistée
+    // immédiatement ». Les deux écrans partagent le composant ; leur faire
+    // des promesses différentes serait la divergence qu'E07 interdit.
+    const utilisateur = userEvent.setup();
+    const { reglerEtat, enregistrer } = poser();
+
+    await utilisateur.click(screen.getByRole("button", { name: "Fini" }));
+
+    expect(reglerEtat).toHaveBeenCalledTimes(1);
+    expect(enregistrer).not.toHaveBeenCalled();
+  });
+
+  it("n'offre rien à régler quand le jeu n'est pas du référentiel", () => {
+    // Un titre saisi n'a pas d'identifiant d'œuvre : une déclaration ne
+    // saurait pas sur quoi porter. Le témoin est dans les tests ci-dessus.
+    poser({ kind: "Year", year: 1998 }, 1980, null);
+
+    expect(screen.queryByTestId("panneau-etat")).toBeNull();
   });
 });

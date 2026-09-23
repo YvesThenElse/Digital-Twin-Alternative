@@ -1511,3 +1511,31 @@ figure[data-testid="bande-epoque"] figcaption {
   background: var(--surface-2);
   padding: var(--e2) var(--e3);
 }
+
+/* --- E07, l'état du jeu (repère B bis) ----------------------------------- */
+
+/*
+ * Les trois questions de la passe 2, dans le panneau. Même composant qu'en
+ * E02 — « une divergence entre eux serait un défaut » —, donc les chips
+ * héritent du même style ; seul l'espacement du bloc est propre au panneau.
+ */
+.panneau-etat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e4);
+  border-block-start: 1px solid var(--line);
+  padding-block-start: var(--e4);
+}
+
+.panneau-etat > [role="group"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e2);
+}
+
+.panneau-etat > [role="group"] > span:first-child {
+  flex: 1 0 100%;
+  font: var(--meta);
+  color: var(--ink-2);
+}

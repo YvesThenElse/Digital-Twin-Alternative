@@ -2,8 +2,20 @@ import { useState } from "react";
 import type { CleMessage } from "../i18n/messages";
 import { t } from "../i18n/t";
 import type { PeriodeChoisie } from "../periode/periode";
+import {
+  CHOIX_ACHEVEMENT,
+  CHOIX_AFFECT,
+  CHOIX_PROVENANCE,
+  Question,
+} from "../selection/Question";
 import { anneeDe } from "../temporel/valeur";
 import type { MomentTimeline } from "../timeline/types";
+
+/** Les trois champs que la passe 2 règle (§4.5 à §4.7). */
+export type ChampEtat = "completion" | "provenance" | "affect";
+
+/** Ce que le joueur a déjà dit de ce jeu. `null` = pas prononcé. */
+export type EtatDuJeu = Record<ChampEtat, string | null>;
 
 /**
  * Les sept réponses — <b>trois au premier plan, quatre dans le repli</b>.
@@ -66,6 +78,8 @@ export function PanneauMoment({
   moment,
   anneeCourante,
   anneeDeNaissance,
+  etat,
+  reglerEtat,
   enregistrer,
   enregistrerNaissance,
   fermer,
@@ -85,6 +99,22 @@ export function PanneauMoment({
    * alors de la renseigner, en disant à quoi elle sert.
    */
   anneeDeNaissance: number | null;
+  /**
+   * Ce que le joueur a déjà dit de ce jeu, ou `null` — pas de jeu curé, pas
+   * de machine, ou lecture non aboutie.
+   *
+   * <b>Relu, jamais supposé.</b> Un panneau qui rouvrirait vierge ferait
+   * disparaître ce que le joueur vient de dire : c'est exactement ce que
+   * « toujours en cours » a déjà coûté (apprentissage 76).
+   */
+  etat: EtatDuJeu | null;
+  /**
+   * Règle un des trois champs. <b>Persisté immédiatement</b>, comme en E02 :
+   * « aucune sauvegarde explicite, chaque bascule est persistée ». Les deux
+   * écrans partagent le composant ; leur faire des promesses différentes
+   * serait la divergence qu'E07 interdit.
+   */
+  reglerEtat: (champ: ChampEtat, valeur: string) => void;
   enregistrer: (periode: PeriodeChoisie) => void;
   enregistrerNaissance: (annee: number) => void;
   fermer: () => void;
@@ -343,6 +373,37 @@ export function PanneauMoment({
           )}
         </details>
       </fieldset>
+
+      {/* B bis — achèvement, provenance, affect. « C'est le second endroit
+          où elles se règlent : E02 pendant la saisie en masse, E07 plus
+          tard, en relisant sa timeline. Les deux écrans partagent le même
+          composant — une divergence entre eux serait un défaut. »
+
+          L'AFFECT y devient saisissable pour la première fois : la colonne
+          existait, la lecture la rendait, le domaine savait qu'elle lève
+          « jamais joué » — et aucun geste ne l'écrivait. */}
+      {etat !== null ? (
+        <div className="panneau-etat" data-testid="panneau-etat">
+          <Question
+            intitule={t("passe2.acheve")}
+            choix={CHOIX_ACHEVEMENT}
+            valeur={etat.completion}
+            repondre={(v) => reglerEtat("completion", v)}
+          />
+          <Question
+            intitule={t("passe2.affect")}
+            choix={CHOIX_AFFECT}
+            valeur={etat.affect}
+            repondre={(v) => reglerEtat("affect", v)}
+          />
+          <Question
+            intitule={t("passe2.comment")}
+            choix={CHOIX_PROVENANCE}
+            valeur={etat.provenance}
+            repondre={(v) => reglerEtat("provenance", v)}
+          />
+        </div>
+      ) : null}
 
       {/* Un seul geste. « Aucun avertissement ni confirmation pour modifier
           un moment : ce sont des souvenirs, ils se corrigent. » */}

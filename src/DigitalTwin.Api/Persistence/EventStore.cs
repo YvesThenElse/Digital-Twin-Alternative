@@ -110,7 +110,8 @@ public sealed class EventStore(PlayerEventDbContext db)
                     : jugement?.StillPlaying == true ? "stillPlaying"
                     : null,
                 Provenance: ProvenanceEcran(jugement?.Provenance),
-                NeverPlayed: jugement?.NeverPlayed ?? false);
+                NeverPlayed: jugement?.NeverPlayed ?? false,
+                Affect: AffectEcran(jugement?.Affect));
         })];
     }
 
@@ -119,6 +120,19 @@ public sealed class EventStore(PlayerEventDbContext db)
     /// <c>null</c> : « on ne sait pas » n'est pas une réponse que
     /// l'utilisateur a donnée, et l'afficher comme telle en inventerait une.
     /// </summary>
+    /// <summary>
+    /// Même règle que la provenance : <c>Unstated</c> devient <c>null</c>.
+    /// « Pas prononcé » n'est pas une réponse, et l'afficher comme telle en
+    /// inventerait une.
+    /// </summary>
+    private static string? AffectEcran(string? domaine) => domaine switch
+    {
+        nameof(DigitalTwin.Domain.Player.Affect.Indifferent) => "indifferent",
+        nameof(DigitalTwin.Domain.Player.Affect.Loved) => "loved",
+        nameof(DigitalTwin.Domain.Player.Affect.Favourite) => "favourite",
+        _ => null,
+    };
+
     private static string? ProvenanceEcran(string? domaine) => domaine switch
     {
         nameof(DigitalTwin.Domain.Player.Provenance.Owned) => "owned",
@@ -363,12 +377,32 @@ public sealed class EventStore(PlayerEventDbContext db)
             // `DeclareNeverPlayed` efface provenance et affect (invariant 8),
             // et que déclarer une provenance lève `NeverPlayed` (invariant
             // 10). Les réimplémenter ici les laisserait diverger.
+            // Invariant 6 : UN SEUL préféré par plateforme. C'est une
+            // opération sur la COLLECTION, pas sur une ligne : désigner un
+            // préféré rétrograde le précédent. Le domaine sait le faire — et
+            // réparer une collection déjà fautive —, le refaire ici le ferait
+            // diverger.
+            if (intention.Kind == DeclarationIntent.Affect
+                && intention.Value == nameof(Affect.Favourite))
+            {
+                var repares = PlayDeclaration.DesignateFavourite(
+                    existantes.Select(PlayDeclarationMapping.ToDomain),
+                    intention.WorkId, intention.PlatformId);
+                foreach (var (l, d) in existantes.Zip(repares))
+                {
+                    PlayDeclarationMapping.Apply(l, d);
+                }
+                continue;
+            }
+
             var jugement = PlayDeclarationMapping.ToDomain(ligne);
             jugement = intention.Kind switch
             {
                 DeclarationIntent.NeverPlayed => jugement.DeclareNeverPlayed(),
                 DeclarationIntent.Provenance =>
                     jugement.WithProvenance(Enum.Parse<Provenance>(intention.Value!)),
+                DeclarationIntent.Affect =>
+                    jugement.WithAffect(Enum.Parse<Affect>(intention.Value!)),
                 DeclarationIntent.StillPlaying => intention.Value == "true"
                     ? jugement.DeclareStillPlaying()
                     : jugement.Closed(),

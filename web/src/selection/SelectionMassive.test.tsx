@@ -788,7 +788,7 @@ describe("SelectionMassive — relire ce qui est déjà déclaré", () => {
     // de deux heures.
     monter({
       etatInitial: [
-        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false, affect: null },
       ],
     });
 
@@ -800,7 +800,7 @@ describe("SelectionMassive — relire ce qui est déjà déclaré", () => {
   it("n'invente aucune déclaration pour un titre absent de l'état", () => {
     monter({
       etatInitial: [
-        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false, affect: null },
       ],
     });
 
@@ -811,7 +811,7 @@ describe("SelectionMassive — relire ce qui est déjà déclaré", () => {
   it("remontre l'achèvement et la provenance déjà enregistrés", () => {
     monter({
       etatInitial: [
-        { workId: "w1", played: true, completion: "finished", provenance: "borrowed", neverPlayed: false },
+        { workId: "w1", played: true, completion: "finished", provenance: "borrowed", neverPlayed: false, affect: null },
       ],
     });
 
@@ -931,7 +931,7 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     // posséder — et rend visible la séparation possession / expérience.
     monter({
       etatInitial: [
-        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false, affect: null },
       ],
     });
 
@@ -951,7 +951,7 @@ describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () =>
     // et c'est précisément celle-là qu'il ne réécrira pas.
     monter({
       etatInitial: [
-        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false, affect: null },
       ],
       souvenirsInitiaux: { w1: { texte: "Noël 1992, chez ma grand-mère.", titre: "" } },
     });
@@ -972,7 +972,7 @@ describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () =>
     const utilisateur = userEvent.setup();
     monter({
       etatInitial: [
-        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false, affect: null },
       ],
       souvenirsInitiaux: { w1: { texte: "Une phrase déjà écrite.", titre: "" } },
     });
@@ -1053,7 +1053,7 @@ describe("SelectionMassive — le repère du souvenir (§9.2)", () => {
     // base, le testeur en conclut qu'il l'a perdu.
     monter({
       etatInitial: [
-        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false, affect: null },
       ],
       souvenirsInitiaux: { w1: { texte: "Noël 1992.", titre: "Le premier Noël" } },
     });
@@ -1114,7 +1114,7 @@ describe("SelectionMassive — « jamais joué » (§24.3, E02)", () => {
     within(li(titre)).getByRole("button", { name: /^(je n'y ai|retirer)/i });
 
   const jamaisJoue = (workId: string) => ({
-    workId, played: false, completion: null, provenance: null, neverPlayed: true,
+    workId, played: false, completion: null, provenance: null, neverPlayed: true, affect: null
   });
 
   it("pose la déclaration au balayage vers la gauche", async () => {
@@ -1255,7 +1255,7 @@ describe("SelectionMassive — « jamais joué » (§24.3, E02)", () => {
     // vivant sous le jugement « jamais joué », et l'écran relirait les deux.
     const { envoyer, retracter } = monter({
       etatInitial: [
-        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
+        { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false, affect: null },
       ],
     });
 

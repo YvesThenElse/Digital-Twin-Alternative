@@ -36,7 +36,7 @@
     },
     "GET /selection/{user}/{platform}": {
       "": {
-        "lit": ["workId", "played", "completion", "provenance", "neverPlayed"],
+        "lit": ["workId", "played", "completion", "provenance", "neverPlayed", "affect"],
         "ignore": {}
       }
     },

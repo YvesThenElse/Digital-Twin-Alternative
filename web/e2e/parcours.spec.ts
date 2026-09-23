@@ -1031,6 +1031,35 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Le mois est SUR L'AXE, dans les mots de l'écran — pas « 1990-11 ».
   await expect(page.getByText(/novembre/).first()).toBeVisible();
 
+  // --- 7 quater. l'affect, saisissable pour la première fois (§4.7) ------
+  //
+  // La colonne existait, la lecture la rendait, le domaine savait qu'elle
+  // lève « jamais joué » et qu'un seul préféré vit par plateforme — et
+  // AUCUN geste ne l'écrivait. C'est la troisième capacité morte.
+  await toucher(ligneFinie.getByTestId("moment-corriger").click());
+  const etat = page.getByTestId("panneau-etat");
+  await expect(etat).toBeVisible();
+
+  // Ce qui a déjà été dit est LÀ : la passe 2 a répondu « fini » et
+  // « je l'avais » sur cette ligne, et le panneau le remontre.
+  await expect(etat.getByRole("button", { name: "Fini" }))
+    .toHaveAttribute("aria-pressed", "true");
+  await expect(etat.getByRole("button", { name: "Je l'avais" }))
+    .toHaveAttribute("aria-pressed", "true");
+
+  await toucher(etat.getByRole("button", { name: "Mon préféré" }).click());
+  await expect(etat.getByRole("button", { name: "Mon préféré" }))
+    .toHaveAttribute("aria-pressed", "true");
+
+  await toucher(page.getByRole("button", { name: /Fermer sans corriger/ }).click());
+
+  // Et il SURVIT au rechargement du panneau : relu, pas gardé en mémoire.
+  await toucher(ligneFinie.getByTestId("moment-corriger").click());
+  await expect(page.getByTestId("panneau-etat")
+    .getByRole("button", { name: "Mon préféré" }))
+    .toHaveAttribute("aria-pressed", "true");
+  await toucher(page.getByRole("button", { name: /Fermer sans corriger/ }).click());
+
   // --- 8. les trous sont des invitations (E03) ---------------------------
   //
   // « Une décennie vide n'est pas un défaut d'affichage : c'est l'endroit
@@ -1126,7 +1155,12 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Quatre gestes de plus : rouvrir le panneau, déplier « préciser »,
   // choisir « un mois précis », enregistrer. Le repli est FACULTATIF — rien
   // dans le parcours nominal ne l'ouvre —, mais ce qu'il coûte doit se voir.
-  const budget = TITRES_A_COCHER + 39;
+  // Cinq gestes de plus : rouvrir le panneau, désigner « mon préféré », le
+  // fermer, le rouvrir pour vérifier que l'affect a SURVÉCU, refermer. Le
+  // quatre derniers sont une vérification que seul ce test peut faire ; ils
+  // sont comptés quand même, parce qu'un budget qui choisit ce qu'il compte
+  // ne mesure plus rien.
+  const budget = TITRES_A_COCHER + 44;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

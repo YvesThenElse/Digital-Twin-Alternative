@@ -170,6 +170,13 @@ export const MESSAGES = {
   "passe2.possede": "Je l'avais",
   "passe2.ailleurs": "Chez quelqu'un",
   "passe2.emprunte": "Emprunté",
+  // L'affect (§4.7) : trois marches, pas une note sur dix. « Une note
+  // jugerait l'œuvre, l'affect enregistre une relation — et une échelle
+  // ferait dériver le produit vers la critique. »
+  "passe2.affect": "Ça vous a marqué ?",
+  "passe2.sansPlus": "Sans plus",
+  "passe2.adore": "J'ai adoré",
+  "passe2.prefere": "Mon préféré",
   "parcours.voirTimeline": "Voir ma timeline",
   "parcours.chargement": "Chargement…",
   // Un échec n'est pas un chargement lent, et un catalogue vide n'est ni

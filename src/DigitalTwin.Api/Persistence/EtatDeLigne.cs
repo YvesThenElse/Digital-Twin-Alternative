@@ -9,9 +9,18 @@ namespace DigitalTwin.Api.Persistence;
 /// </summary>
 /// <param name="Completion">finished · abandoned · <c>null</c></param>
 /// <param name="Provenance">owned · elsewhere · borrowed · <c>null</c></param>
+/// <param name="Affect">
+/// indifferent · loved · favourite · <c>null</c> (§4.7).
+///
+/// <para>Relu ici parce qu'un écran le RÈGLE désormais : le panneau d'E07 le
+/// propose, et un panneau qui rouvrirait vierge ferait disparaître ce que le
+/// joueur vient de dire — le défaut que « toujours en cours » a déjà
+/// coûté.</para>
+/// </param>
 public sealed record EtatDeLigne(
     string WorkId,
     bool Played,
     string? Completion,
     string? Provenance,
-    bool NeverPlayed);
+    bool NeverPlayed,
+    string? Affect);

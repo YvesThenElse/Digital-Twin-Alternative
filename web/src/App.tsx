@@ -5,14 +5,14 @@ import { EtatDuService, type EtatSante } from "./EtatDuService";
 import { t } from "./i18n/t";
 import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
-import { PanneauMoment } from "./moment/PanneauMoment";
+import { PanneauMoment, type ChampEtat, type EtatDuJeu } from "./moment/PanneauMoment";
 import { FicheJeu, type CibleFiche, type FicheOeuvre } from "./oeuvre/FicheJeu";
 import { SyntheseProfil, type SyntheseDuProfil } from "./profil/SyntheseProfil";
 import { RepriseProposee } from "./reprise/RepriseProposee";
 import { PhraseDeRecit } from "./recit/PhraseDeRecit";
 import { TroisiemeTemps } from "./recit/TroisiemeTemps";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
-import { periodeTenable, type PeriodeChoisie } from "./periode/periode";
+import { periodeDuMoment, periodeTenable, type PeriodeChoisie } from "./periode/periode";
 import {
   SelectionMassive,
   type EtatLigne,
@@ -178,6 +178,17 @@ export function App() {
    * monté et à sa place de défilement.
    */
   const [momentCorrige, setMomentCorrige] = useState<MomentTimeline | null>(null);
+
+  /**
+   * Ce que le joueur a déjà dit du jeu ouvert dans le panneau.
+   *
+   * <b>Relu à l'ouverture, jamais supposé.</b> Un panneau qui rouvrirait
+   * vierge ferait disparaître ce que le joueur vient de dire — le défaut que
+   * « toujours en cours » a déjà coûté (apprentissage 76). `null` pour un
+   * titre saisi ou une machine inconnue : une déclaration ne saurait pas sur
+   * quoi porter.
+   */
+  const [etatDuJeu, setEtatDuJeu] = useState<EtatDuJeu | null>(null);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -481,6 +492,56 @@ export function App() {
    * c'est ce qui fait apparaître, le cas échéant, l'avertissement causal de
    * §5.4 que plus aucun geste du produit ne pouvait déclencher.
    */
+  /**
+   * Ouvre le panneau d'E07 sur un moment, et relit ce qu'on a dit du jeu.
+   *
+   * La lecture ne retarde pas l'ouverture : le panneau paraît d'abord, ses
+   * chips se remplissent ensuite. Corriger une date n'a pas à attendre une
+   * information qui sert à autre chose.
+   */
+  function ouvrirPanneau(moment: MomentTimeline) {
+    setMomentCorrige(moment);
+    setEtatDuJeu(null);
+    if (moment.targetKind !== "work" || moment.platformId === null) return;
+    const machine = moment.platformId;
+    client.etatSelection(UTILISATEUR, machine)
+      .then((lignes) => {
+        const ligne = lignes.find((l) => l.workId === moment.targetId);
+        setEtatDuJeu({
+          completion: ligne?.completion ?? null,
+          provenance: ligne?.provenance ?? null,
+          affect: ligne?.affect ?? null,
+        });
+      })
+      // Silencieux : les chips restent muettes plutôt que de montrer des
+      // réponses inventées. La correction de date, elle, reste entière.
+      .catch(() => setEtatDuJeu(null));
+  }
+
+  /**
+   * Règle un des trois champs de la passe 2 depuis E07 (§4.5 à §4.7).
+   *
+   * <b>Le MÊME point d'entrée que la sélection massive</b>, avec la date du
+   * moment pour période : un second chemin produirait des jugements de forme
+   * différente pour le même geste. C'est le domaine qui sait qu'un affect
+   * lève « jamais joué » et qu'un seul préféré vit par plateforme.
+   */
+  async function reglerEtat(
+    moment: MomentTimeline, champ: ChampEtat, valeur: string,
+  ) {
+    if (moment.platformId === null) return;
+    await client.declarer({
+      batchId: lot,
+      userId: UTILISATEUR,
+      platformId: moment.platformId,
+      period: periodeDuMoment(moment.occurredAt),
+      entries: [{ workId: moment.targetId, [champ]: valeur }],
+    });
+    setEtatDuJeu((precedent) =>
+      precedent === null ? precedent : { ...precedent, [champ]: valeur });
+    await relireAxe();
+  }
+
   async function corrigerLaDate(moment: MomentTimeline, periode: PeriodeChoisie) {
     await client.corrigerDate(UTILISATEUR, moment.id, periode);
     setMomentCorrige(null);
@@ -650,7 +711,7 @@ export function App() {
             // du jour où on les lance.
             anneeCourante={new Date().getFullYear()}
             completer={completerLaPeriode}
-            corriger={setMomentCorrige}
+            corriger={ouvrirPanneau}
           />
 
           {/* Superposé, jamais à la place : l'axe reste monté derrière, donc
@@ -662,6 +723,10 @@ export function App() {
               // Elle vient du profil, jamais d'une copie locale : c'est elle
               // qui décide si le repli peut proposer « vers mes … ans ».
               anneeDeNaissance={synthese?.birthYear ?? null}
+              etat={etatDuJeu}
+              reglerEtat={(champ, valeur) => {
+                void essayer(() => reglerEtat(momentCorrige, champ, valeur));
+              }}
               enregistrerNaissance={(annee) => {
                 void essayer(() => enregistrerNaissance(annee));
               }}

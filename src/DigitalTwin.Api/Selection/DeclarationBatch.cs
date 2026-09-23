@@ -7,6 +7,13 @@ namespace DigitalTwin.Api.Selection;
 /// <summary>Une ligne cochée : l'œuvre, et ce que la passe 2 y a ajouté.</summary>
 /// <param name="Completion">finished · stillPlaying · abandoned · <c>null</c></param>
 /// <param name="Provenance">owned · elsewhere · borrowed · <c>null</c></param>
+/// <param name="Affect">
+/// indifferent · loved · favourite · <c>null</c> (§4.7).
+///
+/// <para><b>Trois marches, pas une note.</b> Une note jugerait l'œuvre ;
+/// l'affect enregistre une relation, et une échelle ferait dériver le produit
+/// vers la critique.</para>
+/// </param>
 /// <param name="WorkId">
 /// L'œuvre curée. <c>null</c> quand le référentiel ne la contient pas — on
 /// saisit alors <paramref name="Title"/>. Les deux ensemble sont ambigus :
@@ -18,7 +25,8 @@ public sealed record DeclarationEntry(
     string? Completion = null,
     string? Provenance = null,
     bool NeverPlayed = false,
-    string? Title = null);
+    string? Title = null,
+    string? Affect = null);
 
 /// <summary>
 /// Un lot de déclarations issu d'un passage sur l'écran de sélection massive.
@@ -47,6 +55,8 @@ public sealed record DeclarationIntent(string WorkId, string PlatformId, string 
 {
     public const string NeverPlayed = "neverPlayed";
     public const string Provenance = "provenance";
+    /// <summary>« Sans plus », « j'ai adoré », « mon préféré » (§4.7).</summary>
+    public const string Affect = "affect";
     /// <summary>« J'y joue encore » — ou, à <c>false</c>, une fermeture datée
     /// qui vient de refermer la position.</summary>
     public const string StillPlaying = "stillPlaying";
@@ -73,6 +83,10 @@ public static class DeclarationTranslator
     private const string Finished = "finished";
     private const string StillPlaying = "stillPlaying";
     private const string Abandoned = "abandoned";
+
+    private const string Indifferent = "indifferent";
+    private const string Loved = "loved";
+    private const string Favourite = "favourite";
 
     private const string Owned = "owned";
     private const string Elsewhere = "elsewhere";
@@ -219,6 +233,17 @@ public static class DeclarationTranslator
                     ProvenanceDomaine(entree.Provenance)));
             }
 
+            if (entree.Affect is { Length: > 0 } affect)
+            {
+                // Comme la provenance : un jugement permanent, pas un
+                // moment. Déclarer un affect LÈVE « jamais joué » — c'est le
+                // domaine qui le sait, et l'invariant 10 en fait une
+                // correction et non une erreur à refuser.
+                declarations.Add(new DeclarationIntent(
+                    cible.Id, lot.PlatformId, DeclarationIntent.Affect,
+                    AffectDomaine(affect)));
+            }
+
             foreach (var type in types)
             {
                 evenements.Add(new PlayerEvent(
@@ -235,6 +260,19 @@ public static class DeclarationTranslator
 
         return (evenements, declarations, null);
     }
+
+    /// <summary>
+    /// Le vocabulaire de l'écran vers celui du domaine. Un affect inconnu
+    /// retombe sur « non prononcé » : mieux vaut ne rien dire que d'affirmer
+    /// une relation que personne n'a déclarée.
+    /// </summary>
+    private static string AffectDomaine(string valeur) => valeur switch
+    {
+        Indifferent => nameof(DigitalTwin.Domain.Player.Affect.Indifferent),
+        Loved => nameof(DigitalTwin.Domain.Player.Affect.Loved),
+        Favourite => nameof(DigitalTwin.Domain.Player.Affect.Favourite),
+        _ => nameof(DigitalTwin.Domain.Player.Affect.Unstated),
+    };
 
     private static string ProvenanceDomaine(string valeur) => valeur switch
     {

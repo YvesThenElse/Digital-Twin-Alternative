@@ -493,6 +493,60 @@ describe("App — E07, corriger une date sans quitter l'axe", () => {
     await waitFor(() => expect(screen.queryByTestId("panneau-moment")).toBeNull());
   });
 
+  it("relit ce qui a déjà été dit du jeu", async () => {
+    // Rouvrir vierge ferait disparaître ce que le joueur vient de dire.
+    const utilisateur = userEvent.setup();
+    faux.etatSelection.mockResolvedValue([
+      { workId: "w1", played: true, completion: "finished",
+        provenance: "owned", neverPlayed: false, affect: "favourite" },
+    ]);
+    await jusquAuPanneau(utilisateur);
+
+    expect(await screen.findByRole("button", { name: "Mon préféré" }))
+      .toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("règle l'affect par le MÊME point d'entrée, avec la date DU MOMENT", async () => {
+    // « Pas un second chemin d'écriture. » Et la période est celle du
+    // moment : lui donner celle du parcours daterait l'achèvement d'un
+    // souvenir de 1995 à la date de sa correction.
+    const utilisateur = userEvent.setup();
+    faux.etatSelection.mockResolvedValue([]);
+    await jusquAuPanneau(utilisateur);
+    await screen.findByTestId("panneau-etat");
+
+    await utilisateur.click(screen.getByRole("button", { name: "J'ai adoré" }));
+
+    expect(faux.declarer).toHaveBeenCalledWith(expect.objectContaining({
+      platformId: "plt_snes",
+      period: { kind: "year", year: 1995 },
+      entries: [{ workId: "w1", affect: "loved" }],
+    }));
+  });
+
+  it("n'offre rien à régler pour un titre saisi", async () => {
+    // Une revendication n'a pas d'identifiant d'œuvre : une déclaration ne
+    // saurait pas sur quoi porter. Le témoin est dans le test ci-dessus.
+    const utilisateur = userEvent.setup();
+    faux.timeline.mockResolvedValue({
+      entries: [{ isEpisode: false, interval: { start: "1995-01-01", end: "1995-12-31" },
+        moments: [{ id: "m9", type: "StartedGame", targetKind: "unresolvedClaim",
+          targetId: "ucl_1", targetLabel: "Le jeu de mon cousin",
+          occurredAt: { kind: "Year", year: 1995 }, platformId: "plt_snes",
+          memory: null }] }],
+      undated: [],
+      warnings: [],
+    });
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    await screen.findByTestId("axe");
+    await utilisateur.click(screen.getByRole("button", { name: /Corriger ce moment/ }));
+
+    await screen.findByTestId("panneau-moment");
+    expect(screen.queryByTestId("panneau-etat")).toBeNull();
+    expect(faux.etatSelection).toHaveBeenCalledTimes(1);
+  });
+
   it("se ferme sans rien corriger", async () => {
     const utilisateur = userEvent.setup();
     await jusquAuPanneau(utilisateur);

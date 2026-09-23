@@ -5,6 +5,7 @@ import { StatutRegional } from "../region/StatutRegional";
 import { statutRegion } from "../region/statut";
 import { t } from "../i18n/t";
 import { Tuile } from "../disposition/Tuile";
+import { CHOIX_ACHEVEMENT, CHOIX_PROVENANCE, Question } from "./Question";
 import type { Disposition } from "../disposition/epoque";
 import { anneeDe, forme, libelle } from "../temporel/valeur";
 import { construireBande } from "./bande";
@@ -85,6 +86,8 @@ export type EtatLigne = {
   /** owned · elsewhere · borrowed · `null` = pas prononcé. */
   provenance: string | null;
   neverPlayed: boolean;
+  /** indifferent · loved · favourite · `null` = pas prononcé (§4.7). */
+  affect: string | null;
 };
 
 /** Les deux réponses de passe 2 que le modèle sait porter aujourd'hui. */
@@ -203,37 +206,6 @@ type Props = {
  * on ne défait rien — voir son travail s'effacer est le pire scénario d'un
  * affichage optimiste.
  */
-/**
- * Une question de passe 2 : une ligne de chips, toutes facultatives.
- *
- * <b>Elle ne coûte rien à qui l'ignore</b> et change la nature du profil
- * pour qui y répond (E02). Elle n'apparaît que sur une ligne DÉCLARÉE :
- * poser la question sur 221 lignes non cochées occuperait l'écran le plus
- * dense du produit et suggérerait un travail à faire.
- */
-function Question({ intitule, choix, valeur, repondre }: {
-  intitule: string;
-  choix: { valeur: string; libelle: string }[];
-  valeur: string | null;
-  repondre: (valeur: string) => void;
-}) {
-  return (
-    <div role="group" aria-label={intitule}>
-      <span>{intitule}</span>
-      {choix.map((c) => (
-        <button
-          key={c.valeur}
-          type="button"
-          aria-pressed={valeur === c.valeur}
-          onClick={() => repondre(c.valeur)}
-        >
-          {c.libelle}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 /**
  * Ce qu'il faut parcourir horizontalement pour que ce soit un <b>balayage</b>
  * et non un tap.
@@ -837,11 +809,7 @@ export function SelectionMassive({
                   intitule={t("passe2.acheve")}
                   valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).completion}
                   repondre={(v) => repondre(oeuvre.id, "completion", v)}
-                  choix={[
-                    { valeur: "finished", libelle: t("passe2.fini") },
-                    { valeur: "stillPlaying", libelle: t("passe2.enCours") },
-                    { valeur: "abandoned", libelle: t("passe2.abandonne") },
-                  ]}
+                  choix={CHOIX_ACHEVEMENT}
                 />
               ) : null}
 
@@ -854,11 +822,7 @@ export function SelectionMassive({
                   intitule={t("passe2.comment")}
                   valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).provenance}
                   repondre={(v) => repondre(oeuvre.id, "provenance", v)}
-                  choix={[
-                    { valeur: "owned", libelle: t("passe2.possede") },
-                    { valeur: "elsewhere", libelle: t("passe2.ailleurs") },
-                    { valeur: "borrowed", libelle: t("passe2.emprunte") },
-                  ]}
+                  choix={CHOIX_PROVENANCE}
                 />
               ) : null}
 

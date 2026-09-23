@@ -188,7 +188,7 @@ du périmètre n'ont jamais été livrées.
   l'âge ne s'offre qu'avec l'année de naissance, sans quoi il tombe dans le
   tiroir (§7.6).*
 
-- [ ] **S8 — E07 corrige l'état.** (E07 · E02) « Changer d'avis plus tard
+- [x] **S8 — E07 corrige l'état.** (E07 · E02) « Changer d'avis plus tard
   relève d'E07 » : la sélection massive valide une fois par ligne, et rien ne
   permet de revenir. *Acceptation : achèvement, provenance et affect se
   corrigent depuis le panneau ; l'affect y devient saisissable pour la
@@ -226,6 +226,12 @@ question.
 ## Ce que le chemin a fait apparaître
 
 Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
+
+- **E02 ne pose pas la question de l'affect.** Sa fiche liste quatre
+  questions en passe 2 ; l'écran en pose deux, et l'affect n'arrive que par
+  E07. Le composant et les réponses existent désormais et sont partagés : ce
+  n'est plus qu'une ligne à ajouter. Elle n'appartenait pas à S8, dont
+  l'acceptation porte sur le panneau.
 
 - **Revenir de la fiche E05 REPLIE l'épisode.** E05 est une page : l'axe est
   démonté puis remonté, et l'état « déplié » part avec lui. E03 demande
@@ -320,6 +326,30 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   Reprendre coûte **un** geste au lieu de quatre ; l'ignorer laisse les trois
   temps entiers. Ce qui est laissé : la redirection annoncée en tête de
   fiche, qui attend S5.
+
+- **S8** — achèvement, provenance et **affect** se règlent depuis le panneau,
+  et l'affect devient saisissable **pour la première fois** (§4.7) : la
+  colonne existait, la lecture la rendait, le domaine savait qu'un affect
+  lève « jamais joué » et qu'un seul préféré vit par plateforme — et aucun
+  geste ne l'écrivait. C'était la troisième capacité morte.
+
+  Le composant de chips est **partagé** avec E02, comme E07 l'exige — « une
+  divergence entre eux serait un défaut » —, et les réponses sont définies
+  une seule fois. La correction passe par le **même point d'entrée** que la
+  sélection massive, avec la date **du moment** pour période : la période du
+  parcours daterait l'achèvement d'un souvenir de 1995 à la date de sa
+  correction. C'est le domaine qui applique, et `DesignateFavourite` qui
+  rétrograde le préféré précédent — le refaire dans le magasin l'aurait fait
+  diverger.
+
+  L'état est **relu à l'ouverture** et le parcours vérifie qu'il **survit**
+  à la fermeture du panneau : gardé en mémoire, il aurait passé le test sans
+  rien prouver. `GET /selection` rend désormais l'affect, dans le vocabulaire
+  de l'écran — `Unstated` devient `null`, parce que « pas prononcé » n'est
+  pas une réponse.
+
+  Ce qui est laissé : E02 ne pose toujours pas la question de l'affect,
+  alors que sa fiche la liste en passe 2. Inscrit ci-dessous.
 
 - **S7** — le repli « préciser » est là, et **les sept granularités ont un
   producteur** : mois, date exacte, « vers … à peu près », « vers mes … ans »

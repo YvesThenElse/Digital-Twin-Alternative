@@ -164,6 +164,10 @@ public static class DeclarationEndpoints
                 completion = l.Completion,
                 provenance = l.Provenance,
                 neverPlayed = l.NeverPlayed,
+                // Rendu depuis qu'un écran le RÈGLE : le panneau d'E07 le
+                // propose, et rouvrir vierge ferait disparaître ce que le
+                // joueur vient de dire.
+                affect = l.Affect,
             }).ToList());
         });
 

@@ -17,7 +17,7 @@
 > | Le panneau, ouvert depuis l'axe sans le quitter | **livré** |
 > | **A** — l'année, « plutôt une période », « je ne sais plus » | **livré** |
 > | **B** — le repli de précision (mois, date exacte, « vers », âge), et la période **ouverte** | **livré** |
-> | **B bis** — achèvement, provenance, affect | à venir |
+> | **B bis** — achèvement, provenance, affect | **livré** |
 > | **C** — le souvenir | à venir ; il se saisit aujourd'hui depuis E02 |
 > | **D** — l'avertissement doux, *dans* le panneau | l'axe le montre ; le panneau, pas encore |
 > | « Supprimer » | à venir ; la rétractation se fait depuis E02 et E05 |
@@ -101,6 +101,14 @@ L'option « vers mes … ans » n'apparaît **que** si l'année de naissance est
 > **L'année de naissance est stockée** — une table à part, jamais dans le journal, jamais publiée (§12.3), et effacée avec le profil (§10.1). L'âge, lui, reste **brut** : corriger l'année ne réécrit aucun événement, elle les **replace** tous à la lecture. C'est ce repli qui est son unique producteur : la demander à l'amorce serait le formulaire que §24.4 interdit avant le premier retour visible.
 
 **B bis — Achèvement, provenance, affect.** Quand le panneau s'ouvre sur un moment lié à un jeu, il porte aussi les trois lignes de chips de E02 (§4.5 à §4.7). C'est le second endroit où elles se règlent : E02 pendant la saisie en masse, E07 plus tard, en relisant sa timeline. Les deux écrans partagent le même composant — une divergence entre eux serait un défaut.
+
+> **Livré le 23 septembre 2026, et l'affect y devient saisissable pour la première fois.** La colonne existait, la lecture la rendait, le domaine savait qu'un affect **lève « jamais joué »** (invariant 10) et qu'un seul préféré vit par plateforme (invariant 6) — et aucun geste ne l'écrivait. C'était la troisième capacité morte que ce panneau devait débloquer.
+>
+> Le composant de chips est **partagé** avec E02, comme cette fiche l'exige, et les réponses sont définies une seule fois : deux listes recopiées finiraient par proposer des réponses différentes au même joueur selon l'écran d'où il vient.
+>
+> **Le même point d'entrée que la sélection massive**, avec la date **du moment** pour période : un second chemin d'écriture produirait des jugements de forme différente pour le même geste, et donner la période du parcours daterait l'achèvement d'un souvenir de 1995 à la date de sa correction.
+>
+> L'état est **relu à l'ouverture**, jamais supposé — un panneau qui rouvrirait vierge ferait disparaître ce que le joueur vient de dire. Et il n'est pas proposé pour un titre saisi hors référentiel : une déclaration ne saurait pas sur quoi porter.
 
 **C — Le souvenir.** Facultatif, sans contrainte de longueur ni mise en forme, affiché en `body` italique (langage visuel §4). C'est le contenu qui fait la valeur du profil (§9) : le champ est invitant et visible sans défiler, pas relégué en bas.
 
