@@ -1,7 +1,11 @@
 # Prompt de boucle — les écrans qui manquent
 
 > Rejoué **à l'identique** à chaque itération. L'état vit dans
-> [`TODO-ECRANS.md`](./TODO-ECRANS.md) et dans git.
+> [`TODO-ECRANS-2.md`](./TODO-ECRANS-2.md) et dans git.
+>
+> La première liste — [`TODO-ECRANS.md`](./TODO-ECRANS.md), dix items — est
+> close depuis le 23 septembre 2026. La seconde ramasse ce que le chemin a
+> fait apparaître en la construisant.
 >
 > La boucle d'audit cherchait des mensonges ; celle de finition construisait
 > ce qui était déjà écrit. **Celle-ci livre des écrans entiers** — et c'est
@@ -11,10 +15,11 @@
 
 ## À chaque itération
 
-0. **Lis `APPRENTISSAGES.md`.** Quatre-vingts entrées. Les dix dernières
-   (70–79) viennent de la boucle précédente et décrivent exactement ce que
-   celle-ci risque.
-1. **Lis `TODO-ECRANS.md`.** Prends le **premier item non coché**. Un seul.
+0. **Lis `APPRENTISSAGES.md`.** Quatre-vingt-sept entrées. Les huit
+   dernières (80–87) viennent de la première liste d'écrans, et décrivent
+   exactement ce que celle-ci risque — quatre d'entre elles ont été trouvées
+   par un compte de mutations qui ne tombait pas juste.
+1. **Lis `TODO-ECRANS-2.md`.** Prends le **premier item non coché**. Un seul.
 2. **Lis la fiche d'écran ENTIÈREMENT**, et les sections qu'elle cite.
    Compte ses phrases impératives et classe-les : *algorithme* ou
    *intention*. Ce sont les intentions qui tombent — et sur un écran neuf,
@@ -63,16 +68,15 @@
 
 ## Conditions d'arrêt
 
-- ~~**S1, S2 et S2 bis sont cochés**~~ — condition **levée le 23 septembre**.
-  Le lot d'avant-session est livré, et la décision a été prise de poursuivre
-  sur S3 **sans attendre** la session de test. Reprends donc la liste dans
-  l'ordre.
+- ⚠️ **Les cinq items T1 à T5 sont cochés** — ce qui suit attend une
+  décision, pas du code. Arrête-toi, dis-le, et pose les trois questions.
 
-  > ⚠️ Ce que cela change, et qu'il faut garder en tête : S3 à S9 devaient
-  > être **ordonnés par le verdict des testeurs**, et `PHASING.md` §11 dit
-  > que si la porte se ferme la réponse est d'itérer sur la Phase 1, pas
-  > d'avancer. On construit donc plus loin sans savoir si ce qui est déjà
-  > là produit « oui, ça me ressemble ». C'est assumé — pas oublié.
+  > ⚠️ Ce que cette seconde liste coûte, et qu'il faut garder en tête : elle
+  > se construit **avant** la session de test, sur décision. `PHASING.md`
+  > §11 dit l'inverse — si la porte de Phase 2 se ferme, la réponse est
+  > d'itérer sur la Phase 1, pas d'avancer. On construit donc plus loin sans
+  > savoir si ce qui est là produit « oui, ça me ressemble ». C'est assumé,
+  > pas oublié.
 - tous les items sont cochés ;
 - l'item courant est de la section **« attend une décision »** ;
 - un attendu de la spécification paraît faux ou contradictoire ;
@@ -84,6 +88,10 @@ premier, et la **conséquence** de chaque option.
 
 ## Ce que cette boucle doit produire
 
-Une Phase 1 dont le périmètre écrit est tenu, un graphe de navigation sans
-promesse creuse, et — si D2 le décide — l'écran qui rend le produit
-corrigeable.
+La première liste a produit cela : une Phase 1 dont le périmètre écrit est
+tenu, un graphe de navigation sans promesse creuse, et les trois capacités
+mortes rendues atteignables.
+
+Celle-ci doit produire moins, et le dire : fermer les manques que la
+construction a laissés, et **rendre visibles les trois décisions** qu'elle ne
+peut pas prendre à la place de qui décide.

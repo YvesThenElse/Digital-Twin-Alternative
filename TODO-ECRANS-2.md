@@ -1,0 +1,127 @@
+# Ce que la première liste a fait apparaître
+
+> Suite de [`TODO-ECRANS.md`](./TODO-ECRANS.md), dont les dix items sont
+> faits. La méthode reste dans [`BOUCLE-ECRANS.md`](./BOUCLE-ECRANS.md).
+
+## D'où vient cette liste
+
+Aucun de ces manques n'a été cherché : ils se sont montrés en construisant
+autre chose. Quatre l'ont été par un test qui refusait de mentir — le
+parcours qui constate un épisode replié, le garde de navigation qui lit la
+table des liens, le compteur d'un mutation qui ne tombait pas juste.
+
+C'est une liste **de seconde main**, et elle n'a pas le statut de la
+première : celle-là tenait un périmètre écrit, celle-ci ramasse ce que le
+chemin a laissé.
+
+> ### ⚠️ Ce que cette liste coûte, et qu'il faut lire avant de la commencer
+>
+> Elle est construite **avant** la session de test, sur décision du
+> 23 septembre 2026. `PHASING.md` §11 dit l'inverse : si la porte de Phase 2
+> se ferme, la réponse est d'itérer sur la Phase 1, pas d'avancer. On
+> construit donc plus loin sans savoir si ce qui est là produit « oui, ça me
+> ressemble » — et **si les testeurs disent non, une partie de ce travail
+> aura porté sur les mauvais écrans**. C'est assumé, pas oublié.
+
+---
+
+## Ce qui se construit sans rien trancher
+
+- [ ] **T1 — Revenir de la fiche ne replie plus l'épisode.** (E03, actions ·
+  E05) E03 promet « clic sur un jeu → E05, **en conservant la position** ».
+  E05 est une page : l'axe est démonté puis remonté, et l'état « déplié »
+  part avec lui. Le parcours le **constate** aujourd'hui — une assertion
+  écrite pour échouer le jour où ce sera corrigé — et paie un geste pour
+  redéplier.
+
+  La correction demande de sortir le repliage de l'entrée, là où il survivra
+  au remontage : c'est l'apprentissage 73, « écrire dans le même geste ce qui
+  remonte un composant et ce qui doit lui survivre ».
+
+  *Acceptation : revenir d'une fiche retrouve l'épisode tel qu'on l'a laissé ;
+  l'assertion qui constatait le défaut est retirée du parcours, et le geste
+  qu'elle coûtait disparaît du budget.*
+
+- [ ] **T2 — E02 pose la question de l'affect.** (E02, passe 2 · §4.7) Sa
+  fiche liste **quatre** questions ; l'écran en pose deux. L'affect n'est
+  saisissable que depuis E07, alors que son intérêt est justement d'être
+  « un tap qui capte ce qui a compté » pendant la saisie en masse.
+
+  Le composant de chips et les réponses sont déjà partagés depuis S8 : c'est
+  une ligne à ajouter, pas une fonctionnalité à concevoir.
+
+  *Acceptation : la question paraît sur une ligne déclarée, comme les deux
+  autres ; elle envoie exactement ce qu'envoie E07 ; et le budget d'un tap
+  par jeu ne bouge pas pour qui l'ignore — le parcours le mesure.*
+
+- [ ] **T3 — Un profil trop maigre propose de compléter.** (E04, états) « Trop
+  maigre pour un portrait : afficher la phrase et l'amorce de timeline,
+  masquer les chiffres, **et proposer E02**. » Les deux premières sont
+  tenues depuis S1, la troisième jamais — c'était une porte de navigation que
+  la Phase 1 n'avait nulle part, et S5 l'a ouverte depuis.
+
+  *Acceptation : sous le seuil du portrait, l'en-tête invite à compléter, et
+  l'invitation mène à E02 par le chemin que S5 a construit — pas par un
+  second. Au-dessus du seuil, elle disparaît.*
+
+- [ ] **T4 — E04 porte ses périodes d'activité.** (E04, bloc ⒟) Marqué
+  Phase 1 dans la fiche, et absent. C'est « la visualisation qui fait dire
+  *c'est vrai, j'ai peu joué entre 2005 et 2010* — et le bloc le plus
+  immédiatement parlant de l'écran ».
+
+  Attention au voisinage : la bande d'époque d'E02 montre déjà une densité
+  pendant la saisie. Celle-ci porte **toute l'histoire**, pas le passage en
+  cours, et elle vit sur l'écran de lecture.
+
+  *Acceptation : une bande de densité colorée par époque, calculée par le
+  domaine et jamais par un recompte de l'écran ; elle n'apparaît qu'« à
+  partir d'assez de moments pour qu'une forme se dessine », et son absence
+  n'est pas un blanc ; sa hauteur se mesure dans le navigateur.*
+
+- [ ] **T5 — E04 nomme vos préférés.** (E04, bloc ⒠ bis · §4.7) Marqué
+  Phase 1, et il attendait que l'affect soit saisissable — ce que S8 a fait.
+  « C'est la ligne la plus personnelle que le système sache produire sans que
+  l'utilisateur ait écrit une phrase, et le meilleur retour sur l'affect
+  déclaré pendant la saisie. **Sans cette restitution, l'affect ne serait que
+  de la collecte.** »
+
+  *Acceptation : un titre par plateforme, nommé ; rien du tout quand aucun
+  préféré n'est déclaré — jamais une ligne vide ; et ce qu'il affiche vient
+  du domaine, qui sait déjà qu'il n'y a qu'un préféré par plateforme.*
+
+---
+
+## Ce qui attend une décision
+
+La boucle **s'arrête ici** : ces trois-là ne se corrigent pas, ils se
+tranchent.
+
+- [ ] **D1 — Par quel geste E02 ouvre-t-il E05 ?** Les relations d'E02
+  promettent « → E05 (détail d'un jeu, **en conservant la position**) », et
+  son tableau d'actions ne définit aucun geste qui l'ouvre. La ligne entière
+  est déjà la cible « joué », et lui ajouter une seconde cible est
+  exactement ce que sa refonte en deux passes interdit — quatre cibles de
+  44 px ne laissent que 143 px de titre.
+
+  Les pistes visibles : le panneau d'affinage (mais il n'existe que sur une
+  ligne **déclarée**), le survol desktop (mais il n'existe pas encore), un
+  appui long (déjà pris par la passe 2).
+
+- [ ] **D2 — La table des liens est-elle un résumé ou une matrice ?** Elle
+  est asymétrique en **vingt-quatre endroits** : « E12 vient de E02 » y
+  figure, « E02 mène vers E12 » non — alors que §6 compte `E02 → E12` parmi
+  les six transitions qui portent les KPI. Sa quatrième colonne, « lien
+  dominant », suggère un résumé curé ; le garde de S9, lui, lit « mène vers »
+  et vérifie donc moins que le graphe ne promet.
+
+  Trancher change ce que le garde peut exiger, et donc ce qu'il attrapera.
+
+- [ ] **D3 — La timeline condensée d'E04 a-t-elle un sens en Phase 1 ?**
+  Bloc ⒞, marqué Phase 1. Mais « en Phase 1, E03 et E04 sont un seul
+  écran » : un aperçu non interactif de l'axe, posé juste au-dessus de l'axe
+  lui-même, dirait deux fois la même chose sur un écran dont la densité doit
+  rester faible.
+
+---
+
+## Journal
