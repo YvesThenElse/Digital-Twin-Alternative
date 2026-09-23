@@ -652,6 +652,38 @@ describe("App — E03, les trous sont des invitations", () => {
     expect(secondLot).not.toBe(premierLot);
   });
 
+  it("un profil trop maigre invite à compléter, par le MÊME chemin", async () => {
+    // E04, état « trop maigre » : « proposer E02 ». Elle passe par le choix
+    // de machine, comme la relance des trous — E02 est une liste PAR
+    // PLATEFORME, et aucune n'est choisie quand on lit son histoire.
+    const utilisateur = userEvent.setup();
+    faux.synthese.mockResolvedValue({
+      moments: 4, birthYear: null, figures: null,
+      opening: { years: 31, platform: "Super Nintendo",
+                 occurredAt: { kind: "Year", year: 1995 } },
+    });
+    faux.timeline.mockResolvedValue(AXE_MAIGRE);
+    await jusquALaSelection(utilisateur);
+    // La période telle que le joueur l'a donnée, AVANT le détour.
+    const periodeDonnee = screen.getByTestId("contexte").textContent;
+
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    await screen.findByTestId("portrait");
+
+    await utilisateur.click(screen.getByRole("button", { name: /Ajouter des jeux/ }));
+
+    expect(await screen.findByRole("heading", { name: /console/i })).toBeInTheDocument();
+
+    // Et elle ne PRÉSUME aucune période : il n'y a pas de décennie creuse à
+    // combler, il y a une histoire à commencer. Celle du joueur revient
+    // INCHANGÉE — en inventer une remettrait le défaut que la Phase 1 a
+    // corrigé, où tous les jeux portaient une année que personne n'avait
+    // donnée. On compare donc à ce qu'on a lu, pas à une valeur écrite ici :
+    // une constante recopiée aurait pu coïncider avec l'invention.
+    await utilisateur.click(screen.getByRole("button", { name: /^Super Nintendo/ }));
+    expect(await screen.findByTestId("contexte")).toHaveTextContent(periodeDonnee!);
+  });
+
   it("ne propose rien à compléter quand l'axe est vide", async () => {
     // Le témoin est dans les deux tests ci-dessus : le MÊME écran, nourri,
     // propose bien. Ici l'axe porte déjà sa propre invitation.

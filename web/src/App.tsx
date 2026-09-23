@@ -492,8 +492,15 @@ export function App() {
    * rattacher à l'ancien ferait une bande sur l'axe là où il y a eu deux
    * sessions (§4.4).
    */
-  function completerLaPeriode(trou: { debut: number; fin: number }) {
-    setPeriode({ kind: "range", from: trou.debut, to: trou.fin });
+  function completerLaPeriode(trou?: { debut: number; fin: number }) {
+    // Sans trou : l'invitation d'un profil trop maigre (E04). Elle ne
+    // présume d'aucune période — il n'y a pas de décennie creuse à combler,
+    // il y a une histoire à commencer —, et le choix de machine mène au
+    // reste. C'est le MÊME chemin, avec un argument de moins : un second
+    // ferait deux façons d'arriver au même écran.
+    if (trou !== undefined) {
+      setPeriode({ kind: "range", from: trou.debut, to: trou.fin });
+    }
     setEtape("machine");
   }
 
@@ -713,7 +720,10 @@ export function App() {
               AU-DESSUS de la timeline E03 ». C'est le bloc dont l'objectif
               est la porte dure de la Phase 2 — « produire le moment *oui, ça
               me ressemble* » —, et il doit être lu avant le détail. */}
-          <SyntheseProfil synthese={synthese} />
+          <SyntheseProfil
+            synthese={synthese}
+            completer={() => completerLaPeriode()}
+          />
           <Timeline
             entrees={timeline.entries}
             sansDate={timeline.undated}

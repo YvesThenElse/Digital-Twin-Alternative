@@ -54,7 +54,7 @@ chemin a laissé.
   autres ; elle envoie exactement ce qu'envoie E07 ; et le budget d'un tap
   par jeu ne bouge pas pour qui l'ignore — le parcours le mesure.*
 
-- [ ] **T3 — Un profil trop maigre propose de compléter.** (E04, états) « Trop
+- [x] **T3 — Un profil trop maigre propose de compléter.** (E04, états) « Trop
   maigre pour un portrait : afficher la phrase et l'amorce de timeline,
   masquer les chiffres, **et proposer E02**. » Les deux premières sont
   tenues depuis S1, la troisième jamais — c'était une porte de navigation que
@@ -125,6 +125,26 @@ tranchent.
 ---
 
 ## Journal
+
+- **T3** — l'en-tête invite à compléter sous le seuil du portrait, et
+  disparaît dès qu'il tient. Elle passe par le **même** chemin que la
+  relance des trous — `completerLaPeriode`, avec un argument de moins : un
+  second ferait deux façons d'arriver au même écran.
+
+  **Elle ne présume aucune période.** Il n'y a pas de décennie creuse à
+  combler, il y a une histoire à commencer : celle du joueur revient
+  inchangée. Et l'invitation ne dit pas ce qui manque — annoncer un seuil
+  ferait du portrait une jauge à remplir, alors qu'un profil se construit
+  par envie.
+
+  Sur un profil **vide**, elle se tait : l'axe porte déjà « racontez votre
+  première console », et deux invitations superposées n'en font pas une plus
+  claire.
+
+  Une mutation n'a rien cassé, pour une raison instructive : la période
+  qu'elle inventait **coïncidait** avec celle du scénario. La propriété
+  n'était pas « la période vaut 1990–1999 » mais « la période n'a pas
+  changé » — c'est l'apprentissage 88.
 
 - **T2** — l'affect s'ajoute à la passe 2 d'E02, **entre** l'achèvement et la
   provenance : « le factuel, puis l'émotionnel, et enfin la provenance, la

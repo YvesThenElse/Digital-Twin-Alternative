@@ -73,7 +73,18 @@ export type SyntheseDuProfil = {
  * composant ne peut le voir — il rend dans un document sans feuille de
  * style —, la garde est donc dans le navigateur, et elle mesure.
  */
-export function SyntheseProfil({ synthese }: { synthese: SyntheseDuProfil | null }) {
+export function SyntheseProfil({ synthese, completer }: {
+  synthese: SyntheseDuProfil | null;
+  /**
+   * « Proposer E02 » — la troisième chose que l'état « trop maigre » d'E04
+   * demande, et la seule qui manquait.
+   *
+   * Elle passe par le chemin qu'a ouvert la relance des trous : E02 est une
+   * liste PAR PLATEFORME, et aucune n'est choisie quand on lit son
+   * histoire. Un second chemin ferait deux façons d'arriver au même écran.
+   */
+  completer: () => void;
+}) {
   // Rien tant que la lecture n'a pas abouti, et rien non plus quand il n'y a
   // rien à dire : un en-tête qui s'affiche vide puis se remplit ferait sauter
   // l'écran au moment précis où le joueur le découvre.
@@ -87,6 +98,20 @@ export function SyntheseProfil({ synthese }: { synthese: SyntheseDuProfil | null
         <p className="portrait-phrase" data-testid="portrait-phrase">
           {Phrase(opening)}
         </p>
+      ) : null}
+
+      {/* E04 : « Trop maigre pour un portrait : afficher la phrase […],
+          masquer les chiffres, ET PROPOSER E02. » Les deux premières
+          tenaient déjà ; la troisième était une porte que la Phase 1 n'avait
+          nulle part, et qui existe depuis la relance des trous.
+
+          L'invitation dit ce qu'elle FAIT, pas ce qui manque : annoncer un
+          seuil ferait du portrait une jauge à remplir, et un profil se
+          construit par envie, pas par complétion. */}
+      {figures === null ? (
+        <button type="button" className="primaire" onClick={completer}>
+          {t("portrait.completer")}
+        </button>
       ) : null}
 
       {figures !== null ? (

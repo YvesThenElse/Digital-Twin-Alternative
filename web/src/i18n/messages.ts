@@ -265,6 +265,11 @@ export const MESSAGES = {
   "portrait.termines.plusieurs": "terminés",
   "portrait.souvenirs.un": "souvenir écrit",
   "portrait.souvenirs.plusieurs": "souvenirs écrits",
+  // E04, état « trop maigre » : « afficher la phrase et l'amorce de
+  // timeline, masquer les chiffres, ET PROPOSER E02 ». L'invitation dit ce
+  // qu'elle fait, pas ce qui manque : « il vous faut dix moments » ferait du
+  // portrait une jauge à remplir.
+  "portrait.completer": "Ajouter des jeux à mon histoire",
 
   // --- E05, la fiche de jeu ----------------------------------------------
   //

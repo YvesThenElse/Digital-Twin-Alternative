@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { SyntheseProfil, type SyntheseDuProfil } from "./SyntheseProfil";
 
@@ -28,12 +29,16 @@ const DEBUT: SyntheseDuProfil = {
   },
 };
 
+function poser(synthese: SyntheseDuProfil | null, completer = () => {}) {
+  return render(<SyntheseProfil synthese={synthese} completer={completer} />);
+}
+
 const phrase = () => screen.getByTestId("portrait-phrase");
 const chiffres = () => screen.queryAllByTestId("portrait-nombre");
 
 describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
   it("raconte le début de l'histoire avec sa machine et sa durée", () => {
-    render(<SyntheseProfil synthese={DEBUT} />);
+    poser(DEBUT);
 
     expect(phrase()).toHaveTextContent("35");
     expect(phrase()).toHaveTextContent("Game Boy");
@@ -43,17 +48,17 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
     // E04 : « `≈ 35 ans` dérivé d'un premier moment flou est honnête ;
     // `35 ans` ne l'est pas. » Et « vers 1991 » n'est pas « 1991 » : la
     // granularité déclarée voyage jusqu'à la phrase.
-    render(<SyntheseProfil synthese={DEBUT} />);
+    poser(DEBUT);
 
     expect(phrase().textContent).toContain("≈");
     expect(phrase().textContent).toContain("vers 1991");
   });
 
   it("ne dit pas « depuis 0 ans » quand la première fois est cette année", () => {
-    render(<SyntheseProfil synthese={{
+    poser({
       ...DEBUT,
       opening: { ...DEBUT.opening!, years: null },
-    }} />);
+    });
 
     expect(phrase().textContent).not.toMatch(/\b0\b/);
     // Le témoin (78) : la phrase EXISTE quand même, et elle dit le
@@ -64,10 +69,10 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
   it("dit le commencement même sans machine connue", () => {
     // Une déclaration qui ne vient pas d'une sélection par machine n'en porte
     // pas. Taire la phrase entière pour autant perdrait la date déclarée.
-    render(<SyntheseProfil synthese={{
+    poser({
       ...DEBUT,
       opening: { ...DEBUT.opening!, platform: null },
-    }} />);
+    });
 
     // Sur la DATE, le strict nécessaire : la granularité est gardée par le
     // test voisin, et l'y redemander ferait échouer deux tests pour une seule
@@ -79,16 +84,16 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
   // ---------------------------------------------------- les quatre chiffres
 
   it("montre les quatre chiffres du domaine, et exactement quatre", () => {
-    render(<SyntheseProfil synthese={DEBUT} />);
+    poser(DEBUT);
 
     expect(chiffres().map((n) => n.textContent)).toEqual(["4", "128", "31", "7"]);
   });
 
   it("accorde le libellé au singulier", () => {
-    render(<SyntheseProfil synthese={{
+    poser({
       ...DEBUT,
       figures: { consoles: 1, gamesDeclared: 1, finished: 1, memoriesWritten: 1 },
-    }} />);
+    });
 
     const libelles = screen.getAllByTestId("portrait-libelle").map((n) => n.textContent);
     expect(libelles.every((l) => !l!.endsWith("s"))).toBe(true);
@@ -99,7 +104,7 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
     // explicitement sorti de l'axe des positions — « 100 % de Tetris ou d'un
     // jeu de sport ne veut rien dire ». Un pourcentage ici serait un chiffre
     // que le modèle refuse de produire.
-    const { container } = render(<SyntheseProfil synthese={DEBUT} />);
+    const { container } = poser(DEBUT);
 
     expect(container.textContent).not.toContain("%");
   });
@@ -108,7 +113,7 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
     // E04 : « Des statistiques calculées sur cinq jeux détruisent la
     // crédibilité de l'écran — c'est le principal risque de cette page. »
     // L'API ne les envoie alors pas ; l'écran ne doit pas en inventer.
-    render(<SyntheseProfil synthese={{ ...DEBUT, figures: null }} />);
+    poser({ ...DEBUT, figures: null });
 
     expect(chiffres()).toHaveLength(0);
     // Le témoin (78) : la phrase, elle, reste — c'est ce que la fiche demande
@@ -119,9 +124,8 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
   it("ne rend aucun zéro là où il n'y a rien à dire", () => {
     // Un profil sans rien n'a pas un taux de zéro : il n'en a pas. L'en-tête
     // disparaît plutôt que d'afficher une coquille.
-    const { container } = render(
-      <SyntheseProfil synthese={{ moments: 0, birthYear: null, figures: null, opening: null }} />,
-    );
+    const { container } = poser(
+      { moments: 0, birthYear: null, figures: null, opening: null });
 
     expect(container.textContent).toBe("");
     expect(screen.queryByTestId("portrait")).toBeNull();
@@ -130,7 +134,49 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
   it("ne rend rien tant que la synthèse n'est pas arrivée", () => {
     // Un en-tête qui s'affiche vide puis se remplit ferait sauter l'écran au
     // moment précis où le joueur le découvre.
-    const { container } = render(<SyntheseProfil synthese={null} />);
+    const { container } = poser(null);
+
+    expect(container.textContent).toBe("");
+  });
+});
+
+describe("SyntheseProfil — un profil trop maigre propose de compléter (E04)", () => {
+  const MAIGRE: SyntheseDuProfil = { ...DEBUT, figures: null };
+
+  it("invite à compléter sous le seuil du portrait", async () => {
+    // « Trop maigre pour un portrait : afficher la phrase […], masquer les
+    // chiffres, ET PROPOSER E02. » Les deux premières tenaient déjà.
+    const utilisateur = userEvent.setup();
+    const completer = vi.fn();
+    poser(MAIGRE, completer);
+
+    await utilisateur.click(screen.getByRole("button", { name: /Ajouter des jeux/ }));
+
+    expect(completer).toHaveBeenCalledTimes(1);
+  });
+
+  it("ne dit pas ce qui MANQUE : ce n'est pas une jauge", () => {
+    // Annoncer un seuil — « encore sept moments » — ferait du portrait une
+    // complétion à remplir. Un profil se construit par envie.
+    poser(MAIGRE);
+
+    const invitation = screen.getByRole("button", { name: /Ajouter des jeux/ });
+    expect(invitation.textContent).not.toMatch(/\d/);
+  });
+
+  it("disparaît dès que le portrait tient", () => {
+    poser({ ...DEBUT });
+
+    expect(screen.queryByRole("button", { name: /Ajouter des jeux/ })).toBeNull();
+    // Le témoin (78) : la MÊME synthèse, sans chiffres, la propose bien.
+    poser(MAIGRE);
+    expect(screen.getAllByRole("button", { name: /Ajouter des jeux/ })).not.toHaveLength(0);
+  });
+
+  it("n'invite à rien sur un profil vide : l'axe le fait déjà", () => {
+    // Deux invitations superposées n'en font pas une plus claire — l'axe
+    // porte « Racontez votre première console », et l'en-tête se tait.
+    const { container } = poser({ moments: 0, birthYear: null, figures: null, opening: null });
 
     expect(container.textContent).toBe("");
   });

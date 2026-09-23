@@ -781,6 +781,11 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     "2",
   ]);
 
+  // Et AUCUNE invitation à compléter : le portrait tient, donc l'état
+  // « trop maigre » d'E04 n'a pas lieu d'être. Le témoin de cette absence
+  // est côté composant, sur une synthèse sans chiffres.
+  await expect(page.getByRole("button", { name: /Ajouter des jeux/ })).toHaveCount(0);
+
   // Quatre, jamais treize. §8.2 liste treize indicateurs ; E04 tranche —
   // « les afficher tous produirait un tableau de bord, pas un portrait ».
   await expect(nombres).toHaveCount(4);

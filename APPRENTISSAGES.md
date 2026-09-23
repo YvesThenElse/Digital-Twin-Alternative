@@ -2791,3 +2791,43 @@ une propriété que seule la bonne colonne possède.
 parmi d'autres de même forme, ajouter une assertion que **seule la bonne
 extraction satisfait**. Sans elle, le contrôle prouve qu'il a lu quelque
 chose, pas qu'il a lu la bonne chose.
+
+### 88 — Une constante recopiée dans un test peut coïncider avec le défaut
+
+Le garde devait dire qu'une invitation **n'invente aucune période**. Premier
+essai, écrit comme on les écrit :
+
+```ts
+await utilisateur.click(invitation);
+expect(contexte()).toHaveTextContent("1990");   // celle que le joueur a donnée
+```
+
+La mutation — faire poser `1990–1999` par l'invitation — **n'a rien cassé**.
+Pour une raison bête et instructive : la période que le parcours donne plus
+haut *était* 1990–1999. La valeur inventée coïncidait avec la valeur
+attendue, et le test approuvait exactement ce qu'il devait interdire.
+
+Ce n'est pas une erreur de calcul : c'est une erreur de **nature**. La
+propriété à vérifier n'est pas « la période vaut 1990–1999 », c'est « la
+période n'a pas changé ». La première recopie un fait ; la seconde le
+compare à lui-même.
+
+```ts
+const donnee = contexte().textContent;   // ce que le joueur a réellement dit
+…
+expect(contexte()).toHaveTextContent(donnee!);
+```
+
+Sous cette forme, la mutation rougit quelle que soit la valeur qu'elle
+invente — y compris celle qu'on aurait écrite à la main.
+
+C'est la même famille que [[80]] — un test écrit en fonction de sa constante
+n'en garde que la forme — vue de l'autre côté : là, la constante venait du
+code ; ici, elle vient du scénario. Dans les deux cas, **la valeur écrite
+dans le test est un complice possible**.
+
+**La règle** : quand ce qu'on vérifie est une invariance — « inchangé »,
+« conservé », « le même qu'avant » —, capturer la valeur d'avant et la
+comparer. N'écrire une constante que lorsque la propriété porte vraiment sur
+elle. Et devant une mutation qui ne casse rien, se demander d'abord si la
+valeur attendue ne serait pas, par hasard, celle que la mutation produit.

@@ -98,6 +98,8 @@ En Phase 1, l'image peut déjà être générée pour un usage privé (« garder
 
 - **Vide** : n'existe pas dans le parcours normal — E01 garantit au moins un moment. L'URL d'un profil restant adressable, l'en-tête ne rend alors **rien** : ni chiffres à zéro, ni coquille. Un profil sans rien n'a pas un taux de zéro, il n'en a pas.
 - **Trop maigre pour un portrait** (moins de ~10 moments) : afficher la phrase et l'amorce de timeline, **masquer les chiffres et les goûts**, et proposer E02. Des statistiques calculées sur cinq jeux détruisent la crédibilité de l'écran — c'est le principal risque de cette page.
+
+  > **Les trois sont tenues depuis le 23 septembre 2026.** L'invitation passe par le chemin de la relance des trous — E02 est une liste par plateforme, et aucune n'est choisie quand on lit son histoire — et elle **ne présume aucune période** : il n'y a pas de décennie creuse à combler, il y a une histoire à commencer. Elle dit ce qu'elle fait, jamais ce qui manque : annoncer un seuil ferait du portrait une jauge à remplir.
 - **Partiel** : cas nominal, les blocs sans données suffisantes s'effacent au lieu d'afficher zéro.
 
 ## Ce qui en est livré — 23 septembre 2026
