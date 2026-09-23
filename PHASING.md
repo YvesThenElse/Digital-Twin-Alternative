@@ -64,6 +64,34 @@ Quatre principes guident le découpage :
 >
 > Elles n'incluaient pas non plus la **constitution du référentiel** au-delà du dataset POC, qui reste un poste distinct et durable ([SPECIFICATION.md](./SPECIFICATION.md) §18.6) — et qui devient, dans ce contexte, le poste dominant.
 
+### Les dix-sept écrans, et la phase où chacun va
+
+Le graphe de navigation ([`ecrans/PARCOURS-ET-LIENS.md`](./ecrans/PARCOURS-ET-LIENS.md) §3) promet des destinations. **Une destination qu'aucune phase ne situe est une promesse que personne ne porte** — et c'est ainsi que quatre fiches se sont déclarées « Phase 1 » sans jamais être construites, que E06 a promis une recherche transverse au périmètre d'un POC, et que E07 a laissé trois capacités vertes et sans producteur.
+
+Ce tableau ferme la boucle : `GrapheDeNavigationTests` lit la table des liens, et exige que **chaque destination** y figure avec sa phase. Un écran ajouté au graphe demain fait échouer la suite jusqu'à ce que quelqu'un dise où il va — et une phase qui divergerait de la fiche la fait échouer aussi.
+
+| Écran | Phase | Où en est-il |
+|---|---|---|
+| **E01** Accueil / onboarding | 1 | livré, les trois temps |
+| **E02** Sélection massive | 1 | livré, passes 1 et 2 |
+| **E03** Timeline | 1 | livré |
+| **E04** Profil | 1 | livré fusionné dans `/mon-histoire` ; autonome en Phase 3 |
+| **E05** Fiches du référentiel | 1 | variante A livrée ; plateforme et studio à venir |
+| **E06** Recherche transverse | 3 | non livré — le filtre d'E02 tient la ligne du périmètre (§4) |
+| **E07** Éditeur de moment | 3 | date, précision et état **avancés en Phase 1** ; le souvenir et la suppression restent |
+| **E08** Collection | 3 | non livré |
+| **E09** Backlog / wishlist | 3 | non livré |
+| **E10** Statistiques | 3 | non livré — les quatre chiffres d'E04 suffisent à la Phase 1 |
+| **E11** Paramètres de visibilité | 3 | non livré — rien n'est publié avant la Phase 5 |
+| **E12** Authentification | 3 | non livré — la Phase 1 est sans compte, par décision (§4) |
+| **E13** Import | 4 | non livré |
+| **E14** Passe temporelle | 4 | non livré ; son entrant depuis E03 est situé en Phase 3 (§6) |
+| **E15** Profil public | 5 | non livré |
+| **E16** Comparaison | 5 | non livré |
+| **E17** Découverte | 5 | non livré |
+
+**La phase écrite ici est celle de la fiche**, et le test compare les deux. Quand un écran se livre en tranches — E04 fusionné puis autonome, E07 en trois morceaux —, c'est sa **première** phase qui compte, et la nuance vit dans sa fiche.
+
 ## 3. Phase 0 — Cadrage technique et produit
 
 **Durée : 1 à 2 semaines.**

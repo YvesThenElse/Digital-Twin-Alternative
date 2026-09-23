@@ -2754,3 +2754,40 @@ chercher la ligne qui le fait. Si elle n'existe pas, deux issues et pas
 trois — l'écrire, ou retirer la phrase. La laisser coûte plus cher que de
 n'avoir rien écrit : elle fait passer pour gardé ce qui ne l'est pas, et
 c'est sur elle qu'on s'appuiera le jour où l'on en aura besoin.
+
+### 87 — Un garde qui lit un tableau doit prouver qu'il lit la bonne colonne
+
+Le garde du graphe de navigation compare les **destinations** promises par la
+table des liens à ce que le plan situe. La table a quatre colonnes ; les deux
+du milieu sont « vient de » et « mène vers ».
+
+Lire l'une pour l'autre ne casse rien. Les deux contiennent des noms
+d'écrans, les deux ressemblent à ce qu'on cherche, et les deux donnent un
+ensemble dont tous les membres sont inscrits au plan. **Le test reste vert en
+mesurant autre chose que ce que son nom annonce.**
+
+Il existait pourtant un discriminateur, et il était dans la spécification :
+
+> « E07 est un panneau : il retourne **toujours** à l'écran appelant et ne
+> conduit nulle part ailleurs. »
+
+Un écran qui ne mène nulle part n'apparaît dans aucune colonne « vient de » —
+et il est pourtant une destination, depuis quatre écrans. C'est le seul point
+où les deux colonnes diffèrent, et il suffit :
+
+```csharp
+Assert.Contains("E07", destinations);   // absent si l'on lit la colonne d'à côté
+```
+
+Vérifié par mutation : en changeant l'indice de colonne, deux tests rougissent
+— celui-ci, et le témoin de détection.
+
+C'est [[83]] appliqué à une lecture plutôt qu'à une condition : la moitié du
+garde qui choisit *où regarder* n'était éprouvée par personne. Et le
+discriminateur ne s'invente pas — il se **cherche dans le document**, comme
+une propriété que seule la bonne colonne possède.
+
+**La règle** : quand un contrôle extrait une colonne, un champ ou une clé
+parmi d'autres de même forme, ajouter une assertion que **seule la bonne
+extraction satisfait**. Sans elle, le contrôle prouve qu'il a lu quelque
+chose, pas qu'il a lu la bonne chose.

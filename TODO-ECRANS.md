@@ -197,7 +197,7 @@ du périmètre n'ont jamais été livrées.
 
 ## Le garde qui empêche la liste de se reformer
 
-- [ ] **S9 — Aucun lien promis ne mène nulle part.** Le défaut qui a produit
+- [x] **S9 — Aucun lien promis ne mène nulle part.** Le défaut qui a produit
   cette liste est structurel : le graphe promet des écrans, et rien ne compare
   la promesse au livré. *Acceptation : un test lit la table des liens de
   `ecrans/PARCOURS-ET-LIENS.md` — sa source d'autorité — et exige que chaque
@@ -226,6 +226,15 @@ question.
 ## Ce que le chemin a fait apparaître
 
 Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
+
+- **La table des liens est asymétrique en vingt-quatre endroits.** « E12
+  vient de E02 » y figure, « E02 mène vers E12 » non — alors que §6 compte
+  `E02 → E12` parmi les six transitions qui portent les KPI. Les deux
+  colonnes sont deux listes tenues à la main, et rien ne les compare. Le
+  garde de S9 lit « mène vers » ; il vérifie donc moins que le graphe ne
+  promet. Les réconcilier demande de décider si la table est un **résumé des
+  liens dominants** — ce que sa quatrième colonne suggère — ou une matrice
+  d'adjacence : ce n'est pas une correction, c'est un choix de conception.
 
 - **E02 ne pose pas la question de l'affect.** Sa fiche liste quatre
   questions en passe 2 ; l'écran en pose deux, et l'affect n'arrive que par
@@ -326,6 +335,26 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   Reprendre coûte **un** geste au lieu de quatre ; l'ignorer laisse les trois
   temps entiers. Ce qui est laissé : la redirection annoncée en tête de
   fiche, qui attend S5.
+
+- **S9** — `GrapheDeNavigationTests` lit la table des liens de
+  `PARCOURS-ET-LIENS.md` §3 — sa source d'autorité — et exige que chaque
+  destination soit **située par `PHASING.md`**, qui porte désormais le
+  tableau des dix-sept écrans et de leur phase. Trois assertions, dans les
+  deux sens : aucune destination orpheline, aucun écran fantôme au plan, et
+  **le plan et les fiches disent la même phase** — c'est la divergence que ce
+  dépôt trouve le plus souvent, et c'est celle qui a laissé E06 se dire
+  « Phase 1 » pendant que le plan l'ignorait.
+
+  Les témoins portent leur poids : le graphe est réellement lu, le plan
+  aussi, un plan amputé laisse bien une destination orpheline, la lecture ne
+  déborde pas de sa section — et surtout, **la bonne colonne est lue**. E07
+  est le seul écran qui distingue « mène vers » de « vient de » : il retourne
+  toujours à son appelant et ne conduit nulle part, donc aucune ligne ne le
+  nomme comme origine. Lire la colonne d'à côté le fait disparaître, et une
+  mutation l'a vérifié.
+
+  Ce qui est laissé : la table est **asymétrique en vingt-quatre endroits** —
+  inscrit ci-dessous.
 
 - **S8** — achèvement, provenance et **affect** se règlent depuis le panneau,
   et l'affect devient saisissable **pour la première fois** (§4.7) : la
