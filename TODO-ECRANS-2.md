@@ -119,7 +119,7 @@ chemin a laissé.
   budget ; et revenir retrouve la liste telle qu'on l'a laissée — les
   déclarations faites depuis l'ouverture comprises.*
 
-- [ ] **T7 — La table des liens dit ce qu'elle est.** (`PARCOURS-ET-LIENS.md`
+- [x] **T7 — La table des liens dit ce qu'elle est.** (`PARCOURS-ET-LIENS.md`
   §3 · S9) Elle est asymétrique en vingt-quatre endroits parce que ses deux
   colonnes sont deux listes tenues à la main. **Décidé** : c'est un **résumé
   des liens dominants**, pas une matrice d'adjacence — sa quatrième colonne
@@ -155,6 +155,23 @@ chemin a laissé.
 ---
 
 ## Journal
+
+- **T7** — trois lignes dans le document, six dans le test, et un défaut
+  trouvé en les écrivant : **`E02 → E12` manquait à la colonne qui fait
+  foi**. §6 dit que les six transitions qu'elle nomme portent l'essentiel des
+  KPI ; le déclencheur de compte — celui qui décide si un profil de trente
+  jeux survit à la fermeture de l'onglet — n'était pas dans « Mène vers », et
+  le garde de navigation ne le voyait donc pas.
+
+  Nommer la colonne qui fait foi coûte peu ; cela crée aussitôt une dette,
+  **être complète pour ce qu'on prétend couvrir**, et c'est cette dette qui a
+  trouvé le trou. Les deux mutations tiennent : retirer E12 rouge à un échec
+  en nommant la transition, et lire §5 au lieu de §6 rouge sur le compte de
+  six.
+
+  Ce qui reste assumé : « Vient de » n'est comparée à rien, et les vingt et
+  quelques asymétries restent. C'est ce que la décision D2 a choisi — un
+  résumé, pas une matrice.
 
 - **T6** — le geste vers E05 vit dans le **panneau d'affinage**. Il suit
   exactement le sort des trois questions : il paraît avec elles, il part avec

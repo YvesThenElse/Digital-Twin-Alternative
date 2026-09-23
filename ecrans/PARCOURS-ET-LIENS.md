@@ -74,10 +74,26 @@ Tout le produit tient dans une boucle de trois écrans. Si elle est fluide, le r
 
 ## 3. Table des liens
 
+> **Ce que cette table est, et ce qu'elle n'est pas.** C'est un **résumé des
+> liens dominants**, pas une matrice d'adjacence — sa dernière colonne le
+> disait déjà à demi-mot, et ses deux colonnes du milieu sont tenues à la
+> main, donc asymétriques en une vingtaine d'endroits. Décidé le
+> 23 septembre 2026.
+>
+> Conséquence, et elle engage : **« Mène vers » fait foi.** C'est cette
+> colonne que `GrapheDeNavigationTests` lit pour exiger que chaque
+> destination soit située par [`PHASING.md`](../PHASING.md) §2. « Vient de »
+> est **indicative** : elle aide à lire le graphe, elle n'est comparée à
+> rien, et une entrée absente de « Mène vers » ne sera pas gardée.
+>
+> Un résumé ne peut pas omettre ce qu'il prétend résumer : le même test
+> vérifie donc que **les six transitions de §6** — celles qui portent les
+> KPI — figurent toutes dans la colonne qui fait foi.
+
 | Écran | Vient de | Mène vers | Lien dominant |
 |---|---|---|---|
 | **E01** Onboarding | racine, lien partagé (E15) | **E02**, E06 | → E02 |
-| **E02** Sélection massive | E01, nav, E05 plateforme, **E03** | **E03**, E05, E07, E02 | → E03 |
+| **E02** Sélection massive | E01, nav, E05 plateforme, **E03** | **E03**, E05, E07, E02, E12 | → E03 |
 | **E03** Timeline | nav, E01, **E02**, E04, E14 | **E07**, E05, **E02**, E04 | ⇄ E02 |
 | **E04** Profil | nav, E03, E02 | E03, E10, E08, E05, E11 | → E03 |
 | **E05** Fiches | E06, E02, E03, E04, E05 | E05, **E02**, E07, E03 | ⇄ E05 |

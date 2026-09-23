@@ -2831,3 +2831,32 @@ dans le test est un complice possible**.
 comparer. N'écrire une constante que lorsque la propriété porte vraiment sur
 elle. Et devant une mutation qui ne casse rien, se demander d'abord si la
 valeur attendue ne serait pas, par hasard, celle que la mutation produit.
+
+### 89 — Un garde qui lit un document doit dire quelle partie il tient pour vraie
+
+`PARCOURS-ET-LIENS.md` §3 porte deux colonnes qui se ressemblent : « Vient
+de » et « Mène vers ». Le garde de navigation lisait la seconde et exigeait
+que chaque destination soit située par `PHASING.md`. Rien, dans le document
+comme dans le test, ne disait que la première n'était comparée à rien — et
+les deux divergent en une vingtaine d'endroits.
+
+Ce n'était pas une erreur du document. C'était une **ambiguïté sur ce qu'il
+promet** : personne, en le lisant, ne pouvait savoir si l'asymétrie était un
+défaut à corriger ou une propriété assumée. Un lecteur pouvait aussi bien
+« réparer » la table que s'appuyer sur la mauvaise colonne.
+
+Nommer la colonne qui fait foi coûte trois lignes. Mais cela crée aussitôt
+une dette : **une colonne déclarée faisant foi doit être complète pour ce
+qu'elle prétend couvrir.** §6 nomme six transitions et dit qu'elles portent
+l'essentiel des KPI ; l'une d'elles — `E02 → E12`, le déclencheur de compte —
+était absente de « Mène vers ». Le garde ne la voyait donc pas, et rien ne le
+signalait. Le test qui l'exige est né du même geste que la déclaration.
+
+C'est [[87]] d'un cran plus haut : là, il fallait une assertion que seule la
+bonne extraction satisfait ; ici, il faut **dire laquelle est la bonne** et
+vérifier qu'elle couvre ce qu'elle annonce couvrir.
+
+**La règle** : quand un contrôle lit un document tenu à la main, écrire dans
+le document *et* dans le test quelle partie fait foi et laquelle est
+indicative. Puis chercher, dans le document lui-même, ce qu'il déclare
+essentiel — et exiger que la partie faisant foi le porte.

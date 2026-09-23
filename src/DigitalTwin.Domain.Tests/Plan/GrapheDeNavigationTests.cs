@@ -21,6 +21,15 @@ namespace DigitalTwin.Domain.Tests.Plan;
 /// <para>Il ne juge pas ce qui est construit : différer est légitime. Il
 /// exige que la décision soit <b>écrite</b> — et que les deux documents qui
 /// la portent disent la même chose.</para>
+///
+/// <para>⚠️ <b>Il lit la colonne « Mène vers », et elle seule.</b> La table
+/// est un <i>résumé des liens dominants</i> et non une matrice d'adjacence
+/// (décidé le 23 septembre 2026) : ses deux colonnes du milieu sont tenues à
+/// la main et diffèrent en une vingtaine d'endroits. « Mène vers » fait donc
+/// foi ; « Vient de » est indicative et n'est comparée à rien. Un résumé ne
+/// pouvant pas omettre ce qu'il prétend résumer, le dernier test ci-dessous
+/// exige que les six transitions de §6 — celles qui portent les KPI — y
+/// figurent toutes.</para>
 /// </summary>
 public class GrapheDeNavigationTests
 {
@@ -46,16 +55,19 @@ public class GrapheDeNavigationTests
     /// déborderait sur la section d'après ramasserait n'importe quoi, et le
     /// contrôle se croirait satisfait par un document assez long.</para>
     /// </summary>
-    private static IEnumerable<string[]> Lignes(string document, string titre)
+    private static string Section(string document, string titre)
     {
         var debut = document.IndexOf(titre, StringComparison.Ordinal);
         Assert.True(debut >= 0, $"« {titre} » a disparu du document.");
 
         var suite = document[(debut + titre.Length)..];
         var fin = suite.IndexOf("\n#", StringComparison.Ordinal);
-        var section = fin < 0 ? suite : suite[..fin];
+        return fin < 0 ? suite : suite[..fin];
+    }
 
-        return section.Split('\n')
+    private static IEnumerable<string[]> Lignes(string document, string titre)
+    {
+        return Section(document, titre).Split('\n')
             .Where(l => l.TrimStart().StartsWith("| **E", StringComparison.Ordinal))
             .Select(l => l.Split('|'));
     }
@@ -68,9 +80,20 @@ public class GrapheDeNavigationTests
     /// « Mène vers »</b>, la troisième.
     /// </summary>
     internal static SortedSet<string> Destinations(string parcours) =>
-        [.. Lignes(parcours, TitreLiens)
+        [.. Sortants(parcours).Values.SelectMany(v => v)];
+
+    /// <summary>
+    /// Ce que chaque écran dit mener vers lui — <b>par écran</b>, pour
+    /// pouvoir répondre « E02 mène-t-il vers E12 ? » et pas seulement « E12
+    /// est-il une destination ? ».
+    /// </summary>
+    internal static Dictionary<string, SortedSet<string>> Sortants(string parcours) =>
+        Lignes(parcours, TitreLiens)
             .Where(cellules => cellules.Length > 3)
-            .SelectMany(cellules => Regex.Matches(cellules[3], @"E\d\d").Select(m => m.Value))];
+            .ToDictionary(
+                cellules => Regex.Match(cellules[1], @"E\d\d").Value,
+                cellules => new SortedSet<string>(
+                    Regex.Matches(cellules[3], @"E\d\d").Select(m => m.Value)));
 
     /// <summary>Les écrans que le plan situe, avec la phase qu'il leur donne.</summary>
     internal static Dictionary<string, int> Inscrits(string phasing) =>
@@ -146,6 +169,36 @@ public class GrapheDeNavigationTests
 
         Assert.True(desaccords.Count == 0,
             "Le plan et les fiches se contredisent — " + string.Join(" ; ", desaccords) + ".");
+    }
+
+    [Fact]
+    public void Les_transitions_qui_portent_les_KPI_sont_dans_la_colonne_qui_fait_foi()
+    {
+        // Un résumé a le droit d'omettre — c'est ce qui en fait un résumé.
+        // Il n'a pas le droit d'omettre ce qu'il annonce comme essentiel :
+        // §6 nomme six transitions et dit qu'elles « portent l'essentiel des
+        // KPI de §22.1 ». Une seule absente de « Mène vers » sortirait du
+        // champ du garde sans que rien ne le signale.
+        var parcours = Lire("ecrans", "PARCOURS-ET-LIENS.md");
+        var sortants = Sortants(parcours);
+
+        var surveillees = Regex.Matches(
+                Section(parcours, "## 6. Chemins à surveiller"), @"(E\d\d) → (E\d\d)")
+            .Select(m => (De: m.Groups[1].Value, Vers: m.Groups[2].Value))
+            .ToList();
+
+        Assert.Equal(6, surveillees.Count);
+
+        var absentes = surveillees
+            .Where(t => !sortants.TryGetValue(t.De, out var vers) || !vers.Contains(t.Vers))
+            .Select(t => $"{t.De} → {t.Vers}")
+            .ToList();
+
+        Assert.True(absentes.Count == 0,
+            "§6 surveille des transitions que la colonne « Mène vers » ne porte pas : "
+            + string.Join(", ", absentes)
+            + ". Le résumé omet ce qu'il annonce comme essentiel, et le garde "
+            + "de navigation ne les voit donc pas.");
     }
 
     // ------------------------------------------------------------ les témoins
