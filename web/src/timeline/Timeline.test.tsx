@@ -52,7 +52,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
     // Un axe vierge se lit comme une panne. « Racontez votre première
     // console » dit qu'il n'y a rien À CAUSE de l'histoire, pas à cause de
     // l'écran.
-    render(<Timeline entrees={[]} sansDate={[]} avertissements={[]} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} />);
+    render(<Timeline entrees={[]} sansDate={[]} avertissements={[]} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} />);
 
     expect(screen.getByText(/Racontez votre première console/)).toBeInTheDocument();
     expect(axe()).toHaveAttribute("data-entrees", "0");
@@ -70,7 +70,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -89,7 +89,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -108,7 +108,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -151,7 +151,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -178,7 +178,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -195,7 +195,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         entrees={[entree([moment("a", "Seul", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -213,7 +213,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         entrees={[]}
         sansDate={[moment("x", "Je ne sais plus", { kind: "Unknown" })]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -227,7 +227,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         entrees={[entree([moment("a", "Daté", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -242,7 +242,7 @@ describe("Timeline — un écran de lecture, pas un tableau de bord", () => {
         entrees={[entree([moment("a", "Daté", { kind: "Year", year: 1995 })], "1995-01-01", "1995-12-31")]}
         sansDate={[moment("x", "Sans date", { kind: "Unknown" })]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -273,7 +273,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -298,7 +298,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -322,7 +322,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -339,7 +339,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -359,7 +359,7 @@ describe("Timeline — un moment dit CE QU'IL EST (audit, item 26)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -400,7 +400,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -424,7 +424,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -450,7 +450,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -470,7 +470,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         entrees={[entree(troisMoments(unSouvenir("L'été 1997")), "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -491,7 +491,7 @@ describe("Timeline — le souvenir atteint l'axe (§9.2)", () => {
         ]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -507,7 +507,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
     // déclarait pas le champ, donc personne ne les voyait jamais. Un calcul
     // juste et invisible ne signale rien.
     const { entrees, avertissements } = incoherence();
-    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} />);
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} />);
 
     const porteur = screen.getAllByTestId("moment-titre")[0].closest("li")!;
     expect(within(porteur).getByTestId("avertissement")).toBeInTheDocument();
@@ -518,7 +518,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
     // Le message de l'API dit « StartedGame » — c'est un diagnostic, pas une
     // phrase à lire.
     const { entrees, avertissements } = incoherence();
-    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} />);
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} />);
 
     expect(avertissement()).toHaveTextContent("Joué");
     expect(avertissement()!.textContent).not.toMatch(/StartedGame|CompletedGame/);
@@ -529,7 +529,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
     // masquer reviendrait à prétendre connaître le souvenir mieux que son
     // auteur.
     const { entrees, avertissements } = incoherence();
-    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} />);
+    render(<Timeline entrees={entrees} sansDate={[]} avertissements={avertissements} ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}} />);
 
     expect(screen.getAllByTestId("moment-titre")).toHaveLength(2);
     expect(screen.getByText("1990")).toBeInTheDocument();
@@ -543,7 +543,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
                          "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -559,7 +559,7 @@ describe("Timeline — les avertissements atteignent quelqu'un (§5.4)", () => {
                          "1995-01-01", "1995-12-31")]}
         sansDate={[]}
         avertissements={[{ expectedEarlierId: "ailleurs", expectedLaterId: "introuvable" }]}
-        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}}
+        ouvrirFiche={() => {}} anneeCourante={2026} completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -589,7 +589,7 @@ describe("Timeline — les trous sont des invitations (E03)", () => {
         avertissements={[]}
         ouvrirFiche={() => {}}
         anneeCourante={2019}
-        completer={() => {}}
+        completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -606,7 +606,7 @@ describe("Timeline — les trous sont des invitations (E03)", () => {
         avertissements={[]}
         ouvrirFiche={() => {}}
         anneeCourante={2026}
-        completer={() => {}}
+        completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -629,7 +629,7 @@ describe("Timeline — les trous sont des invitations (E03)", () => {
         avertissements={[]}
         ouvrirFiche={() => {}}
         anneeCourante={2019}
-        completer={() => {}}
+        completer={() => {}} corriger={() => {}}
       />,
     );
 
@@ -649,7 +649,7 @@ describe("Timeline — les trous sont des invitations (E03)", () => {
         avertissements={[]}
         ouvrirFiche={() => {}}
         anneeCourante={2023}
-        completer={completer}
+        completer={completer} corriger={() => {}}
       />,
     );
 

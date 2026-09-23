@@ -35,10 +35,21 @@ export type NomIcone =
   // Ce qu'il a laissé
   | "sans-plus"
   | "adore"
-  | "prefere";
+  | "prefere"
+  // Ce qu'on peut en faire — la seule icône d'ACTION du jeu de formes, et
+  // elle est toujours portée par un bouton qui dit son nom : §10 interdit
+  // qu'une information tienne à la seule icône.
+  | "corriger";
 
 /** Le tracé de chaque icône, sur la grille de 24. */
 const TRACES: Record<NomIcone, React.ReactElement> = {
+  // Le crayon d'E03 : « ✎ sur un moment → E07 en mode édition ».
+  corriger: (
+    <>
+      <path d="M4 20h4l10-10-4-4L4 16v4Z" />
+      <path d="M14.5 5.5l4 4" />
+    </>
+  ),
   // La manette : le geste même.
   joue: (
     <>

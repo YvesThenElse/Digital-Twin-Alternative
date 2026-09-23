@@ -140,6 +140,14 @@
         }
       }
     },
+    "POST /moments/{id}/date": {
+      "": {
+        "lit": [],
+        "ignore": {
+          "eventId": "l'identifiant du moment qui remplace ; l'écran relit l'axe entier après une correction, et y retrouve le moment par sa place, pas par son identifiant"
+        }
+      }
+    },
     "POST /memories": {
       "": {
         "lit": [],

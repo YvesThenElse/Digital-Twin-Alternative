@@ -1345,3 +1345,120 @@ figure[data-testid="bande-epoque"] figcaption {
 .trou button:hover {
   color: var(--ink);
 }
+
+/* --- E07, le panneau de correction --------------------------------------- */
+
+/*
+ * « Panneau, jamais page. » Il se superpose à l'axe, qui reste monté
+ * derrière : la position de lecture survit à la correction, et c'est
+ * justement en relisant sa timeline qu'on corrige une date.
+ *
+ * Mobile : feuille remontante, pleine largeur. Desktop : panneau latéral de
+ * 420 px, « le contexte reste lisible à côté ».
+ */
+.panneau {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  max-block-size: 70vh;
+  overflow-y: auto;
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--e4);
+  padding: var(--e4);
+  border-start-start-radius: var(--r2);
+  border-start-end-radius: var(--r2);
+  border-block-start: 1px solid var(--line);
+  background: var(--surface-2);
+  box-shadow: var(--ombre-1);
+}
+
+@media (min-width: 1024px) {
+  .panneau {
+    inset-block: 0;
+    inset-inline-start: auto;
+    inline-size: 420px;
+    max-block-size: none;
+    border-radius: 0;
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--line);
+  }
+}
+
+.panneau-tete {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--e3);
+}
+
+.panneau-titre {
+  font: var(--title);
+  color: var(--ink);
+  margin: 0;
+}
+
+.panneau-quand {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e3);
+}
+
+.panneau-quand legend {
+  font: var(--micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 0;
+}
+
+.panneau-annees {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e3);
+}
+
+/*
+ * « L'année, en grand. » C'est la réponse la plus fréquente et la plus
+ * honnête : elle occupe le premier plan, avec une cible large.
+ */
+.panneau-champ {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  font: var(--meta);
+  color: var(--ink-2);
+}
+
+.panneau-champ input {
+  font: var(--display-2);
+  font-variant-numeric: tabular-nums;
+  inline-size: 7ch;
+  text-align: center;
+}
+
+/* Les deux échappatoires, au MÊME niveau que l'année — les reléguer
+   induirait une fausse précision, ce que §7.4 interdit. */
+.panneau-echappatoire {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  min-block-size: var(--cible);
+  font: var(--body);
+  color: var(--ink);
+}
+
+/* Le crayon d'E03 : une cible, pas un ornement. */
+.moment-corriger {
+  padding: var(--e1);
+  color: var(--ink-3);
+}
+
+.moment-corriger:hover {
+  color: var(--ink);
+}

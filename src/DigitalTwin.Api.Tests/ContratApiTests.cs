@@ -314,6 +314,23 @@ public class ContratApiTests(PostgresFixture bdd)
             userId = user, targetKind = "work", targetId = oeuvre, text = "Une autre.",
         });
         Confronter("POST /memories", await note.Content.ReadFromJsonAsync<JsonElement>());
+
+        // La correction de date (E07) : le premier geste du produit qui
+        // chaîne un événement sur un autre.
+        await using (var db = bdd.CreerContexte())
+        {
+            await new EventStore(db).AppendAsync(
+                new DigitalTwin.Domain.Player.PlayerEvent(
+                    $"evt_ctr_{user}"[..24], user, PlayerEventType.StartedGame,
+                    new DigitalTwin.Domain.Player.EventTarget("work", "wrk_contrat_date"),
+                    new DigitalTwin.Domain.Temporal.Year(1995),
+                    new DateTime(2026, 1, 15, 12, 0, 0, DateTimeKind.Utc)));
+        }
+        var correction = await client.PostAsJsonAsync(
+            $"/moments/{$"evt_ctr_{user}"[..24]}/date",
+            new { userId = user, period = new { kind = "year", year = 1996 } });
+        Confronter("POST /moments/{id}/date",
+            await correction.Content.ReadFromJsonAsync<JsonElement>());
     }
 
     [Fact]
@@ -344,6 +361,7 @@ public class ContratApiTests(PostgresFixture bdd)
             ("POST /declarations", "\"/declarations\""),
             ("POST /declarations/retract", "\"/declarations/retract\""),
             ("POST /memories", "\"/memories\""),
+            ("POST /moments/{id}/date", "/date`"),
         };
 
         var contrat = Contrat();

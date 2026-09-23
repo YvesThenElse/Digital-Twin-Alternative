@@ -170,7 +170,7 @@ du périmètre n'ont jamais été livrées.
 > sur sept), et les avertissements causals de §5.4. E07 est la porte des
 > trois. Il est découpé en trois items parce qu'il se livre par morceaux.
 
-- [ ] **S6 — E07 ouvre en panneau et corrige la date.** (E07 · §5.3) « Panneau,
+- [x] **S6 — E07 ouvre en panneau et corrige la date.** (E07 · §5.3) « Panneau,
   jamais page : naviguer pour dater un souvenir puis revenir coûte deux
   transitions et fait perdre la position. » Et « la correction est banale :
   aucun avertissement ni confirmation ». *Acceptation : depuis l'axe, un
@@ -226,6 +226,14 @@ question.
 ## Ce que le chemin a fait apparaître
 
 Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
+
+- **Revenir de la fiche E05 REPLIE l'épisode.** E05 est une page : l'axe est
+  démonté puis remonté, et l'état « déplié » part avec lui. E03 demande
+  pourtant « → E05 en **conservant la position** ». Le parcours le
+  **constate** au lieu de le masquer — une assertion qui échouera le jour où
+  ce sera corrigé — et paie un geste pour redéplier. La correction demande de
+  sortir le repliage de l'entrée, là où il survivra au remontage
+  (apprentissage 73) ; elle n'appartenait pas à S6.
 
 - **E02 promet E05 et ne l'ouvre par aucun geste.** Ses « Relations » listent
   « → E05 (détail d'un jeu, en conservant la position) », et son tableau
@@ -312,6 +320,30 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   Reprendre coûte **un** geste au lieu de quatre ; l'ignorer laisse les trois
   temps entiers. Ce qui est laissé : la redirection annoncée en tête de
   fiche, qui attend S5.
+
+- **S6** — E07 s'ouvre en **panneau** depuis le crayon d'un moment, et l'axe
+  reste à l'écran derrière : « naviguer pour dater un souvenir puis revenir
+  coûte deux transitions et fait perdre la position ». Le panneau montre
+  **trois choix** — l'année d'abord, « plutôt une période » et « je ne sais
+  plus » au même niveau —, et il ouvre sur la granularité **enregistrée** :
+  une période rouvre sur deux champs, sans quoi sa fin partirait au premier
+  enregistrement.
+
+  `POST /moments/{id}/date` **chaîne** un nouvel événement et marque
+  l'ancien (§5.3) : rien n'est réécrit, le lot est conservé — c'est lui qui
+  fait l'épisode —, et un moment déjà remplacé ne se corrige plus. La règle
+  « une seule fois » était **écrite au-dessus de `MarkSupersededAsync` et
+  appliquée nulle part** ; elle l'est maintenant.
+
+  ⚠️ **§5.4 a enfin un producteur.** Les avertissements causals étaient
+  calculés, rendus, affichés — et aucun geste ne pouvait en déclencher un,
+  la sélection massive émettant toujours le commencement avec l'achèvement.
+  Dater un achèvement avant son commencement le fait apparaître, et le
+  parcours de bout en bout le joue, témoin compris : aucun avertissement
+  avant la correction.
+
+  `PHASING.md` §6 et la fiche E07 portent l'amendement : le premier tiers est
+  avancé, le repli de précision et la correction d'état restent en Phase 3.
 
 - **S5** — chaque décennie vide de l'axe porte son invitation, à sa place
   chronologique, et elle **nomme ses années**. Trois bornes : rien avant la

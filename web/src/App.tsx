@@ -5,6 +5,7 @@ import { EtatDuService, type EtatSante } from "./EtatDuService";
 import { t } from "./i18n/t";
 import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
+import { PanneauMoment } from "./moment/PanneauMoment";
 import { FicheJeu, type CibleFiche, type FicheOeuvre } from "./oeuvre/FicheJeu";
 import { SyntheseProfil, type SyntheseDuProfil } from "./profil/SyntheseProfil";
 import { RepriseProposee } from "./reprise/RepriseProposee";
@@ -167,6 +168,16 @@ export function App() {
    * une œuvre curée.
    */
   const [ficheReferentiel, setFicheReferentiel] = useState<FicheOeuvre | null>(null);
+
+  /**
+   * Le moment ouvert dans le panneau de correction (E07), ou `null`.
+   *
+   * <b>Un panneau, pas une étape.</b> E07 : « naviguer vers une page pour
+   * dater un souvenir puis revenir coûte deux transitions et fait perdre la
+   * position dans la timeline ». Il se superpose donc à l'axe, qui reste
+   * monté et à sa place de défilement.
+   */
+  const [momentCorrige, setMomentCorrige] = useState<MomentTimeline | null>(null);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -462,6 +473,20 @@ export function App() {
     setEtape("machine");
   }
 
+  /**
+   * Corrige la date d'un moment — <b>sans quitter l'axe</b> (E07 · §5.3).
+   *
+   * Le journal est en ajout seul : l'API chaîne un nouvel événement et
+   * marque l'ancien. L'écran n'a donc rien à réconcilier, il relit — et
+   * c'est ce qui fait apparaître, le cas échéant, l'avertissement causal de
+   * §5.4 que plus aucun geste du produit ne pouvait déclencher.
+   */
+  async function corrigerLaDate(moment: MomentTimeline, periode: PeriodeChoisie) {
+    await client.corrigerDate(UTILISATEUR, moment.id, periode);
+    setMomentCorrige(null);
+    await relireAxe();
+  }
+
   async function ouvrirTimeline() {
     // Les deux ENSEMBLE, et l'étape ne change qu'après. L'en-tête arrivant
     // après l'axe ferait sauter l'écran au moment précis où le joueur
@@ -611,7 +636,21 @@ export function App() {
             // du jour où on les lance.
             anneeCourante={new Date().getFullYear()}
             completer={completerLaPeriode}
+            corriger={setMomentCorrige}
           />
+
+          {/* Superposé, jamais à la place : l'axe reste monté derrière, donc
+              la position de lecture survit à la correction. */}
+          {momentCorrige !== null ? (
+            <PanneauMoment
+              moment={momentCorrige}
+              anneeCourante={new Date().getFullYear()}
+              enregistrer={(periode) => {
+                void essayer(() => corrigerLaDate(momentCorrige, periode));
+              }}
+              fermer={() => setMomentCorrige(null)}
+            />
+          ) : null}
         </>
       ) : null}
 

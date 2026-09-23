@@ -952,6 +952,64 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await toucher(page.getByRole("button", { name: /Revenir/ }).click());
   await expect(page.getByTestId("axe")).toBeVisible();
 
+  // ⚠️ **Revenir de la fiche REPLIE l'épisode.** E05 est une page, et l'axe
+  // est démonté puis remonté : l'état « déplié » part avec lui. E03 demande
+  // pourtant « → E05 en CONSERVANT la position ». On le CONSTATE ici plutôt
+  // que de le masquer — le jour où ce sera corrigé, cette assertion échouera
+  // et le contournement d'en dessous s'en ira avec elle. Inscrit dans
+  // TODO-ECRANS.md.
+  await expect(page.getByTestId("moment-titre"),
+    "l'épisode est resté déplié : le défaut est corrigé, retirez ce bloc")
+    .toHaveCount(0);
+  await toucher(page.getByRole("button", { name: /Déplier/ }).click());
+  await expect(page.getByTestId("moment-titre")).toHaveCount(MOMENTS_ATTENDUS);
+
+  // --- 7 bis. corriger une date, et voir naître l'avertissement (E07) ----
+  //
+  // ⚠️ **Le producteur qui manquait.** §5.4 était calculé par le domaine,
+  // rendu par l'API, affiché par l'axe — et aucun geste du produit ne pouvait
+  // en déclencher un seul : la sélection massive émet toujours le
+  // commencement avec l'achèvement, à la même date.
+  //
+  // Le jeu affiné porte un « Fini ». On le date AVANT son propre
+  // commencement : c'est possible, et ce doit être signalé.
+  await expect(page.getByTestId("avertissement"),
+    "un avertissement existe AVANT toute correction : le test ne prouverait rien")
+    .toHaveCount(0);
+
+  const ligneFinie = page.getByRole("img", { name: "Fini" }).locator("xpath=ancestor::li[1]");
+  await toucher(ligneFinie.getByTestId("moment-corriger").click());
+
+  // **L'axe RESTE à l'écran** : « panneau, jamais page ». Naviguer pour dater
+  // un souvenir puis revenir coûte deux transitions et fait perdre la
+  // position — et c'est en relisant sa timeline qu'on corrige.
+  const panneau = page.getByTestId("panneau-moment");
+  await expect(panneau).toBeVisible();
+  await expect(page.getByTestId("axe")).toBeVisible();
+
+  // Il s'ouvre sur la granularité enregistrée : la période déclarée est un
+  // intervalle, donc DEUX champs.
+  await expect(panneau.getByRole("spinbutton", { name: /^Année$/ })).toHaveValue(String(DEBUT));
+  await expect(panneau.getByRole("spinbutton", { name: /Jusqu/ })).toHaveValue(String(FIN));
+
+  // Une année antérieure au commencement du même jeu.
+  await toucher(panneau.getByRole("radio", { name: /ne sais plus/i }).click());
+  await toucher(panneau.getByRole("radio", { name: /plutôt une période/i }).click());
+  const champAnnee = panneau.getByRole("spinbutton", { name: /^Année$/ });
+  await champAnnee.fill(String(DEBUT - 5));
+  await panneau.getByRole("spinbutton", { name: /Jusqu/ }).fill(String(DEBUT - 5));
+  await toucher(panneau.getByRole("button", { name: /Enregistrer/ }).click());
+
+  await expect(panneau).toHaveCount(0);
+
+  // **L'avertissement doux de §5.4 apparaît.** Il informe, il ne bloque
+  // rien, et le moment reste affiché tel qu'il a été déclaré.
+  await expect(page.getByTestId("avertissement").first()).toBeVisible();
+
+  // Et la date corrigée est bien celle qu'on a donnée : la correction chaîne
+  // un nouvel événement, elle ne réécrit pas l'ancien.
+  await expect(page.getByText(`${DEBUT - 5}`).first()).toBeVisible();
+
   // --- 8. les trous sont des invitations (E03) ---------------------------
   //
   // « Une décennie vide n'est pas un défaut d'affichage : c'est l'endroit
@@ -1036,7 +1094,15 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // console. C'est la RELANCE d'E03 — le mécanisme le moins cher du produit
   // —, et elle coûte deux gestes qu'il vaut mieux voir dans le budget que
   // découvrir en session.
-  const budget = TITRES_A_COCHER + 30;
+  // Cinq gestes de plus : ouvrir le panneau de correction, ses deux
+  // échappatoires — « je ne sais plus » puis « plutôt une période », pour
+  // éprouver que la section se referme et se rouvre —, et enregistrer. C'est
+  // de la CORRECTION, pas de la saisie ; le budget de §22.3 mesure l'effort
+  // de reconstruction, mais un geste reste un geste.
+  // Un geste de plus : redéplier l'épisode au retour de la fiche. Il est le
+  // PRIX d'un défaut connu, pas d'une fonctionnalité — et le laisser dans le
+  // budget est ce qui le rendra visible quand il disparaîtra.
+  const budget = TITRES_A_COCHER + 35;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

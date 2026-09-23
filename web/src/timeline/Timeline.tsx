@@ -31,6 +31,7 @@ export function Timeline({
   ouvrirFiche,
   anneeCourante,
   completer,
+  corriger,
 }: {
   entrees: EntreeTimeline[];
   sansDate: MomentTimeline[];
@@ -54,6 +55,14 @@ export function Timeline({
    * naturel du produit, et il ne coûte aucune notification ».
    */
   completer: (trou: Trou) => void;
+  /**
+   * « ✎ sur un moment → E07 en mode édition » (E03, actions).
+   *
+   * Distinct du titre, qui ouvre la fiche du JEU : la fiche parle de l'œuvre,
+   * le panneau corrige le moment. Les confondre ferait ouvrir une
+   * encyclopédie quand on voulait changer une date.
+   */
+  corriger: (moment: MomentTimeline) => void;
   /**
    * Les incohérences que le domaine a constatées (§5.4).
    *
@@ -98,6 +107,7 @@ export function Timeline({
               entree={element.entree}
               avertissements={parMoment}
               ouvrirFiche={ouvrirFiche}
+              corriger={corriger}
             />
           ) : (
             <li
@@ -200,10 +210,11 @@ function SouvenirDuMoment({ souvenir }: { souvenir: SouvenirTimeline }) {
   );
 }
 
-function Entree({ entree, avertissements, ouvrirFiche }: {
+function Entree({ entree, avertissements, ouvrirFiche, corriger }: {
   entree: EntreeTimeline;
   avertissements: Map<string, string>;
   ouvrirFiche: (moment: MomentTimeline) => void;
+  corriger: (moment: MomentTimeline) => void;
 }) {
   const [deplie, setDeplie] = useState(false);
 
@@ -265,6 +276,18 @@ function Entree({ entree, avertissements, ouvrirFiche }: {
               <span data-forme={forme(moment.occurredAt)}>
                 {libelle(moment.occurredAt)}
               </span>
+              {/* Le crayon d'E03. Il porte son NOM : une icône seule
+                  laisserait l'information à la forme, ce que §10 interdit —
+                  et l'icône est muette pour ne pas la redire. */}
+              <button
+                type="button"
+                className="moment-corriger"
+                data-testid="moment-corriger"
+                aria-label={t("timeline.corriger", { titre: moment.targetLabel })}
+                onClick={() => corriger(moment)}
+              >
+                <Icone nom="corriger" muette />
+              </button>
               {/* UNE fois par cible, pas une fois par moment. Le souvenir est
                   attaché au JEU (MODELE §5) : un titre affiné en porte trois,
                   et l'API rend le même sur les trois. Les afficher tous ferait

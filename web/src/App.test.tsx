@@ -28,6 +28,7 @@ const faux = vi.hoisted(() => ({
   timeline: vi.fn(),
   synthese: vi.fn(),
   ficheOeuvre: vi.fn(),
+  corrigerDate: vi.fn(),
 }));
 
 vi.mock("./api/client", () => ({ client: faux }));
@@ -79,6 +80,7 @@ beforeEach(() => {
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
   faux.synthese.mockResolvedValue({ moments: 0, figures: null, opening: null });
+  faux.corrigerDate.mockResolvedValue(undefined);
   faux.ficheOeuvre.mockResolvedValue({
     id: "w1", title: "Super Mario World", coverUrl: null,
     editions: [{ platformId: "plt_snes", platformName: "Super Nintendo",
@@ -433,6 +435,79 @@ describe("App — E05, la fiche de jeu s'ouvre depuis l'axe", () => {
 
     expect(screen.getByTestId("axe")).toBeInTheDocument();
     expect(screen.queryByTestId("fiche")).toBeNull();
+  });
+});
+
+describe("App — E07, corriger une date sans quitter l'axe", () => {
+  const AXE = {
+    entries: [
+      { isEpisode: false, interval: { start: "1995-01-01", end: "1995-12-31" },
+        moments: [{ id: "m1", type: "CompletedGame", targetKind: "work", targetId: "w1",
+          targetLabel: "Super Mario World",
+          occurredAt: { kind: "Year", year: 1995 }, platformId: "plt_snes",
+          memory: null }] },
+    ],
+    undated: [],
+    warnings: [],
+  };
+
+  async function jusquAuPanneau(utilisateur: ReturnType<typeof userEvent.setup>) {
+    faux.timeline.mockResolvedValue(AXE);
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    await screen.findByTestId("axe");
+    await utilisateur.click(screen.getByRole("button", { name: /Corriger ce moment/ }));
+    await screen.findByTestId("panneau-moment");
+  }
+
+  it("ouvre un PANNEAU : l'axe reste à l'écran", async () => {
+    // E07 : « panneau, jamais page ». Naviguer pour dater un souvenir puis
+    // revenir coûte deux transitions et fait perdre la position dans la
+    // timeline — et c'est justement en la relisant qu'on corrige.
+    const utilisateur = userEvent.setup();
+    await jusquAuPanneau(utilisateur);
+
+    expect(screen.getByTestId("axe")).toBeInTheDocument();
+    expect(screen.getByTestId("panneau-moment")).toHaveTextContent("Super Mario World");
+  });
+
+  it("corrige la date, puis referme et relit l'axe", async () => {
+    const utilisateur = userEvent.setup();
+    await jusquAuPanneau(utilisateur);
+
+    const champ = screen.getByRole("spinbutton", { name: /^Année$/ });
+    await utilisateur.clear(champ);
+    await utilisateur.type(champ, "1998");
+    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer/ }));
+
+    expect(faux.corrigerDate).toHaveBeenCalledWith(
+      expect.any(String), "m1", { kind: "year", year: 1998 });
+    // Relu, parce que le journal est en ajout seul : l'écran n'a rien à
+    // réconcilier, et c'est la relecture qui fait apparaître l'avertissement
+    // causal quand la correction en produit un.
+    await waitFor(() => expect(faux.timeline).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(screen.queryByTestId("panneau-moment")).toBeNull());
+  });
+
+  it("se ferme sans rien corriger", async () => {
+    const utilisateur = userEvent.setup();
+    await jusquAuPanneau(utilisateur);
+
+    await utilisateur.click(screen.getByRole("button", { name: /Fermer sans corriger/ }));
+
+    expect(screen.queryByTestId("panneau-moment")).toBeNull();
+    expect(faux.corrigerDate).not.toHaveBeenCalled();
+    expect(screen.getByTestId("axe")).toBeInTheDocument();
+  });
+
+  it("dit ce qui a échoué quand la correction ne passe pas", async () => {
+    const utilisateur = userEvent.setup();
+    faux.corrigerDate.mockRejectedValue(new Error("réseau"));
+    await jusquAuPanneau(utilisateur);
+
+    await utilisateur.click(screen.getByRole("button", { name: /Enregistrer/ }));
+
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
   });
 });
 

@@ -216,6 +216,7 @@ export const MESSAGES = {
   "icone.sans-plus": "Sans plus",
   "icone.adore": "J'ai adoré",
   "icone.prefere": "Mon préféré",
+  "icone.corriger": "Corriger",
   "timeline.titre": "Ma timeline",
   "timeline.invitation": "Racontez votre première console.",
   "timeline.deplier": "Déplier : {n} jeux déclarés ensemble",
@@ -277,6 +278,26 @@ export const MESSAGES = {
   // une œuvre du catalogue dont les sorties manqueraient.
   "fiche.nonCanonique": "Titre saisi, hors du référentiel",
   "fiche.revenir": "Revenir à mon histoire",
+
+  // --- E07, le panneau de correction -------------------------------------
+  //
+  // « Le modèle a sept granularités, l'interface en montre trois. » Une
+  // première version de la fiche exposait les sept variantes en boutons
+  // radio plus trois niveaux de confiance : dix contrôles pour dater un
+  // souvenir. La confiance, elle, ne se demande pas — elle se dérive.
+  "moment.titre": "Corriger : {titre}",
+  "moment.quand": "Quand ?",
+  "moment.annee": "Année",
+  "moment.finPeriode": "Jusqu'à l'année",
+  "moment.plutotPeriode": "C'était plutôt une période",
+  // Offert au MÊME niveau que l'année : « je ne sais plus » est une réponse
+  // (principe 6), pas un renoncement.
+  "moment.inconnu": "Je ne sais plus",
+  "moment.enregistrer": "Enregistrer",
+  "moment.fermer": "Fermer sans corriger",
+  // Sur l'axe : le geste qui ouvre le panneau, distinct du titre — celui-ci
+  // ouvre la fiche du jeu (E05), celui-là corrige le moment (E07).
+  "timeline.corriger": "Corriger ce moment : {titre}",
 
   // --- les régions (§3.4) ------------------------------------------------
   // Le nom, jamais le code : « PAL » ne dit rien à un joueur.

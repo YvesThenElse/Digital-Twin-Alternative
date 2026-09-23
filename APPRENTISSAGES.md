@@ -2722,3 +2722,35 @@ silence.
 elle se trouve. `> li`, `children[0]`, `nth(2)` encodent une hypothèse — « ce
 conteneur n'aura jamais qu'une sorte d'enfant » — que rien n'écrit et que
 personne ne relit. Quand elle tombe, elle tombe partout à la fois.
+
+### 86 — Une règle écrite au-dessus d'une fonction n'est pas dans la fonction
+
+`MarkSupersededAsync` portait ce commentaire depuis la Phase 1 :
+
+> *« C'est la seule modification que la base accepte, et elle n'est acceptée
+> qu'une fois : un événement déjà remplacé ne se re-pointe pas. »*
+
+Le corps, lui, faisait une affectation et rien d'autre. **La phrase était
+fausse depuis le jour où elle a été écrite**, et personne ne l'avait lue
+comme une affirmation à vérifier — elle se lisait comme une description.
+
+Elle n'a pas été trouvée en relisant le fichier, mais en ayant besoin de la
+règle : corriger deux fois le même moment devait être refusé, et j'ai
+commencé par chercher *où* c'était fait. Nulle part.
+
+C'est [[77]] déplacé d'un cran. Là, une décision de **ne pas faire** se
+périmait faute de garde ; ici, une règle de **faire** n'avait jamais été
+appliquée, et son commentaire en tenait lieu. Les deux se ressemblent à la
+lecture : un texte assuré, au bon endroit, que rien ne confronte à
+l'exécution.
+
+Le symptôme est reconnaissable : un commentaire au présent de l'indicatif
+qui décrit un **comportement** plutôt qu'une intention — « n'est acceptée
+qu'une fois », « rejette », « garantit ». Une intention (« parce que… »,
+« sans quoi… ») ne prétend rien sur le code ; un comportement, si.
+
+**La règle** : devant un commentaire qui affirme ce que le code *fait*,
+chercher la ligne qui le fait. Si elle n'existe pas, deux issues et pas
+trois — l'écrire, ou retirer la phrase. La laisser coûte plus cher que de
+n'avoir rien écrit : elle fait passer pour gardé ce qui ne l'est pas, et
+c'est sur elle qu'on s'appuiera le jour où l'on en aura besoin.

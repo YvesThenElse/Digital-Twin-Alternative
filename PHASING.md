@@ -643,7 +643,17 @@ jamais été construit.** Ce plan le situe ici, et c'est ce plan qui fait foi
 après coup** — une date, un état, un souvenir — et corriger suppose un
 profil qui dure.
 
-Trois choses l'attendent, et aucune n'est un défaut de la Phase 1 :
+> **Amendement du 23 septembre 2026 : le premier tiers est avancé.** Le
+> panneau s'ouvre depuis l'axe et **corrige une date** — l'année, la période,
+> « je ne sais plus ». La raison de ne pas attendre est la première puce
+> ci-dessous : les avertissements causals n'avaient **aucun producteur**, et
+> une garde verte sans producteur est le défaut que ce dépôt trouve partout.
+> Elle en a un désormais, et le parcours de bout en bout le joue.
+>
+> Le repli de précision et la correction d'état restent ici, en Phase 3 : ils
+> servent un profil qui dure, et rien ne les rend urgents.
+
+Trois choses l'attendaient, et aucune n'est un défaut de la Phase 1 :
 
 - **Les avertissements causals de §5.4.** Le domaine les calcule, l'API les
   rend, l'axe les affiche — et **aucun geste du produit livré ne peut en
@@ -653,8 +663,11 @@ Trois choses l'attendent, et aucune n'est un défaut de la Phase 1 :
   `DeclarationsTests.Aucun_lot_de_selection_massive_ne_peut_produire_une_incoherence`
   le mesure sur les seize combinaisons que l'écran accepte, et porte son
   propre témoin : une contradiction forcée dans le même journal est bien
-  détectée. Il faudra E07 pour qu'une incohérence devienne seulement
-  possible.
+  détectée. Il fallait E07 pour qu'une incohérence devienne seulement
+  possible. **C'est fait le 23 septembre 2026** : corriger la date d'un
+  achèvement pour la placer avant son commencement produit l'avertissement,
+  et `CorrectionDeDateTests` comme le parcours de bout en bout le jouent.
+  §5.4 a enfin un producteur.
 - **Le repli de précision** — mois, date exacte, « vers », âge, période
   ouverte : voir le tableau des sept granularités ci-dessus.
 - **Changer d'avis après coup.** La sélection massive valide **une fois par

@@ -12,6 +12,7 @@ import type {
   SouvenirEcrit,
 } from "../selection/SelectionMassive";
 import type { FicheOeuvre } from "../oeuvre/FicheJeu";
+import type { PeriodeChoisie } from "../periode/periode";
 import type { SyntheseDuProfil } from "../profil/SyntheseProfil";
 import { valeurDeSortie, type ValeurTemporelle } from "../temporel/valeur";
 import type { EtatSante } from "../EtatDuService";
@@ -185,6 +186,17 @@ export const client = {
    */
   etatSelection: (userId: string, platformId: string) =>
     lire<EtatLigne[]>(`/selection/${userId}/${platformId}`),
+
+  /**
+   * Corrige la date d'un moment (E07 · §5.3).
+   *
+   * <b>Rien n'est réécrit</b> : l'API chaîne un nouvel événement et marque
+   * l'ancien. L'écran relit ensuite l'axe entier plutôt que de recoudre sa
+   * copie — c'est aussi ce qui fait apparaître l'avertissement causal quand
+   * la correction en produit un.
+   */
+  corrigerDate: (userId: string, eventId: string, periode: PeriodeChoisie) =>
+    ecrire<unknown>(`/moments/${eventId}/date`, { userId, period: periode }),
 
   /** Retire une déclaration : l'événement reste, marqué (§5.3). */
   retracter: (userId: string, platformId: string, workId: string) =>

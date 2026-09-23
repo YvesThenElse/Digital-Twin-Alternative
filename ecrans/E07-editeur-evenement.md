@@ -1,13 +1,26 @@
 # E07 — Éditeur de moment (date · état · souvenir)
 
-**Type** : **panneau superposé** — jamais une page · **Phase** : ~~1~~ **3** · **Route** : aucune (paramètre d'état, ex. `?moment=`)
+**Type** : **panneau superposé** — jamais une page · **Phase** : 3, **sauf la correction de date, livrée le 23 septembre 2026** · **Route** : aucune (paramètre d'état, ex. `?moment=`)
 
 > ⚠️ **Cette fiche s'est longtemps dite « Phase 1 », et la Phase 1 s'est
-> close sans elle.** [`PHASING.md`](../PHASING.md) §6 la situe en Phase 3 et
-> dit pourquoi : corriger après coup suppose un profil qui dure. Trois
-> capacités l'attendent, dont les **avertissements causals** de §5.4 —
-> calculés, rendus, affichés, et qu'aucun geste du produit livré ne peut
-> déclencher.
+> close sans elle.** [`PHASING.md`](../PHASING.md) §6 la situait en Phase 3 et
+> disait pourquoi : corriger après coup suppose un profil qui dure.
+>
+> **Le premier tiers est avancé**, sur décision du 23 septembre, parce qu'une
+> des trois capacités qui l'attendaient ne pouvait pas attendre : les
+> **avertissements causals** de §5.4 étaient calculés, rendus, affichés — et
+> aucun geste du produit ne pouvait en déclencher un seul. Une garde verte
+> sans producteur est exactement le défaut que l'audit a trouvé partout.
+>
+> | Ce que la fiche décrit | État |
+> |---|---|
+> | Le panneau, ouvert depuis l'axe sans le quitter | **livré** |
+> | **A** — l'année, « plutôt une période », « je ne sais plus » | **livré** |
+> | **B** — le repli de précision (mois, date exacte, « vers », âge) | à venir |
+> | **B bis** — achèvement, provenance, affect | à venir |
+> | **C** — le souvenir | à venir ; il se saisit aujourd'hui depuis E02 |
+> | **D** — l'avertissement doux, *dans* le panneau | l'axe le montre ; le panneau, pas encore |
+> | « Supprimer » | à venir ; la rétractation se fait depuis E02 et E05 |
 
 ## Objectif
 

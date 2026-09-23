@@ -1,5 +1,6 @@
 using DigitalTwin.Api.Selection;
 using DigitalTwin.Domain.Player;
+using DigitalTwin.Domain.Temporal;
 using Microsoft.EntityFrameworkCore;
 
 namespace DigitalTwin.Api.Persistence;
@@ -156,8 +157,64 @@ public sealed class EventStore(PlayerEventDbContext db)
             ?? throw new InvalidOperationException(
                 $"Événement introuvable : « {eventId} » pour « {userId} ».");
 
+        // La règle était ÉCRITE au-dessus et appliquée nulle part. Deux
+        // corrections concurrentes du même moment produiraient deux
+        // successeurs, et l'axe en montrerait deux là où le joueur n'en a
+        // qu'un.
+        if (ligne.SupersededByEventId is not null)
+        {
+            throw new InvalidOperationException(
+                $"Événement déjà remplacé : « {eventId} » pointe sur "
+                + $"« {ligne.SupersededByEventId} ».");
+        }
+
         ligne.SupersededByEventId = correctionEventId;
         await db.SaveChangesAsync(ct);
+    }
+
+    /// <summary>
+    /// Corrige la date d'un moment — <b>en chaînant, jamais en réécrivant</b>
+    /// (§5.3, E07).
+    ///
+    /// <para>Un nouvel événement reprend tout de l'ancien — type, cible,
+    /// plateforme et <b>lot</b> — et n'en change que la date. Le lot n'est
+    /// pas un détail : c'est lui qui fait l'épisode (§4.4), et le perdre
+    /// ferait sortir le moment corrigé de la bande où le joueur l'a
+    /// déclaré.</para>
+    ///
+    /// <para>Rend <c>null</c> quand le moment n'appartient pas à ce profil ou
+    /// qu'il est déjà remplacé — deux cas que l'appelant doit distinguer
+    /// d'une correction réussie, et qu'il ne peut pas deviner.</para>
+    /// </summary>
+    public async Task<string?> RescheduleAsync(
+        string userId, string eventId, TemporalValue quand, DateTime enregistreA,
+        CancellationToken ct = default)
+    {
+        var ancien = await db.PlayerEvents.AsNoTracking().SingleOrDefaultAsync(
+            e => e.UserId == userId && e.Id == eventId && e.SupersededByEventId == null, ct);
+        if (ancien is null)
+        {
+            return null;
+        }
+
+        // Un identifiant NEUF à chaque correction : une empreinte du contenu
+        // ferait collision avec elle-même si l'on revenait à la date de
+        // départ, et le journal perdrait une révision.
+        var nouveau = $"evt_cor_{Guid.NewGuid():N}"[..24];
+
+        await AppendAsync(
+            new PlayerEvent(
+                nouveau, userId, ancien.Type,
+                new EventTarget(ancien.TargetKind, ancien.TargetId),
+                quand, enregistreA)
+            {
+                BatchId = ancien.BatchId,
+                PlatformId = ancien.PlatformId,
+            },
+            ct);
+
+        await MarkSupersededAsync(userId, eventId, nouveau, ct);
+        return nouveau;
     }
 
     /// <summary>
