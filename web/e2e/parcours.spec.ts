@@ -820,6 +820,41 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   expect(Math.min(...decennies), "une décennie vide a disparu de la bande")
     .toBeGreaterThan(0);
 
+  // **La ligne du temps condensée a une HAUTEUR, et elle ne mène nulle
+  // part** (E04, bloc ⒞). Elle doit gagner sa place sur un écran dont la
+  // densité doit rester faible : ce qu'elle montre et que l'axe, juste en
+  // dessous, ne montre pas, c'est l'ÉTENDUE d'un seul regard. Un trait de
+  // 0 px portant ses bornes en attributs passerait tous les tests de
+  // composant et ne se verrait nulle part.
+  const etendue = page.getByTestId("etendue");
+  await expect(etendue).toBeVisible();
+  const ligne = await etendue.locator(".etendue-ligne").evaluate((n) => ({
+    hauteur: n.getBoundingClientRect().height,
+    largeur: n.getBoundingClientRect().width,
+  }));
+  expect(ligne.hauteur, "la ligne du temps n'a pas de hauteur visible")
+    .toBeGreaterThan(4);
+  expect(ligne.largeur, "la ligne du temps n'a pas de largeur")
+    .toBeGreaterThan(80);
+
+  // Elle ne mène nulle part tant qu'E03 et E04 sont le même écran : une
+  // entrée « voir la timeline » pointerait sur l'écran où l'on est déjà.
+  await expect(etendue.locator("button, a"), "la ligne du temps mène quelque part")
+    .toHaveCount(0);
+
+  // Et elle NE REDIT PAS l'axe : aucun titre, aucun moment détaillé — sinon
+  // elle dirait deux fois la même chose, juste au-dessus de l'original.
+  expect(await etendue.innerText(), "la ligne du temps recopie l'axe")
+    .toMatch(/^[^A-Za-z]*$/);
+
+  // Les bornes viennent du DOMAINE, et on les confronte à ce que le joueur a
+  // déclaré : toute sa saisie tient dans la période choisie, donc l'histoire
+  // commence et s'arrête la même année — une ligne dont les deux bornes
+  // coïncident, affichée une seule fois plutôt que « 1990 → 1990 ».
+  expect(await etendue.getAttribute("data-debut")).toBe(String(DEBUT));
+  expect(await etendue.getAttribute("data-fin")).toBe(String(DEBUT));
+  await expect(etendue.locator(".etendue-bornes span")).toHaveCount(1);
+
   // Et AUCUNE invitation à compléter : le portrait tient, donc l'état
   // « trop maigre » d'E04 n'a pas lieu d'être. Le témoin de cette absence
   // est côté composant, sur une synthèse sans chiffres.
@@ -1062,6 +1097,16 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Et la date corrigée est bien celle qu'on a donnée : la correction chaîne
   // un nouvel événement, elle ne réécrit pas l'ancien.
   await expect(page.getByText(`${DEBUT - 5}`).first()).toBeVisible();
+
+  // **Et la ligne du temps a BOUGÉ.** C'est ce qui la distingue d'une
+  // décoration : ses bornes sortent du domaine, donc corriger un moment vers
+  // 1985 recule le commencement de l'histoire. Une ligne dessinée une fois
+  // pour toutes aurait gardé 1990 sans que rien ne le dise.
+  const etendueApres = page.getByTestId("etendue");
+  await expect(etendueApres).toHaveAttribute("data-debut", String(DEBUT - 5));
+  await expect(etendueApres).toHaveAttribute("data-fin", String(DEBUT));
+  // Les deux bornes diffèrent désormais : la seconde année paraît.
+  await expect(etendueApres.locator(".etendue-bornes span")).toHaveCount(2);
 
   // --- 7 ter. le repli de précision (E07 repère B) -----------------------
   //

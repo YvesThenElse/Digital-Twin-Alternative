@@ -44,6 +44,17 @@ public sealed record OpeningView(int? Years, string? Platform, TemporalView Occu
 public sealed record ActivityView(int Decade, int Moments);
 
 /// <summary>
+/// Les deux bornes de l'histoire (E04, bloc ⒞).
+///
+/// <para><b>Elle ne suit PAS le seuil du portrait</b>, contrairement aux
+/// chiffres et à la densité. E04 le dit dans l'état « trop maigre » : « afficher
+/// la phrase et <b>l'amorce de timeline</b>, masquer les chiffres et les
+/// goûts. » Une statistique calculée sur cinq jeux ment ; deux dates déclarées
+/// restent vraies à trois moments comme à trois cents.</para>
+/// </summary>
+public sealed record SpanView(int FirstYear, int LastYear);
+
+/// <summary>
 /// Un préféré, <b>nommé</b> (E04, bloc ⒠ bis · §4.7).
 ///
 /// <para>« C'est la ligne la plus personnelle que le système sache produire
@@ -83,7 +94,8 @@ public sealed record FavouriteView(string PlatformName, string Title);
 public sealed record ProfileView(
     int Moments, int? BirthYear, FiguresView? Figures,
     IReadOnlyList<ActivityView>? Activity,
-    IReadOnlyList<FavouriteView> Favourites, OpeningView? Opening);
+    IReadOnlyList<FavouriteView> Favourites, OpeningView? Opening,
+    SpanView? Span);
 
 /// <summary>
 /// L'année de naissance, seule — <b>jamais publiée</b> (§12.3), et demandée
@@ -163,6 +175,12 @@ public static class ProfileEndpoints
                             ? machines.GetValueOrDefault(id)
                             : null,
                         TemporalEncoding.Voir(debut.OccurredAt))
+                    : null,
+                // Sans seuil : voir SpanView. `null` quand rien n'est daté —
+                // une ligne sans bornes n'a rien à montrer, et une ligne
+                // dessinée à zéro dirait que l'histoire tient en un point.
+                synthese.Span is { } etendue
+                    ? new SpanView(etendue.FirstYear, etendue.LastYear)
                     : null));
         });
 

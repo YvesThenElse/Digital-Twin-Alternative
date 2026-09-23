@@ -135,7 +135,7 @@ chemin a laissé.
   colonne qui fait foi, faute de quoi le résumé omet ce qu'il prétend
   résumer.*
 
-- [ ] **T8 — E04 porte sa timeline condensée.** (E04, bloc ⒞) **Décidé** :
+- [x] **T8 — E04 porte sa timeline condensée.** (E04, bloc ⒞) **Décidé** :
   construite, malgré la fusion E03 + E04 de la Phase 1.
 
   ⚠️ **Ce que la fusion lui coûte**, et qu'il faut regarder en face : son
@@ -155,6 +155,35 @@ chemin a laissé.
 ---
 
 ## Journal
+
+- **T8** — la ligne a gagné sa place en montrant ce que l'axe ne montre
+  pas : l'**étendue**, d'un seul regard. Deux bornes, calculées par le
+  domaine sur le même axe que la phrase, et **pas** jusqu'à aujourd'hui —
+  c'est la bande ⒟ qui porte le silence ; les faire courir toutes deux
+  jusqu'à 2026 les aurait fait dire la même chose.
+
+  **Le piège était dans le tri.** L'axe ordonne par point représentatif — le
+  milieu, pour une période — tandis que l'année montrée est celle qui a été
+  déclarée, soit le début. Prendre la première et la dernière entrée de
+  l'axe rend « 1990 → 1985 » sur un journal de deux lignes : une ligne à
+  l'envers. Ce sont donc un minimum et un maximum.
+
+  **Deux défauts trouvés en chemin, chacun par un garde différent.** Le
+  contrat d'API a refusé le champ `span` tant qu'il n'était pas inscrit —
+  c'est son travail, et il l'a fait avant tout test d'écran. Et le
+  navigateur a mesuré la ligne à **26 px de large sur desktop** : le
+  portrait y est une rangée souple, donc la figure se réduisait à ses deux
+  pastilles. Sur mobile, rien. Aucun test de composant ne pouvait le voir.
+
+  **Et un troisième, plus instructif** : neuf décors d'`App.test` ont
+  continué à passer en rendant une synthèse SANS `span`, arrivé `undefined`
+  à un écran qui le testait contre `null`. Le faux garde les NOMS du client,
+  pas la FORME de ce qu'il rend. Le mock de la synthèse est désormais typé,
+  et les neuf ont rougi à la compilation.
+
+  Assumé : une période ne compte que par son début, ici comme dans la bande.
+  La ligne sous-couvre donc un moment déclaré « 1985–2005 ». Une seconde
+  règle pour la borne haute aurait fait diverger les deux blocs.
 
 - **T7** — trois lignes dans le document, six dans le test, et un défaut
   trouvé en les écrivant : **`E02 → E12` manquait à la colonne qui fait

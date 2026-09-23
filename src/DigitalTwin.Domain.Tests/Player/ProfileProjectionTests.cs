@@ -164,6 +164,143 @@ public class ProfileProjectionTests
         Assert.Equal(int.Parse(ecrit.Groups[1].Value), ProfileSummary.PortraitThreshold);
     }
 
+    // ---------- l'étendue (bloc ⒞) ----------------------------------------
+
+    [Fact]
+    public void L_etendue_porte_les_deux_bornes_de_l_histoire()
+    {
+        var journal = new List<PlayerEvent>
+        {
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1991)),
+            E(PlayerEventType.StartedGame, "wrk_b", new Year(2004)),
+            E(PlayerEventType.CompletedGame, "wrk_c", new Year(2019)),
+        };
+
+        var etendue = Synthese(journal).Span;
+
+        Assert.NotNull(etendue);
+        Assert.Equal(1991, etendue.FirstYear);
+        Assert.Equal(2019, etendue.LastYear);
+    }
+
+    [Fact]
+    public void L_etendue_s_arrete_a_la_derniere_declaration_et_PAS_a_aujourd_hui()
+    {
+        // Le contraire de la bande de densité, qui court jusqu'à aujourd'hui
+        // pour montrer le silence. Ici c'est l'ÉTENDUE DE L'HISTOIRE : la
+        // faire courir jusqu'à 2026 annoncerait une histoire qui va
+        // jusqu'à aujourd'hui alors que rien n'y a été déclaré depuis 2004,
+        // et les deux blocs diraient la même chose.
+        var journal = new List<PlayerEvent>
+        {
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1991)),
+            E(PlayerEventType.StartedGame, "wrk_b", new Year(2004)),
+        };
+
+        var synthese = Synthese(journal);
+
+        Assert.Equal(2004, synthese.Span!.LastYear);
+        // Témoin : la bande, elle, va bien jusqu'à la décennie d'aujourd'hui.
+        Assert.Equal(2020, synthese.Activity[^1].Decade);
+    }
+
+    [Fact]
+    public void L_etendue_ne_compte_que_ce_qui_est_JOUE_comme_la_phrase()
+    {
+        // Invariant 5, la même raison que pour la phrase : une console
+        // achetée d'occasion en 1985 antidaterait l'histoire de quelqu'un
+        // qui n'y avait pas encore touché — et la ligne dirait 1985 sous une
+        // phrase qui dit 1991.
+        var journal = new List<PlayerEvent>
+        {
+            E(PlayerEventType.AcquiredItem, "wrk_vieux", new Year(1985)),
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1991)),
+            E(PlayerEventType.StartedGame, "wrk_b", new Year(2004)),
+        };
+
+        var synthese = Synthese(journal);
+
+        Assert.Equal(1991, synthese.Span!.FirstYear);
+        Assert.Equal(1991, ((Year)synthese.Opening!.OccurredAt).Value);
+    }
+
+    [Fact]
+    public void L_etendue_ne_s_inverse_pas_quand_une_periode_commence_avant_le_premier_de_l_axe()
+    {
+        // Le piège : l'axe trie par POINT REPRÉSENTATIF — le milieu, pour une
+        // période — tandis que l'année affichée est celle qui a été DÉCLARÉE,
+        // soit le début. Prendre la première et la dernière entrée de l'axe
+        // rendrait donc ici 1990 → 1985 : une ligne à l'envers.
+        //
+        // Et une période ne compte que par son DÉBUT, partout dans cette
+        // projection — « une période commence à son début ». La borne haute
+        // vaut donc 1990 et non 2005 : la ligne sous-couvre ce moment-là,
+        // exactement comme la bande de densité qui le range dans les
+        // années 80. Une seconde règle ici ferait diverger les deux blocs.
+        var journal = new List<PlayerEvent>
+        {
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1990)),
+            E(PlayerEventType.StartedGame, "wrk_b", new YearRange(1985, 2005)),
+        };
+
+        var etendue = Synthese(journal).Span;
+
+        Assert.NotNull(etendue);
+        Assert.True(etendue.FirstYear <= etendue.LastYear,
+            $"Ligne inversée : {etendue.FirstYear} → {etendue.LastYear}.");
+        Assert.Equal(1985, etendue.FirstYear);
+        Assert.Equal(1990, etendue.LastYear);
+    }
+
+    [Fact]
+    public void L_etendue_ne_commence_jamais_apres_la_phrase()
+    {
+        // La propriété qui tient les deux blocs ensemble, quel que soit le
+        // journal : l'en-tête ne peut pas dire « tout a commencé en 1990 »
+        // au-dessus d'une ligne qui part de 1995.
+        var journal = new List<PlayerEvent>
+        {
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1990)),
+            E(PlayerEventType.StartedGame, "wrk_b", new YearRange(1985, 2005)),
+            E(PlayerEventType.StartedGame, "wrk_c", new ApproximateYear(1994, 3)),
+        };
+
+        var synthese = Synthese(journal);
+        var dite = ((Year)synthese.Opening!.OccurredAt).Value;
+
+        Assert.True(synthese.Span!.FirstYear <= dite,
+            $"La ligne part de {synthese.Span.FirstYear}, la phrase dit {dite}.");
+    }
+
+    [Fact]
+    public void Sans_rien_sur_l_axe_il_n_y_a_pas_d_etendue()
+    {
+        // Comme la phrase : un moment sans date n'a pas de place sur l'axe
+        // (invariant 2), et une ligne temporelle sans bornes n'a rien à
+        // montrer. Elle est absente, pas dessinée à zéro.
+        var journal = new List<PlayerEvent>
+        {
+            E(PlayerEventType.StartedGame, "wrk_a", Unknown.Instance),
+        };
+
+        var synthese = Synthese(journal);
+
+        Assert.Null(synthese.Span);
+        Assert.Null(synthese.Opening);
+    }
+
+    [Fact]
+    public void Une_seule_annee_declaree_donne_une_etendue_des_deux_cotes()
+    {
+        // Pas de cas particulier : un point reste une ligne dont les deux
+        // bornes coïncident. L'écran décide quoi en faire ; le domaine ne
+        // rend pas `null` pour une histoire qui tient en une année.
+        var synthese = Synthese([E(PlayerEventType.StartedGame, "wrk_a", new Year(1998))]);
+
+        Assert.Equal(1998, synthese.Span!.FirstYear);
+        Assert.Equal(1998, synthese.Span.LastYear);
+    }
+
     private static string Lire(params string[] chemin)
     {
         var racine = new DirectoryInfo(AppContext.BaseDirectory);

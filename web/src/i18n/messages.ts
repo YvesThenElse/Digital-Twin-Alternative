@@ -276,6 +276,7 @@ export const MESSAGES = {
   "portrait.completer": "Ajouter des jeux à mon histoire",
   // E04, bloc ⒟ : « la visualisation qui fait dire *c'est vrai, j'ai peu
   // joué entre 2005 et 2010* ». Le nom dit une répartition, pas un total.
+  "portrait.etendue": "Votre histoire va de {debut} à {fin}.",
   "portrait.activite": "Vos périodes",
   "portrait.activiteTranche": "Années {decennie} : {n}",
   // E04, bloc ⒠ bis (§4.7). « La ligne la plus personnelle que le système

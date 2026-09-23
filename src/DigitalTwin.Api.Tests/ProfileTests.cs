@@ -331,6 +331,75 @@ public class ProfileTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task L_etendue_est_rendue_avec_ses_deux_bornes()
+    {
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var user = Neuf("etendue");
+        var (machine, _) = await UneMachine(client);
+
+        // Au-dessus du seuil du portrait, pour que ce test ne porte QUE sur
+        // les bornes : c'est le suivant qui dit que la ligne s'en affranchit.
+        var journal = Enumerable.Range(0, 10).Select(i => Ev(
+            $"evt_e{i}", user, PlayerEventType.StartedGame, $"wrk_e{i}",
+            new Year(2004), machine)).ToList();
+        journal.Add(Ev("evt_ea", user, PlayerEventType.StartedGame, "wrk_ea",
+            new Year(1991), machine));
+        journal.Add(Ev("evt_ez", user, PlayerEventType.CompletedGame, "wrk_e0",
+            new Year(2019), machine));
+        await Ecrire([.. journal]);
+
+        var etendue = (await client.GetFromJsonAsync<JsonElement>($"/profile/{user}"))
+            .GetProperty("span");
+
+        Assert.Equal(1991, etendue.GetProperty("firstYear").GetInt32());
+        Assert.Equal(2019, etendue.GetProperty("lastYear").GetInt32());
+    }
+
+    [Fact]
+    public async Task L_etendue_NE_SUIT_PAS_le_seuil_du_portrait()
+    {
+        // La fiche le dit mot pour mot dans l'état « trop maigre » : « afficher
+        // la phrase ET L'AMORCE DE TIMELINE, masquer les chiffres et les
+        // goûts ». La ligne n'est pas une statistique — elle porte deux dates
+        // déclarées, qui restent vraies à trois moments comme à trois cents.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var user = Neuf("maigre-etendue");
+        var (machine, _) = await UneMachine(client);
+
+        await Ecrire(
+            Ev("evt_m0", user, PlayerEventType.StartedGame, "wrk_m0", new Year(1998), machine),
+            Ev("evt_m1", user, PlayerEventType.StartedGame, "wrk_m1", new Year(2003), machine));
+
+        var vue = await client.GetFromJsonAsync<JsonElement>($"/profile/{user}");
+
+        // Le témoin qui donne son sens à l'assertion : on est bien sous le
+        // seuil, puisque les chiffres et la densité, eux, sont absents.
+        Assert.Equal(JsonValueKind.Null, vue.GetProperty("figures").ValueKind);
+        Assert.Equal(JsonValueKind.Null, vue.GetProperty("activity").ValueKind);
+
+        Assert.Equal(1998, vue.GetProperty("span").GetProperty("firstYear").GetInt32());
+        Assert.Equal(2003, vue.GetProperty("span").GetProperty("lastYear").GetInt32());
+    }
+
+    [Fact]
+    public async Task Sans_rien_de_date_il_n_y_a_pas_d_etendue()
+    {
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var user = Neuf("sans-date");
+        var (machine, _) = await UneMachine(client);
+
+        await Ecrire(Ev("evt_s0", user, PlayerEventType.StartedGame, "wrk_s0",
+            Unknown.Instance, machine));
+
+        var vue = await client.GetFromJsonAsync<JsonElement>($"/profile/{user}");
+
+        Assert.Equal(JsonValueKind.Null, vue.GetProperty("span").ValueKind);
+    }
+
+    [Fact]
     public async Task Un_evenement_retracte_ne_compte_plus()
     {
         // §5.3 : la révision est « conservée côté système sans être

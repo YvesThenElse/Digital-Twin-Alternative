@@ -1542,6 +1542,67 @@ figure[data-testid="bande-epoque"] figcaption {
 
 /* --- E04, les périodes d'activité (bloc ⒟) ------------------------------- */
 
+/* --- E04, la ligne du temps condensée (bloc ⒞) ---------------------------- */
+
+/*
+ * Elle montre l'ÉTENDUE — « 1991 → 2019 » d'un seul regard — là où l'axe,
+ * juste en dessous, déroule. C'est ce qui lui fait gagner sa place sur un
+ * écran dont la densité doit rester faible : elle ne redit pas l'axe, elle
+ * dit ce qu'il faudrait faire défiler pour voir.
+ *
+ * Et comme la bande d'activité, elle ne dit cela QUE si elle a une hauteur :
+ * une ligne de 0 px portant ses deux bornes en attributs passerait tous les
+ * tests de composant et ne se verrait nulle part.
+ */
+.etendue {
+  margin: var(--e6) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+  /* PLEINE LARGEUR, et ce n'est pas cosmétique. Sur desktop le portrait est
+     une rangée souple (`flex-wrap`) : sans cette ligne, la figure se réduit
+     à ses deux pastilles — 26 px mesurés dans le navigateur — et l'étendue
+     qu'elle existe pour montrer ne se lit plus. Aucun test de composant ne
+     pouvait le voir, et sur mobile le défaut n'apparaissait pas. */
+  inline-size: 100%;
+}
+
+.etendue-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Explicite, pour la même raison que la bande : un trait obtenu d'une
+     bordure dans un conteneur sans hauteur mesure zéro. */
+  block-size: 12px;
+  position: relative;
+}
+
+/* Le trait lui-même, derrière les deux pastilles. */
+.etendue-ligne::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  block-size: 2px;
+  background: var(--line);
+  border-radius: 1px;
+}
+
+.etendue-borne {
+  position: relative;
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 50%;
+  background: var(--ink-2);
+}
+
+.etendue-bornes {
+  display: flex;
+  justify-content: space-between;
+  font: var(--micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
 /*
  * « Densité de moments dans le temps, colorée par époque. » C'est le bloc le
  * plus immédiatement parlant de l'écran — et il ne parle QUE s'il a une

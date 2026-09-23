@@ -28,6 +28,7 @@ const DEBUT: SyntheseDuProfil = {
     { decade: 2010, moments: 5 },
   ],
   figures: { consoles: 4, gamesDeclared: 128, finished: 31, memoriesWritten: 7 },
+  span: { firstYear: 1991, lastYear: 2019 },
   opening: {
     years: 35,
     platform: "Game Boy",
@@ -131,7 +132,7 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
     // Un profil sans rien n'a pas un taux de zéro : il n'en a pas. L'en-tête
     // disparaît plutôt que d'afficher une coquille.
     const { container } = poser(
-      { moments: 0, birthYear: null, activity: null, favourites: [], figures: null, opening: null });
+      { moments: 0, birthYear: null, activity: null, favourites: [], figures: null, opening: null, span: null });
 
     expect(container.textContent).toBe("");
     expect(screen.queryByTestId("portrait")).toBeNull();
@@ -182,7 +183,7 @@ describe("SyntheseProfil — un profil trop maigre propose de compléter (E04)",
   it("n'invite à rien sur un profil vide : l'axe le fait déjà", () => {
     // Deux invitations superposées n'en font pas une plus claire — l'axe
     // porte « Racontez votre première console », et l'en-tête se tait.
-    const { container } = poser({ moments: 0, birthYear: null, activity: null, favourites: [], figures: null, opening: null });
+    const { container } = poser({ moments: 0, birthYear: null, activity: null, favourites: [], figures: null, opening: null, span: null });
 
     expect(container.textContent).toBe("");
   });
@@ -258,5 +259,52 @@ describe("SyntheseProfil — vos préférés (E04, bloc ⒠ bis)", () => {
     poser({ ...DEBUT, figures: null, activity: null });
 
     expect(screen.getAllByTestId("prefere")).toHaveLength(1);
+  });
+});
+
+describe("SyntheseProfil — la ligne du temps (bloc ⒞)", () => {
+  it("porte les deux bornes de l'histoire", () => {
+    poser(DEBUT);
+
+    const ligne = screen.getByTestId("etendue");
+    expect(ligne).toHaveTextContent("1991");
+    expect(ligne).toHaveTextContent("2019");
+  });
+
+  it("NE MÈNE NULLE PART — E03 est juste en dessous", () => {
+    // La fiche promet « un aperçu non interactif, avec une entrée vers E03 ».
+    // Tant qu'E03 et E04 sont le même écran, cette entrée pointerait sur
+    // l'écran où l'on se trouve déjà. Le bloc est donc muet, et il le reste
+    // tant que la fusion dure.
+    poser(DEBUT);
+
+    const ligne = screen.getByTestId("etendue");
+    expect(ligne.querySelectorAll("button, a")).toHaveLength(0);
+  });
+
+  it("ne redit pas l'axe : aucun titre, aucun moment détaillé", () => {
+    // Ce qu'elle doit gagner sa place à montrer, c'est l'ÉTENDUE d'un seul
+    // regard — là où l'axe déroule. Y remettre des titres ferait deux fois
+    // la même chose sur un écran dont la densité doit rester faible.
+    poser(DEBUT);
+
+    const ligne = screen.getByTestId("etendue");
+    expect(ligne).toHaveTextContent(/^[^A-Za-z]*1991[^A-Za-z]*2019[^A-Za-z]*$/);
+  });
+
+  it("reste là sous le seuil du portrait, quand les chiffres sont partis", () => {
+    // E04, état « trop maigre » : « afficher la phrase ET L'AMORCE DE
+    // TIMELINE, masquer les chiffres et les goûts ».
+    poser({ ...DEBUT, figures: null, activity: null });
+
+    expect(chiffres()).toHaveLength(0);
+    expect(screen.queryByTestId("activite")).toBeNull();
+    expect(screen.getByTestId("etendue")).toHaveTextContent("1991");
+  });
+
+  it("disparaît quand rien n'est daté", () => {
+    poser({ ...DEBUT, span: null });
+
+    expect(screen.queryByTestId("etendue")).toBeNull();
   });
 });

@@ -44,6 +44,32 @@ public sealed record ProfileOpening(
 public sealed record ActivitySlice(int Decade, int Moments);
 
 /// <summary>
+/// L'étendue de l'histoire — ses deux bornes, d'un seul regard (E04, bloc ⒞).
+///
+/// <para><b>Elle ne va pas jusqu'à aujourd'hui</b>, contrairement à la bande
+/// de densité ⒟. Les deux blocs se partagent le temps : la bande montre le
+/// SILENCE, jusqu'à aujourd'hui, parce qu'une histoire qui s'arrête en 2010
+/// doit montrer quinze ans de creux ; la ligne montre l'ÉTENDUE DÉCLARÉE,
+/// « 1991 → 2019 ». Les faire courir toutes deux jusqu'à aujourd'hui les
+/// ferait dire la même chose, sur un écran dont la densité doit rester faille
+/// (E04, principe 3) — et la ligne perdrait la place qu'elle doit gagner.</para>
+///
+/// <para><b>Les bornes sont un minimum et un maximum, pas la première et la
+/// dernière entrée de l'axe.</b> L'axe trie par point représentatif — le
+/// milieu, pour une période — tandis que l'année montrée est celle qui a été
+/// DÉCLARÉE, soit le début. Une période 1985–2005 arrivant après un
+/// <c>Year(1990)</c> rendrait « 1990 → 1985 » : une ligne à l'envers.</para>
+/// </summary>
+/// <param name="FirstYear">La plus ancienne année déclarée sur l'axe.</param>
+/// <param name="LastYear">
+/// La plus récente. <b>Égale à <paramref name="FirstYear"/></b> quand
+/// l'histoire tient en une année : un point est une ligne dont les bornes
+/// coïncident, et rendre <c>null</c> en ferait un cas particulier que chaque
+/// écran devrait traiter.
+/// </param>
+public sealed record ProfileSpan(int FirstYear, int LastYear);
+
+/// <summary>
 /// Ce que l'en-tête de <c>/mon-histoire</c> a le droit de dire du joueur.
 /// </summary>
 /// <param name="Moments">Tout le journal — ce qui décide du seuil, rien de plus.</param>
@@ -54,7 +80,8 @@ public sealed record ProfileSummary(
     int Finished,
     int MemoriesWritten,
     ProfileOpening? Opening,
-    IReadOnlyList<ActivitySlice> Activity)
+    IReadOnlyList<ActivitySlice> Activity,
+    ProfileSpan? Span)
 {
     /// <summary>
     /// Le seuil de E04 : « Trop maigre pour un portrait (moins de ~10
@@ -111,10 +138,18 @@ public static class ProfileProjection
             .Distinct()
             .Count();
 
+        // Le MÊME axe pour la phrase et pour la ligne : deux tris séparés
+        // finiraient par diverger, et l'en-tête dirait « vers 1991 » au-dessus
+        // d'une ligne partant de 1990 sans que rien ne le signale.
+        var axe = TimelineSorter
+            .Sort(events.Where(e => CompletionProjection.IsExperience(e.Type)), horizon)
+            .OnAxis;
+
         return new ProfileSummary(
             events.Count, consoles, taux.Declared, taux.Finished, souvenirs,
-            Debut(events, horizon),
-            Densite(events, horizon));
+            Debut(axe, horizon),
+            Densite(events, horizon),
+            Etendue(axe, horizon));
     }
 
     /// <summary>
@@ -125,14 +160,12 @@ public static class ProfileProjection
     /// l'histoire d'un joueur qui n'y avait pas encore touché.</para>
     /// </summary>
     private static ProfileOpening? Debut(
-        IReadOnlyCollection<PlayerEvent> events, TemporalHorizon horizon)
+        IReadOnlyList<PlayerEvent> axe, TemporalHorizon horizon)
     {
-        var joues = events.Where(e => CompletionProjection.IsExperience(e.Type));
-
-        // Le tri de l'axe, pas un autre. `OnAxis` écarte déjà ce qui n'a pas
-        // d'intervalle — « je ne sais plus », un âge sans année de naissance
-        // (invariant 2) —, et il n'y a alors pas de première fois à raconter.
-        var premier = TimelineSorter.Sort(joues, horizon).OnAxis.FirstOrDefault();
+        // `OnAxis` a déjà écarté ce qui n'a pas d'intervalle — « je ne sais
+        // plus », un âge sans année de naissance (invariant 2) —, et il n'y a
+        // alors pas de première fois à raconter.
+        var premier = axe.FirstOrDefault();
         if (premier is null)
         {
             return null;
@@ -187,6 +220,32 @@ public static class ProfileProjection
             tranches.Add(new ActivitySlice(d, annees.Count(a => a >= d && a <= d + 9)));
         }
         return tranches;
+    }
+
+    /// <summary>
+    /// Les deux bornes de l'histoire (E04, bloc ⒞).
+    ///
+    /// <para><b>Le même axe que la phrase</b>, donc les mêmes exclusions :
+    /// joué et non possédé (invariant 5) — une console achetée d'occasion en
+    /// 1985 antidaterait l'histoire de quelqu'un qui n'y avait pas encore
+    /// touché —, et rien de ce qui n'a pas de place sur l'axe.</para>
+    ///
+    /// <para><b>Minimum et maximum, jamais première et dernière entrée</b> :
+    /// voir <see cref="ProfileSpan"/>. Le point représentatif est une clé de
+    /// tri, et ORDONNANCEMENT-TEMPOREL interdit de l'afficher ; l'année
+    /// montrée est l'année déclarée, et les deux ordres ne coïncident
+    /// pas.</para>
+    /// </summary>
+    private static ProfileSpan? Etendue(
+        IReadOnlyList<PlayerEvent> axe, TemporalHorizon horizon)
+    {
+        var annees = axe
+            .Select(e => AnneeDeclaree(e.OccurredAt, horizon))
+            .Where(a => a is not null)
+            .Select(a => a!.Value)
+            .ToList();
+
+        return annees.Count == 0 ? null : new ProfileSpan(annees.Min(), annees.Max());
     }
 
     /// <summary>

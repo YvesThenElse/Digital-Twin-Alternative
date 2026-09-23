@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { client as ClientReel } from "./api/client";
+import type { SyntheseDuProfil } from "./profil/SyntheseProfil";
 
 /**
  * L'assemblage du parcours.
@@ -26,7 +27,13 @@ const faux = vi.hoisted(() => ({
   retracter: vi.fn(),
   sante: vi.fn(),
   timeline: vi.fn(),
-  synthese: vi.fn(),
+  // TYPÉ, contrairement à ses voisins, et c'est délibéré : le contrat
+  // ci-dessous garde les NOMS du client, pas la FORME de ce qu'il rend. Un
+  // champ ajouté à la synthèse ne manquait donc à aucun décor — il arrivait
+  // `undefined` à l'écran, qui le testait contre `null` et le laissait
+  // passer. Le type le fait rougir à la compilation, dans le fichier qu'il
+  // faut corriger.
+  synthese: vi.fn<() => Promise<SyntheseDuProfil>>(),
   ficheOeuvre: vi.fn(),
   corrigerDate: vi.fn(),
   anneeDeNaissance: vi.fn(),
@@ -80,7 +87,7 @@ beforeEach(() => {
   });
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
-  faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 0, birthYear: null, figures: null, opening: null });
+  faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 0, birthYear: null, figures: null, opening: null, span: null });
   faux.corrigerDate.mockResolvedValue(undefined);
   faux.anneeDeNaissance.mockResolvedValue(undefined);
   faux.ficheOeuvre.mockResolvedValue({
@@ -230,6 +237,7 @@ describe("App — la timeline s'ouvre", () => {
       figures: { consoles: 2, gamesDeclared: 40, finished: 9, memoriesWritten: 3 },
       opening: { years: 35, platform: "Game Boy",
                  occurredAt: { kind: "ApproximateYear", year: 1991, margin: 2 } },
+      span: null,
     });
 
     await jusquALaSelection(utilisateur);
@@ -256,6 +264,7 @@ describe("App — la timeline s'ouvre", () => {
       birthYear: null,
       figures: { consoles: 4, gamesDeclared: 128, finished: 31, memoriesWritten: 7 },
       opening: null,
+      span: null,
     });
     faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
 
@@ -291,13 +300,15 @@ describe("App — la timeline s'ouvre", () => {
     faux.synthese
       .mockResolvedValueOnce({
         moments: 0, birthYear: null, activity: null, favourites: [],
-        figures: null, opening: null })
+        figures: null, opening: null, span: null })
       .mockResolvedValue({
         activity: null,
         favourites: [],
         moments: 33,
+        birthYear: null,
         figures: { consoles: 1, gamesDeclared: 30, finished: 2, memoriesWritten: 1 },
         opening: null,
+        span: null,
       });
 
     await jusquALaSelection(utilisateur);
@@ -706,6 +717,7 @@ describe("App — E03, les trous sont des invitations", () => {
       activity: null, favourites: [], moments: 4, birthYear: null, figures: null,
       opening: { years: 31, platform: "Super Nintendo",
                  occurredAt: { kind: "Year", year: 1995 } },
+      span: null,
     });
     faux.timeline.mockResolvedValue(AXE_MAIGRE);
     await jusquALaSelection(utilisateur);
@@ -757,7 +769,7 @@ describe("App — E01, le visiteur qui revient", () => {
   });
 
   it("propose de reprendre quand l'historique n'est pas vide", async () => {
-    faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 33, birthYear: null, figures: null, opening: null });
+    faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 33, birthYear: null, figures: null, opening: null, span: null });
     render(<App />);
 
     expect(await screen.findByTestId("reprise")).toHaveTextContent("33");
@@ -785,6 +797,7 @@ describe("App — E01, le visiteur qui revient", () => {
       figures: { consoles: 1, gamesDeclared: 30, finished: 2, memoriesWritten: 1 },
       opening: { years: 31, platform: "Super Nintendo",
                  occurredAt: { kind: "Year", year: 1995 } },
+      span: null,
     });
     render(<App />);
 
@@ -798,7 +811,7 @@ describe("App — E01, le visiteur qui revient", () => {
 
   it("laisse l'accueil intact quand on ignore l'offre", async () => {
     const utilisateur = userEvent.setup();
-    faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 33, birthYear: null, figures: null, opening: null });
+    faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 33, birthYear: null, figures: null, opening: null, span: null });
     render(<App />);
     await screen.findByTestId("reprise");
 

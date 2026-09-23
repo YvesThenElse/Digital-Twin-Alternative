@@ -57,6 +57,38 @@ La phrase seule ne suffit pas à produire l'effet recherché, et une prose gén�
 
 **C ⑴ — Timeline condensée.** Aperçu non interactif, avec une entrée vers E03.
 
+> **Livrée le 23 septembre 2026, et elle a dû gagner sa place.** En Phase 1,
+> E03 et E04 sont un seul écran : l'axe complet est juste en dessous, et un
+> aperçu qui le redirait ferait deux fois la même chose sur un écran dont la
+> densité doit rester **faible** (principe 3). Ce qu'elle montre et que l'axe
+> ne montre pas, c'est l'**étendue** — « 1991 → 2019 » d'un seul regard, là
+> où l'axe déroule.
+>
+> **Elle ne mène donc nulle part**, contrairement à ce que cette ligne
+> annonce, et pour la même raison : l'entrée « voir la timeline → E03 »
+> pointerait sur l'écran où l'on se trouve déjà. Elle reviendra à la
+> séparation de la Phase 3. D'ici là, ni titres ni moments détaillés : les y
+> remettre recréerait l'axe en petit.
+>
+> **Ses deux bornes sont les années DÉCLARÉES**, calculées par le domaine sur
+> le même axe que la phrase — joué et non possédé (invariant 5), sinon une
+> console achetée d'occasion en 1985 antidaterait l'histoire de quelqu'un qui
+> n'y avait pas encore touché. Ce sont un minimum et un maximum, jamais la
+> première et la dernière entrée de l'axe : l'axe trie par point
+> représentatif — le milieu, pour une période — et une période 1985–2005
+> placée après un `1990` rendrait « 1990 → 1985 », une ligne à l'envers.
+>
+> **Elle ne court PAS jusqu'à aujourd'hui**, contrairement à la bande ⒟. Les
+> deux blocs se partagent le temps : la bande montre le **silence** — une
+> histoire qui s'arrête en 2010 doit montrer quinze ans de creux —, la ligne
+> montre l'**étendue déclarée**. Les faire courir toutes deux jusqu'à
+> aujourd'hui les ferait dire la même chose.
+>
+> **Et elle ne suit pas le seuil du portrait** : l'état « trop maigre »
+> ci-dessous garde « la phrase et l'amorce de timeline ». Une statistique
+> calculée sur cinq jeux ment ; deux dates déclarées restent vraies à trois
+> moments comme à trois cents.
+
 **D ⑴ — Périodes d'activité.** Densité de moments dans le temps, **colorée par époque** (langage visuel §2). C'est la visualisation qui fait dire « c'est vrai, j'ai peu joué entre 2005 et 2010 » — et le bloc le plus immédiatement parlant de l'écran. En Phase 1 elle apparaît dès qu'il y a assez de moments pour qu'une forme se dessine.
 
 > **Livré le 23 septembre 2026.** Une tranche par décennie, **creux compris** : une bande qui ne montrerait que les décennies peuplées serait pleine et ne dirait plus rien — c'est l'alternance qui parle. Elle va jusqu'à **aujourd'hui** et non jusqu'à la dernière déclaration : une histoire qui s'arrête en 2010 doit montrer quinze ans de silence.
@@ -101,7 +133,7 @@ En Phase 1, l'image peut déjà être générée pour un usage privé (« garder
 
 | Action | Destination |
 |---|---|
-| Voir la timeline | → E03 |
+| Voir la timeline | → E03 — *pas de geste en Phase 1 : E03 est le même écran* |
 | Générer l'image | téléchargement ou partage système |
 | Clic sur un chiffre | → E10 (statistiques détaillées) ou E08 (collection) |
 | Clic sur un genre / studio / franchise | → E05 variante correspondante |
@@ -122,12 +154,12 @@ En Phase 1, l'image peut déjà être générée pour un usage privé (« garder
 |---|---|---|
 | A — la phrase | ⑴ | **livré** : durée approchée et commencement, avec leur granularité |
 | B — les quatre chiffres | ⑴ | **livré** : `consoles · jeux déclarés · terminés · souvenirs écrits` |
-| C — la timeline condensée | ⑴ | absent — la timeline E03, elle, est juste en dessous |
+| C — la timeline condensée | ⑴ | **livré** : les deux bornes de l'histoire, sans entrée vers E03 tant que la fusion dure |
 | D — les périodes d'activité | ⑴ | **livré** : une tranche par décennie, creux compris |
 | E bis — vos préférés | ⑴ | **livré** : un par plateforme, nommé |
 | E — goûts · F — souvenir mis en avant | — | Phase 3 |
 
-Les trois blocs ⑴ absents sont inscrits dans [TODO-ECRANS.md](../TODO-ECRANS.md) : ils attendent le verdict de la session de test, qui dit s'il faut approfondir le portrait ou passer à la suite.
+Les blocs ⑴ absents sont inscrits dans [TODO-ECRANS.md](../TODO-ECRANS.md) : ils attendent le verdict de la session de test, qui dit s'il faut approfondir le portrait ou passer à la suite.
 
 ## Relations
 

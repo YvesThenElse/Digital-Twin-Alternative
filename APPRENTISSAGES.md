@@ -2860,3 +2860,63 @@ vérifier qu'elle couvre ce qu'elle annonce couvrir.
 le document *et* dans le test quelle partie fait foi et laquelle est
 indicative. Puis chercher, dans le document lui-même, ce qu'il déclare
 essentiel — et exiger que la partie faisant foi le porte.
+
+### 90 — Un faux qui garde les noms ne garde pas les formes
+
+`App.test.tsx` porte depuis longtemps une ligne qui vérifie que le faux
+client offre **tout** ce que le vrai offre :
+
+```ts
+type ContratDuClient = Record<keyof typeof ClientReel, unknown>;
+const _contrat: ContratDuClient = faux;
+```
+
+Elle a rendu le service qu'on lui demandait : un point d'entrée ajouté au
+client manque aussitôt au faux, et le test le dit à la compilation plutôt que
+par trois échecs sans rapport.
+
+Mais `unknown` s'arrête aux **noms**. Quand la synthèse du profil a gagné un
+champ, ses neuf décors ont continué à compiler en ne le posant pas. Il
+arrivait `undefined` à l'écran, qui le testait contre `null` — et
+`undefined !== null` : le composant rendait une ligne sans données et cassait
+dans cinq tests, pour une raison qui n'avait rien à voir avec eux.
+
+Le réflexe est de patcher les neuf décors. Il laisse le même piège armé pour
+le champ suivant. Typer la valeur rendue, en revanche, le désarme :
+
+```ts
+synthese: vi.fn<() => Promise<SyntheseDuProfil>>(),
+```
+
+Les neuf ont rougi d'un coup, dans le fichier qu'il fallait corriger, avant
+la moindre exécution.
+
+C'est la même famille que [[87]] : un garde qui lit une colonne prouve qu'il a
+lu quelque chose, pas la bonne chose. Ici, il prouvait que le faux avait les
+bons **noms**, pas qu'il rendait les bonnes **choses**.
+
+**La règle** : dans un faux, typer ce que chaque fonction REND, pas seulement
+la liste de ses fonctions. Et devant un décor qui se périme, préférer le type
+qui fera rougir tous les décors périmés à la correction d'un seul.
+
+### 91 — Un défaut peut n'exister que sur une disposition
+
+La ligne du temps d'E04 mesurait **26 px de large sur desktop**, et sa pleine
+largeur sur mobile. Le portrait, sur grand écran, est une rangée souple
+(`flex-wrap`) : une figure qui ne réclame pas sa largeur s'y réduit à son
+contenu — ici, deux pastilles de 10 px.
+
+Ce qu'il faut en retenir n'est pas « déclarer une largeur ». C'est que le
+parcours tourne sur **deux dispositions**, et que cette redondance apparente
+n'en est pas une : mobile était vert. Un seul projet Playwright, et le défaut
+partait en production avec un bloc invisible dont tous les tests parlaient au
+présent.
+
+C'est le corollaire de la règle « un bloc déclaré n'est pas un bloc
+visible » — la hauteur de la bande d'époque, puis celle de la bande
+d'activité. Nouveau ici : **la même feuille de style peut être juste sur une
+disposition et fausse sur l'autre**, et seule la mesure sur les deux le dit.
+
+**La règle** : mesurer les blocs visuels sur **chaque** disposition du
+parcours, largeur comprise — pas seulement la hauteur, qui est ce qu'on pense
+à vérifier. Et ne jamais conclure d'un projet vert que le bloc se voit.

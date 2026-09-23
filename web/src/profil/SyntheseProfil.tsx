@@ -1,6 +1,7 @@
 import type { CleMessage } from "../i18n/messages";
 import { t } from "../i18n/t";
 import { BandeDActivite, type TrancheActivite } from "./BandeDActivite";
+import { LigneDuTemps, type EtendueDuProfil } from "./LigneDuTemps";
 import { libelle, type ValeurTemporelle } from "../temporel/valeur";
 
 /**
@@ -64,6 +65,15 @@ export type SyntheseDuProfil = {
    */
   favourites: { platformName: string; title: string }[];
   opening: DebutDuProfil | null;
+  /**
+   * Les deux bornes de l'histoire (bloc ⒞).
+   *
+   * <b>Elle NE suit PAS le seuil du portrait</b>, contrairement aux chiffres
+   * et à la densité : E04, état « trop maigre », garde « la phrase et
+   * l'amorce de timeline ». Deux dates déclarées restent vraies à trois
+   * moments comme à trois cents.
+   */
+  span: EtendueDuProfil | null;
 };
 
 /**
@@ -104,7 +114,7 @@ export function SyntheseProfil({ synthese, completer }: {
   // rien à dire : un en-tête qui s'affiche vide puis se remplit ferait sauter
   // l'écran au moment précis où le joueur le découvre.
   if (synthese === null) return null;
-  const { figures, activity, favourites, opening } = synthese;
+  const { figures, activity, favourites, opening, span } = synthese;
   if (figures === null && opening === null) return null;
 
   return (
@@ -143,6 +153,11 @@ export function SyntheseProfil({ synthese, completer }: {
           <Chiffre valeur={figures.memoriesWritten} quoi="souvenirs" />
         </ul>
       ) : null}
+
+      {/* Bloc ⒞. Avant la densité : elle dit l'ÉTENDUE, la densité dit la
+          FORME. Lire d'abord « de 1991 à 2019 » donne à la bande le cadre
+          dans lequel ses creux veulent dire quelque chose. */}
+      {span !== null ? <LigneDuTemps etendue={span} /> : null}
 
       {/* Bloc ⒟. « La partie visuelle contribue davantage que la partie
           rédigée » à l'effet « ça me ressemble » : la phrase travaille AVEC
