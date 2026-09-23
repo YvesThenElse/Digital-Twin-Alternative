@@ -91,42 +91,66 @@ chemin a laissé.
 
 ---
 
-## Ce qui attend une décision
+## Les décisions prises le 23 septembre 2026
 
-La boucle **s'arrête ici** : ces trois-là ne se corrigent pas, ils se
-tranchent.
+| Question | Tranché | Où ça vit |
+|---|---|---|
+| Le geste E02 → E05 | **le panneau d'affinage** | T6 |
+| La nature de la table des liens | **un résumé des liens dominants** | T7 |
+| La timeline condensée d'E04 | **construite** | T8 |
 
-> **Inscrit en chemin (T4)** : la **légende** du bloc ⒟ — « 90s : Super
-> Nintendo · 2000s : PlayStation 2 » — reste à faire. Elle demande de nommer
-> la plateforme dominante de chaque décennie, ce que le domaine sait
-> calculer (les événements portent leur machine) mais qu'aucun item ne
-> demandait.
+- [ ] **T6 — E02 ouvre la fiche depuis le panneau d'affinage.** (E02,
+  relations · E05) Ses relations promettent « → E05 (détail d'un jeu, **en
+  conservant la position**) », et aucun geste ne l'ouvrait. **Décidé** : le
+  panneau d'affinage, qui n'ajoute **aucune cible à la ligne** — la refonte
+  en deux passes tient, et le budget d'un tap par jeu ne bouge pas.
 
-- [ ] **D1 — Par quel geste E02 ouvre-t-il E05 ?** Les relations d'E02
-  promettent « → E05 (détail d'un jeu, **en conservant la position**) », et
-  son tableau d'actions ne définit aucun geste qui l'ouvre. La ligne entière
-  est déjà la cible « joué », et lui ajouter une seconde cible est
-  exactement ce que sa refonte en deux passes interdit — quatre cibles de
-  44 px ne laissent que 143 px de titre.
+  Ce que cela laisse dehors, et qu'il faut savoir : le panneau n'existe que
+  sur une ligne **déclarée**. On ne pourra pas ouvrir la fiche d'un jeu qu'on
+  hésite à cocher — le cas « c'est quoi, ce jeu ? » attend un autre geste.
 
-  Les pistes visibles : le panneau d'affinage (mais il n'existe que sur une
-  ligne **déclarée**), le survol desktop (mais il n'existe pas encore), un
-  appui long (déjà pris par la passe 2).
+  ⚠️ **Le piège est le retour.** E05 est une page : l'axe l'a déjà appris
+  (T1), et la sélection a bien plus à perdre — les lignes cochées depuis
+  l'ouverture, les affinages, les souvenirs en cours de frappe vivent dans
+  son état local.
 
-- [ ] **D2 — La table des liens est-elle un résumé ou une matrice ?** Elle
-  est asymétrique en **vingt-quatre endroits** : « E12 vient de E02 » y
-  figure, « E02 mène vers E12 » non — alors que §6 compte `E02 → E12` parmi
-  les six transitions qui portent les KPI. Sa quatrième colonne, « lien
-  dominant », suggère un résumé curé ; le garde de S9, lui, lit « mène vers »
-  et vérifie donc moins que le graphe ne promet.
+  *Acceptation : depuis une ligne déclarée, un geste du panneau ouvre sa
+  fiche ; aucune cible n'est ajoutée à la ligne et le parcours le mesure au
+  budget ; et revenir retrouve la liste telle qu'on l'a laissée — les
+  déclarations faites depuis l'ouverture comprises.*
 
-  Trancher change ce que le garde peut exiger, et donc ce qu'il attrapera.
+- [ ] **T7 — La table des liens dit ce qu'elle est.** (`PARCOURS-ET-LIENS.md`
+  §3 · S9) Elle est asymétrique en vingt-quatre endroits parce que ses deux
+  colonnes sont deux listes tenues à la main. **Décidé** : c'est un **résumé
+  des liens dominants**, pas une matrice d'adjacence — sa quatrième colonne
+  le disait déjà à demi-mot.
 
-- [ ] **D3 — La timeline condensée d'E04 a-t-elle un sens en Phase 1 ?**
-  Bloc ⒞, marqué Phase 1. Mais « en Phase 1, E03 et E04 sont un seul
-  écran » : un aperçu non interactif de l'axe, posé juste au-dessus de l'axe
-  lui-même, dirait deux fois la même chose sur un écran dont la densité doit
-  rester faible.
+  Ce que cela change : « mène vers » fait foi, « vient de » devient
+  indicative, et le garde de S9 cesse de laisser croire qu'il couvre tout le
+  graphe.
+
+  *Acceptation : le document dit ce que chaque colonne engage ; le garde de
+  navigation le dit aussi, dans son propre texte ; et il vérifie que les
+  transitions de §6 — les six qui portent les KPI — sont toutes dans la
+  colonne qui fait foi, faute de quoi le résumé omet ce qu'il prétend
+  résumer.*
+
+- [ ] **T8 — E04 porte sa timeline condensée.** (E04, bloc ⒞) **Décidé** :
+  construite, malgré la fusion E03 + E04 de la Phase 1.
+
+  ⚠️ **Ce que la fusion lui coûte**, et qu'il faut regarder en face : son
+  entrée « voir la timeline → E03 » pointerait sur l'écran où l'on se trouve
+  déjà, et un aperçu non interactif posé juste au-dessus de l'axe dirait deux
+  fois la même chose sur un écran dont la densité doit rester **faible**
+  (principe 3). Le bloc doit donc gagner sa place : montrer ce que l'axe ne
+  montre pas — l'**étendue** d'un seul regard, 1991 → 2026, là où l'axe
+  déroule.
+
+  *Acceptation : une ligne temporelle non interactive portant les deux bornes
+  de l'histoire, calculées par le domaine ; elle ne duplique pas l'axe — pas
+  de titres, pas de moments détaillés ; elle ne mène nulle part tant qu'E03
+  et E04 sont le même écran, et la fiche dit pourquoi ; sa hauteur et ses
+  bornes se mesurent dans le navigateur.*
 
 ---
 

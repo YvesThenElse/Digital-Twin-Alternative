@@ -68,8 +68,9 @@
 
 ## Conditions d'arrêt
 
-- ⚠️ **Les cinq items T1 à T5 sont cochés** — ce qui suit attend une
-  décision, pas du code. Arrête-toi, dis-le, et pose les trois questions.
+- ⚠️ **Tous les items de `TODO-ECRANS-2.md` sont cochés.** Les trois
+  décisions D1 à D3 ont été tranchées le 23 septembre et sont devenues T6,
+  T7 et T8 ; il n'y a plus de section « attend une décision ».
 
   > ⚠️ Ce que cette seconde liste coûte, et qu'il faut garder en tête : elle
   > se construit **avant** la session de test, sur décision. `PHASING.md`
