@@ -27,9 +27,18 @@ export function Timeline({
   entrees,
   sansDate,
   avertissements,
+  ouvrirFiche,
 }: {
   entrees: EntreeTimeline[];
   sansDate: MomentTimeline[];
+  /**
+   * « Clic sur un jeu → E05 » (E03, actions).
+   *
+   * C'est le TITRE qui porte ce geste, pas la ligne : la fiche parle du jeu,
+   * tandis que le moment lui-même appartiendra à E07. Les confondre ferait
+   * ouvrir une fiche de jeu quand on voulait corriger une date.
+   */
+  ouvrirFiche: (moment: MomentTimeline) => void;
   /**
    * Les incohérences que le domaine a constatées (§5.4).
    *
@@ -72,6 +81,7 @@ export function Timeline({
             key={entree.moments[0].id}
             entree={entree}
             avertissements={parMoment}
+            ouvrirFiche={ouvrirFiche}
           />
         ))}
       </ol>
@@ -154,9 +164,10 @@ function SouvenirDuMoment({ souvenir }: { souvenir: SouvenirTimeline }) {
   );
 }
 
-function Entree({ entree, avertissements }: {
+function Entree({ entree, avertissements, ouvrirFiche }: {
   entree: EntreeTimeline;
   avertissements: Map<string, string>;
+  ouvrirFiche: (moment: MomentTimeline) => void;
 }) {
   const [deplie, setDeplie] = useState(false);
 
@@ -205,12 +216,15 @@ function Entree({ entree, avertissements }: {
               <Marque type={moment.type} />
               {/* Un titre saisi n'est pas une œuvre curée : E02 le marque,
                   l'axe le donnait pour une entrée du catalogue. */}
-              <span
+              <button
+                type="button"
+                className="moment-titre"
                 data-testid="moment-titre"
                 data-canonique={String(moment.targetKind === "work")}
+                onClick={() => ouvrirFiche(moment)}
               >
                 {moment.targetLabel}
-              </span>
+              </button>
               <span data-forme={forme(moment.occurredAt)}>
                 {libelle(moment.occurredAt)}
               </span>

@@ -5,6 +5,7 @@ import { EtatDuService, type EtatSante } from "./EtatDuService";
 import { t } from "./i18n/t";
 import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
+import { FicheJeu, type CibleFiche, type FicheOeuvre } from "./oeuvre/FicheJeu";
 import { SyntheseProfil, type SyntheseDuProfil } from "./profil/SyntheseProfil";
 import { RepriseProposee } from "./reprise/RepriseProposee";
 import { PhraseDeRecit } from "./recit/PhraseDeRecit";
@@ -46,7 +47,8 @@ function profil(): string {
 
 const UTILISATEUR = profil();
 
-type Etape = "machine" | "periode" | "recompense" | "selection" | "timeline";
+type Etape =
+  | "machine" | "periode" | "recompense" | "selection" | "timeline" | "fiche";
 
 /**
  * La largeur observée, traduite en stratégie de lecture.
@@ -147,6 +149,24 @@ export function App() {
    * sonde tombe sans que rien ne le distingue d'un profil neuf.
    */
   const [historique, setHistorique] = useState<number | null>(null);
+
+  /**
+   * La fiche ouverte (E05), ou `null`.
+   *
+   * <b>On n'y garde que la CIBLE</b>, jamais ses moments : ceux-ci se
+   * dérivent de `timeline` à chaque rendu. Les recopier ici ferait deux
+   * sources pour le même fait, et la fiche montrerait encore une déclaration
+   * qu'on vient de retirer — le défaut d'un état figé au montage
+   * (apprentissage 73), appliqué à une vue de lecture.
+   */
+  const [fiche, setFiche] = useState<CibleFiche | null>(null);
+
+  /**
+   * La couche référentiel de la fiche courante. `null` pour une revendication
+   * de §3.5 — l'API répond 404, et c'est juste : une saisie libre n'est pas
+   * une œuvre curée.
+   */
+  const [ficheReferentiel, setFicheReferentiel] = useState<FicheOeuvre | null>(null);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -352,6 +372,76 @@ export function App() {
     }
   }
 
+  /**
+   * Les moments de la cible ouverte, <b>dérivés de l'axe</b>.
+   *
+   * Y compris le tiroir sans date : un moment qu'on n'a pas su situer reste
+   * un moment vécu (§6), et la fiche est justement l'endroit où l'on
+   * rassemble ce que l'axe disperse.
+   */
+  function momentsDe(cible: CibleFiche): MomentTimeline[] {
+    return [...timeline.entries.flatMap((e) => e.moments), ...timeline.undated]
+      .filter((m) => m.targetKind === cible.kind && m.targetId === cible.id);
+  }
+
+  async function ouvrirFiche(moment: MomentTimeline) {
+    const cible: CibleFiche = {
+      kind: moment.targetKind,
+      id: moment.targetId,
+      label: moment.targetLabel,
+      // Reçue avec la déclaration, jamais déduite de l'œuvre.
+      platformId: moment.platformId,
+    };
+    setFiche(cible);
+    // Une revendication n'a pas de fiche de référentiel : ne pas la demander
+    // évite un 404 attendu, qui se lirait comme une panne dans le journal.
+    setFicheReferentiel(
+      cible.kind === "work" ? await client.ficheOeuvre(cible.id) : null);
+    setEtape("fiche");
+  }
+
+  /**
+   * Déclarer et rétracter depuis la fiche — <b>les mêmes appels qu'en E02</b>.
+   *
+   * Un second chemin d'écriture produirait des événements de forme différente
+   * pour le même geste, et le journal cesserait d'être comparable à
+   * lui-même. La période est celle du parcours ; à défaut, « je ne sais
+   * plus » est une réponse (§7.3), pas un défaut à inventer.
+   */
+  async function declarerDepuisFiche(cible: CibleFiche) {
+    if (cible.platformId === null) return;
+    await client.declarer({
+      batchId: lot,
+      userId: UTILISATEUR,
+      platformId: cible.platformId,
+      period: periode ?? { kind: "unknown" },
+      entries: [{ workId: cible.id }],
+    });
+    await relireAxe();
+  }
+
+  async function retracterDepuisFiche(cible: CibleFiche) {
+    if (cible.platformId === null) return;
+    await client.retracter(UTILISATEUR, cible.platformId, cible.id);
+    await relireAxe();
+  }
+
+  /**
+   * Relit l'axe et le portrait <b>sans quitter la fiche</b>.
+   *
+   * E05 veut que déclarer se fasse « sans changer d'écran » ; et comme les
+   * moments de la fiche se dérivent de l'axe, la relecture suffit à la
+   * mettre à jour.
+   */
+  async function relireAxe() {
+    const [axe, portrait] = await Promise.all([
+      client.timeline(UTILISATEUR),
+      client.synthese(UTILISATEUR),
+    ]);
+    setTimeline(axe);
+    setSynthese(portrait);
+  }
+
   async function ouvrirTimeline() {
     // Les deux ENSEMBLE, et l'étape ne change qu'après. L'en-tête arrivant
     // après l'axe ferait sauter l'écran au moment précis où le joueur
@@ -495,8 +585,23 @@ export function App() {
             entrees={timeline.entries}
             sansDate={timeline.undated}
             avertissements={timeline.warnings}
+            ouvrirFiche={(moment) => { void essayer(() => ouvrirFiche(moment)); }}
           />
         </>
+      ) : null}
+
+      {etape === "fiche" && fiche !== null ? (
+        <FicheJeu
+          cible={fiche}
+          referentiel={ficheReferentiel}
+          // Dérivés de l'axe à CHAQUE rendu : une copie figée montrerait
+          // encore une déclaration qu'on vient de retirer.
+          moments={momentsDe(fiche)}
+          souvenir={momentsDe(fiche).find((m) => m.memory !== null)?.memory ?? null}
+          declarer={() => { void essayer(() => declarerDepuisFiche(fiche)); }}
+          retracter={() => { void essayer(() => retracterDepuisFiche(fiche)); }}
+          fermer={() => setEtape("timeline")}
+        />
       ) : null}
       <EtatDuService etat={sante} />
     </main>

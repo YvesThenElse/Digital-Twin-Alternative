@@ -2656,3 +2656,35 @@ est vrai**, et l'inverse. Sans ces deux-là, l'une des deux conditions est
 une décoration que rien ne distingue d'une ligne morte. Et le détecteur est
 gratuit : muter chaque moitié séparément, et se méfier d'une mutation qui ne
 casse rien plus encore que d'une qui casse moins que prévu.
+
+### 84 — Ce qu'un faux doit contrefaire dit où passe la frontière
+
+`valeurDeSortie` — traduire `date` + `precision` en valeur temporelle — vivait
+dans `client.ts`. Elle y était née parce que son premier appelant y était, et
+elle y est restée parce que rien ne s'y opposait.
+
+Le jour où la fiche de jeu en a eu besoin, les tests d'assemblage se sont
+effondrés d'un coup :
+
+```
+Error: [vitest] No "valeurDeSortie" export is defined on the "./api/client" mock.
+```
+
+`App.test.tsx` remplace tout le module client par un faux — c'est bien le
+réseau qu'il veut supprimer. En supprimant le réseau, il supprimait aussi une
+**règle de lecture pure** qui n'avait rien à faire là. Le réflexe est
+d'ajouter la fonction au faux ; c'est le mauvais : on contrefait alors
+quelque chose qu'aucune raison ne justifie de contrefaire, et le faux
+s'éloigne encore de l'original ([[72]]).
+
+Le message d'erreur disait en réalité : **cette fonction est dans le mauvais
+module**. Déplacée dans `temporel/valeur.ts`, à côté de `libelle` et
+`anneeDe`, tout s'est remis en place sans une ligne de décor — et la règle
+est désormais là où ses voisines vivent.
+
+**La règle** : quand un double doit contrefaire quelque chose qui n'a rien à
+voir avec ce qu'il remplace, ne pas l'ajouter au double — déplacer la chose.
+Un test qui remplace « le réseau » ne doit avoir à simuler que du réseau ;
+ce qu'il est forcé de simuler en plus mesure exactement ce qui s'est glissé
+dans la mauvaise couche. C'est une frontière de conception **rendue
+observable** par un outil de test, et c'est rare assez pour qu'on l'écoute.

@@ -17,6 +17,16 @@ export type MomentTimeline = {
   targetLabel: string;
   occurredAt: ValeurTemporelle;
   /**
+   * La machine sur laquelle cette déclaration a été faite — <b>reçue, jamais
+   * déduite</b> de l'œuvre.
+   *
+   * Son lecteur est la fiche de jeu (E05) ouverte depuis l'axe : elle
+   * déclare et rétracte sur CETTE machine. `null` pour un événement qui ne
+   * vient pas d'une sélection par machine ; la fiche ne propose alors pas de
+   * déclarer, plutôt que de choisir une machine à la place du joueur.
+   */
+  platformId: string | null;
+  /**
    * Le souvenir de la CIBLE, que l'API rend sur chacun de ses moments.
    *
    * Requis, et nul quand il n'y en a pas : facultatif, un appelant qui

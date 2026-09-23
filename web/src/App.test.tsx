@@ -27,6 +27,7 @@ const faux = vi.hoisted(() => ({
   sante: vi.fn(),
   timeline: vi.fn(),
   synthese: vi.fn(),
+  ficheOeuvre: vi.fn(),
 }));
 
 vi.mock("./api/client", () => ({ client: faux }));
@@ -78,6 +79,11 @@ beforeEach(() => {
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
   faux.synthese.mockResolvedValue({ moments: 0, figures: null, opening: null });
+  faux.ficheOeuvre.mockResolvedValue({
+    id: "w1", title: "Super Mario World", coverUrl: null,
+    editions: [{ platformId: "plt_snes", platformName: "Super Nintendo",
+                 region: "PAL", date: "1990-01-01", precision: "year" }],
+  });
 });
 
 afterEach(() => vi.clearAllMocks());
@@ -304,6 +310,129 @@ describe("App — la timeline s'ouvre", () => {
 
     expect(await screen.findByRole("alert")).toBeInTheDocument();
     expect(screen.queryByTestId("axe")).toBeNull();
+  });
+});
+
+describe("App — E05, la fiche de jeu s'ouvre depuis l'axe", () => {
+  const AXE = {
+    entries: [
+      { isEpisode: false, interval: { start: "1990-01-01", end: "1990-12-31" },
+        moments: [
+          { id: "m1", type: "StartedGame", targetKind: "work", targetId: "w1",
+            targetLabel: "Super Mario World",
+            occurredAt: { kind: "Year", year: 1990 }, platformId: "plt_snes",
+            memory: { title: "L'été", text: "À deux." } },
+          { id: "m2", type: "StartedGame", targetKind: "work", targetId: "w2",
+            targetLabel: "Chrono Trigger",
+            occurredAt: { kind: "Year", year: 1995 }, platformId: "plt_snes",
+            memory: null },
+        ] },
+    ],
+    undated: [],
+    warnings: [],
+  };
+
+  async function jusquALAxe(utilisateur: ReturnType<typeof userEvent.setup>) {
+    faux.timeline.mockResolvedValue(AXE);
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    await screen.findByTestId("axe");
+  }
+
+  it("ouvre la fiche du jeu dont on clique le titre", async () => {
+    // E03, actions : « Clic sur un jeu → E05 ». Le titre, pas la ligne : le
+    // moment lui-même appartiendra à E07.
+    const utilisateur = userEvent.setup();
+    await jusquALAxe(utilisateur);
+
+    await utilisateur.click(screen.getByRole("button", { name: "Chrono Trigger" }));
+
+    expect(await screen.findByTestId("fiche")).toHaveTextContent("Chrono Trigger");
+    expect(faux.ficheOeuvre).toHaveBeenCalledWith("w2");
+  });
+
+  it("n'y montre que les moments de CE jeu", async () => {
+    // La fiche rassemble ce que l'axe disperse ; y laisser entrer les moments
+    // d'un autre titre ferait exactement l'inverse.
+    const utilisateur = userEvent.setup();
+    await jusquALAxe(utilisateur);
+
+    await utilisateur.click(screen.getByRole("button", { name: "Super Mario World" }));
+
+    await screen.findByTestId("fiche");
+    expect(screen.getAllByTestId("fiche-moment")).toHaveLength(1);
+    expect(screen.getByTestId("fiche-vous")).toHaveTextContent("À deux.");
+  });
+
+  it("rétracte par le MÊME appel que la sélection massive", async () => {
+    // « Pas un second chemin d'écriture » : le même point d'entrée, la même
+    // forme. Un second produirait des événements différents pour le même
+    // geste, et le journal cesserait d'être comparable à lui-même.
+    const utilisateur = userEvent.setup();
+    await jusquALAxe(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Chrono Trigger" }));
+    await screen.findByTestId("fiche");
+
+    await utilisateur.click(screen.getByRole("button", { name: /Retirer/i }));
+
+    expect(faux.retracter).toHaveBeenCalledWith(expect.any(String), "plt_snes", "w2");
+    // Et l'axe est relu : la fiche dérive ses moments de lui, donc elle se
+    // met à jour sans copier quoi que ce soit.
+    await waitFor(() => expect(faux.timeline).toHaveBeenCalledTimes(2));
+  });
+
+  it("déclare par le MÊME appel que la sélection massive", async () => {
+    // L'état vide est atteignable : on se rétracte, puis on recoche. C'est
+    // le « décoché par erreur » d'E02, vu depuis la fiche.
+    const utilisateur = userEvent.setup();
+    await jusquALAxe(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Chrono Trigger" }));
+    await screen.findByTestId("fiche");
+
+    // L'axe relu ne porte plus ce jeu : la fiche passe à l'état vide.
+    faux.timeline.mockResolvedValue({ ...AXE, entries: [] });
+    await utilisateur.click(screen.getByRole("button", { name: /Retirer/i }));
+
+    await utilisateur.click(await screen.findByRole("button", { name: /Vous y avez joué/i }));
+
+    expect(faux.declarer).toHaveBeenCalledWith(expect.objectContaining({
+      platformId: "plt_snes",
+      entries: [{ workId: "w2" }],
+    }));
+  });
+
+  it("ne demande aucune fiche de référentiel pour un titre saisi", async () => {
+    // §3.5 : l'API répond 404, et c'est juste. La demander quand même ferait
+    // une panne attendue à chaque ouverture.
+    const utilisateur = userEvent.setup();
+    faux.timeline.mockResolvedValue({
+      ...AXE,
+      entries: [{ isEpisode: false, interval: { start: "1990-01-01", end: "1990-12-31" },
+        moments: [{ id: "m9", type: "StartedGame", targetKind: "unresolvedClaim",
+          targetId: "ucl_1", targetLabel: "Le jeu de mon cousin",
+          occurredAt: { kind: "Year", year: 1990 }, platformId: "plt_snes",
+          memory: null }] }],
+    });
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    await screen.findByTestId("axe");
+
+    await utilisateur.click(screen.getByRole("button", { name: "Le jeu de mon cousin" }));
+
+    expect(await screen.findByTestId("fiche-non-canonique")).toBeInTheDocument();
+    expect(faux.ficheOeuvre).not.toHaveBeenCalled();
+  });
+
+  it("revient à l'axe : la fiche n'est pas un cul-de-sac", async () => {
+    const utilisateur = userEvent.setup();
+    await jusquALAxe(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Chrono Trigger" }));
+    await screen.findByTestId("fiche");
+
+    await utilisateur.click(screen.getByRole("button", { name: /Revenir/i }));
+
+    expect(screen.getByTestId("axe")).toBeInTheDocument();
+    expect(screen.queryByTestId("fiche")).toBeNull();
   });
 });
 

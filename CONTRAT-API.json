@@ -70,7 +70,7 @@
         "ignore": {}
       },
       "entries[].moments[]": {
-        "lit": ["id", "type", "targetKind", "targetId", "targetLabel", "occurredAt", "memory"],
+        "lit": ["id", "type", "targetKind", "targetId", "targetLabel", "occurredAt", "platformId", "memory"],
         "ignore": {
           "confidence": "dérivée de la granularité (principes §3) ; l'axe rend la FORME de la date, jamais un niveau de confiance"
         }
@@ -93,6 +93,16 @@
       },
       "opening": {
         "lit": ["years", "platform", "occurredAt"],
+        "ignore": {}
+      }
+    },
+    "GET /works/{id}": {
+      "": {
+        "lit": ["id", "title", "coverUrl", "editions"],
+        "ignore": {}
+      },
+      "editions[]": {
+        "lit": ["platformId", "platformName", "region", "date", "precision"],
         "ignore": {}
       }
     },

@@ -1198,3 +1198,122 @@ figure[data-testid="bande-epoque"] figcaption {
   color: var(--ink-2);
   margin: 0;
 }
+
+/* --- E05, la fiche de jeu ------------------------------------------------ */
+
+/*
+ * Deux couches, la personnelle en haut. « Le produit est une biographie, pas
+ * une encyclopédie » : la hiérarchie typographique doit dire la même chose
+ * que l'ordre du document, sinon l'œil lit d'abord les faits.
+ */
+.fiche {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e6);
+}
+
+.fiche-titre {
+  font: var(--display-2);
+  color: var(--ink);
+  margin: 0;
+}
+
+.fiche-marque {
+  font: var(--meta);
+  color: var(--ink-3);
+  margin: 0;
+}
+
+/* L'étiquette de section, en capitales espacées : elle nomme sans peser. */
+.fiche-section {
+  font: var(--micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 var(--e2);
+}
+
+.fiche-vous,
+.fiche-referentiel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e2);
+}
+
+/*
+ * La couche personnelle DOMINE. Même surface, deux poids : le vécu est en
+ * corps de texte sur fond de surface, les faits en `meta` et en retrait.
+ * Sans cet écart, la fiche s'ouvrirait visuellement sur sa fiche technique.
+ */
+.fiche-vous {
+  padding: var(--e4);
+  border-radius: var(--r2);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+.fiche-moments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.fiche-moment {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e2) var(--e3);
+  font: var(--body);
+}
+
+/* Le repère du souvenir garde son italique : c'est le contenu le plus
+   précieux du produit, il ne se relègue pas (§4 du langage visuel). */
+.fiche-souvenir-repere {
+  font: var(--body);
+  font-style: italic;
+  color: var(--ink);
+  margin: var(--e2) 0 0;
+}
+
+.fiche-invite {
+  font: var(--body);
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.fiche-editions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.fiche-edition {
+  font: var(--meta);
+  color: var(--ink-2);
+}
+
+.fiche-jaquette {
+  inline-size: 120px;
+  margin-block-start: var(--e3);
+}
+
+/*
+ * Le titre d'un moment ouvre sa fiche (E03 : « clic sur un jeu → E05 »).
+ *
+ * Il garde la hauteur de cible du socle — la règle des 44 px ne souffre pas
+ * d'exception — mais pas l'aspect d'un bouton d'action : un axe de lecture
+ * piqueté de boutons se lirait comme un formulaire. Le souligné pointillé
+ * dit « ceci mène quelque part » sans crier.
+ */
+.moment-titre {
+  padding: 0;
+  text-align: start;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}

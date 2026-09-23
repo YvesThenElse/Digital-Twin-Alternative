@@ -35,6 +35,19 @@ public sealed record MemoryView(string? Title, string Text);
 /// Le titre lisible. L'écran ne peut pas le résoudre : il n'a chargé qu'une
 /// plateforme, et la timeline les traverse toutes.
 /// </param>
+/// <param name="PlatformId">
+/// La machine sur laquelle cette déclaration a été faite — <b>une donnée
+/// reçue, jamais déduite de l'œuvre</b>.
+///
+/// <para>Elle a un lecteur : la fiche de jeu (E05) ouverte depuis l'axe
+/// déclare et rétracte sur CETTE machine. La déduire du catalogue
+/// fonctionnerait sur le dataset POC, dont une seule œuvre sur 221 est
+/// multi-plateforme, et se mettrait à mentir dès qu'il grandit.</para>
+///
+/// <para><c>null</c> pour un événement qui ne vient pas d'une sélection par
+/// machine : la fiche ne propose alors pas de déclarer, plutôt que de
+/// choisir une machine à la place du joueur.</para>
+/// </param>
 /// <param name="Memory">
 /// Le souvenir écrit sur la CIBLE, pas sur le moment : le modèle l'attache à
 /// un jeu (MODELE §5), et trois moments du même titre en portent donc le
@@ -44,7 +57,7 @@ public sealed record MemoryView(string? Title, string Text);
 public sealed record MomentView(
     string Id, string Type, string TargetKind, string TargetId,
     string TargetLabel, string Confidence, TemporalView OccurredAt,
-    MemoryView? Memory = null);
+    string? PlatformId = null, MemoryView? Memory = null);
 
 public sealed record IntervalView(string Start, string End);
 
@@ -129,5 +142,6 @@ public static class TimelineEndpoints
 
     private static MomentView Voir(PlayerEvent e, string libelle, MemoryView? souvenir)
         => new(e.Id, e.Type, e.Target.Kind, e.Target.Id, libelle,
-               e.Confidence.ToString(), TemporalEncoding.Voir(e.OccurredAt), souvenir);
+               e.Confidence.ToString(), TemporalEncoding.Voir(e.OccurredAt),
+               e.PlatformId, souvenir);
 }

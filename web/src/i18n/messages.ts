@@ -254,6 +254,26 @@ export const MESSAGES = {
   "portrait.souvenirs.un": "souvenir écrit",
   "portrait.souvenirs.plusieurs": "souvenirs écrits",
 
+  // --- E05, la fiche de jeu ----------------------------------------------
+  //
+  // « Le produit est une biographie, pas une encyclopédie » : la section
+  // personnelle s'annonce par « vous », et les faits viennent après.
+  "fiche.vous": "Vous",
+  "fiche.editions": "Éditions connues",
+  "fiche.edition": "{machine} · {region} · {quand}",
+  // Le type de moment n'est pas encore nommé un par un : E07 les corrigera,
+  // et les distinguer ici sans pouvoir les modifier ferait une liste morte.
+  "fiche.moment": "Déclaré",
+  "fiche.retirer": "Retirer cette déclaration",
+  // L'état vide de la couche personnelle : « une invitation en une ligne »,
+  // jamais un bloc vide.
+  "fiche.rienDeclare": "Rien de déclaré sur ce jeu pour l'instant.",
+  "fiche.declarer": "Vous y avez joué ?",
+  // §3.5 : la marque est DITE. Une fiche sans éditions se lirait sinon comme
+  // une œuvre du catalogue dont les sorties manqueraient.
+  "fiche.nonCanonique": "Titre saisi, hors du référentiel",
+  "fiche.revenir": "Revenir à mon histoire",
+
   // --- les régions (§3.4) ------------------------------------------------
   // Le nom, jamais le code : « PAL » ne dit rien à un joueur.
   "region.PAL": "Europe",

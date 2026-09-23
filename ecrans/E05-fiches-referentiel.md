@@ -44,6 +44,16 @@ Cet ordre est délibéré : le produit est une biographie, pas une encyclopédie
 
 **1 — Votre historique.** Les trois bascules de E02, plus la liste des moments datés. Déclarer se fait ici, sans changer d'écran.
 
+> **Livré le 23 septembre 2026 — variante A, et une seule bascule.**
+>
+> « Les trois bascules de E02 » date d'avant la refonte d'E02 en **deux passes**. Cette fiche-là avait elle-même trois bascules par ligne, et [E02](./E02-selection-massive.md) explique par le calcul mobile pourquoi elles ont disparu. En reprendre trois ici rétablirait ce que l'autre fiche corrige. La fiche porte donc **la passe 1** — « vous y avez joué ? » — et l'affinage reste à E07, où les actions ci-dessous l'envoient déjà.
+>
+> Ce que la Phase 1 en livre : le titre, **les moments rassemblés** — c'est ce que la fiche apporte, l'axe les disperse entre des entrées éloignées et parfois repliées —, le souvenir écrit, la bascule, et les **éditions connues** avec leur machine et leur région. Les repères 2, 4, 5, 6 et 7 attendent leur phase.
+>
+> **Un seul chemin d'écriture.** Déclarer et rétracter passent par les appels de la sélection massive, pas par d'autres : un second produirait des événements de forme différente pour le même geste, et le journal cesserait d'être comparable à lui-même. La machine est celle que la déclaration porte — **reçue, jamais déduite de l'œuvre** ; sans elle, la fiche ne propose pas de déclarer plutôt que de choisir une machine à la place du joueur.
+>
+> **Ce qui manque encore : l'entrée depuis E02.** Les « Relations » ci-dessous promettent E02 → E05, et le tableau d'actions d'E02 ne définit **aucun geste** qui l'ouvre — sa ligne entière est déjà la cible « joué », et lui ajouter une seconde cible est exactement ce que sa refonte interdit. L'entrée livrée est donc celle d'E03, que sa fiche spécifie : « clic sur un jeu → E05 ». Le manque est inscrit dans [TODO-ECRANS.md](../TODO-ECRANS.md).
+
 **2 — Vos exemplaires.** La granularité de §6.1 : le même titre possédé plusieurs fois, sur plusieurs supports, à plusieurs époques. C'est ce que ne font pas les produits concurrents (§2.3) — la fiche doit le montrer clairement.
 
 **3 — Éditions connues.** Non possédées : elles servent la navigation et la déclaration (« c'était celle-là »).

@@ -36,17 +36,25 @@ export function statutRegion(oeuvre: Oeuvre, region: string): StatutRegion {
 }
 
 /**
+ * Le NOM d'une région, jamais son code : « PAL » ne dit rien à un joueur.
+ *
+ * Une région hors catalogue retombe sur son code plutôt que de rendre vide —
+ * un libellé muet serait indistinguable d'un défaut d'affichage. Exportée
+ * parce qu'un second lecteur en dépend : les éditions connues d'une fiche de
+ * jeu (E05 repère 3), où §3.4 interdit d'afficher une sortie sans sa région.
+ */
+export function nomRegion(region: string): string {
+  const cleRegion = `region.${region}` as CleMessage;
+  return cleRegion in MESSAGES ? t(cleRegion) : region;
+}
+
+/**
  * Le libellé visible. **Aucun des quatre états ne se rend par une chaîne
  * vide** : un état muet serait indistinguable d'un défaut d'affichage, et les
  * trois autres perdraient leur sens par contraste.
- *
- * Le code de région n'est jamais montré : « PAL » ne dit rien à un joueur.
  */
 export function libelleStatut(statut: StatutRegion, region: string): string {
-  // Le NOM de la région, jamais son code : « PAL » ne dit rien à un joueur.
-  // Une région hors catalogue retombe sur son code plutôt que de rendre vide.
-  const cleRegion = `region.${region}` as CleMessage;
-  const nom = cleRegion in MESSAGES ? t(cleRegion) : region;
+  const nom = nomRegion(region);
 
   switch (statut) {
     case "sorti":

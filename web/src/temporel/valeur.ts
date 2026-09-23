@@ -18,6 +18,31 @@ export type ValeurTemporelle =
   | { kind: "Unknown" };
 
 /**
+ * Une sortie du référentiel — `date` + `precision` — traduite <b>en gardant
+ * sa granularité</b>.
+ *
+ * <b>Ici et non dans le client HTTP</b> : c'est une règle de lecture, pas un
+ * détail de transport. La liste d'une plateforme et la fiche d'un jeu la
+ * partagent ; deux décodages du même couple finiraient par diverger, et le
+ * joueur verrait la même sortie changer de forme d'un écran à l'autre.
+ *
+ * `day` et `month` sont les deux seules précisions qui affirment plus qu'une
+ * année. Tout le reste retombe sur l'année : c'est le premier des trois
+ * interdits de §2 — jamais plus précis que la source.
+ */
+export function valeurDeSortie(date: string, precision: string): ValeurTemporelle {
+  const annee = Number(date.slice(0, 4));
+  switch (precision) {
+    case "day":
+      return { kind: "ExactDate", date };
+    case "month":
+      return { kind: "Month", year: annee, month: Number(date.slice(5, 7)) };
+    default:
+      return { kind: "Year", year: annee };
+  }
+}
+
+/**
  * Forme à donner au moment sur l'axe
  * ([principes transverses](../../../ecrans/00-principes-transverses.md) §2).
  *

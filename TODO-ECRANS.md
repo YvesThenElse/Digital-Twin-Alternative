@@ -148,7 +148,7 @@ du périmètre n'ont jamais été livrées.
 
 ## Les liens promis qui ne mènent nulle part
 
-- [ ] **S4 — E05, la fiche de jeu.** (E05 · §3.2) Promise par E02 et par E03 :
+- [x] **S4 — E05, la fiche de jeu.** (E05 · §3.2) Promise par E02 et par E03 :
   cliquer un jeu ne fait rien aujourd'hui. La fiche se lit en **deux couches,
   la personnelle d'abord** — « le produit est une biographie, pas une
   encyclopédie ». *Acceptation : depuis l'axe ou la liste, un jeu ouvre sa
@@ -227,6 +227,16 @@ question.
 
 Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
 
+- **E02 promet E05 et ne l'ouvre par aucun geste.** Ses « Relations » listent
+  « → E05 (détail d'un jeu, en conservant la position) », et son tableau
+  d'actions n'en définit aucune : la ligne entière est déjà la cible
+  « joué », et lui ajouter une seconde cible est précisément ce que sa
+  refonte en deux passes interdit — quatre cibles de 44 px ne laissent que
+  143 px de titre. L'entrée livrée est celle d'E03, que sa fiche spécifie.
+  Trancher demande de choisir un geste qui n'existe nulle part aujourd'hui
+  (le panneau d'affinage ? le survol desktop ?), et cela n'appartenait pas à
+  cet item.
+
 - **Trois blocs ⑴ d'E04 restent absents** : la timeline condensée ⒞, les
   périodes d'activité ⒟ et « vos préférés » ⒠ bis sont marqués Phase 1 dans
   la fiche et n'existent pas. ⒞ est presque sans objet ici — la vraie
@@ -302,6 +312,30 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   Reprendre coûte **un** geste au lieu de quatre ; l'ignorer laisse les trois
   temps entiers. Ce qui est laissé : la redirection annoncée en tête de
   fiche, qui attend S5.
+
+- **S4** — la fiche de jeu (E05, variante A) s'ouvre en cliquant un titre sur
+  l'axe, comme E03 le spécifie. Deux couches, **la personnelle en haut** :
+  ce qu'on a vécu, rassemblé — l'axe le disperse entre des entrées éloignées
+  et parfois repliées —, le souvenir écrit, puis les éditions connues, chacune
+  avec sa machine et sa région (§3.4). `GET /works/{id}` les rend **à travers
+  les plateformes**, contrairement à la liste d'une machine, et répond 404
+  pour un titre saisi : une revendication n'est pas une œuvre curée, et sa
+  fiche est minimale et marquée.
+
+  **Un seul chemin d'écriture** : déclarer et rétracter appellent ce
+  qu'appelle la sélection massive. La machine vient de la déclaration
+  elle-même — `platformId` voyage désormais sur les moments de l'axe —, et
+  sans elle la fiche ne propose pas de déclarer plutôt que de choisir à la
+  place du joueur. Les moments affichés se **dérivent** de l'axe à chaque
+  rendu : rétracter relit, et la fiche se met à jour sans qu'on ait copié
+  quoi que ce soit (apprentissage 73).
+
+  **Décidé** : une seule bascule, pas les trois que la fiche annonce. Ces
+  trois-là datent d'avant la refonte d'E02 en deux passes, que sa propre
+  fiche justifie par le calcul mobile ; les rétablir ici rétablirait ce que
+  l'autre corrige. L'affinage reste à E07, où E05 l'envoie déjà.
+
+  Ce qui est laissé : l'entrée depuis E02, inscrite ci-dessous.
 
 - **S3** — la barre de contrôle d'E02 porte son filtre. Il cherche un
   **titre**, sans accent ni casse, et il ne trie pas par état : une ligne

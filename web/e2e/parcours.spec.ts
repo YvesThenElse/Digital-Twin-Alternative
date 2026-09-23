@@ -905,6 +905,51 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await expect(axe.getByText(PERIODE_LUE).first()).toBeVisible();
   await expect(axe.getByText(PERIODE_LUE)).toHaveCount(MOMENTS_ATTENDUS);
 
+  // --- 7. la fiche du jeu (E05) ------------------------------------------
+  //
+  // E03, actions : « clic sur un jeu → E05 ». Cliquer un jeu ne faisait rien,
+  // et le lien promis par deux fiches ne menait nulle part.
+  //
+  // On prend le titre AFFINÉ : c'est celui dont l'axe disperse trois moments,
+  // et c'est exactement ce que la fiche existe pour rassembler.
+  const titreAffine = await page.getByRole("img", { name: "Fini" })
+    .locator("xpath=ancestor::li[1]")
+    .getByTestId("moment-titre").textContent();
+
+  await toucher(page.getByRole("button", { name: titreAffine!, exact: true })
+    .first().click());
+
+  const fiche = page.getByTestId("fiche");
+  await expect(fiche).toBeVisible();
+  await expect(fiche).toContainText(titreAffine!);
+
+  // **Les trois moments sont ENSEMBLE.** Sur l'axe ils sont dans le même
+  // épisode, noyés parmi trente autres lignes ; ici ils sont la fiche.
+  await expect(fiche.getByTestId("fiche-moment")).toHaveCount(3);
+
+  // Et le personnel est AU-DESSUS du factuel — mesuré sur la page, parce que
+  // c'est la décision de conception centrale d'E05 et qu'une règle de
+  // disposition peut inverser l'ordre du code.
+  const boiteVous = (await page.getByTestId("fiche-vous").boundingBox())!;
+  const boiteFaits = (await page.getByTestId("fiche-referentiel").boundingBox())!;
+  expect(boiteVous.y + boiteVous.height,
+    "la fiche technique passe avant ce que le joueur a vécu")
+    .toBeLessThanOrEqual(boiteFaits.y + 1);
+
+  // Les éditions connues viennent du référentiel RÉEL, et chacune porte sa
+  // machine et sa région (§3.4).
+  const editions = fiche.getByTestId("fiche-edition");
+  await expect(editions.first()).toBeVisible();
+  await expect(editions.first()).toContainText("Super Nintendo");
+
+  // Le souvenir écrit sur ce jeu y est aussi : c'est la seule vue du produit
+  // qui réponde à « ce jeu, et moi ».
+  await expect(page.getByTestId("fiche-vous")).toContainText(REPERE);
+
+  // Et ce n'est pas un cul-de-sac.
+  await toucher(page.getByRole("button", { name: /Revenir/ }).click());
+  await expect(page.getByTestId("axe")).toBeVisible();
+
   // --- le KPI de §22.3 ---------------------------------------------------
   //
   // Un geste par titre, plus l'amorce (machine, période), les deux notes, le
@@ -943,7 +988,11 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // aucune des trente lignes ne le paie — mais le parcours le paie, et ce
   // qu'il coûte doit se voir : c'est la seule façon de savoir s'il reste
   // dans le budget « un tap par jeu » le jour où il servira vraiment.
-  const budget = TITRES_A_COCHER + 26;
+  // Deux gestes de plus : ouvrir la fiche d'un jeu, et en revenir. C'est de
+  // la LECTURE — le budget de §22.3 mesure l'effort de saisie —, mais un
+  // geste reste un geste, et le compter est ce qui empêche la lecture de
+  // grignoter le budget de la saisie sans qu'on s'en aperçoive.
+  const budget = TITRES_A_COCHER + 28;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

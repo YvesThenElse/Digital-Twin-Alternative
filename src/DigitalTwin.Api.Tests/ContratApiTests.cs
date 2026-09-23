@@ -193,7 +193,13 @@ public class ContratApiTests(PostgresFixture bdd)
         Confronter("GET /platforms", plateformes);
 
         var pf = plateformes[0].GetProperty("id").GetString()!;
-        Confronter("GET /platforms/{id}/works", await Lire(client, $"/platforms/{pf}/works"));
+        var oeuvres = await Lire(client, $"/platforms/{pf}/works");
+        Confronter("GET /platforms/{id}/works", oeuvres);
+
+        // La fiche d'une œuvre (E05) : une forme imbriquée de plus, et la
+        // seule qui traverse les plateformes.
+        var oeuvre = oeuvres[0].GetProperty("id").GetString()!;
+        Confronter("GET /works/{id}", await Lire(client, $"/works/{oeuvre}"));
     }
 
     [Fact]
@@ -328,6 +334,7 @@ public class ContratApiTests(PostgresFixture bdd)
         {
             ("GET /platforms", "\"/platforms\""),
             ("GET /platforms/{id}/works", "/works`"),
+            ("GET /works/{id}", "`/works/"),
             ("GET /selection/{user}/{platform}", "`/selection/"),
             ("GET /memories/{user}", "`/memories/"),
             ("GET /unresolved/{user}", "`/unresolved/"),

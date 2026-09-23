@@ -11,8 +11,9 @@ import type {
   ReponseDeclaration,
   SouvenirEcrit,
 } from "../selection/SelectionMassive";
+import type { FicheOeuvre } from "../oeuvre/FicheJeu";
 import type { SyntheseDuProfil } from "../profil/SyntheseProfil";
-import type { ValeurTemporelle } from "../temporel/valeur";
+import { valeurDeSortie, type ValeurTemporelle } from "../temporel/valeur";
 import type { EtatSante } from "../EtatDuService";
 
 /**
@@ -105,15 +106,7 @@ function sortieDe(oeuvre: OeuvreApi, region: string): ValeurTemporelle | null {
   const premiere = parDate.find((r) => r.region === region) ?? parDate[0];
   if (premiere === undefined) return null;
 
-  const annee = Number(premiere.date.slice(0, 4));
-  switch (premiere.precision) {
-    case "day":
-      return { kind: "ExactDate", date: premiere.date };
-    case "month":
-      return { kind: "Month", year: annee, month: Number(premiere.date.slice(5, 7)) };
-    default:
-      return { kind: "Year", year: annee };
-  }
+  return valeurDeSortie(premiere.date, premiere.precision);
 }
 
 export const client = {
@@ -241,6 +234,19 @@ export const client = {
         liste.map((m) => [m.targetId, { texte: m.text, titre: m.title ?? "" }]),
       ),
     ),
+
+  /**
+   * La couche RÉFÉRENTIEL d'une fiche de jeu (E05, variante A).
+   *
+   * <b>Toutes les machines</b>, contrairement à la liste d'une plateforme :
+   * E05 y veut les « éditions connues », qui les traversent. Et elle ignore
+   * l'utilisateur — ce qu'il a vécu est déjà dans l'axe, et mêler les deux
+   * ferait recharger le catalogue chaque fois qu'une déclaration change.
+   *
+   * Une revendication de §3.5 n'en a pas : l'API répond 404, et c'est juste —
+   * une saisie libre n'est pas une œuvre curée.
+   */
+  ficheOeuvre: (workId: string) => lire<FicheOeuvre>(`/works/${workId}`),
 
   /**
    * La synthèse qui forme l'en-tête de `/mon-histoire` (E04, blocs A et B).
