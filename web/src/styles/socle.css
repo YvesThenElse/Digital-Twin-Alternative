@@ -599,32 +599,44 @@ main {
   position: relative;
 }
 
-.ligne-jamais-joue {
+.ligne-gestes {
   position: absolute;
   inset-block-start: var(--e1);
   inset-inline-end: var(--e1);
+  display: flex;
+  gap: var(--e1);
+}
+
+.ligne-geste {
   min-height: var(--cible);
+  min-width: var(--cible);
   color: var(--ink-3);
+}
+
+/* Le geste POSÉ se distingue : sans cela, on ne saurait pas lequel des deux
+   on vient de choisir — et c'est exactement le reproche fait à l'écran. */
+.ligne-geste[aria-pressed="true"] {
+  color: var(--ink);
 }
 
 /* Desktop : « une des options du survol » (E02) — et du FOCUS, sans quoi le
    geste n'existerait pas au clavier. Il reste visible une fois la marque
    posée : autrement, plus rien ne la retirerait à la souris. */
-[data-disposition="grille"] .ligne-jamais-joue {
+[data-disposition="grille"] .ligne-gestes {
   opacity: 0;
   transition: opacity var(--duree-bascule) ease-out;
 }
 
-[data-disposition="grille"] > li:hover .ligne-jamais-joue,
-[data-disposition="grille"] .ligne-jamais-joue:focus-visible,
-[data-disposition="grille"] > li[data-jamais-joue="true"] .ligne-jamais-joue {
+[data-disposition="grille"] > li:hover .ligne-gestes,
+[data-disposition="grille"] .ligne-gestes:focus-visible,
+[data-disposition="grille"] > li[data-jamais-joue="true"] .ligne-gestes {
   opacity: 1;
 }
 
 /* Mobile : hors de vue mais ATTEIGNABLE au clavier — `display: none` le
    rendrait infocusable, et le seul chemin restant serait le balayage, que
    personne ne fait au clavier. Un point d'un pixel n'attrape aucun pouce. */
-[data-disposition="liste"] .ligne-jamais-joue {
+[data-disposition="liste"] .ligne-gestes {
   width: 1px;
   height: 1px;
   min-height: 0;
@@ -632,7 +644,7 @@ main {
   clip-path: inset(50%);
 }
 
-[data-disposition="liste"] .ligne-jamais-joue:focus {
+[data-disposition="liste"] .ligne-gestes:focus {
   width: auto;
   height: auto;
   min-height: var(--cible);
@@ -735,14 +747,48 @@ main {
   overflow: hidden;
 }
 
-/* L'état déclaré se voit — et pas par la seule couleur (§10). */
-.ligne[aria-pressed="true"] {
+/*
+ * LES TROIS ÉTATS, et le troisième est le sujet.
+ *
+ * « Quand on ouvre la liste, on ne sait pas si on y a joué. » L'écran rendait
+ * le silence comme le refus — rien de particulier —, alors que §24.3 en fait
+ * deux informations différentes. Chacun a donc sa forme, et jamais la seule
+ * couleur (§10) : la marque de fin de ligne porte son nom.
+ */
+[data-etat="joue"] .ligne {
   background: var(--surface-2);
 }
 
-.ligne[aria-pressed="true"] .ligne-titre,
-.ligne[aria-pressed="true"] > span:not([data-tuile]) {
+[data-etat="joue"] .ligne-titre,
+[data-etat="joue"] .ligne > span:not([data-tuile]) {
   font-weight: 600;
+}
+
+/* Pas encore dit : la marque est là, discrète. L'effacer ferait de l'absence
+   de réponse une absence tout court, et c'est le défaut qu'on corrige. */
+[data-etat="inconnu"] .ligne {
+  color: var(--ink-2);
+}
+
+/*
+ * L'ANNONCE DU BALAYAGE, pendant le geste.
+ *
+ * C'est la réponse au reproche « on ne voit pas qu'on peut balayer ». Une
+ * légende l'aurait dit une fois et aurait encombré la liste pour toujours ;
+ * ceci n'existe que pendant le geste, et enseigne en le faisant.
+ */
+[data-balayage] .ligne {
+  transition: transform var(--duree-bascule) ease-out;
+}
+
+[data-balayage="joue"] .ligne {
+  transform: translateX(6px);
+  box-shadow: inset 3px 0 0 0 var(--epoque-32-64-bits);
+}
+
+[data-balayage="jamais"] .ligne {
+  transform: translateX(-6px);
+  box-shadow: inset -3px 0 0 0 var(--avertissement);
 }
 
 /* --- repère D : la bande d'époque --------------------------------------- */
@@ -1668,4 +1714,77 @@ figure[data-testid="bande-epoque"] figcaption {
 .preferes li {
   font: var(--body);
   color: var(--ink);
+}
+
+/* --- E02, la modale d'un jeu -------------------------------------------- */
+
+/*
+ * « Beaucoup plus centré : on sait qu'on a sélectionné quelque chose. »
+ *
+ * Le dépli en ligne poussait la liste vers le bas à chaque coche, et la
+ * réponse qu'on venait de donner se perdait au milieu de trente autres
+ * lignes. La modale ne montre qu'un jeu.
+ *
+ * Le fond EST la sortie : « si on clique à côté, on a juste fermé ». Il est
+ * donc assez sombre pour qu'on comprenne qu'il n'est pas la page, et assez
+ * clair pour qu'on voie la liste dessous — on n'a pas quitté l'écran.
+ */
+.modale-fond {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--e4);
+  background: rgb(26 24 21 / 55%);
+}
+
+.modale {
+  inline-size: min(28rem, 100%);
+  max-block-size: 88vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e4);
+  padding: var(--e6);
+  border-radius: var(--r2);
+  background: var(--surface);
+  box-shadow: var(--ombre-2);
+}
+
+.modale-tete {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e4);
+}
+
+/* Le nom en display : c'est un jeu qu'on regarde, pas un formulaire qu'on
+   remplit — même registre que la phrase du portrait (langage visuel §4). */
+.modale-titre {
+  flex: 1;
+  margin: 0;
+  font: var(--display-2);
+}
+
+.modale-tete [data-tuile] {
+  inline-size: 72px;
+  flex: 0 0 auto;
+}
+
+/* Ce qui n'a pas lieu d'être n'est pas grisé : il n'est pas là. Cette phrase
+   dit pourquoi, plutôt que de laisser un vide qui se lirait comme un défaut
+   de chargement. */
+.modale-rien {
+  margin: 0;
+  font: var(--body);
+  color: var(--ink-3);
+}
+
+/* L'astuce du balayage — écrite là où on a le temps de la lire, et faite
+   pour se rendre inutile. Discrète : ce n'est pas une consigne. */
+.modale-astuce {
+  margin: 0;
+  font: var(--micro);
+  color: var(--ink-3);
 }

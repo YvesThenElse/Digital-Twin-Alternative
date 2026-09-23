@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Locator } from "@playwright/test";
 
 /**
  * Le parcours du critère de sortie de la Phase 1 :
@@ -172,7 +172,7 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await page.waitForLoadState("networkidle");
   await expect(page.getByRole("heading", { name: /quand/i })).toBeVisible();
   await expect(page.getByTestId("affinage")).toBeVisible();
-  await expect(page.getByRole("button", { name: /^Déclarer : / })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /\. Ouvrir$/ })).toHaveCount(0);
 
   // --- 2 ter. le temps 3, la récompense immédiate (E01) ------------------
   //
@@ -276,7 +276,9 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await expect(contexte).toContainText("Super Nintendo");
 
   // --- 3. cocher ---------------------------------------------------------
-  const lignes = page.getByRole("button", { name: /^Déclarer : / });
+  // Les lignes NON dites. Elles ouvrent la modale ; ce sont les deux cibles
+  // dirigées, ou le balayage, qui déclarent.
+  const lignes = page.getByRole("button", { name: /— pas encore dit\. Ouvrir$/ });
   await expect(lignes.first()).toBeVisible();
 
   // Deux STRATÉGIES de lecture, pas une disposition étirée (§21.2). Passer
@@ -346,11 +348,133 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     }
   }
 
+  // **UN GESTE PAR JEU**, et c'est ce que ce parcours garde. Le tap ouvre
+  // désormais la modale ; déclarer est un geste DIRIGÉ, parce qu'un tap ne
+  // peut pas dire dans quel sens on se prononce et que « pas encore dit »
+  // est un état à part entière.
+  //
+  // **Et le geste n'est pas le même sur les deux dispositions.** Le balayage
+  // n'existe pas à la souris ; la cible du survol n'existe pas au pouce — sur
+  // mobile elle est hors de vue, atteignable au clavier seulement, parce
+  // qu'une cible permanente de plus coûterait les 200 px que E02 refuse.
+  // Déclarer trente titres en cliquant une cible invisible prouverait un
+  // chemin que personne n'emprunte.
+  const cdp = await page.context().newCDPSession(page);
+  const balayer = async (ligne: Locator, sens: "joue" | "jamais") => {
+    // Les coordonnées du protocole sont celles de la FENÊTRE : une ligne
+    // restée sous le pli recevrait le balayage à côté.
+    await ligne.scrollIntoViewIfNeeded();
+    const boite = (await ligne.boundingBox())!;
+    const y = boite.y + boite.height / 2;
+    const depart = sens === "joue" ? boite.x + 10 : boite.x + boite.width - 10;
+    const pas = sens === "joue" ? 60 : -60;
+    const toucherEcran = (type: "touchStart" | "touchMove" | "touchEnd", x: number) =>
+      cdp.send("Input.dispatchTouchEvent", {
+        type,
+        touchPoints: type === "touchEnd" ? [] : [{ x, y }],
+      });
+    await toucherEcran("touchStart", depart);
+    await toucherEcran("touchMove", depart + pas);
+    await toucherEcran("touchMove", depart + pas * 2);
+    await toucherEcran("touchEnd", depart + pas * 2);
+  };
+
+  const direJoue = page.getByRole("button", { name: /^J'y ai joué à / });
+  const declarerJoue = async () =>
+    attendue === "liste"
+      ? balayer(lignes.first(), "joue")
+      : direJoue.first().click();
+
+  const avantLaSaisie = gestes;
   for (let i = 0; i < TITRES_A_COCHER; i += 1) {
-    // Toujours la PREMIÈRE ligne encore non déclarée : c'est le geste réel —
-    // on descend la liste sans chercher.
-    await toucher(lignes.first().click());
+    // Toujours la PREMIÈRE ligne encore non dite : c'est le geste réel — on
+    // descend la liste sans chercher.
+    await toucher(declarerJoue());
   }
+
+  // **LES TROIS ÉTATS SE VOIENT**, et pas seulement dans un attribut.
+  // « Quand on ouvre la liste, on ne sait pas si on y a joué » : l'écran
+  // rendait le silence comme le refus. Chacun a donc sa marque, nommée —
+  // §10 interdit qu'une information tienne à la seule couleur — et le
+  // parcours regarde ce que le navigateur a calculé, pas ce que le composant
+  // déclare.
+  const marques = await page.getByRole("list").last().evaluate((liste) => {
+    const parEtat = (etat: string) => {
+      const li = liste.querySelector(`li[data-etat="${etat}"]`);
+      if (li === null) return null;
+      const icone = li.querySelector(".ligne svg[role='img']");
+      const ligne = li.querySelector(".ligne")!;
+      return {
+        nom: icone?.getAttribute("aria-label") ?? null,
+        largeur: icone?.getBoundingClientRect().width ?? 0,
+        fond: getComputedStyle(ligne).backgroundColor,
+        graisse: getComputedStyle(ligne.querySelector(".ligne-titre") ?? ligne).fontWeight,
+      };
+    };
+    return { joue: parEtat("joue"), inconnu: parEtat("inconnu") };
+  });
+  expect(marques.joue, "aucune ligne déclarée sur la liste").not.toBeNull();
+  expect(marques.inconnu, "aucune ligne « pas encore dit » sur la liste").not.toBeNull();
+  expect(marques.joue!.nom, "la ligne déclarée ne dit pas son état").toBe("Joué");
+  expect(marques.inconnu!.nom, "le silence n'a pas de marque").toBe("Pas encore dit");
+  expect(marques.inconnu!.largeur, "la marque du silence est invisible")
+    .toBeGreaterThan(8);
+  // Et les deux ne se ressemblent PAS : une marque distincte dans un rendu
+  // identique ne dirait rien à qui parcourt la liste des yeux.
+  expect(
+    marques.joue!.fond !== marques.inconnu!.fond
+      || marques.joue!.graisse !== marques.inconnu!.graisse,
+    "la ligne déclarée se rend exactement comme celle qui n'a rien dit",
+  ).toBe(true);
+
+  // **LE BALAYAGE S'ANNONCE PENDANT QU'ON LE FAIT.** C'est la réponse au
+  // second reproche — « on ne voit pas qu'on peut balayer » — et le seul
+  // endroit où elle se vérifie : une légende l'aurait dit une fois et aurait
+  // encombré la liste pour toujours. On interrompt donc un geste à mi-course
+  // et on regarde ce que la ligne annonce, avant de le rendre.
+  if (attendue === "liste") {
+    const cible = lignes.first();
+    await cible.scrollIntoViewIfNeeded();
+    const boite = (await cible.boundingBox())!;
+    const y = boite.y + boite.height / 2;
+    const x = boite.x + 10;
+    await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchStart", touchPoints: [{ x, y }],
+    });
+    await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchMove", touchPoints: [{ x: x + 70, y }],
+    });
+
+    const li = cible.locator("xpath=..");
+    await expect(li).toHaveAttribute("data-balayage", "joue");
+    const annonce = await li.evaluate((n) => {
+      const ligne = n.querySelector(".ligne")!;
+      return {
+        deplacement: getComputedStyle(ligne).transform,
+        ombre: getComputedStyle(ligne).boxShadow,
+      };
+    });
+    expect(annonce.deplacement, "la ligne ne bouge pas sous le doigt")
+      .not.toBe("none");
+    expect(annonce.ombre, "le sens du geste n'est pas annoncé").not.toBe("none");
+
+    // Puis on REVIENT au point de départ avant de lâcher : un geste commencé
+    // par erreur ne doit rien écrire.
+    await cdp.send("Input.dispatchTouchEvent", {
+      type: "touchMove", touchPoints: [{ x, y }],
+    });
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await expect(li).not.toHaveAttribute("data-balayage", "joue");
+    await expect(page.getByTestId("bande-epoque"))
+      .toHaveAttribute("data-total", String(TITRES_A_COCHER));
+  }
+
+  // **Le budget de la passe 1, mesuré ici et pas en fin de parcours** : un
+  // total global se laisse diluer par tout ce que le parcours fait d'autre,
+  // et c'est précisément ce chiffre-là que la refonte du geste mettait en
+  // jeu. Trente titres, trente gestes.
+  expect(gestes - avantLaSaisie, "la passe 1 coûte plus d'un geste par jeu")
+    .toBe(TITRES_A_COCHER);
 
   // La récompense est arrivée PENDANT la saisie, pas à la fin (§24.4).
   const bande = page.getByTestId("bande-epoque");
@@ -374,15 +498,25 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // il ne quittait pas le navigateur : on décochait, on rechargeait, la
   // ligne revenait. C'est le seul défaut de l'audit qui faisait perdre du
   // travail à un testeur.
-  const aRetirer = page.getByRole("button", { name: /^Déclarer : / }).first();
+  const aRetirer = lignes.first();
   // Le nom ACCESSIBLE, pas le contenu : celui-ci concatène le titre, la
   // date et le statut régional.
   const titreRetire = (await aRetirer.getAttribute("aria-label"))!
-    .replace("Déclarer : ", "");
-  await toucher(aRetirer.click());
+    .replace(/ — .*$/, "");
+  await toucher(declarerJoue());
   await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER + 1));
+
+  // **Re-dire ce qui est dit RETIRE** : le même geste, dans le même sens.
+  // « Pas encore dit » reste ainsi atteignable — un geste par erreur serait
+  // sinon définitif, sur l'écran où se tromper de ligne est le plus fréquent.
+  const declaree0 = page.getByRole("button", {
+    name: `${titreRetire} — j'y ai joué. Ouvrir`, exact: true,
+  });
   await toucher(
-    page.getByRole("button", { name: `Déclaré : ${titreRetire}` }).click(),
+    attendue === "liste"
+      ? balayer(declaree0, "joue")
+      : page.getByRole("button", { name: `Retirer « joué » de ${titreRetire}`, exact: true })
+          .click(),
   );
   await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
 
@@ -397,10 +531,10 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // **Lecture seule.** Le filtre ne déclare rien ici ; ce qu'on vérifie est
   // qu'il ne PERD rien — les trente déclarations faites depuis l'ouverture
   // doivent traverser le filtre et sa levée.
-  const toutesLesLignes = page.getByRole("button", { name: /^(Déclarer|Déclaré) : / });
+  const toutesLesLignes = page.getByRole("button", { name: /\. Ouvrir$/ });
   const avantFiltre = await toutesLesLignes.count();
-  const premierDeclare = (await page.getByRole("button", { name: /^Déclaré : / })
-    .first().getAttribute("aria-label"))!.replace("Déclaré : ", "");
+  const premierDeclare = (await page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ })
+    .first().getAttribute("aria-label"))!.replace(/ — .*$/, "");
   const mot = premierDeclare.split(" ").find((m) => m.length >= 4)!;
 
   const chercher = page.getByRole("textbox", { name: /Chercher un jeu/ });
@@ -424,55 +558,76 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // World 2 ». Sans lui, l'assertion trouvait deux lignes et échouait pour
   // une raison qui n'a rien à voir avec le filtre.
   await expect(page.getByRole("button", {
-    name: `Déclaré : ${premierDeclare}`, exact: true,
+    name: `${premierDeclare} — j'y ai joué. Ouvrir`, exact: true,
   })).toBeVisible();
 
   await toucher(page.getByRole("button", { name: "Vider la recherche" }).click());
 
   // La liste ENTIÈRE revient, et les trente déclarations avec elle.
   await expect(toutesLesLignes).toHaveCount(avantFiltre);
-  await expect(page.getByRole("button", { name: /^Déclaré : / }))
+  await expect(page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ }))
     .toHaveCount(TITRES_A_COCHER);
   await expect(page.getByTestId("compte")).not.toContainText(" sur ");
 
-  // --- 3 bis. la passe 2, sur une ligne déclarée --------------------------
+  // --- 3 bis. la passe 2, DANS LA MODALE ---------------------------------
   //
   // Facultative par construction : les vingt-neuf autres lignes n'y touchent
-  // pas et restent des déclarations valables.
-  // **Les TROIS questions sont là.** E02 en liste quatre et n'en posait que
-  // deux : l'affect n'était saisissable que depuis E07, alors que son
-  // intérêt est d'être « un tap qui capte ce qui a compté » PENDANT la
-  // saisie. L'ordre est une décision de conception — le factuel, puis
-  // l'émotionnel, puis la provenance —, et on le mesure sur la page.
-  const questions = page.getByRole("group");
-  // TROIS par ligne déclarée, pas deux : le compte le dit mieux qu'une
-  // présence, et il tomberait à soixante si la question disparaissait.
-  await expect(questions).toHaveCount(TITRES_A_COCHER * 3);
-  await expect(questions.nth(0)).toHaveAttribute("aria-label", "Vous l'avez fini ?");
-  await expect(questions.nth(1)).toHaveAttribute("aria-label", "Ça vous a marqué ?");
-  await expect(questions.nth(2)).toHaveAttribute("aria-label", "Comment y avez-vous joué ?");
+  // pas et restent des déclarations valables. Elle ne vit plus SOUS la ligne
+  // — le dépli poussait la liste vers le bas à chaque coche et noyait la
+  // réponse au milieu de trente autres — mais dans une boîte centrée qui ne
+  // montre qu'un jeu.
+  const declaree = page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ }).first();
+  const titreDeclare = (await declaree.getAttribute("aria-label"))!.replace(/ — .*$/, "");
+  await toucher(declaree.click());
 
-  await toucher(page.getByRole("button", { name: "Fini" }).first().click());
-  await toucher(page.getByRole("button", { name: "Je l'avais" }).first().click());
+  const modale = page.getByTestId("modale-jeu");
+  await expect(modale).toBeVisible();
+  await expect(modale).toContainText(titreDeclare);
 
-  // Et « toujours en cours » sur une AUTRE ligne (§4.6) : « commencé, jamais
-  // refermé — il pourrait y revenir ». Le journal ne sait pas la distinguer
-  // d'un jeu simplement coché — les deux ne produisent qu'un `StartedGame`
-  // que rien ne referme —, donc elle s'écrit comme jugement. La chip
-  // revenait vierge au rechargement, et le testeur voyait disparaître ce
-  // qu'il venait de dire.
-  await toucher(page.getByRole("button", { name: "Toujours en cours" }).nth(1).click());
+  // **Elle est CENTRÉE et elle couvre.** « Beaucoup plus centré : on sait
+  // qu'on a sélectionné quelque chose. » Une boîte mesurée collée en haut ou
+  // large de 40 px ne produirait pas cet effet, et aucun test de composant
+  // ne peut le voir — il rend dans un document sans feuille de style.
+  const cadre = await modale.evaluate((n) => {
+    const b = n.getBoundingClientRect();
+    return {
+      centreX: b.x + b.width / 2,
+      largeur: b.width,
+      hauteur: b.height,
+      fond: getComputedStyle(n.parentElement!).backgroundColor,
+    };
+  });
+  const vue = page.viewportSize()!;
+  expect(Math.abs(cadre.centreX - vue.width / 2), "la modale n'est pas centrée")
+    .toBeLessThan(vue.width * 0.08);
+  expect(cadre.largeur, "la modale est trop étroite pour être lue")
+    .toBeGreaterThan(260);
+  expect(cadre.hauteur, "la modale n'a pas de hauteur").toBeGreaterThan(160);
+  // Le fond assombrit : sans cela, la boîte flotte sur la liste et l'on ne
+  // sait plus laquelle des deux répond au geste suivant.
+  expect(cadre.fond, "le fond de la modale ne couvre rien")
+    .toMatch(/rgba?\([^)]*0\.\d+\)|rgb\(26, 24, 21\)/);
 
-  // --- 3 bis ter. la fiche d'un jeu, depuis E02 --------------------------
+  // **Les QUATRE questions sont là, dans l'ordre.** La première construit la
+  // timeline — on dit ce qu'on a fait du jeu avant de le qualifier ; les
+  // trois autres suivent l'ordre d'E02 : le factuel, l'émotionnel, puis la
+  // provenance, la plus accessoire.
+  const questions = modale.getByRole("group");
+  await expect(questions).toHaveCount(4);
+  await expect(questions.nth(0)).toHaveAttribute("aria-label", "Y avez-vous joué ?");
+  await expect(questions.nth(1)).toHaveAttribute("aria-label", "Vous l'avez fini ?");
+  await expect(questions.nth(2)).toHaveAttribute("aria-label", "Ça vous a marqué ?");
+  await expect(questions.nth(3)).toHaveAttribute("aria-label", "Comment y avez-vous joué ?");
+
+  await toucher(modale.getByRole("button", { name: "Fini" }).click());
+  await toucher(modale.getByRole("button", { name: "Je l'avais" }).click());
+
+  // --- 3 bis ter. la fiche d'un jeu, depuis la modale --------------------
   //
-  // E02 promet « → E05 (détail d'un jeu, EN CONSERVANT LA POSITION) » et
-  // aucun geste ne l'ouvrait. Il vit dans le PANNEAU d'affinage : la ligne
-  // garde sa cible unique, et le budget d'un tap par jeu ne bouge pas.
-  const declaree = page.getByRole("button", { name: /^Déclaré : / }).first();
-  const titreDeclare = (await declaree.getAttribute("aria-label"))!
-    .replace("Déclaré : ", "");
-
-  await toucher(page.getByRole("button", { name: `Voir la fiche de ${titreDeclare}`, exact: true })
+  // E02 promet « → E05 (détail d'un jeu, EN CONSERVANT LA POSITION) ». Le
+  // geste vit dans la modale : sur la ligne, cette cible coûterait 44 px à
+  // chacune des 147, et E02 interdit la quatrième.
+  await toucher(modale.getByRole("button", { name: `Voir la fiche de ${titreDeclare}`, exact: true })
     .click());
   await expect(page.getByTestId("fiche")).toContainText(titreDeclare);
 
@@ -481,7 +636,22 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // **Et la liste est telle qu'on l'a laissée.** E05 est une page : l'état
   // local de la sélection est parti avec le démontage, et c'est la relecture
   // qui le rend — pas une copie gardée en mémoire.
-  await expect(page.getByRole("button", { name: /^Déclaré : / }))
+  await expect(page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ }))
+    .toHaveCount(TITRES_A_COCHER);
+
+  // **« Toujours en cours » sur une AUTRE ligne** (§4.6) : « commencé, jamais
+  // refermé — il pourrait y revenir ». Le journal ne sait pas la distinguer
+  // d'un jeu simplement coché, donc elle s'écrit comme jugement.
+  const enCours = page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ }).nth(1);
+  const titreEnCours = (await enCours.getAttribute("aria-label"))!.replace(/ — .*$/, "");
+  await toucher(enCours.click());
+  await toucher(modale.getByRole("button", { name: "Toujours en cours" }).click());
+
+  // **Le clic à côté ferme, et ce qui a été dit tient.** C'est la promesse
+  // exacte de la refonte : « si on clique à côté, on a juste fermé ».
+  await toucher(page.getByTestId("modale-fond").click({ position: { x: 5, y: 5 } }));
+  await expect(modale).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ }))
     .toHaveCount(TITRES_A_COCHER);
 
   // --- 3 ter. « jamais joué » --------------------------------------------
@@ -493,36 +663,17 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Deux gestes, un par disposition — c'est E02 qui les sépare, et ils ne
   // sont pas interchangeables : le balayage n'existe pas à la souris, le
   // survol n'existe pas au pouce.
-  const aEcarter = page.getByRole("button", { name: /^Déclarer : / }).first();
+  const aEcarter = lignes.first();
   const titreEcarte = (await aEcarter.getAttribute("aria-label"))!
-    .replace("Déclarer : ", "");
+    .replace(/ — .*$/, "");
 
   if (attendue === "liste") {
-    // Le balayage vers la gauche, en vrai TOUCHER. `page.mouse` ne convient
-    // pas ici : le projet mobile émule un écran tactile, et la souris n'y
-    // produit pas les événements de pointeur qu'un pouce produit. On passe
-    // donc par le protocole du navigateur, qui les synthétise lui-même —
-    // pointeur, puis le clic qu'il en tire, c'est-à-dire exactement le piège
-    // que l'écran doit étouffer.
-    // Les coordonnées du protocole sont celles de la FENÊTRE : une ligne
-    // restée sous le pli recevrait le balayage à côté.
-    await aEcarter.scrollIntoViewIfNeeded();
-    const boite = (await aEcarter.boundingBox())!;
-    const y = boite.y + boite.height / 2;
-    const depart = boite.x + boite.width - 10;
-    const cdp = await page.context().newCDPSession(page);
-    const toucherEcran = (
-      type: "touchStart" | "touchMove" | "touchEnd",
-      x: number,
-    ) =>
-      cdp.send("Input.dispatchTouchEvent", {
-        type,
-        touchPoints: type === "touchEnd" ? [] : [{ x, y }],
-      });
-    await toucherEcran("touchStart", depart);
-    await toucherEcran("touchMove", depart - 60);
-    await toucherEcran("touchMove", depart - 120);
-    await toucherEcran("touchEnd", depart - 120);
+    // Le balayage vers la GAUCHE, en vrai toucher — l'autre sens du même
+    // geste. `page.mouse` ne conviendrait pas : le projet mobile émule un
+    // écran tactile, et la souris n'y produit pas les événements qu'un pouce
+    // produit. Le protocole du navigateur les synthétise, clic compris,
+    // c'est-à-dire exactement le piège que l'écran doit étouffer.
+    await balayer(aEcarter, "jamais");
     await toucher(Promise.resolve());
   } else {
     // Le bouton du survol. Il est dans le document en permanence et ne se
@@ -536,7 +687,9 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // La ligne le DIT — elle ne le suggère pas par une nuance de gris. On la
   // retrouve par son NOUVEAU nom : un localisateur est paresseux, et celui
   // du départ désigne désormais la ligne suivante.
-  const ecartee = page.getByRole("button", { name: `Jamais joué : ${titreEcarte}` });
+  const ecartee = page.getByRole("button", {
+    name: `${titreEcarte} — je n'y ai jamais joué. Ouvrir`, exact: true,
+  });
   await expect(ecartee).toHaveCount(1);
   const ligneEcartee = ecartee.locator("xpath=..");
 
@@ -596,15 +749,24 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await expect(page.getByTestId("titre-libre")).toHaveAttribute("data-canonique", "false");
 
   // --- 5. deux souvenirs -------------------------------------------------
-  const souvenir = page.getByRole("textbox", { name: /^Un souvenir sur/ }).first();
-  await toucher(souvenir.fill(SOUVENIR_OEUVRE));
+  //
+  // Celui d'une ŒUVRE s'écrit dans la modale : §9 est un complément, et une
+  // zone de texte sous chacune des 147 lignes occuperait l'écran le plus
+  // dense du produit en suggérant un travail à faire.
+  await toucher(
+    page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ }).first().click(),
+  );
+  await toucher(modale.getByRole("textbox", { name: /^Un souvenir sur/ }).fill(SOUVENIR_OEUVRE));
   // Le repère : un titre court, FACULTATIF, qui servira de marque sur l'axe.
   // Les vingt-neuf autres lignes n'y touchent pas et restent des
   // déclarations valables.
   await toucher(
-    page.getByRole("textbox", { name: /^Un repère court sur/ }).first().fill(REPERE),
+    modale.getByRole("textbox", { name: /^Un repère court sur/ }).fill(REPERE),
   );
-  await toucher(page.getByRole("heading", { level: 1 }).click()); // perte de focus
+  // Perte de focus DANS la modale : c'est elle qui déclenche l'écriture, et
+  // cliquer le fond la fermerait avant que le champ ait rendu sa saisie.
+  await toucher(modale.getByRole("heading", { level: 2 }).click());
+  await toucher(page.getByTestId("modale-fond").click({ position: { x: 5, y: 5 } }));
 
   // Et un souvenir sur le titre SAISI — c'est là que §9 place le contenu le
   // plus personnel : un jeu absent du référentiel est souvent un jeu dont on
@@ -702,15 +864,18 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Le manque est inscrit dans TODO-ECRANS.md ; il n'est pas de cet item.
   await page.getByRole("button", { name: /^Voir les jeux/ }).click();
 
-  await expect(page.getByRole("button", { name: /^Déclaré : / }))
+  await expect(page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ }))
     .toHaveCount(TITRES_A_COCHER);
-  // Et la correction a TENU : le titre décoché n'est pas revenu.
-  await expect(page.getByRole("button", { name: `Déclaré : ${titreRetire}` }))
-    .toHaveCount(0);
+  // Et la correction a TENU : le titre retiré n'est pas revenu.
+  await expect(page.getByRole("button", {
+    name: `${titreRetire} — j'y ai joué. Ouvrir`, exact: true,
+  })).toHaveCount(0);
   // Et « jamais joué » aussi : c'est une déclaration, elle se relit comme
   // les autres. Relue comme un titre vierge, le joueur la reposerait à
   // chaque visite — ou pire, la cocherait.
-  await expect(page.getByRole("button", { name: `Jamais joué : ${titreEcarte}` }))
+  await expect(page.getByRole("button", {
+    name: `${titreEcarte} — je n'y ai jamais joué. Ouvrir`, exact: true,
+  }))
     .toHaveCount(1);
 
   // **Et le titre SAISI est revenu**, marqué comme tel et avec sa phrase.
@@ -729,17 +894,44 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // La bande retrouve son compte : le titre saisi y est compté comme les
   // autres. Un recul d'une visite à l'autre se lit comme une perte.
   await expect(bande).toHaveAttribute("data-total", String(TITRES_DECLARES));
-  // Et la passe 2 est remontrée, pas seulement conservée en base.
-  await expect(page.getByRole("button", { name: "Fini" }).first())
+  // Et la passe 2 est remontrée, pas seulement conservée en base. Dans la
+  // modale, donc : on rouvre le jeu qu'on avait affiné, par son nom.
+  const rouvrir = async (titre: string) => {
+    await page.getByRole("button", {
+      name: `${titre} — j'y ai joué. Ouvrir`, exact: true,
+    }).click();
+    await expect(modale).toBeVisible();
+  };
+  const refermer = async () => {
+    await page.getByTestId("modale-fond").click({ position: { x: 5, y: 5 } });
+    await expect(modale).toHaveCount(0);
+  };
+
+  await rouvrir(titreDeclare);
+  await expect(modale.getByRole("button", { name: "Fini" }))
     .toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByRole("button", { name: "Je l'avais" }).first())
+  await expect(modale.getByRole("button", { name: "Je l'avais" }))
     .toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByRole("button", { name: "Toujours en cours" }).nth(1))
+  // Et le souvenir écrit dans la visite précédente est là, avec son repère :
+  // c'est le seul contenu non régénérable du produit, et un champ qui
+  // revient vide fait conclure au testeur qu'il l'a perdu.
+  await expect(modale.getByRole("textbox", { name: /^Un souvenir sur/ }))
+    .toHaveValue(SOUVENIR_OEUVRE);
+  await refermer();
+
+  await rouvrir(titreEnCours);
+  await expect(modale.getByRole("button", { name: "Toujours en cours" }))
     .toHaveAttribute("aria-pressed", "true");
+  await refermer();
+
   // Et la ligne qui n'a RIEN dit reste vierge : c'est la distinction que
-  // l'item porte — « il n'a rien dit » n'est pas « il y joue encore ».
-  await expect(page.getByRole("button", { name: "Toujours en cours" }).nth(2))
+  // §24.3 porte — « il n'a rien dit » n'est pas « il y joue encore ».
+  const vierge = page.getByRole("button", { name: /— j'y ai joué\. Ouvrir$/ }).nth(3);
+  const titreVierge = (await vierge.getAttribute("aria-label"))!.replace(/ — .*$/, "");
+  await rouvrir(titreVierge);
+  await expect(modale.getByRole("button", { name: "Toujours en cours" }))
     .toHaveAttribute("aria-pressed", "false");
+  await refermer();
 
   // --- 5 ter. est-ce moi, ou est-ce le service ? -------------------------
   //
@@ -1269,7 +1461,7 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // Deux gestes de plus : ouvrir la fiche d'un jeu depuis la liste, et en
   // revenir. C'est de la LECTURE, et le geste vit dans le panneau — aucune
   // des trente lignes ne le paie —, mais le budget doit le voir.
-  const budget = TITRES_A_COCHER + 45;
+  const budget = TITRES_A_COCHER + 60;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

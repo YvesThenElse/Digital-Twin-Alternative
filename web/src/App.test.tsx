@@ -170,7 +170,7 @@ describe("App — un geste qui échoue le dit (principes §5)", () => {
     await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
 
     expect(await screen.findByRole("alert")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }))
+    expect(screen.getByRole("button", { name: /^Super Mario World — pas encore dit\./ }))
       .toBeInTheDocument();
   });
 
@@ -477,7 +477,7 @@ describe("App — E05, la fiche de jeu s'ouvre depuis l'axe", () => {
     // sans quoi l'écran montrerait moins que ce que la base contient.
     const utilisateur = userEvent.setup();
     await jusquALaSelection(utilisateur);
-    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /^Super Mario World — pas encore dit\./ }));
 
     // L'état relu porte la déclaration qu'on vient de faire.
     faux.etatSelection.mockResolvedValue([
@@ -506,7 +506,7 @@ describe("App — E05, la fiche de jeu s'ouvre depuis l'axe", () => {
     await utilisateur.click(screen.getByRole("button", { name: /Revenir/ }));
 
     // On est bien revenu DANS la liste, et la ligne est toujours déclarée.
-    expect(await screen.findByRole("button", { name: /^Déclaré : Super Mario World$/ }))
+    expect(await screen.findByRole("button", { name: /^Super Mario World — j'y ai joué\./ }))
       .toBeInTheDocument();
     expect(screen.queryByTestId("axe")).toBeNull();
   });
@@ -691,7 +691,10 @@ describe("App — E03, les trous sont des invitations", () => {
     const utilisateur = userEvent.setup();
     faux.timeline.mockResolvedValue(AXE_MAIGRE);
     await jusquALaSelection(utilisateur);
-    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }));
+    // Le geste DIRIGÉ : taper la ligne ouvrirait la modale sans rien
+    // déclarer. Déclarer dit dans quel sens on se prononce.
+    await utilisateur.click(
+      screen.getByRole("button", { name: "J'y ai joué à Super Mario World" }));
     await waitFor(() => expect(faux.declarer).toHaveBeenCalled());
     const premierLot = faux.declarer.mock.calls[0][0].batchId;
 
@@ -701,7 +704,7 @@ describe("App — E03, les trous sont des invitations", () => {
       screen.getAllByRole("button", { name: /Compléter ces années/ })[0]);
     await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
     await utilisateur.click(
-      await screen.findByRole("button", { name: /^Déclarer : Chrono Trigger$/ }));
+      await screen.findByRole("button", { name: "J'y ai joué à Chrono Trigger" }));
 
     await waitFor(() => expect(faux.declarer).toHaveBeenCalledTimes(2));
     const secondLot = faux.declarer.mock.calls[1][0].batchId;
@@ -846,7 +849,7 @@ describe("App — E01 temps 3, la récompense immédiate", () => {
     await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
 
     expect(await screen.findByTestId("temps3")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /^Déclarer : / })).toBeNull();
+    expect(screen.queryByRole("button", { name: /\. Ouvrir$/ })).toBeNull();
   });
 
   it("n'attend AUCUN chargement pour s'afficher", async () => {
@@ -908,7 +911,7 @@ describe("App — E01 temps 3, la récompense immédiate", () => {
     await utilisateur.click(screen.getByRole("button", { name: /Années 90/ }));
     await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
 
-    expect(await screen.findByRole("button", { name: /^Déclarer : Super Mario World$/ }))
+    expect(await screen.findByRole("button", { name: /^Super Mario World — pas encore dit\./ }))
       .toBeInTheDocument();
     expect(screen.queryByTestId("temps3")).toBeNull();
   });
@@ -921,7 +924,7 @@ describe("App — E01 temps 3, la récompense immédiate", () => {
     await utilisateur.click(screen.getByRole("button", { name: /quelque part/i }));
     await utilisateur.click(await screen.findByRole("button", { name: /Voir les jeux/ }));
 
-    expect(await screen.findByRole("button", { name: /^Déclarer : Super Mario World/ }))
+    expect(await screen.findByRole("button", { name: /^Super Mario World — pas encore dit\./ }))
       .toBeInTheDocument();
     expect(faux.etatSelection).toHaveBeenCalledWith(expect.any(String), "plt_snes");
   });
@@ -949,7 +952,7 @@ describe("App — la récompense arrive avant l'effort (§24.4)", () => {
     await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
 
     expect(screen.getByTestId("recit")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /^Déclarer : / })).toBeNull();
+    expect(screen.queryByRole("button", { name: /\. Ouvrir$/ })).toBeNull();
   });
 
   it("ne la laisse pas traîner sur l'écran de sélection", async () => {
@@ -1095,7 +1098,7 @@ describe("App — la fraîcheur de ce qui est relu", () => {
     const utilisateur = userEvent.setup();
     await jusquALaSelection(utilisateur);
 
-    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }));
+    await utilisateur.click(screen.getByRole("button", { name: /^Super Mario World — pas encore dit\./ }));
     faux.etatSelection.mockClear();
 
     await utilisateur.click(screen.getByRole("button", { name: /changer la période/i }));
@@ -1146,12 +1149,14 @@ describe("App — la fraîcheur de ce qui est relu", () => {
     const utilisateur = userEvent.setup();
     await jusquALaSelection(utilisateur);
 
-    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }));
+    await utilisateur.click(
+      screen.getByRole("button", { name: "J'y ai joué à Super Mario World" }));
     const avant = faux.declarer.mock.calls[0][0].batchId;
 
     await utilisateur.click(screen.getByRole("button", { name: "Recharger la liste" }));
     await waitFor(() => expect(screen.queryByTestId("squelette")).toBeNull());
-    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Chrono Trigger$/ }));
+    await utilisateur.click(
+      screen.getByRole("button", { name: "J'y ai joué à Chrono Trigger" }));
 
     expect(faux.declarer.mock.calls.at(-1)![0].batchId).toBe(avant);
   });
@@ -1162,14 +1167,14 @@ describe("App — la fraîcheur de ce qui est relu", () => {
     // PRÉCÉDENT : le joueur verrait sa correction défaite sans un mot.
     const utilisateur = userEvent.setup();
     await jusquALaSelection(utilisateur);
-    expect(screen.queryByRole("button", { name: /^Déclaré : Super Mario World$/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /^Super Mario World — j'y ai joué\./ })).toBeNull();
 
     faux.etatSelection.mockResolvedValue([
       { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false },
     ]);
     await utilisateur.click(screen.getByRole("button", { name: "Recharger la liste" }));
 
-    expect(await screen.findByRole("button", { name: /^Déclaré : Super Mario World$/ }))
+    expect(await screen.findByRole("button", { name: /^Super Mario World — j'y ai joué\./ }))
       .toBeInTheDocument();
   });
 
@@ -1197,7 +1202,7 @@ describe("App — la fraîcheur de ce qui est relu", () => {
     await utilisateur.click(screen.getByRole("button", { name: "Recharger la liste" }));
 
     await waitFor(() =>
-      expect(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }))
+      expect(screen.getByRole("button", { name: /^Super Mario World — pas encore dit\./ }))
         .toBeInTheDocument());
     expect(screen.queryByRole("button", { name: "Plutôt une période" })).toBeNull();
   });

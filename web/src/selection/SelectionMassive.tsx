@@ -3,14 +3,10 @@ import { BandeDEpoque } from "./BandeDEpoque";
 import { Icone } from "../icones/Icone";
 import { StatutRegional } from "../region/StatutRegional";
 import { statutRegion } from "../region/statut";
+import type { CleMessage } from "../i18n/messages";
 import { t } from "../i18n/t";
 import { Tuile } from "../disposition/Tuile";
-import {
-  CHOIX_ACHEVEMENT,
-  CHOIX_AFFECT,
-  CHOIX_PROVENANCE,
-  Question,
-} from "./Question";
+import { ModaleDuJeu, type EtatDuJeu } from "./ModaleDuJeu";
 import type { Disposition } from "../disposition/epoque";
 import { anneeDe, forme, libelle } from "../temporel/valeur";
 import { construireBande } from "./bande";
@@ -110,6 +106,35 @@ type Affinage = {
 };
 
 const SANS_REPONSE: Affinage = { completion: null, provenance: null, affect: null };
+
+/**
+ * La marque de chaque état, en fin de ligne.
+ *
+ * <b>Écrite comme un tableau exhaustif</b> et non comme deux ternaires :
+ * un quatrième état ne compilerait pas, là où une cascade de conditions
+ * l'aurait rangé en silence dans le cas par défaut — c'est-à-dire dans
+ * « pas encore dit », qui est précisément celui qu'on ne veut pas voir
+ * attribué par défaut.
+ */
+const MARQUE: Record<EtatDuJeu, "joue" | "jamais-joue" | "pas-dit"> = {
+  joue: "joue",
+  jamais: "jamais-joue",
+  inconnu: "pas-dit",
+};
+
+/**
+ * Le nom de chaque état, <b>écrit en toutes lettres</b>.
+ *
+ * Composer la clé — `ligne.etat.${etat}` — coûterait une exception au garde
+ * des libellés morts, qui la cherche LITTÉRALEMENT dans les sources. Trois
+ * clés écrites ici, c'est trois clés qu'il continue de surveiller : retirer
+ * un état fait mourir son libellé, et la suite le dit.
+ */
+const NOM_ETAT: Record<EtatDuJeu, CleMessage> = {
+  joue: "ligne.etat.joue",
+  jamais: "ligne.etat.jamais",
+  inconnu: "ligne.etat.inconnu",
+};
 
 /** Un titre saisi, et la revendication que l'API lui a donnée. */
 type TitreLibre = Oeuvre & { claimId: string | null };
@@ -379,6 +404,26 @@ export function SelectionMassive({
   const [saisie, setSaisie] = useState("");
 
   /**
+   * Le jeu dont la modale est ouverte, ou `null`.
+   *
+   * <b>Un identifiant, pas l'œuvre.</b> La liste se filtre et se recharge
+   * sous la modale ; garder l'objet ferait vivre une copie périmée, et la
+   * modale afficherait un titre que la liste ne contient plus.
+   */
+  const [ouvert, setOuvert] = useState<string | null>(null);
+
+  /**
+   * Ce que le balayage EN COURS va produire, s'il est relâché maintenant.
+   *
+   * C'est la réponse au reproche le plus juste qu'on ait fait à cet écran :
+   * « on ne voit pas qu'on peut balayer ». Une légende l'aurait dit une fois
+   * et aurait encombré la liste pour toujours ; le geste, lui, s'annonce
+   * pendant qu'on le fait — et n'encombre rien quand on ne le fait pas.
+   */
+  const [intention, setIntention] =
+    useState<{ id: string; sens: "joue" | "jamais" } | null>(null);
+
+  /**
    * La recherche de la barre de contrôle (E02 repère B).
    *
    * <b>Elle ne touche à RIEN d'autre.</b> Les lignes cochées, les affinages,
@@ -402,6 +447,24 @@ export function SelectionMassive({
     () => construireBande([...oeuvres, ...titresLibres], declarees),
     [oeuvres, titresLibres, declarees],
   );
+
+  /**
+   * L'état d'une ligne — <b>trois valeurs, pas deux</b>.
+   *
+   * « Quand on ouvre la liste, on ne sait pas si on y a joué. » L'écran
+   * rendait le silence exactement comme le refus : une ligne éteinte. §24.3
+   * en fait pourtant deux informations différentes, et la seconde fait
+   * avancer la reconstruction — la première dit seulement qu'on n'a pas
+   * encore regardé.
+   *
+   * Les deux ensembles portent déjà la distinction ; ce qui manquait, c'est
+   * qu'elle se VOIE.
+   */
+  function etatDe(id: string): EtatDuJeu {
+    if (jamaisJoues.has(id)) return "jamais";
+    if (declarees.has(id)) return "joue";
+    return "inconnu";
+  }
 
   function validerAffinage(sauf?: string) {
     const oeuvre = enAttente.current;
@@ -447,26 +510,30 @@ export function SelectionMassive({
     enAttente.current = id;
   }
 
-  function basculer(id: string) {
+  /**
+   * Poser l'un des trois états — <b>le seul chemin d'écriture de l'écran</b>.
+   *
+   * <para>Re-dire ce qui est déjà dit RETIRE : « pas encore dit » doit rester
+   * atteignable, faute de quoi un geste par erreur serait définitif. C'est
+   * la même règle que les chips de la passe 2, et elle vaut ici davantage :
+   * se tromper de ligne est le geste le plus fréquent de cet écran.</para>
+   *
+   * <para><b>L'ORDRE compte quand on change de camp.</b> Marquer « jamais
+   * joué » sans retirer d'abord laisserait l'événement « joué » vivant sous
+   * le jugement, et l'écran relirait les deux — « je n'y ai jamais joué, et
+   * j'y ai joué » (invariant 8).</para>
+   */
+  function reglerEtat(id: string, vise: "joue" | "jamais") {
     validerAffinage(id);
+    const actuel = etatDe(id);
 
-    // Une ligne estompée revient d'abord au SILENCE. Y écrire « joué » sans
-    // retirer la marque produirait « je n'y ai jamais joué, et j'y ai
-    // joué » (invariant 8) — et « pas prononcé » doit rester atteignable,
-    // faute de quoi un balayage par erreur serait définitif.
-    if (jamaisJoues.has(id)) {
-      retirerJamaisJoue(id);
-      return;
-    }
+    const sansRien = () => {
+      setDeclarees((p) => { const s = new Set(p); s.delete(id); return s; });
+      setJamaisJoues((p) => { const s = new Set(p); s.delete(id); return s; });
+    };
 
-    const suivant = new Set(declarees);
-    const etaitDeclare = suivant.delete(id);
-    if (!etaitDeclare) suivant.add(id);
-
-    // L'affichage change MAINTENANT, avant tout appel réseau.
-    setDeclarees(suivant);
-
-    if (etaitDeclare) {
+    if (actuel === vise) {
+      sansRien();
       // Le journal est en ajout seul : on ne retire pas l'événement, on
       // demande qu'il soit marqué. §5.3 veut la révision « conservée côté
       // système sans être exposée ».
@@ -474,87 +541,91 @@ export function SelectionMassive({
       return;
     }
 
-    envoyer({ batchId: lot, entries: [{ workId: id }] }).catch(() => {
-      setErreur(t("erreur.declaration"));
-    });
-  }
-
-  function retirerJamaisJoue(id: string) {
-    setJamaisJoues((precedents) => {
-      const suivant = new Set(precedents);
-      suivant.delete(id);
-      return suivant;
-    });
-    // La rétractation supprime le jugement : la ligne cesse d'exister dans
-    // l'état relu, ce qui est bien « rien de dit » — et non « joué : faux »,
-    // qui serait un second avis.
-    retracter(id).catch(() => setErreur(t("erreur.retractation")));
-  }
-
-  /**
-   * Le geste de §24.3, dans les deux sens.
-   *
-   * E02 le veut atteignable sans quatrième cible permanente : un balayage
-   * vers la gauche sur mobile, un bouton révélé au survol et au focus sur
-   * desktop. Les deux appellent ceci.
-   */
-  function basculerJamaisJoue(id: string) {
-    validerAffinage(id);
-
-    if (jamaisJoues.has(id)) {
-      retirerJamaisJoue(id);
-      return;
+    // L'affichage change MAINTENANT, avant tout appel réseau (§24.4).
+    sansRien();
+    if (vise === "joue") {
+      setDeclarees((p) => new Set(p).add(id));
+    } else {
+      setJamaisJoues((p) => new Set(p).add(id));
     }
-
-    const etaitDeclare = declarees.has(id);
-    if (etaitDeclare) {
-      const restantes = new Set(declarees);
-      restantes.delete(id);
-      setDeclarees(restantes);
-    }
-    setJamaisJoues((precedents) => new Set(precedents).add(id));
 
     const marquer = () =>
       envoyer({
         batchId: lot,
-        entries: [{ workId: id, neverPlayed: true }],
+        entries: [vise === "joue" ? { workId: id } : { workId: id, neverPlayed: true }],
       });
 
-    // L'ORDRE compte : marquer sans retirer laisserait l'événement « joué »
-    // vivant sous le jugement « jamais joué », et l'écran relirait les deux.
-    (etaitDeclare ? retracter(id).then(marquer) : marquer()).catch(() => {
+    (actuel === "inconnu" ? marquer() : retracter(id).then(marquer)).catch(() => {
       setErreur(t("erreur.declaration"));
     });
   }
 
   /**
-   * Le balayage, reconstitué à partir des événements de pointeur.
+   * Le balayage, reconstitué à partir des événements de pointeur —
+   * <b>et il déclare désormais dans les DEUX sens</b>.
+   *
+   * <b>À droite « j'y ai joué », à gauche « jamais »</b>, dans le sens de
+   * lecture : ce qu'on avance va vers soi, ce qu'on écarte s'en va. Un seul
+   * sens laissait le geste de loin le plus fréquent — déclarer — au tap,
+   * qui sert maintenant à ouvrir.
    *
    * <b>Horizontal DOMINANT</b> : descendre la liste est le geste le plus
    * fréquent de l'écran, et un défilement qui déclarerait au passage la
    * rendrait impraticable au pouce.
    *
    * Le navigateur tire un clic du relâchement. `balaye` l'étouffe, sans
-   * quoi le même geste dirait « j'y ai joué » et « je n'y ai jamais joué ».
+   * quoi le même geste déclarerait ET ouvrirait la modale.
    */
   const depart = useRef<{ x: number; y: number } | null>(null);
   const balaye = useRef(false);
 
-  function finBalayage(id: string, x: number, y: number) {
-    const debut = depart.current;
-    depart.current = null;
-    if (debut === null) return;
-
-    const dx = debut.x - x;
-    const dy = Math.abs(debut.y - y);
+  /**
+   * Ce qu'un déplacement vaut — <b>la règle, écrite une fois</b>.
+   *
+   * Elle sert à l'annonce pendant le geste et à sa conclusion. Deux copies
+   * finiraient par diverger, et l'écran annoncerait « joué » pour produire
+   * « jamais » : le pire défaut possible sur un geste qui écrit.
+   */
+  function sensDu(dx: number, dy: number): "joue" | "jamais" | null {
     // Écrit comme une condition d'ACCEPTATION, et niée. Sous la forme
     // « rejeter si dx < seuil », une coordonnée manquante donne `NaN`, toute
     // comparaison devient fausse, et le rejet ne rejette plus : le geste
     // passe. Ici, `NaN` ne satisfait rien, donc rien ne se déclare.
-    if (!(dx >= SEUIL_BALAYAGE && dx > dy)) return;
+    if (!(Math.abs(dx) >= SEUIL_BALAYAGE && Math.abs(dx) > dy)) return null;
+    // `dx` compte vers la GAUCHE : c'est `debut - courant`.
+    return dx > 0 ? "jamais" : "joue";
+  }
+
+  /**
+   * L'annonce, pendant le geste.
+   *
+   * Elle ne change rien à l'état déclaré : elle dit seulement ce que le
+   * relâchement produirait. Revenir en arrière avant de lâcher l'efface —
+   * un geste commencé par erreur ne coûte rien.
+   */
+  function pendantBalayage(id: string, x: number, y: number) {
+    const debut = depart.current;
+    if (debut === null) return;
+
+    const sens = sensDu(debut.x - x, Math.abs(debut.y - y));
+    // Comparé avant d'écrire : `pointermove` tire des dizaines d'événements
+    // par geste, et rendre à chacun ferait ramer la liste la plus dense du
+    // produit.
+    if (intention?.id === id && intention.sens === sens) return;
+    setIntention(sens === null ? null : { id, sens });
+  }
+
+  function finBalayage(id: string, x: number, y: number) {
+    const debut = depart.current;
+    depart.current = null;
+    setIntention(null);
+    if (debut === null) return;
+
+    const sens = sensDu(debut.x - x, Math.abs(debut.y - y));
+    if (sens === null) return;
 
     balaye.current = true;
-    basculerJamaisJoue(id);
+    reglerEtat(id, sens);
   }
 
   function ajouterTitreLibre() {
@@ -645,6 +716,15 @@ export function SelectionMassive({
    * pas — l'inverse exact de ce que ce filtre sert.
    */
   const filtrees = ordonnees.filter((o) => contient(o.titre, recherche));
+
+  /**
+   * L'œuvre ouverte, relue dans la liste à chaque rendu.
+   *
+   * <b>Pas une copie gardée à l'ouverture</b> : la liste se recharge, et une
+   * copie périmée ferait afficher une jaquette ou un titre que la liste ne
+   * contient plus.
+   */
+  const oeuvreOuverte = oeuvres.find((o) => o.id === ouvert);
   const filtreActif = recherche.trim().length > 0;
 
   /**
@@ -743,8 +823,9 @@ export function SelectionMassive({
 
       <ul data-disposition={disposition}>
         {filtrees.map((oeuvre) => {
-          const declare = declarees.has(oeuvre.id);
-          const jamais = jamaisJoues.has(oeuvre.id);
+          const etat = etatDe(oeuvre.id);
+          const declare = etat === "joue";
+          const jamais = etat === "jamais";
           const enGrille = disposition === "grille";
           return (
             <li
@@ -753,6 +834,14 @@ export function SelectionMassive({
               // Estompée, jamais retirée : E02 la veut corrigeable, et une
               // ligne qui disparaît fait perdre ses repères au joueur.
               data-jamais-joue={String(jamais)}
+              // LES TROIS ÉTATS, portés par la ligne elle-même. Ce qui
+              // manquait n'était pas la donnée — les deux ensembles la
+              // tenaient déjà — mais le fait qu'elle se voie.
+              data-etat={etat}
+              // Ce que le balayage en cours produirait s'il était relâché
+              // maintenant. Absent le reste du temps : la liste ne porte
+              // aucune légende, et le geste s'annonce pendant qu'on le fait.
+              data-balayage={intention?.id === oeuvre.id ? intention.sens : undefined}
             >
               {/* La CELLULE ENTIÈRE est la cible, en liste comme en grille :
                   quatre cibles de 44 px occuperaient 200 px et ne laisseraient
@@ -761,15 +850,31 @@ export function SelectionMassive({
               <button
                 type="button"
                 className="ligne"
-                aria-pressed={declare}
-                aria-label={t(
-                  jamais ? "ligne.jamaisJoue" : declare ? "ligne.declare" : "ligne.declarer",
-                  { titre: oeuvre.titre },
-                )}
+                // L'état est DANS le nom, pas seulement dans la couleur
+                // (§10) : sans lui, un lecteur d'écran parcourt 147 lignes
+                // sans savoir laquelle est déjà déclarée.
+                aria-label={t("ligne.ouvrir", {
+                  titre: oeuvre.titre,
+                  etat: t(NOM_ETAT[etat]),
+                })}
                 onPointerDown={(e) => {
                   depart.current = { x: e.clientX, y: e.clientY };
+                  // REMIS À PLAT à chaque nouveau geste. Le drapeau n'est
+                  // effacé que par le clic qu'il étouffe — et tous les
+                  // navigateurs n'en tirent pas un de chaque balayage. Resté
+                  // armé, il mangeait le TAP SUIVANT, sur une autre ligne :
+                  // on touchait, rien ne s'ouvrait, et le geste d'après
+                  // fonctionnait. Le défaut ne coûtait rien tant que le tap
+                  // déclarait — on le refaisait — ; il coûte une ouverture
+                  // perdue depuis qu'il ouvre.
+                  balaye.current = false;
                 }}
+                onPointerMove={(e) => pendantBalayage(oeuvre.id, e.clientX, e.clientY)}
                 onPointerUp={(e) => finBalayage(oeuvre.id, e.clientX, e.clientY)}
+                onPointerCancel={() => {
+                  depart.current = null;
+                  setIntention(null);
+                }}
                 onClick={() => {
                   // Le clic que le navigateur tire d'un balayage : le geste a
                   // déjà dit ce qu'il voulait dire.
@@ -777,7 +882,12 @@ export function SelectionMassive({
                     balaye.current = false;
                     return;
                   }
-                  basculer(oeuvre.id);
+                  // LE TAP OUVRE, il ne déclare plus. Déclarer est un geste
+                  // dirigé — balayage, ou l'une des deux cibles ci-dessous —
+                  // parce qu'un tap ne peut pas dire DANS QUEL SENS on se
+                  // prononce, et que « pas encore dit » est un état à part
+                  // entière depuis qu'il se voit.
+                  setOuvert(oeuvre.id);
                 }}
               >
                 {/* La grille balaye des IMAGES, la liste balaye du TEXTE :
@@ -803,94 +913,53 @@ export function SelectionMassive({
                     Celle du cercle barré, jamais celle de l'abandon — les
                     principes §6 bis interdisent de rendre ce choix comme un
                     renoncement. */}
-                {jamais ? <Icone nom="jamais-joue" /> : null}
+                {/* La marque des TROIS états, toujours présente. Elle
+                    affiche, elle ne commande pas — E02 : « ces icônes n'ont
+                    pas à être des cibles ». Et elle porte son nom : §10
+                    interdit qu'une information tienne à la seule forme. */}
+                <Icone nom={MARQUE[etat]} />
               </button>
 
-              {/* Le geste de desktop (E02), et le seul chemin au CLAVIER.
-                  Frère de la ligne, pas enfant : un bouton dans un bouton
+              {/* LES DEUX GESTES DIRIGÉS — et sur desktop, le seul chemin
+                  rapide : un écran sans doigt n'a pas de balayage. Au
+                  clavier aussi, où aucun geste de pointeur n'existe.
+
+                  Frères de la ligne, pas enfants : un bouton dans un bouton
                   n'est pas du HTML valide, et le navigateur en perdrait un.
-                  Présent en permanence dans le document, révélé au survol et
-                  au focus par le socle — une quatrième cible permanente sur
-                  chaque ligne coûterait les 200 px que E02 refuse. */}
-              <button
-                type="button"
-                className="ligne-jamais-joue"
-                aria-pressed={jamais}
-                aria-label={t(
-                  jamais ? "action.retirerJamaisJoue" : "action.jamaisJoue",
-                  { titre: oeuvre.titre },
-                )}
-                onClick={() => basculerJamaisJoue(oeuvre.id)}
-              >
-                {/* Muette : le bouton porte déjà son nom, et l'icône y
-                    ferait lire « Jamais joué » deux fois de suite. */}
-                <Icone nom="jamais-joue" muette />
-              </button>
-
-              {/* Le champ n'apparaît qu'une fois la ligne déclarée : une zone
-                  de texte par ligne non cochée occuperait la place de l'écran
-                  le plus dense du produit et suggérerait un travail à faire.
-                  §9 est un COMPLÉMENT, jamais un passage obligé. */}
-              {/* La passe 2 : deux questions que le modèle sait porter
-                  aujourd'hui. « Quand y avez-vous joué » (§4.8) et « ça vous
-                  a marqué » (§4.7) attendent que l'API les accepte — les
-                  monter maintenant ferait un écran qui recueille des
-                  réponses que personne n'enregistre. */}
-              {declare ? (
-                <Question
-                  intitule={t("passe2.acheve")}
-                  valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).completion}
-                  repondre={(v) => repondre(oeuvre.id, "completion", v)}
-                  choix={CHOIX_ACHEVEMENT}
-                />
-              ) : null}
-
-              {/* L'ORDRE compte : « le factuel, puis l'émotionnel, et enfin
-                  la provenance, la plus accessoire ». Un utilisateur qui
-                  s'arrête après trois questions n'a rien perdu
-                  d'essentiel. */}
-              {declare ? (
-                <Question
-                  intitule={t("passe2.affect")}
-                  valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).affect}
-                  repondre={(v) => repondre(oeuvre.id, "affect", v)}
-                  choix={CHOIX_AFFECT}
-                />
-              ) : null}
-
-              {/* « Comment » REMPLACE une case « possédé » : poser
-                  « possédé ? » à côté d'un geste qui dit déjà « joué » est
-                  ambigu, et jouer sans posséder était la norme avant la
-                  dématérialisation. */}
-              {declare ? (
-                <Question
-                  intitule={t("passe2.comment")}
-                  valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).provenance}
-                  repondre={(v) => repondre(oeuvre.id, "provenance", v)}
-                  choix={CHOIX_PROVENANCE}
-                />
-              ) : null}
-
-              {declare ? (
+                  Présents en permanence dans le document, révélés au survol
+                  et au focus par le socle — deux cibles permanentes sur
+                  chaque ligne coûteraient les 200 px que E02 refuse. */}
+              <div className="ligne-gestes">
                 <button
                   type="button"
-                  className="discret"
-                  onClick={() => ouvrirFiche(oeuvre)}
+                  className="ligne-geste"
+                  data-sens="joue"
+                  aria-pressed={declare}
+                  aria-label={t(
+                    declare ? "action.retirerJoue" : "action.joue",
+                    { titre: oeuvre.titre },
+                  )}
+                  onClick={() => reglerEtat(oeuvre.id, "joue")}
                 >
-                  {t("action.voirLaFiche", { titre: oeuvre.titre })}
+                  {/* Muette : le bouton porte déjà son nom, et l'icône y
+                      ferait lire « Joué » deux fois de suite. */}
+                  <Icone nom="joue" muette />
                 </button>
-              ) : null}
+                <button
+                  type="button"
+                  className="ligne-geste"
+                  data-sens="jamais"
+                  aria-pressed={jamais}
+                  aria-label={t(
+                    jamais ? "action.retirerJamaisJoue" : "action.jamaisJoue",
+                    { titre: oeuvre.titre },
+                  )}
+                  onClick={() => reglerEtat(oeuvre.id, "jamais")}
+                >
+                  <Icone nom="jamais-joue" muette />
+                </button>
+              </div>
 
-              {declare ? (
-                <ChampSouvenir
-                  titre={oeuvre.titre}
-                  valeur={souvenirs[oeuvre.id] ?? SANS_SOUVENIR}
-                  surSaisie={(souvenir) =>
-                    setSouvenirs((s) => ({ ...s, [oeuvre.id]: souvenir }))
-                  }
-                  surSortie={() => enregistrerSouvenir(oeuvre.id, { kind: "work", id: oeuvre.id })}
-                />
-              ) : null}
             </li>
           );
         })}
@@ -957,6 +1026,46 @@ export function SelectionMassive({
       ) : null}
 
       {erreur ? <p role="alert">{erreur}</p> : null}
+
+      {/* LA MODALE, à la place du dépli en ligne. Elle est montée hors de
+          la liste : dans le `<li>`, elle héritait du contexte d'une ligne
+          de 56 px, et une boîte centrée qui vit dans une ligne de liste est
+          une contradiction que la moindre règle de débordement révèle.
+
+          Montée seulement quand elle s'ouvre : garder 147 boîtes cachées
+          coûterait 147 fois son contenu sur l'écran le plus dense. */}
+      {oeuvreOuverte !== undefined ? (
+        <ModaleDuJeu
+          oeuvre={oeuvreOuverte}
+          etat={etatDe(oeuvreOuverte.id)}
+          regler={(vise) => reglerEtat(oeuvreOuverte.id, vise)}
+          affinage={affinages[oeuvreOuverte.id] ?? SANS_REPONSE}
+          repondre={(champ, valeur) => repondre(oeuvreOuverte.id, champ, valeur)}
+          ouvrirFiche={() => ouvrirFiche(oeuvreOuverte)}
+          // Fermer VAUT passage à une autre ligne : sans cela, la dernière
+          // réponse donnée dans la modale partirait avec elle, et ce serait
+          // systématiquement la dernière — donc invisible à un essai rapide.
+          fermer={() => {
+            validerAffinage();
+            setOuvert(null);
+          }}
+          enfants={
+            <ChampSouvenir
+              titre={oeuvreOuverte.titre}
+              valeur={souvenirs[oeuvreOuverte.id] ?? SANS_SOUVENIR}
+              surSaisie={(souvenir) =>
+                setSouvenirs((s) => ({ ...s, [oeuvreOuverte.id]: souvenir }))
+              }
+              surSortie={() =>
+                enregistrerSouvenir(oeuvreOuverte.id, {
+                  kind: "work",
+                  id: oeuvreOuverte.id,
+                })
+              }
+            />
+          }
+        />
+      ) : null}
 
       <BandeDEpoque bande={bande} />
 

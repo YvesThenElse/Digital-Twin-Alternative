@@ -2920,3 +2920,59 @@ disposition et fausse sur l'autre**, et seule la mesure sur les deux le dit.
 **La règle** : mesurer les blocs visuels sur **chaque** disposition du
 parcours, largeur comprise — pas seulement la hauteur, qui est ce qu'on pense
 à vérifier. Et ne jamais conclure d'un projet vert que le bloc se voit.
+
+### 92 — Un drapeau effacé par l'événement suivant reste armé quand il n'arrive pas
+
+La liste de sélection étouffe le clic que le navigateur tire d'un balayage :
+sans quoi le même geste déclarerait *et* ouvrirait. Le drapeau était posé à la
+fin du balayage et effacé par le clic qu'il refusait.
+
+```ts
+onPointerUp={…}   // balaye.current = true
+onClick={() => { if (balaye.current) { balaye.current = false; return; } … }}
+```
+
+Le raisonnement tient tant que **le clic arrive toujours**. Il n'arrive pas
+toujours : selon le navigateur et la façon dont le toucher est synthétisé, un
+balayage franc n'en produit aucun. Le drapeau restait alors armé, et mangeait
+le geste suivant — **sur une autre ligne**, ce qui rend le défaut
+particulièrement difficile à imputer : on touche, rien ne se passe, on
+recommence, et ça marche.
+
+Il dormait depuis des semaines sans rien coûter, parce que le tap déclarait :
+un tap perdu se refait sans y penser. Il est devenu visible le jour où le tap
+s'est mis à **ouvrir** — la même perte, mais on la remarque.
+
+La correction ne consiste pas à poser le drapeau ailleurs : c'est de le
+remettre à plat **au début de chaque geste**, là où on sait qu'un geste
+commence.
+
+```ts
+onPointerDown={() => { balaye.current = false; … }}
+```
+
+**La règle** : un état transitoire qu'on efface dans l'événement *suivant*
+suppose que cet événement arrive. Le remettre à plat à l'ouverture du geste,
+jamais à sa fermeture — l'ouverture, elle, est certaine.
+
+### 93 — Annuler une mutation par `git checkout` efface le travail non commité
+
+Toutes les mutations de cette session ont été défaites par l'édition inverse,
+sauf une : j'ai écrit `git checkout web/src/selection/SelectionMassive.tsx`.
+La commande a fait exactement ce qu'elle promet — rendre le fichier tel qu'il
+est dans HEAD —, c'est-à-dire supprimer **plusieurs heures de refonte non
+commitée**, dont la mutation n'était qu'une ligne.
+
+Le fichier a pu être reconstruit : chaque édition avait été appliquée par un
+script dont le texte exact restait dans la conversation. Ce n'est pas une
+excuse, c'est une chance.
+
+Ce qui rend le piège vicieux : **le contrôle de mutation consiste à altérer
+volontairement le code**, donc à créer l'envie de « revenir à l'état d'avant ».
+Or l'état d'avant n'est presque jamais HEAD pendant une refonte — c'est
+l'espace de travail, que rien ne sauvegarde.
+
+**La règle** : pendant un contrôle de mutation, défaire par l'**édition
+inverse exacte**, jamais par une commande qui restaure depuis l'historique.
+Si un filet est voulu, il se pose *avant* la mutation — `git stash` ou un
+commit de travail —, jamais après, quand il est trop tard.

@@ -6,7 +6,31 @@
 
 Permettre de déclarer **des dizaines de jeux en quelques minutes**. C'est la fonctionnalité centrale du produit (§24.3) et la seule dont la performance conditionne tout le reste.
 
-Cible : **un tap par jeu**, sans rechargement, sans confirmation, sans légende à apprendre.
+Cible : **un geste par jeu**, sans rechargement, sans confirmation, sans légende à apprendre.
+
+> ### ⚠️ Refonte du geste — 24 septembre 2026
+>
+> Cette fiche disait « un **tap** par jeu », et le tap déclarait « joué ».
+> Trois reproches, tous justes, ont fait changer cela :
+>
+> 1. **on ne voyait pas qu'on pouvait balayer** — le geste de §24.3 était
+>    invisible et n'avait aucune contrepartie ;
+> 2. **on ne savait pas ce qu'on avait déjà dit** en ouvrant la liste : le
+>    silence se rendait exactement comme le refus, une ligne éteinte, alors
+>    que §24.3 en fait deux informations différentes ;
+> 3. **le dépli en ligne n'était pas centré** : chaque coche poussait la
+>    liste vers le bas, et la réponse qu'on venait de donner se perdait au
+>    milieu de trente autres lignes.
+>
+> D'où : **trois états visibles**, **le balayage déclare dans les deux sens**,
+> **le tap ouvre une modale**. Le budget ne change pas — un geste par jeu,
+> mesuré par le parcours sur les trente déclarations de la passe 1 —, mais ce
+> n'est plus le tap qui le dépense.
+>
+> **Ce que cela coûte**, et qui est assumé : le tap ne déclare plus. Un
+> utilisateur qui tape trente lignes ouvre trente modales sans rien déclarer.
+> C'est le prix du troisième état : un tap ne peut pas dire dans quel SENS on
+> se prononce, et deviner « joué » remettrait exactement le défaut n° 2.
 
 ---
 
@@ -20,8 +44,8 @@ L'écran fonctionne donc en deux passes :
 
 | Passe | Geste | Ce qu'on obtient |
 |---|---|---|
-| **1 — parcourir** | tap sur **la ligne entière** = « j'y ai joué » | la timeline se remplit, un tap, aucune légende |
-| **2 — affiner** *(optionnelle)* | repasser sur les lignes déjà cochées pour préciser achèvement, provenance, moment et affect | la richesse, sans la payer au premier passage |
+| **1 — parcourir** | **balayage** sur la ligne : à droite « j'y ai joué », à gauche « jamais » | la timeline se remplit, un geste, aucune légende |
+| **2 — affiner** *(optionnelle)* | **tap sur la ligne** → une modale centrée : achèvement, affect, provenance, souvenir, fiche | la richesse, sans la payer au premier passage |
 
 « Joué » est la déclaration dominante et la seule qui construise la timeline. Exiger trois décisions par jeu dès le premier passage triple la charge cognitive pour une précision que la plupart des utilisateurs n'atteindront pas de toute façon. **Le budget d'un tap par jeu n'existe que dans ce modèle.**
 
@@ -104,7 +128,11 @@ Les chips affichent leur marque (§3 du [langage visuel](./00-langage-visuel.md)
 
 ### Passe 2 sur mobile
 
-Un appui **long** sur une ligne déclarée, ou un tap sur ses pastilles, déplie les deux affinages :
+Un **tap** sur la ligne — déclarée ou non — ouvre la modale du jeu : son nom, sa jaquette, puis ce qu'on veut bien en dire. Un clic à côté, `Échap` ou le bouton de fermeture la referment, et rien n'est perdu : chaque réponse part au geste qui la produit.
+
+> **La modale enseigne le balayage.** E02 interdit « une légende à apprendre » *sur la liste* ; la modale n'est pas la liste, et c'est le seul endroit où l'on a le temps de lire une phrase. Elle existe pour se rendre inutile.
+
+*La maquette ci-dessous décrit le dépli d'origine ; elle est conservée pour ce qu'elle dit des cibles.*
 
 ```
 │ ┌──┐                               │
@@ -167,14 +195,15 @@ Une ligne marquée « jamais joué » s'estompe sans disparaître (cercle vide, 
 
 | Action | Résultat |
 |---|---|
-| Tap / clic sur la ligne ou la tuile | déclare **joué**, immédiat, sans confirmation ni rechargement |
-| Appui long (mobile) / survol (desktop) | affinages terminé et possédé |
-| Balayage gauche (mobile) / `X` (desktop) | jamais joué |
+| **Balayage à droite** (mobile) / cible ✓ au survol (desktop) | déclare **joué**, immédiat, sans confirmation ni rechargement |
+| **Balayage à gauche** (mobile) / cible ✗ au survol (desktop) | **jamais joué** (§24.3) |
+| **Le même geste répété** | ramène à **« pas encore dit »** |
+| **Tap / clic sur la ligne ou la tuile** | ouvre la **modale** du jeu — elle ne déclare rien |
 | Changer la période (A) | s'applique aux déclarations **suivantes** |
 | Changer de plateforme | → E02 sur une autre plateforme, période conservée |
 | « Voir ma timeline » | → E03 |
 | Titre absent | saisie libre → déclaration non résolue (§3.5) |
-| **Voir la fiche** (dans le panneau d'affinage) | → **E05**, en conservant la position |
+| **Voir la fiche** (dans la modale) | → **E05**, en conservant la position |
 
 ## États
 
@@ -216,12 +245,16 @@ Cette boucle **E02 → E03 → E02** est le cycle central du produit : déclarer
 
 **La période est un contexte, pas un champ par ligne.** Demander une date par jeu multiplierait le coût par cinq. L'affinage se fait plus tard et à la demande, depuis E03/E07.
 
+**Les trois états se voient, et chacun porte son nom** (§10) : manette pour « joué », cercle barré pour « jamais », **cercle en pointillés pour « pas encore dit »** — vide, et non barré : barrer serait déjà répondre.
+
 **Les pastilles d'état affichent, elles ne commandent pas.** Séparer l'affichage de l'état et la cible d'action est ce qui permet une ligne dense **et** une cible de 56 px.
 
 ## Pièges
 
 - Rétablir trois bascules permanentes par ligne sur mobile : c'est l'erreur que cette fiche corrige.
-- Une modale de confirmation par clic : détruit le budget d'un geste par jeu.
+- Une modale de **confirmation** par clic : détruit le budget d'un geste par jeu. ⚠️ À ne pas confondre avec la modale d'**affinage** livrée le 24 septembre 2026 : celle-ci ne confirme rien, ne bloque rien, et le geste qui déclare ne la traverse pas. Le jour où fermer devient obligatoire pour déclarer, ce piège est retombé.
+- **Rendre le silence comme un refus.** Une ligne éteinte disait à la fois « je n'y ai pas joué » et « je n'ai rien dit ». §24.3 en fait deux informations, et la seconde est celle qu'on voit en ouvrant la liste.
+- **Un geste caché sans contrepartie visible.** Le balayage existait dans un seul sens, sans rien qui l'annonce : personne ne le trouvait.
 - Trier alphabétiquement par défaut : l'utilisateur ne reconnaît plus rien, la notoriété est le seul tri utile ici.
 - Ignorer la région : proposer la ludothèque NTSC-J à un joueur PAL (§3.4) casse l'effet de reconnaissance.
 - Masquer les jeux déjà déclarés : l'utilisateur perd ses repères et ne peut plus corriger.

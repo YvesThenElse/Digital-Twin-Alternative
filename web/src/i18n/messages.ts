@@ -61,13 +61,23 @@ export const MESSAGES = {
   "bande.periode": "{debut} – {fin}",
 
   // --- la ligne de sélection ---------------------------------------------
-  "ligne.declarer": "Déclarer : {titre}",
-  "ligne.declare": "Déclaré : {titre}",
+  //
+  // TROIS états, et le troisième est le plus important : « quand on ouvre la
+  // liste, on ne sait pas si on y a joué ». L'absence de réponse était rendue
+  // comme une ligne éteinte, donc comme un « non » — alors que §24.3 fait du
+  // silence et du refus deux informations différentes. Elle se DIT désormais.
+  "ligne.ouvrir": "{titre} — {etat}. Ouvrir",
+  "ligne.etat.joue": "j'y ai joué",
+  "ligne.etat.jamais": "je n'y ai jamais joué",
+  "ligne.etat.inconnu": "pas encore dit",
   "ligne.dateInconnue": "date inconnue",
+  // Le geste de déclaration, atteignable sans balayage : au clavier, et au
+  // survol sur desktop, qui n'a pas de doigt.
+  "action.joue": "J'y ai joué à {titre}",
+  "action.retirerJoue": "Retirer « joué » de {titre}",
   // §24.3 : « il n'y a pas joué » n'est pas « il ne s'est pas prononcé ».
   // Formulé au constat, jamais au renoncement : les principes §6 bis
   // interdisent de présenter ce choix comme un abandon ou un échec.
-  "ligne.jamaisJoue": "Jamais joué : {titre}",
   "action.jamaisJoue": "Je n'y ai jamais joué à {titre}",
   "action.retirerJamaisJoue": "Retirer « jamais joué » de {titre}",
   "souvenir.invite": "Un souvenir sur {titre} ?",
@@ -80,6 +90,22 @@ export const MESSAGES = {
   // une seconde cible par ligne est exactement ce que la refonte en deux
   // passes interdit — quatre cibles de 44 px ne laissent que 143 px de titre.
   "action.voirLaFiche": "Voir la fiche de {titre}",
+
+  // --- la modale d'un jeu (E02) -------------------------------------------
+  //
+  // « Beaucoup plus centré : on sait qu'on a sélectionné quelque chose. » Le
+  // dépli en ligne poussait la liste vers le bas à chaque coche et noyait la
+  // réponse dans trente autres lignes.
+  "modale.fermer": "Fermer",
+  "modale.joue": "Y avez-vous joué ?",
+  "modale.oui": "J'y ai joué",
+  "modale.jamais": "Jamais joué",
+  // Ce qu'on lit quand rien n'a été dit — dans la modale, pas sur la ligne :
+  // une phrase par ligne coûterait la densité de l'écran le plus dense.
+  "modale.inconnu": "Rien de dit pour l'instant.",
+  // L'invitation du balayage, DANS la modale : c'est là qu'on a le temps de
+  // la lire, et elle enseigne le geste qui rend la modale inutile.
+  "modale.balayage": "Astuce : balayez la ligne à droite pour « joué », à gauche pour « jamais ».",
 
   // Les quatre états obligatoires de E02 (principes §5). L'état vide est le
   // plus important : c'est celui que voit un nouvel utilisateur.
@@ -221,6 +247,7 @@ export const MESSAGES = {
   "icone.en-cours": "Toujours en cours",
   "icone.abandonne": "Abandonné",
   "icone.jamais-joue": "Jamais joué",
+  "icone.pas-dit": "Pas encore dit",
   "icone.possede": "Je l'avais",
   "icone.ailleurs": "Chez quelqu'un",
   "icone.emprunte": "Emprunté",

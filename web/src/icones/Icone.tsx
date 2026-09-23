@@ -28,6 +28,10 @@ export type NomIcone =
   | "en-cours"
   | "abandonne"
   | "jamais-joue"
+  // Le troisième état, celui qu'on voit en ouvrant la liste : rien n'a
+  // encore été dit. Il n'est pas « non » — §24.3 en fait deux informations
+  // différentes —, et sans lui l'écran répondait à la place du joueur.
+  | "pas-dit"
   // Où l'objet se trouvait
   | "possede"
   | "ailleurs"
@@ -82,6 +86,9 @@ const TRACES: Record<NomIcone, React.ReactElement> = {
       <path d="M6.5 6.5 17.5 17.5" />
     </>
   ),
+  // Le cercle en pointillés : la place d'une réponse qui n'a pas été
+  // donnée. Vide, donc, et pas barrée — barrer serait déjà répondre.
+  "pas-dit": <circle cx="12" cy="12" r="8" strokeDasharray="3 3" />,
   // La boîte : l'objet vous appartenait.
   possede: (
     <>

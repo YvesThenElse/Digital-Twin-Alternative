@@ -49,7 +49,55 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
 }
 
 const bande = () => screen.getByTestId("bande-epoque");
-const lignes = () => screen.getAllByRole("button", { name: /déclarer|déclaré/i });
+/**
+ * Les lignes — elles <b>ouvrent la modale</b>, elles ne déclarent plus.
+ *
+ * Le tap ne pouvait pas dire DANS QUEL SENS on se prononce, et « pas encore
+ * dit » est devenu un état à part entière : déclarer est donc un geste
+ * dirigé, balayage ou cible.
+ */
+const lignes = () => screen.getAllByRole("button", { name: /\. Ouvrir$/ });
+
+/** Le geste dirigé « j'y ai joué » de la n-ième ligne. */
+const dire = (i: number) =>
+  screen.getAllByRole("button", { name: /^J'y ai joué|^Retirer « joué »/ })[i];
+
+/**
+ * Le geste dirigé « jamais joué » de la n-ième ligne.
+ *
+ * <b>Ancré au début, et il le faut</b> : dès qu'une ligne passe à « jamais »,
+ * son propre nom contient « je n'y ai jamais joué », et un motif non ancré
+ * attrape la LIGNE — qui ouvre la modale — au lieu du geste. Le test passait
+ * alors sans rien déclarer.
+ */
+const nier = (i: number) =>
+  screen.getAllByRole("button", {
+    name: /^(Je n'y ai jamais joué|Retirer « jamais joué »)/,
+  })[i];
+
+/**
+ * Ouvre la modale d'une ligne et y déclare « j'y ai joué ».
+ *
+ * <b>C'est le chemin de la passe 2 depuis la refonte</b> : les chips ne
+ * vivent plus sous la ligne. Le geste dirigé `dire()` reste la voie rapide —
+ * il déclare sans rien ouvrir —, mais il ne donne pas accès aux questions.
+ */
+const declarerDans = async (
+  utilisateur: ReturnType<typeof userEvent.setup>,
+  i: number,
+) => {
+  await utilisateur.click(lignes()[i]);
+  const modale = screen.getByTestId("modale-jeu");
+  await utilisateur.click(within(modale).getByRole("button", { name: "J'y ai joué" }));
+  return modale;
+};
+
+/** Ferme la modale par le clic à côté — la sortie que l'écran promet. */
+const fermerModale = (utilisateur: ReturnType<typeof userEvent.setup>) =>
+  utilisateur.click(screen.getByTestId("modale-fond"));
+
+/** L'état rendu d'une ligne : `joue` · `jamais` · `inconnu`. */
+const etat = (i: number) => lignes()[i].closest("li")!.getAttribute("data-etat");
 
 describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
   it("n'affiche aucune bande tant que rien n'est déclaré", () => {
@@ -66,7 +114,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     monter();
 
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
 
     expect(bande()).toHaveAttribute("data-total", "1");
     expect(bande()).toHaveAttribute("data-tranches", "1");
@@ -79,8 +127,8 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     const { recharger } = monter();
 
-    await utilisateur.click(lignes()[0]);
-    await utilisateur.click(lignes()[1]);
+    await utilisateur.click(dire(0));
+    await utilisateur.click(dire(1));
 
     expect(recharger).not.toHaveBeenCalled();
   });
@@ -89,10 +137,10 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     monter();
 
-    await utilisateur.click(lignes()[0]); // 1990
+    await utilisateur.click(dire(0)); // 1990
     expect(bande()).toHaveAttribute("data-tranches", "1");
 
-    await utilisateur.click(lignes()[2]); // 1995 → 1990..1995
+    await utilisateur.click(dire(2)); // 1995 → 1990..1995
     expect(bande()).toHaveAttribute("data-tranches", "6");
     expect(bande()).toHaveTextContent("1990");
     expect(bande()).toHaveTextContent("1995");
@@ -107,8 +155,8 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     const { retracter } = monter();
 
-    await utilisateur.click(lignes()[0]);
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
+    await utilisateur.click(dire(0));
 
     expect(bande()).toHaveAttribute("data-total", "0");
     expect(retracter).toHaveBeenCalledWith("w1");
@@ -120,8 +168,8 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     monter({ retracter: vi.fn().mockRejectedValue(new Error("réseau")) });
 
-    await utilisateur.click(lignes()[0]);
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
+    await utilisateur.click(dire(0));
 
     expect(await screen.findByRole("alert")).toBeInTheDocument();
     expect(bande()).toHaveAttribute("data-total", "0");
@@ -138,8 +186,10 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     expect(within(ligne).getByText("Super Mario World")).toBeInTheDocument();
     expect(within(ligne).getByText("1990")).toBeInTheDocument();
 
+    // Le titre fait partie de la cible : taper dessus ouvre la ligne, il
+    // n'y a pas une zone morte au milieu de ce qu'on est venu lire.
     await utilisateur.click(within(ligne).getByText("Super Mario World"));
-    expect(bande()).toHaveAttribute("data-total", "1");
+    expect(screen.getByTestId("modale-jeu")).toBeInTheDocument();
   });
 
   it("compte un titre sans année sans le placer sur la bande", async () => {
@@ -150,7 +200,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
       ],
     });
 
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
 
     expect(bande()).toHaveAttribute("data-total", "1");
     expect(bande()).toHaveAttribute("data-tranches", "0");
@@ -177,15 +227,19 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     expect(titres).toEqual(["Premier", "Deuxième", "Troisième"]);
   });
 
-  it("dit à la machine ce qui est déclaré, pas seulement à l'œil", async () => {
+  it("dit à la machine LEQUEL des trois états, pas seulement à l'œil", async () => {
     // Le lecteur d'écran doit annoncer l'état, et l'icône de fin de ligne ne
-    // le dit qu'aux voyants. `aria-pressed` porte l'état lisible.
+    // le dit qu'aux voyants. `aria-pressed` ne peut plus le porter : il n'a
+    // que deux valeurs, et il y en a trois. C'est le NOM de la ligne qui
+    // l'annonce — « Super Mario World — pas encore dit. Ouvrir ».
     const utilisateur = userEvent.setup();
     monter();
 
-    expect(lignes()[0]).toHaveAttribute("aria-pressed", "false");
-    await utilisateur.click(lignes()[0]);
-    expect(lignes()[0]).toHaveAttribute("aria-pressed", "true");
+    expect(lignes()[0]).toHaveAccessibleName(/pas encore dit/);
+    await utilisateur.click(dire(0));
+    expect(lignes()[0]).toHaveAccessibleName(/j'y ai joué/);
+    await utilisateur.click(nier(0));
+    expect(lignes()[0]).toHaveAccessibleName(/je n'y ai jamais joué/);
   });
 
   // ------------------------------------------ l'incertitude, à l'écran
@@ -407,13 +461,13 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     const { rendu } = monter({ disposition: "grille" });
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
 
     expect(bande()).toHaveAttribute("data-total", "1");
     rendu.unmount();
 
     monter({ disposition: "liste" });
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     expect(bande()).toHaveAttribute("data-total", "1");
   });
 
@@ -422,9 +476,14 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
   // La ligne porte DEUX champs depuis le repère de §9.2 : on nomme celui
   // qu'on veut, sans quoi la recherche en trouve deux et échoue sur la
   // multiplicité plutôt que sur ce qu'elle teste.
+  /**
+   * Le champ souvenir — <b>cherché dans toute la page, plus dans le `<li>`</b> :
+   * il vit désormais dans la modale, qui est montée hors de la liste. Une
+   * seule est ouverte à la fois, donc la recherche globale reste sans
+   * ambiguïté.
+   */
   const souvenirDe = (titre: string) =>
-    within(lignePour(titre).closest("li")!)
-      .queryByRole("textbox", { name: `Un souvenir sur ${titre} ?` });
+    screen.queryByRole("textbox", { name: `Un souvenir sur ${titre} ?` });
 
   it("ne propose pas d'écrire un souvenir sur une ligne non déclarée", async () => {
     // L'écran le plus dense du produit : une zone de texte par ligne non
@@ -440,7 +499,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
 
     expect(souvenirDe("Super Mario World")).toBeInTheDocument();
   });
@@ -449,7 +508,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     const { ecrireSouvenir } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     const champ = souvenirDe("Super Mario World")!;
     await utilisateur.type(champ, "Noël 1992, chez ma grand-mère.");
     await utilisateur.tab();
@@ -465,7 +524,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     const { ecrireSouvenir } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.click(souvenirDe("Super Mario World")!);
     await utilisateur.tab();
 
@@ -478,7 +537,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.type(souvenirDe("Super Mario World")!, "Une phrase.");
     await utilisateur.tab();
 
@@ -491,11 +550,11 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.type(souvenirDe("Super Mario World")!, "Une phrase.");
     await utilisateur.tab();
-    await utilisateur.click(lignes()[0]); // on décoche
-    await utilisateur.click(lignes()[0]); // on recoche
+    await declarerDans(utilisateur, 0); // on décoche
+    await declarerDans(utilisateur, 0); // on recoche
 
     expect(souvenirDe("Super Mario World")).toHaveValue("Une phrase.");
   });
@@ -512,7 +571,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     );
     monter({ envoyer });
 
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
 
     expect(bande()).toHaveAttribute("data-total", "1");
     expect(resoudre).toBeDefined();
@@ -526,7 +585,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const envoyer = vi.fn().mockRejectedValue(new Error("réseau"));
     monter({ envoyer });
 
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
 
     expect(bande()).toHaveAttribute("data-total", "1");
     expect(await screen.findByRole("alert")).toHaveTextContent(/enregistr/i);
@@ -543,7 +602,7 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
 
     expect(envoyer).toHaveBeenCalledTimes(1);
     const lot = envoyer.mock.calls[0][0];
@@ -557,8 +616,8 @@ describe("SelectionMassive — la restitution immédiate (§24.4)", () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
-    await utilisateur.click(lignes()[1]);
+    await utilisateur.click(dire(0));
+    await utilisateur.click(dire(1));
 
     const lots = envoyer.mock.calls.map((appel) => appel[0].batchId);
     expect(new Set(lots).size).toBe(1);
@@ -588,7 +647,7 @@ describe("SelectionMassive — le jeu absent est un cas nominal (§3.5)", () => 
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
     await utilisateur.type(champ(), "Le jeu de mon cousin");
     await utilisateur.click(ajouter());
 
@@ -794,7 +853,7 @@ describe("SelectionMassive — relire ce qui est déjà déclaré", () => {
       ],
     });
 
-    expect(screen.getByRole("button", { name: /^Déclaré : Super Mario World$/ }))
+    expect(screen.getByRole("button", { name: /^Super Mario World — j'y ai joué\./ }))
       .toBeInTheDocument();
     expect(bande()).toHaveAttribute("data-total", "1");
   });
@@ -806,19 +865,28 @@ describe("SelectionMassive — relire ce qui est déjà déclaré", () => {
       ],
     });
 
-    expect(screen.getByRole("button", { name: /^Déclarer : Chrono Trigger$/ }))
+    expect(screen.getByRole("button", { name: /^Chrono Trigger — pas encore dit\./ }))
       .toBeInTheDocument();
   });
 
-  it("remontre l'achèvement et la provenance déjà enregistrés", () => {
+  it("remontre l'achèvement et la provenance déjà enregistrés", async () => {
+    // Dans la modale, désormais : les chips ne vivent plus sous la ligne.
+    // Mais la règle tient — ne pas les remontrer inviterait à répondre deux
+    // fois la même chose.
+    const utilisateur = userEvent.setup();
     monter({
       etatInitial: [
         { workId: "w1", played: true, completion: "finished", provenance: "borrowed", neverPlayed: false, affect: null },
       ],
     });
 
-    expect(screen.getByRole("button", { name: "Fini" })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("button", { name: "Emprunté" })).toHaveAttribute("aria-pressed", "true");
+    await utilisateur.click(lignes()[0]);
+    const modale = screen.getByTestId("modale-jeu");
+
+    expect(within(modale).getByRole("button", { name: "Fini" }))
+      .toHaveAttribute("aria-pressed", "true");
+    expect(within(modale).getByRole("button", { name: "Emprunté" }))
+      .toHaveAttribute("aria-pressed", "true");
   });
 });
 
@@ -833,7 +901,7 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     monter();
 
     expect(screen.queryByRole("button", { name: "Fini" })).toBeNull();
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     expect(chip("Fini")).toBeInTheDocument();
   });
 
@@ -844,7 +912,7 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     envoyer.mockClear();
     await utilisateur.click(chip("Fini"));
     await utilisateur.click(chip("Abandonné"));
@@ -852,14 +920,18 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     expect(envoyer).not.toHaveBeenCalled();
   });
 
-  it("envoie l'affinage quand on passe à une autre ligne", async () => {
+  it("envoie l'affinage quand on FERME la modale", async () => {
+    // « Passer à une autre ligne » est devenu « fermer » : les chips vivent
+    // dans la modale, et on n'en affine plus deux à la fois. La règle, elle,
+    // n'a pas bougé — une validation par ligne, le journal étant en ajout
+    // seul, et deux achèvements contradictoires y resteraient tous les deux.
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.click(chip("Fini"));
     envoyer.mockClear();
-    await utilisateur.click(lignes()[1]);
+    await fermerModale(utilisateur);
 
     expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
       entries: [{ workId: "w1", completion: "finished", provenance: null , affect: null }],
@@ -872,7 +944,7 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     const utilisateur = userEvent.setup();
     const { envoyer, rendu } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.click(chip("Je l'avais"));
     envoyer.mockClear();
     rendu.unmount();
@@ -888,10 +960,10 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     const lot = envoyer.mock.calls[0][0].batchId;
     await utilisateur.click(chip("Fini"));
-    await utilisateur.click(lignes()[1]);
+    await declarerDans(utilisateur, 1);
 
     expect(envoyer.mock.calls.at(-1)![0].batchId).toBe(lot);
   });
@@ -900,10 +972,10 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.click(chip("Abandonné"));
     await utilisateur.click(chip("Chez quelqu'un"));
-    await utilisateur.click(lignes()[1]);
+    await declarerDans(utilisateur, 1);
 
     expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
       entries: [{ workId: "w1", completion: "abandoned", provenance: "elsewhere" , affect: null }],
@@ -916,26 +988,29 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.click(chip("Fini"));
     await utilisateur.click(chip("Fini"));
     envoyer.mockClear();
-    await utilisateur.click(lignes()[1]);
+    await declarerDans(utilisateur, 1);
 
     expect(envoyer).not.toHaveBeenCalledWith(expect.objectContaining({
       entries: [{ workId: "w1", completion: "finished", provenance: null , affect: null }],
     }));
   });
 
-  it("ne demande pas la provenance comme une case « possédé »", () => {
+  it("ne demande pas la provenance comme une case « possédé »", async () => {
     // E02 : poser « possédé ? » à côté d'un geste qui dit déjà « joué » est
     // ambigu. La question du COMMENT couvre le cas fréquent — jouer sans
     // posséder — et rend visible la séparation possession / expérience.
+    const utilisateur = userEvent.setup();
     monter({
       etatInitial: [
         { workId: "w1", played: true, completion: null, provenance: null, neverPlayed: false, affect: null },
       ],
     });
+
+    await utilisateur.click(lignes()[0]);
 
     expect(screen.queryByRole("button", { name: /^Possédé$/ })).toBeNull();
     expect(screen.getByRole("button", { name: "Chez quelqu'un" })).toBeInTheDocument();
@@ -957,6 +1032,9 @@ describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () =>
       ],
       souvenirsInitiaux: { w1: { texte: "Noël 1992, chez ma grand-mère.", titre: "" } },
     });
+    const utilisateur = userEvent.setup();
+
+    await utilisateur.click(lignes()[0]);
 
     expect(souvenirDe("Super Mario World")).toHaveValue("Noël 1992, chez ma grand-mère.");
   });
@@ -965,7 +1043,7 @@ describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () =>
     const utilisateur = userEvent.setup();
     monter({ souvenirsInitiaux: { w2: { texte: "Sur une autre ligne.", titre: "" } } });
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
 
     expect(souvenirDe("Super Mario World")).toHaveValue("");
   });
@@ -979,8 +1057,8 @@ describe("SelectionMassive — relire les souvenirs déjà écrits (§9)", () =>
       souvenirsInitiaux: { w1: { texte: "Une phrase déjà écrite.", titre: "" } },
     });
 
-    await utilisateur.click(lignes()[0]);
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
+    await declarerDans(utilisateur, 0);
 
     expect(souvenirDe("Super Mario World")).toHaveValue("Une phrase déjà écrite.");
   });
@@ -1001,7 +1079,7 @@ describe("SelectionMassive — le repère du souvenir (§9.2)", () => {
     const utilisateur = userEvent.setup();
     monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
 
     expect(repereDe("Super Mario World")).toBeInTheDocument();
   });
@@ -1010,7 +1088,7 @@ describe("SelectionMassive — le repère du souvenir (§9.2)", () => {
     const utilisateur = userEvent.setup();
     const { ecrireSouvenir } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.type(souvenirDe("Super Mario World")!, "Noël 1992.");
     await utilisateur.type(repereDe("Super Mario World")!, "Le premier Noël");
     await utilisateur.tab();
@@ -1027,7 +1105,7 @@ describe("SelectionMassive — le repère du souvenir (§9.2)", () => {
     const utilisateur = userEvent.setup();
     const { ecrireSouvenir } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.type(souvenirDe("Super Mario World")!, "Noël 1992.");
     await utilisateur.tab();
 
@@ -1042,7 +1120,7 @@ describe("SelectionMassive — le repère du souvenir (§9.2)", () => {
     const utilisateur = userEvent.setup();
     const { ecrireSouvenir } = monter();
 
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     await utilisateur.type(repereDe("Super Mario World")!, "Le premier Noël");
     await utilisateur.tab();
 
@@ -1059,6 +1137,9 @@ describe("SelectionMassive — le repère du souvenir (§9.2)", () => {
       ],
       souvenirsInitiaux: { w1: { texte: "Noël 1992.", titre: "Le premier Noël" } },
     });
+    const utilisateur = userEvent.setup();
+
+    await utilisateur.click(lignes()[0]);
 
     expect(repereDe("Super Mario World")).toHaveValue("Le premier Noël");
   });
@@ -1103,12 +1184,16 @@ describe("SelectionMassive — « jamais joué » (§24.3, E02)", () => {
 
   const balayer = (element: HTMLElement, dx: number, dy = 0) => {
     pointeur(element, "pointerdown", 300, 100);
+    // Le mouvement INTERMÉDIAIRE, celui qui annonce ce que le relâchement
+    // produirait. Il n'existait pas avant que le geste ait deux sens : avec
+    // un seul, il n'y avait rien à annoncer.
+    pointeur(element, "pointermove", 300 + dx, 100 + dy);
     pointeur(element, "pointerup", 300 + dx, 100 + dy);
     fireEvent.click(element);
   };
 
   const ligneDe = (titre: string) =>
-    screen.getByRole("button", { name: new RegExp(`: ${titre}$`) });
+    screen.getByRole("button", { name: new RegExp(`^${titre} —`) });
   const li = (titre: string) => ligneDe(titre).closest("li")!;
   // Le geste, jamais la ligne : les deux portent le mot « jamais joué », et
   // seul celui-ci commence par « je n'y ai » ou « retirer ».
@@ -1135,15 +1220,15 @@ describe("SelectionMassive — « jamais joué » (§24.3, E02)", () => {
 
   it("ne la pose pas sur un balayage trop court", async () => {
     // Un seuil trop bas ferait du moindre tremblement une déclaration que
-    // le joueur n'a pas faite — sur l'écran où le tap est le geste de base.
+    // le joueur n'a pas faite — sur l'écran où le geste de base est bref.
     const { envoyer } = monter();
 
     balayer(ligneDe("Super Mario World"), -8);
 
-    // Le clic passe : c'est un tap, et un tap déclare « joué ».
-    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
-      entries: [{ workId: "w1" }],
-    }));
+    // Le clic passe, et il OUVRE : rien n'est écrit. Un tap ne peut pas dire
+    // dans quel sens on se prononce.
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(screen.getByTestId("modale-jeu")).toBeInTheDocument();
   });
 
   it("ne la pose pas sur un défilement vertical", async () => {
@@ -1238,18 +1323,22 @@ describe("SelectionMassive — « jamais joué » (§24.3, E02)", () => {
     expect(li("Super Mario World")).not.toHaveAttribute("data-jamais-joue", "true");
   });
 
-  it("revient à « pas prononcé » au tap, sans déclarer joué", async () => {
-    // Invariant 8 : « jamais joué » exclut toute autre déclaration. Taper
-    // une ligne estompée pour y écrire « joué » produirait « je n'y ai
-    // jamais joué, et j'y ai joué » — on repasse donc par le silence, qui
-    // est un état atteignable et non un détour.
+  it("n'écrit RIEN quand on tape une ligne estompée : elle s'ouvre", async () => {
+    // Le tap a longtemps ramené cette ligne au silence, faute de pouvoir
+    // dire autre chose. Depuis que déclarer est un geste DIRIGÉ, il n'a plus
+    // à deviner : il ouvre, et c'est dans la modale — ou par le même geste
+    // répété — que l'on revient à « pas encore dit ».
+    //
+    // L'invariant 8 est gardé ailleurs, là où il se joue vraiment : « passer
+    // d'un camp à l'autre RETIRE avant de marquer ».
     const utilisateur = userEvent.setup();
     const { envoyer, retracter } = monter({ etatInitial: [jamaisJoue("w1")] });
 
     await utilisateur.click(ligneDe("Super Mario World"));
 
-    expect(retracter).toHaveBeenCalledWith("w1");
+    expect(retracter).not.toHaveBeenCalled();
     expect(envoyer).not.toHaveBeenCalled();
+    expect(screen.getByTestId("modale-jeu")).toHaveAttribute("data-etat", "jamais");
   });
 
   it("retire la déclaration avant de marquer une ligne déjà cochée", async () => {
@@ -1428,7 +1517,7 @@ describe("SelectionMassive — les quatre états obligatoires (principes §5)", 
 
     expect(screen.queryByRole("alert")).toBeNull();
     expect(screen.queryByText(/Aucun jeu à afficher/)).toBeNull();
-    expect(screen.getByRole("button", { name: /^Déclarer : Un jeu sans rien$/ }))
+    expect(screen.getByRole("button", { name: /^Un jeu sans rien — pas encore dit\./ }))
       .toBeInTheDocument();
   });
 });
@@ -1453,8 +1542,8 @@ const compte = () => screen.getByTestId("compte");
  * précisément l'état qui compte.
  */
 const titres = () =>
-  screen.queryAllByRole("button", { name: /déclarer|déclaré/i })
-    .map((b) => b.getAttribute("aria-label")!.replace(/^[^:]+ : /, ""));
+  screen.queryAllByRole("button", { name: /\. Ouvrir$/ })
+    .map((b) => b.getAttribute("aria-label")!.replace(/ — .*$/, ""));
 
 describe("SelectionMassive — le filtre de la liste (E02 repère B)", () => {
   it("ne retient que les titres qui contiennent la recherche", async () => {
@@ -1488,14 +1577,16 @@ describe("SelectionMassive — le filtre de la liste (E02 repère B)", () => {
     // E02, pièges : « Masquer les jeux déjà déclarés : l'utilisateur perd ses
     // repères et ne peut plus corriger. » Le filtre cherche un titre, il ne
     // trie pas par état.
+    // Par le geste dirigé, pas par la modale : ce test porte sur le filtre,
+    // et une modale ouverte par-dessus la liste ne dit rien de plus.
     const utilisateur = userEvent.setup();
     monter();
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
 
     await utilisateur.type(filtre(), "mario");
 
     expect(titres()).toEqual(["Super Mario World"]);
-    expect(lignes()[0]).toHaveAttribute("aria-pressed", "true");
+    expect(etat(0)).toBe("joue");
   });
 
   // ------------------------------------------------- ce que dit le compteur
@@ -1518,8 +1609,8 @@ describe("SelectionMassive — le filtre de la liste (E02 repère B)", () => {
     // douze à un en tapant trois lettres se lirait comme une perte.
     const utilisateur = userEvent.setup();
     monter();
-    await utilisateur.click(lignes()[0]);
-    await utilisateur.click(lignes()[1]);
+    await declarerDans(utilisateur, 0);
+    await declarerDans(utilisateur, 1);
 
     await utilisateur.type(filtre(), "mario");
 
@@ -1559,17 +1650,16 @@ describe("SelectionMassive — le filtre de la liste (E02 repère B)", () => {
     // repartirait à chaque frappe. Ici on coche avant, pendant, et on vide.
     const utilisateur = userEvent.setup();
     monter();
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
 
     await utilisateur.type(filtre(), "chrono");
-    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(dire(0));
     await utilisateur.click(screen.getByRole("button", { name: /vider/i }));
 
-    const coches = lignes().filter((b) => b.getAttribute("aria-pressed") === "true");
-    expect(coches.map((b) => b.getAttribute("aria-label"))).toEqual([
-      "Déclaré : Super Mario World",
-      "Déclaré : Chrono Trigger",
-    ]);
+    const coches = lignes()
+      .filter((b) => b.closest("li")!.getAttribute("data-etat") === "joue")
+      .map((b) => b.getAttribute("aria-label")!.replace(/ — .*$/, ""));
+    expect(coches).toEqual(["Super Mario World", "Chrono Trigger"]);
   });
 
   it("n'envoie rien de plus parce qu'on a filtré", async () => {
@@ -1577,7 +1667,7 @@ describe("SelectionMassive — le filtre de la liste (E02 repère B)", () => {
     // le journal porterait des moments que personne n'a déclarés.
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     const avant = envoyer.mock.calls.length;
 
     await utilisateur.type(filtre(), "chrono");
@@ -1653,7 +1743,7 @@ describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
     monter();
 
     expect(screen.queryByRole("group", { name: /marqué/i })).toBeNull();
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
     expect(screen.getByRole("group", { name: /marqué/i })).toBeInTheDocument();
   });
 
@@ -1663,10 +1753,14 @@ describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
     // page — on le mesure sur le document.
     const utilisateur = userEvent.setup();
     monter();
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
 
     const groupes = screen.getAllByRole("group").map((g) => g.getAttribute("aria-label"));
     expect(groupes).toEqual([
+      // La première est celle qui construit la timeline, et elle précède
+      // les trois autres : on dit ce qu'on a fait du jeu avant de le
+      // qualifier.
+      "Y avez-vous joué ?",
       "Vous l'avez fini ?", "Ça vous a marqué ?", "Comment y avez-vous joué ?",
     ]);
   });
@@ -1674,20 +1768,20 @@ describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
   it("envoie exactement ce qu'envoie E07", async () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
 
     await utilisateur.click(screen.getByRole("button", { name: "Mon préféré" }));
     // La validation part au passage sur une AUTRE ligne : le journal est en
     // ajout seul, et deux réponses contradictoires y resteraient toutes les
     // deux.
-    await utilisateur.click(lignes()[1]);
+    await declarerDans(utilisateur, 1);
 
     expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
       entries: [expect.objectContaining({ workId: "w1", affect: "favourite" })],
     }));
   });
 
-  it("remontre l'affect déjà déclaré", () => {
+  it("remontre l'affect déjà déclaré", async () => {
     // Relu, jamais supposé : une chip qui revient vierge fait disparaître ce
     // que le joueur a dit, et c'est ce que « toujours en cours » a déjà
     // coûté (apprentissage 76).
@@ -1698,9 +1792,11 @@ describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
       ],
     });
 
-    // Aucun clic : la ligne est DÉJÀ déclarée par l'état relu, donc ses
-    // chips sont là. Cliquer la ligne la décocherait, et les chips
-    // partiraient avec elle.
+    // On OUVRE, on ne déclare pas : la ligne est déjà déclarée par l'état
+    // relu, et le tap n'y touche plus — il montre.
+    const utilisateur = userEvent.setup();
+    await utilisateur.click(lignes()[0]);
+
     expect(screen.getByRole("button", { name: "J'ai adoré" }))
       .toHaveAttribute("aria-pressed", "true");
   });
@@ -1708,11 +1804,11 @@ describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
   it("se retire d'un second clic : « pas prononcé » reste atteignable", async () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
-    await utilisateur.click(lignes()[0]);
+    await declarerDans(utilisateur, 0);
 
     await utilisateur.click(screen.getByRole("button", { name: "J'ai adoré" }));
     await utilisateur.click(screen.getByRole("button", { name: "J'ai adoré" }));
-    await utilisateur.click(lignes()[1]);
+    await declarerDans(utilisateur, 1);
 
     expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
       entries: [expect.objectContaining({ workId: "w1", affect: null })],
@@ -1726,8 +1822,8 @@ describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
     const utilisateur = userEvent.setup();
     const { envoyer } = monter();
 
-    await utilisateur.click(lignes()[0]);
-    await utilisateur.click(lignes()[1]);
+    await declarerDans(utilisateur, 0);
+    await declarerDans(utilisateur, 1);
 
     expect(envoyer).toHaveBeenCalledTimes(2);
   });
@@ -1743,11 +1839,11 @@ describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
  * titre, sur l'écran dont toute la mécanique repose sur la reconnaissance.
  */
 describe("SelectionMassive — la fiche d'un jeu (E02 → E05)", () => {
-  it("s'ouvre depuis le panneau, en nommant le jeu", async () => {
+  it("s'ouvre depuis la modale, en nommant le jeu", async () => {
     const utilisateur = userEvent.setup();
     const { ouvrirFiche } = monter();
-    await utilisateur.click(lignes()[0]);
 
+    await utilisateur.click(lignes()[0]);
     await utilisateur.click(
       screen.getByRole("button", { name: /Voir la fiche de Super Mario World/ }));
 
@@ -1755,38 +1851,219 @@ describe("SelectionMassive — la fiche d'un jeu (E02 → E05)", () => {
       expect.objectContaining({ id: "w1", titre: "Super Mario World" }));
   });
 
-  it("vit DANS le panneau : il apparaît et disparaît avec les questions", async () => {
-    // C'est la contrainte dure d'E02 : la ligne entière est la cible, et une
-    // seconde la ferait tronquer le titre. Le geste est donc lié au panneau
-    // d'affinage, pas à la ligne — il suit exactement le même sort que les
-    // trois questions.
+  it("vit DANS la modale : il apparaît et disparaît avec elle", async () => {
+    // Sur la ligne, cette cible coûterait 44 px à chacune des 147, et E02
+    // interdit la quatrième — quatre cibles ne laissent que 143 px de titre
+    // sur un écran de 375. Dans la modale, elle ne coûte rien.
     const utilisateur = userEvent.setup();
     monter();
 
     const fiche = () => screen.queryByRole("button", { name: /Voir la fiche/ });
-    const questions = () => screen.queryAllByRole("group");
 
     expect(fiche()).toBeNull();
-    expect(questions()).toHaveLength(0);
-
     await utilisateur.click(lignes()[0]);
     expect(fiche()).toBeInTheDocument();
-    expect(questions()).toHaveLength(3);
 
-    // Décochée, la ligne les remporte tous les deux.
-    await utilisateur.click(screen.getByRole("button", { name: /^Déclaré : / }));
+    await fermerModale(utilisateur);
     expect(fiche()).toBeNull();
-    expect(questions()).toHaveLength(0);
   });
 
-  it("le geste n'existe que sur une ligne déclarée", async () => {
+  it("existe sur une ligne NON déclarée — le manque inscrit en T6 est comblé", async () => {
+    // « C'est quoi, ce jeu ? » n'avait aucun geste : le panneau d'affinage
+    // n'existait que sur une ligne cochée, et hésiter à cocher privait
+    // justement de ce qui aurait permis de décider. La modale s'ouvre sur
+    // n'importe quelle ligne, donc la fiche aussi.
+    const utilisateur = userEvent.setup();
+    const { ouvrirFiche, envoyer } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    expect(etat(0)).toBe("inconnu");
+
+    await utilisateur.click(screen.getByRole("button", { name: /Voir la fiche/ }));
+
+    expect(ouvrirFiche).toHaveBeenCalled();
+    // Et rien n'a été déclaré au passage : consulter n'est pas se prononcer.
+    expect(envoyer).not.toHaveBeenCalled();
+  });
+});
+
+describe("SelectionMassive — trois états, pas deux", () => {
+  it("ouvre la liste en disant que RIEN n'a été dit", () => {
+    // Le reproche exact : « quand on ouvre la liste, on ne sait pas si on y
+    // a joué ». L'écran rendait le silence comme le refus — une ligne
+    // éteinte — alors que §24.3 en fait deux informations différentes.
+    monter();
+
+    expect(etat(0)).toBe("inconnu");
+    expect(lignes()[0]).toHaveAccessibleName(/pas encore dit/);
+    // Et la marque se lit, elle n'est pas seulement une couleur (§10).
+    expect(within(lignes()[0]).getByRole("img")).toHaveAccessibleName("Pas encore dit");
+  });
+
+  it("distingue les trois états à l'écran ET dans le nom", async () => {
     const utilisateur = userEvent.setup();
     monter();
 
-    expect(screen.queryByRole("button", { name: /Voir la fiche/ })).toBeNull();
-    // Le témoin (78) : cochée, la ligne l'offre.
+    await utilisateur.click(dire(0));
+    expect(etat(0)).toBe("joue");
+    expect(within(lignes()[0]).getByRole("img")).toHaveAccessibleName("Joué");
+
+    await utilisateur.click(nier(1));
+    expect(etat(1)).toBe("jamais");
+    expect(within(lignes()[1]).getByRole("img")).toHaveAccessibleName("Jamais joué");
+
+    expect(etat(2)).toBe("inconnu");
+  });
+
+  it("re-dire ce qui est déjà dit RAMÈNE au silence, dans les deux sens", async () => {
+    // « Pas encore dit » doit rester atteignable : se tromper de ligne est le
+    // geste le plus fréquent de cet écran, et un geste par erreur serait
+    // sinon définitif.
+    const utilisateur = userEvent.setup();
+    const { retracter } = monter();
+
+    await utilisateur.click(dire(0));
+    await utilisateur.click(dire(0));
+    expect(etat(0)).toBe("inconnu");
+
+    await utilisateur.click(nier(1));
+    await utilisateur.click(nier(1));
+    expect(etat(1)).toBe("inconnu");
+
+    expect(retracter).toHaveBeenCalledTimes(2);
+  });
+
+  it("passer d'un camp à l'autre RETIRE avant de marquer", async () => {
+    // L'ordre est la propriété : marquer « jamais joué » sans retirer
+    // laisserait l'événement « joué » vivant sous le jugement, et l'écran
+    // relirait les deux — l'invariant 8 pris en défaut.
+    const utilisateur = userEvent.setup();
+    const ordre: string[] = [];
+    const { rendu } = monter();
+    rendu.unmount();
+
+    const retracter = vi.fn(() => { ordre.push("retracter"); return Promise.resolve(); });
+    const envoyer = vi.fn((lot: LotDeclaration) => {
+      ordre.push(lot.entries[0] && "neverPlayed" in lot.entries[0] ? "jamais" : "joue");
+      return Promise.resolve({ claims: [] });
+    });
+    monter({ retracter, envoyer });
+
+    await utilisateur.click(dire(0));
+    await utilisateur.click(nier(0));
+
+    expect(ordre).toEqual(["joue", "retracter", "jamais"]);
+    expect(etat(0)).toBe("jamais");
+  });
+});
+
+describe("SelectionMassive — la modale d'un jeu", () => {
+  it("s'ouvre au TAP sur la ligne, et le tap ne déclare rien", async () => {
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
     await utilisateur.click(lignes()[0]);
-    expect(screen.getByRole("button", { name: /Voir la fiche de Super Mario World/ }))
-      .toBeInTheDocument();
+
+    expect(screen.getByTestId("modale-jeu")).toBeInTheDocument();
+    // Le point dur : ouvrir n'écrit pas. Un tap ne peut pas dire dans quel
+    // sens on se prononce, et supposer « joué » remettrait exactement le
+    // défaut qu'on vient de corriger.
+    expect(envoyer).not.toHaveBeenCalled();
+    expect(etat(0)).toBe("inconnu");
+  });
+
+  it("nomme le jeu et porte son image", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+    const modale = screen.getByTestId("modale-jeu");
+
+    expect(modale).toHaveAccessibleName("Super Mario World");
+    expect(within(modale).getByRole("heading")).toHaveTextContent("Super Mario World");
+  });
+
+  it("déclare depuis la modale, et l'état de la ligne suit", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(
+      within(screen.getByTestId("modale-jeu")).getByRole("button", { name: "J'y ai joué" }),
+    );
+
+    expect(screen.getByTestId("modale-jeu")).toHaveAttribute("data-etat", "joue");
+    // Elle NE SE FERME PAS : c'est le moment où l'on précise, et se fermer
+    // sur la première réponse obligerait à rouvrir pour la seconde.
+    expect(etat(0)).toBe("joue");
+  });
+
+  it("ne pose les questions de la passe 2 que sur un jeu DÉCLARÉ", async () => {
+    // Poser « vous l'avez fini ? » sous « jamais joué » produirait le « je
+    // n'y ai jamais joué, et je l'ai fini » que l'invariant 8 interdit.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+    const modale = () => screen.getByTestId("modale-jeu");
+    expect(within(modale()).queryByRole("group", { name: "Vous l'avez fini ?" })).toBeNull();
+
+    await utilisateur.click(within(modale()).getByRole("button", { name: "J'y ai joué" }));
+    expect(within(modale()).getByRole("group", { name: "Vous l'avez fini ?" })).toBeInTheDocument();
+
+    await utilisateur.click(within(modale()).getByRole("button", { name: "Jamais joué" }));
+    expect(within(modale()).queryByRole("group", { name: "Vous l'avez fini ?" })).toBeNull();
+  });
+
+  it("se ferme au clic À CÔTÉ, et ce qui a été dit tient", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(
+      within(screen.getByTestId("modale-jeu")).getByRole("button", { name: "J'y ai joué" }),
+    );
+    await utilisateur.click(screen.getByTestId("modale-fond"));
+
+    expect(screen.queryByTestId("modale-jeu")).toBeNull();
+    expect(etat(0)).toBe("joue");
+  });
+
+  it("se ferme à Échap", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.keyboard("{Escape}");
+
+    expect(screen.queryByTestId("modale-jeu")).toBeNull();
+  });
+
+  it("ouvre la fiche d'un jeu NON déclaré — ce que le panneau ne permettait pas", async () => {
+    // Le manque inscrit en T6 : « c'est quoi, ce jeu ? » n'avait aucun geste,
+    // parce que le panneau d'affinage n'existait que sur une ligne cochée.
+    const utilisateur = userEvent.setup();
+    const { ouvrirFiche } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(
+      within(screen.getByTestId("modale-jeu")).getByRole("button", { name: /Voir la fiche/ }),
+    );
+
+    expect(ouvrirFiche).toHaveBeenCalledWith(
+      expect.objectContaining({ titre: "Super Mario World" }),
+    );
+  });
+
+  it("enseigne le balayage, qui la rend inutile", async () => {
+    // E02 interdit « une légende à apprendre » SUR la liste. La modale n'est
+    // pas la liste : c'est le seul endroit où l'on a le temps de lire une
+    // phrase, et celle-ci existe pour se rendre inutile.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.click(lignes()[0]);
+
+    expect(screen.getByTestId("modale-jeu")).toHaveTextContent(/balayez/i);
   });
 });
