@@ -32,6 +32,18 @@ public sealed record ProfileOpening(
     TemporalValue OccurredAt, string? PlatformId, int? Years);
 
 /// <summary>
+/// Une décennie de l'histoire, et ce qu'elle porte (E04, bloc ⒟).
+/// </summary>
+/// <param name="Decade">L'année de début : 1990, 2000…</param>
+/// <param name="Moments">
+/// Combien de moments s'y situent. <b>Zéro est une valeur</b>, pas une
+/// absence : c'est le creux qui fait dire « c'est vrai, j'ai peu joué entre
+/// 2005 et 2010 », et retirer les décennies vides supprimerait précisément
+/// ce que la bande existe pour montrer.
+/// </param>
+public sealed record ActivitySlice(int Decade, int Moments);
+
+/// <summary>
 /// Ce que l'en-tête de <c>/mon-histoire</c> a le droit de dire du joueur.
 /// </summary>
 /// <param name="Moments">Tout le journal — ce qui décide du seuil, rien de plus.</param>
@@ -41,7 +53,8 @@ public sealed record ProfileSummary(
     int GamesDeclared,
     int Finished,
     int MemoriesWritten,
-    ProfileOpening? Opening)
+    ProfileOpening? Opening,
+    IReadOnlyList<ActivitySlice> Activity)
 {
     /// <summary>
     /// Le seuil de E04 : « Trop maigre pour un portrait (moins de ~10
@@ -100,7 +113,8 @@ public static class ProfileProjection
 
         return new ProfileSummary(
             events.Count, consoles, taux.Declared, taux.Finished, souvenirs,
-            Debut(events, horizon));
+            Debut(events, horizon),
+            Densite(events, horizon));
     }
 
     /// <summary>
@@ -131,6 +145,48 @@ public static class ProfileProjection
             premier.OccurredAt,
             premier.PlatformId,
             ecoulees >= 1 ? ecoulees : null);
+    }
+
+    /// <summary>
+    /// La densité de moments par décennie (E04, bloc ⒟).
+    ///
+    /// <para><b>Les décennies vides sont dedans.</b> C'est le creux qui fait
+    /// dire « j'ai peu joué entre 2005 et 2010 » : une liste qui ne
+    /// contiendrait que les décennies peuplées dessinerait une bande pleine
+    /// et ne dirait plus rien.</para>
+    ///
+    /// <para><b>Ce qui n'est pas sur l'axe n'y est pas</b> (invariant 2) :
+    /// un moment sans date n'a pas de décennie, et lui en attribuer une
+    /// inventerait la position que le joueur a refusé de donner. Ils sont
+    /// comptés ailleurs — le tiroir les montre.</para>
+    ///
+    /// <para>La borne haute est <b>aujourd'hui</b>, jamais la dernière
+    /// déclaration : une histoire qui s'arrête en 2010 doit montrer quinze
+    /// ans de silence, et c'est l'information la plus utile de la bande.</para>
+    /// </summary>
+    private static IReadOnlyList<ActivitySlice> Densite(
+        IReadOnlyCollection<PlayerEvent> events, TemporalHorizon horizon)
+    {
+        var annees = events
+            .Select(e => AnneeDeclaree(e.OccurredAt, horizon))
+            .Where(a => a is not null)
+            .Select(a => a!.Value)
+            .ToList();
+
+        if (annees.Count == 0)
+        {
+            return [];
+        }
+
+        var premiere = Math.Floor(annees.Min() / 10d) * 10;
+        var derniere = Math.Floor(horizon.Ceiling.Year / 10d) * 10;
+
+        var tranches = new List<ActivitySlice>();
+        for (var d = (int)premiere; d <= (int)derniere; d += 10)
+        {
+            tranches.Add(new ActivitySlice(d, annees.Count(a => a >= d && a <= d + 9)));
+        }
+        return tranches;
     }
 
     /// <summary>

@@ -59,6 +59,14 @@ La phrase seule ne suffit pas à produire l'effet recherché, et une prose gén�
 
 **D ⑴ — Périodes d'activité.** Densité de moments dans le temps, **colorée par époque** (langage visuel §2). C'est la visualisation qui fait dire « c'est vrai, j'ai peu joué entre 2005 et 2010 » — et le bloc le plus immédiatement parlant de l'écran. En Phase 1 elle apparaît dès qu'il y a assez de moments pour qu'une forme se dessine.
 
+> **Livré le 23 septembre 2026.** Une tranche par décennie, **creux compris** : une bande qui ne montrerait que les décennies peuplées serait pleine et ne dirait plus rien — c'est l'alternance qui parle. Elle va jusqu'à **aujourd'hui** et non jusqu'à la dernière déclaration : une histoire qui s'arrête en 2010 doit montrer quinze ans de silence.
+>
+> « Assez de moments » est le **seuil du portrait**, le même que les chiffres : une densité dessinée sur cinq moments dit aussi peu qu'un taux calculé sur cinq jeux, et deux seuils distincts seraient deux règles à tenir.
+>
+> Ce qui n'est pas sur l'axe n'y est pas (invariant 2) : un moment sans date n'a pas de décennie, et le tiroir le montre ailleurs. Les hauteurs sont **relatives au maximum** — une échelle absolue écraserait tout dès qu'une décennie domine —, et le parcours les **mesure dans le navigateur** : une bande déclarée en attribut et invisible ne fait rien dire à personne.
+>
+> Reste dehors : la ligne de légende de la maquette — « 90s : Super Nintendo · 2000s : PlayStation 2 » —, qui demande de nommer la plateforme dominante de chaque décennie.
+
 **E — Goûts.** Genres, studios, franchises suivies avec taux de complétion.
 
 **E bis ⑴ — Vos préférés.** Un titre par plateforme, nommé (§4.7). C'est la ligne la plus personnelle que le système sache produire sans que l'utilisateur ait écrit une phrase — et le meilleur retour sur l'affect déclaré pendant la saisie. Sans cette restitution, l'affect ne serait que de la collecte.
@@ -109,7 +117,7 @@ En Phase 1, l'image peut déjà être générée pour un usage privé (« garder
 | A — la phrase | ⑴ | **livré** : durée approchée et commencement, avec leur granularité |
 | B — les quatre chiffres | ⑴ | **livré** : `consoles · jeux déclarés · terminés · souvenirs écrits` |
 | C — la timeline condensée | ⑴ | absent — la timeline E03, elle, est juste en dessous |
-| D — les périodes d'activité | ⑴ | absent |
+| D — les périodes d'activité | ⑴ | **livré** : une tranche par décennie, creux compris |
 | E bis — vos préférés | ⑴ | absent : l'affect n'est pas encore saisissable (E07) |
 | E — goûts · F — souvenir mis en avant | — | Phase 3 |
 

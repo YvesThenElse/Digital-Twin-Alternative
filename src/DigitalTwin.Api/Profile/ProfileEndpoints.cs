@@ -34,6 +34,15 @@ public sealed record FiguresView(
 /// </param>
 public sealed record OpeningView(int? Years, string? Platform, TemporalView OccurredAt);
 
+/// <summary>
+/// Une décennie de la bande de densité (E04, bloc ⒟).
+///
+/// <para><b>Les décennies vides sont rendues</b>, à zéro : c'est le creux
+/// qui fait dire « j'ai peu joué entre 2005 et 2010 », et les retirer
+/// dessinerait une bande pleine qui ne dit plus rien.</para>
+/// </summary>
+public sealed record ActivityView(int Decade, int Moments);
+
 /// <param name="Figures">
 /// <b><c>null</c> quand le profil est trop maigre pour un portrait.</b> E04 :
 /// « Des statistiques calculées sur cinq jeux détruisent la crédibilité de
@@ -56,8 +65,14 @@ public sealed record OpeningView(int? Years, string? Platform, TemporalView Occu
 /// d'E07 s'il peut proposer « vers mes … ans » — sans elle, un âge n'a pas
 /// de place sur l'axe (§7.6).
 /// </param>
+/// <param name="Activity">
+/// <b><c>null</c> sous le seuil du portrait</b>, comme les chiffres : une
+/// densité dessinée sur cinq moments dit aussi peu qu'un taux calculé sur
+/// cinq jeux, et pour la même raison.
+/// </param>
 public sealed record ProfileView(
-    int Moments, int? BirthYear, FiguresView? Figures, OpeningView? Opening);
+    int Moments, int? BirthYear, FiguresView? Figures,
+    IReadOnlyList<ActivityView>? Activity, OpeningView? Opening);
 
 /// <summary>
 /// L'année de naissance, seule — <b>jamais publiée</b> (§12.3), et demandée
@@ -103,6 +118,9 @@ public static class ProfileEndpoints
                     ? new FiguresView(
                         synthese.Consoles, synthese.GamesDeclared,
                         synthese.Finished, synthese.MemoriesWritten)
+                    : null,
+                synthese.MakesAPortrait && synthese.Activity.Count > 0
+                    ? [.. synthese.Activity.Select(t => new ActivityView(t.Decade, t.Moments))]
                     : null,
                 synthese.Opening is { } debut
                     ? new OpeningView(

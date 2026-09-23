@@ -64,7 +64,7 @@ chemin a laissé.
   l'invitation mène à E02 par le chemin que S5 a construit — pas par un
   second. Au-dessus du seuil, elle disparaît.*
 
-- [ ] **T4 — E04 porte ses périodes d'activité.** (E04, bloc ⒟) Marqué
+- [x] **T4 — E04 porte ses périodes d'activité.** (E04, bloc ⒟) Marqué
   Phase 1 dans la fiche, et absent. C'est « la visualisation qui fait dire
   *c'est vrai, j'ai peu joué entre 2005 et 2010* — et le bloc le plus
   immédiatement parlant de l'écran ».
@@ -96,6 +96,12 @@ chemin a laissé.
 La boucle **s'arrête ici** : ces trois-là ne se corrigent pas, ils se
 tranchent.
 
+> **Inscrit en chemin (T4)** : la **légende** du bloc ⒟ — « 90s : Super
+> Nintendo · 2000s : PlayStation 2 » — reste à faire. Elle demande de nommer
+> la plateforme dominante de chaque décennie, ce que le domaine sait
+> calculer (les événements portent leur machine) mais qu'aucun item ne
+> demandait.
+
 - [ ] **D1 — Par quel geste E02 ouvre-t-il E05 ?** Les relations d'E02
   promettent « → E05 (détail d'un jeu, **en conservant la position**) », et
   son tableau d'actions ne définit aucun geste qui l'ouvre. La ligne entière
@@ -125,6 +131,25 @@ tranchent.
 ---
 
 ## Journal
+
+- **T4** — la bande de densité est là, **creux compris** : une tranche par
+  décennie, zéro inclus, jusqu'à **aujourd'hui** et non jusqu'à la dernière
+  déclaration — une histoire qui s'arrête en 2010 doit montrer quinze ans de
+  silence, et c'est son information la plus utile.
+
+  Le domaine compte, l'écran met en forme. « Assez de moments » est le
+  **seuil du portrait**, le même que les chiffres : deux seuils distincts
+  seraient deux règles à tenir pour une même raison.
+
+  La garde est dans le navigateur et elle **mesure** : hauteur maximale
+  au-dessus de seize pixels, et hauteur minimale **strictement positive** —
+  un creux qui disparaîtrait se lirait comme un défaut d'affichage plutôt
+  que comme un silence. Une mutation qui retire la hauteur explicite du
+  conteneur la fait rougir ; aucun test d'attribut ne l'aurait vue.
+
+  Reste dehors : la ligne de légende de la maquette — « 90s : Super
+  Nintendo · 2000s : PlayStation 2 » —, qui demande de nommer la plateforme
+  dominante de chaque décennie. Inscrit ci-dessous.
 
 - **T3** — l'en-tête invite à compléter sous le seuil du portrait, et
   disparaît dès qu'il tient. Elle passe par le **même** chemin que la

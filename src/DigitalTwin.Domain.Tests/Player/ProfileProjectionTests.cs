@@ -175,6 +175,78 @@ public class ProfileProjectionTests
         return File.ReadAllText(Path.Combine([racine!.FullName, .. chemin]));
     }
 
+    // ---------- la densité par décennie (bloc ⒟) --------------------------
+
+    [Fact]
+    public void La_densite_compte_les_moments_par_decennie()
+    {
+        var densite = Synthese([
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1995)),
+            E(PlayerEventType.StartedGame, "wrk_b", new Year(1997)),
+            E(PlayerEventType.StartedGame, "wrk_c", new Year(2012)),
+        ]).Activity;
+
+        Assert.Equal(1990, densite[0].Decade);
+        Assert.Equal(2, densite[0].Moments);
+        Assert.Equal(1, densite.Single(t => t.Decade == 2010).Moments);
+    }
+
+    [Fact]
+    public void Les_decennies_VIDES_sont_dedans()
+    {
+        // C'est le creux qui fait dire « j'ai peu joué entre 2005 et 2010 ».
+        // Une liste des seules décennies peuplées dessinerait une bande
+        // pleine, et ne dirait plus rien.
+        var densite = Synthese([
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1995)),
+            E(PlayerEventType.StartedGame, "wrk_b", new Year(2015)),
+        ]).Activity;
+
+        Assert.Equal([1990, 2000, 2010, 2020], densite.Select(t => t.Decade));
+        Assert.Equal(0, densite.Single(t => t.Decade == 2000).Moments);
+    }
+
+    [Fact]
+    public void Elle_va_jusqu_a_AUJOURD_HUI_et_non_a_la_derniere_declaration()
+    {
+        // Une histoire qui s'arrête en 1995 doit montrer trente ans de
+        // silence : c'est l'information la plus utile de la bande, et
+        // l'arrêter à la dernière déclaration la ferait disparaître.
+        var densite = Synthese([
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1995)),
+        ]).Activity;
+
+        Assert.Equal(2020, densite[^1].Decade);
+    }
+
+    [Fact]
+    public void Un_moment_sans_date_n_a_pas_de_decennie()
+    {
+        // Invariant 2 : lui en attribuer une inventerait la position que le
+        // joueur a refusé de donner. Le tiroir les montre ailleurs.
+        var densite = Synthese([
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1995)),
+            E(PlayerEventType.StartedGame, "wrk_b", Unknown.Instance),
+        ]).Activity;
+
+        Assert.Equal(1, densite.Sum(t => t.Moments));
+    }
+
+    [Fact]
+    public void Un_profil_sans_aucune_date_n_a_pas_de_bande()
+    {
+        // Pas une bande plate : pas de bande. Une forme sans relief se lit
+        // comme un défaut d'affichage.
+        Assert.Empty(Synthese([
+            E(PlayerEventType.StartedGame, "wrk_a", Unknown.Instance),
+        ]).Activity);
+
+        // Le témoin (78) : une seule date suffit à la faire naître.
+        Assert.NotEmpty(Synthese([
+            E(PlayerEventType.StartedGame, "wrk_a", new Year(1995)),
+        ]).Activity);
+    }
+
     // ---------- le début de l'histoire (bloc A) ---------------------------
 
     [Fact]

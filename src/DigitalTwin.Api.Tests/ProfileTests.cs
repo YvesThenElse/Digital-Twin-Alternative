@@ -192,6 +192,37 @@ public class ProfileTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task La_bande_d_activite_suit_le_seuil_du_portrait()
+    {
+        // Une densité dessinée sur cinq moments dit aussi peu qu'un taux
+        // calculé sur cinq jeux, et pour la même raison. Elle disparaît donc
+        // avec les chiffres — pas séparément, ce qui ferait deux seuils à
+        // tenir.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var maigre = Neuf("actmaigre");
+        var (machine, _) = await UneMachine(client);
+
+        await Ecrire(Ev("evt_am", maigre, PlayerEventType.StartedGame,
+            "wrk_am", new Year(1995), machine));
+        var vue = await client.GetFromJsonAsync<JsonElement>($"/profile/{maigre}");
+        Assert.Equal(JsonValueKind.Null, vue.GetProperty("activity").ValueKind);
+
+        // Le témoin (78) : nourri, le MÊME point d'entrée la rend — et elle
+        // porte les décennies vides, jusqu'à aujourd'hui.
+        var nourri = Neuf("actnourri");
+        await Ecrire([.. Enumerable.Range(0, 10).Select(i => Ev(
+            $"evt_an{i}", nourri, PlayerEventType.StartedGame, $"wrk_an{i}",
+            new Year(1995), machine))]);
+        var pleine = (await client.GetFromJsonAsync<JsonElement>($"/profile/{nourri}"))
+            .GetProperty("activity").EnumerateArray().ToList();
+
+        Assert.Equal(1990, pleine[0].GetProperty("decade").GetInt32());
+        Assert.Equal(10, pleine[0].GetProperty("moments").GetInt32());
+        Assert.Contains(pleine, t => t.GetProperty("moments").GetInt32() == 0);
+    }
+
+    [Fact]
     public async Task Un_profil_vide_ne_rend_ni_chiffres_ni_debut()
     {
         // Il n'existe pas dans le parcours normal — E01 garantit un moment —
@@ -203,6 +234,7 @@ public class ProfileTests(PostgresFixture bdd)
 
         Assert.Equal(JsonValueKind.Null, vue.GetProperty("figures").ValueKind);
         Assert.Equal(JsonValueKind.Null, vue.GetProperty("opening").ValueKind);
+        Assert.Equal(JsonValueKind.Null, vue.GetProperty("activity").ValueKind);
         // Zéro moment, et c'est un FAIT, pas une absence : c'est ce qui
         // permet à l'accueil de ne rien proposer plutôt que de se taire
         // faute de savoir.

@@ -270,6 +270,10 @@ export const MESSAGES = {
   // qu'elle fait, pas ce qui manque : « il vous faut dix moments » ferait du
   // portrait une jauge à remplir.
   "portrait.completer": "Ajouter des jeux à mon histoire",
+  // E04, bloc ⒟ : « la visualisation qui fait dire *c'est vrai, j'ai peu
+  // joué entre 2005 et 2010* ». Le nom dit une répartition, pas un total.
+  "portrait.activite": "Vos périodes",
+  "portrait.activiteTranche": "Années {decennie} : {n}",
 
   // --- E05, la fiche de jeu ----------------------------------------------
   //

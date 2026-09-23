@@ -781,6 +781,24 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     "2",
   ]);
 
+  // **Les périodes d'activité ont une HAUTEUR.** E04 en fait « le bloc le
+  // plus immédiatement parlant de l'écran » — et il ne parle que s'il se
+  // voit. Des barres en pourcentage dans un conteneur qui n'en a pas
+  // mesurent zéro : c'est le défaut qu'a déjà eu la bande d'époque, et aucun
+  // test d'attribut ne l'aurait vu.
+  const activite = page.getByTestId("activite");
+  await expect(activite).toBeVisible();
+  const decennies = await activite.locator(".activite-tranche").evaluateAll((noeuds) =>
+    noeuds.map((n) => n.getBoundingClientRect().height),
+  );
+  expect(decennies.length, "la bande d'activité n'a aucune tranche").toBeGreaterThan(1);
+  expect(Math.max(...decennies), "la bande d'activité n'a pas de hauteur visible")
+    .toBeGreaterThan(16);
+  // Et le creux se voit AUSSI : une décennie à zéro garde un trait, sinon
+  // son absence se lit comme un défaut d'affichage plutôt qu'un silence.
+  expect(Math.min(...decennies), "une décennie vide a disparu de la bande")
+    .toBeGreaterThan(0);
+
   // Et AUCUNE invitation à compléter : le portrait tient, donc l'état
   // « trop maigre » d'E04 n'a pas lieu d'être. Le témoin de cette absence
   // est côté composant, sur une synthèse sans chiffres.

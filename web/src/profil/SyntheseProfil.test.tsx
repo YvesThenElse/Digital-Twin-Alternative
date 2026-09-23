@@ -21,6 +21,11 @@ import { SyntheseProfil, type SyntheseDuProfil } from "./SyntheseProfil";
 const DEBUT: SyntheseDuProfil = {
   moments: 52,
   birthYear: null,
+  activity: [
+    { decade: 1990, moments: 12 },
+    { decade: 2000, moments: 0 },
+    { decade: 2010, moments: 5 },
+  ],
   figures: { consoles: 4, gamesDeclared: 128, finished: 31, memoriesWritten: 7 },
   opening: {
     years: 35,
@@ -125,7 +130,7 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
     // Un profil sans rien n'a pas un taux de zéro : il n'en a pas. L'en-tête
     // disparaît plutôt que d'afficher une coquille.
     const { container } = poser(
-      { moments: 0, birthYear: null, figures: null, opening: null });
+      { moments: 0, birthYear: null, activity: null, figures: null, opening: null });
 
     expect(container.textContent).toBe("");
     expect(screen.queryByTestId("portrait")).toBeNull();
@@ -176,8 +181,51 @@ describe("SyntheseProfil — un profil trop maigre propose de compléter (E04)",
   it("n'invite à rien sur un profil vide : l'axe le fait déjà", () => {
     // Deux invitations superposées n'en font pas une plus claire — l'axe
     // porte « Racontez votre première console », et l'en-tête se tait.
-    const { container } = poser({ moments: 0, birthYear: null, figures: null, opening: null });
+    const { container } = poser({ moments: 0, birthYear: null, activity: null, figures: null, opening: null });
 
     expect(container.textContent).toBe("");
+  });
+});
+
+describe("SyntheseProfil — les périodes d'activité (E04, bloc ⒟)", () => {
+  const tranches = () => screen.queryAllByTestId("activite")[0]
+    ?.querySelectorAll(".activite-tranche");
+
+  it("dessine une tranche par décennie, creux compris", () => {
+    // « C'est la visualisation qui fait dire *j'ai peu joué entre 2005 et
+    // 2010* » : retirer les décennies vides dessinerait une bande pleine, et
+    // supprimerait précisément ce qu'elle existe pour montrer.
+    poser(DEBUT);
+
+    expect(tranches()).toHaveLength(3);
+    expect([...tranches()!].map((n) => n.getAttribute("data-moments")))
+      .toEqual(["12", "0", "5"]);
+  });
+
+  it("colore chaque décennie par son époque", () => {
+    // Langage visuel §2. L'accent vient du MILIEU de la décennie : sa borne
+    // basse tombe pile sur un changement d'époque.
+    poser(DEBUT);
+
+    const epoques = [...tranches()!].map((n) => n.getAttribute("data-epoque"));
+    expect(new Set(epoques).size).toBeGreaterThan(1);
+  });
+
+  it("met les hauteurs en proportion du maximum", () => {
+    // Une échelle absolue écraserait tout dès qu'une décennie domine — et
+    // c'est justement le contraste qu'on vient lire.
+    poser(DEBUT);
+
+    const hauteurs = [...tranches()!].map((n) => (n as HTMLElement).style.height);
+    expect(hauteurs).toEqual(["100%", "0%", `${(5 / 12) * 100}%`]);
+  });
+
+  it("ne dessine rien sous le seuil du portrait", () => {
+    poser({ ...DEBUT, activity: null });
+
+    expect(screen.queryByTestId("activite")).toBeNull();
+    // Le témoin (78) : la MÊME synthèse, la densité rendue, la dessine.
+    poser(DEBUT);
+    expect(screen.getAllByTestId("activite")).not.toHaveLength(0);
   });
 });

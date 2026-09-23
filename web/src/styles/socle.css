@@ -1539,3 +1539,46 @@ figure[data-testid="bande-epoque"] figcaption {
   font: var(--meta);
   color: var(--ink-2);
 }
+
+/* --- E04, les périodes d'activité (bloc ⒟) ------------------------------- */
+
+/*
+ * « Densité de moments dans le temps, colorée par époque. » C'est le bloc le
+ * plus immédiatement parlant de l'écran — et il ne parle QUE s'il a une
+ * hauteur : une bande déclarée en attribut et invisible ne fait rien dire à
+ * personne. La bande d'époque d'E02 a déjà eu ce défaut.
+ */
+.activite {
+  margin: var(--e6) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.activite-bande {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--e1);
+  /* Une hauteur EXPLICITE : des barres en pourcentage dans un conteneur qui
+     n'en a pas mesurent zéro, et la bande disparaît sans qu'aucun test
+     d'attribut ne s'en aperçoive. */
+  block-size: 56px;
+}
+
+.activite-tranche {
+  flex: 1;
+  min-inline-size: 6px;
+  /* Un creux se VOIT : une décennie à zéro garde un trait, sinon l'absence
+     se lit comme un défaut d'affichage plutôt que comme un silence. */
+  min-block-size: 2px;
+  border-radius: 2px 2px 0 0;
+  align-self: flex-end;
+}
+
+.activite-bornes {
+  display: flex;
+  justify-content: space-between;
+  font: var(--micro);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}

@@ -84,11 +84,15 @@
     },
     "GET /profile/{user}": {
       "": {
-        "lit": ["moments", "birthYear", "figures", "opening"],
+        "lit": ["moments", "birthYear", "figures", "activity", "opening"],
         "ignore": {}
       },
       "figures": {
         "lit": ["consoles", "gamesDeclared", "finished", "memoriesWritten"],
+        "ignore": {}
+      },
+      "activity[]": {
+        "lit": ["decade", "moments"],
         "ignore": {}
       },
       "opening": {

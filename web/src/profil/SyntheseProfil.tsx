@@ -1,5 +1,6 @@
 import type { CleMessage } from "../i18n/messages";
 import { t } from "../i18n/t";
+import { BandeDActivite, type TrancheActivite } from "./BandeDActivite";
 import { libelle, type ValeurTemporelle } from "../temporel/valeur";
 
 /**
@@ -48,6 +49,12 @@ export type SyntheseDuProfil = {
   /** `null` quand le profil est trop maigre pour qu'un chiffre veuille dire
    * quelque chose. L'API ne les envoie pas ; l'écran n'en invente pas. */
   figures: ChiffresDuProfil | null;
+  /**
+   * La densité par décennie (bloc ⒟). `null` sous le seuil du portrait,
+   * comme les chiffres — une densité dessinée sur cinq moments dit aussi peu
+   * qu'un taux calculé sur cinq jeux.
+   */
+  activity: TrancheActivite[] | null;
   opening: DebutDuProfil | null;
 };
 
@@ -89,7 +96,7 @@ export function SyntheseProfil({ synthese, completer }: {
   // rien à dire : un en-tête qui s'affiche vide puis se remplit ferait sauter
   // l'écran au moment précis où le joueur le découvre.
   if (synthese === null) return null;
-  const { figures, opening } = synthese;
+  const { figures, activity, opening } = synthese;
   if (figures === null && opening === null) return null;
 
   return (
@@ -127,6 +134,13 @@ export function SyntheseProfil({ synthese, completer }: {
               porteur direct du « oui, ça me ressemble ». */}
           <Chiffre valeur={figures.memoriesWritten} quoi="souvenirs" />
         </ul>
+      ) : null}
+
+      {/* Bloc ⒟. « La partie visuelle contribue davantage que la partie
+          rédigée » à l'effet « ça me ressemble » : la phrase travaille AVEC
+          elle, pas à sa place. */}
+      {activity !== null && activity.length > 0 ? (
+        <BandeDActivite tranches={activity} />
       ) : null}
     </header>
   );
