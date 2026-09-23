@@ -459,6 +459,47 @@ describe("App — E05, la fiche de jeu s'ouvre depuis l'axe", () => {
     expect(screen.getByRole("button", { name: "Super Mario World" })).toBeInTheDocument();
   });
 
+  it("s'ouvre depuis E02 et y REVIENT, déclarations comprises", async () => {
+    // E02 promet « → E05 en conservant la position ». E05 est une page :
+    // l'état local de la sélection part avec le démontage, et tout ce qu'il
+    // portait est en base depuis le geste qui l'a produit. Revenir RELIT,
+    // sans quoi l'écran montrerait moins que ce que la base contient.
+    const utilisateur = userEvent.setup();
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }));
+
+    // L'état relu porte la déclaration qu'on vient de faire.
+    faux.etatSelection.mockResolvedValue([
+      { workId: "w1", played: true, completion: null, provenance: null,
+        neverPlayed: false, affect: null },
+    ]);
+
+    // L'axe porte la couche personnelle de la fiche. Venant de la
+    // sélection, il n'a pas été lu — la fiche montrerait « rien de déclaré »
+    // sur un jeu qu'on vient de cocher.
+    faux.timeline.mockResolvedValue({
+      entries: [{ isEpisode: false, interval: { start: "1990-01-01", end: "1990-12-31" },
+        moments: [{ id: "m1", type: "StartedGame", targetKind: "work", targetId: "w1",
+          targetLabel: "Super Mario World",
+          occurredAt: { kind: "Year", year: 1990 }, platformId: "plt_snes",
+          memory: null }] }],
+      undated: [],
+      warnings: [],
+    });
+
+    await utilisateur.click(
+      screen.getByRole("button", { name: /Voir la fiche de Super Mario World/ }));
+    expect(await screen.findByTestId("fiche")).toHaveTextContent("Super Mario World");
+    expect(screen.getAllByTestId("fiche-moment")).toHaveLength(1);
+
+    await utilisateur.click(screen.getByRole("button", { name: /Revenir/ }));
+
+    // On est bien revenu DANS la liste, et la ligne est toujours déclarée.
+    expect(await screen.findByRole("button", { name: /^Déclaré : Super Mario World$/ }))
+      .toBeInTheDocument();
+    expect(screen.queryByTestId("axe")).toBeNull();
+  });
+
   it("revient à l'axe : la fiche n'est pas un cul-de-sac", async () => {
     const utilisateur = userEvent.setup();
     await jusquALAxe(utilisateur);

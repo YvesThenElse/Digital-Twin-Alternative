@@ -76,6 +76,10 @@ export const MESSAGES = {
   // texte se lit comme une étape à franchir avant d'écrire.
   "souvenir.repere": "Un repère court sur {titre} (facultatif)",
   "action.recharger": "Recharger la liste",
+  // E02 → E05. Le geste vit dans le PANNEAU d'affinage, pas sur la ligne :
+  // une seconde cible par ligne est exactement ce que la refonte en deux
+  // passes interdit — quatre cibles de 44 px ne laissent que 143 px de titre.
+  "action.voirLaFiche": "Voir la fiche de {titre}",
 
   // Les quatre états obligatoires de E02 (principes §5). L'état vide est le
   // plus important : c'est celui que voit un nouvel utilisateur.

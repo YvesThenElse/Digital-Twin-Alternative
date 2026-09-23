@@ -174,6 +174,7 @@ Une ligne marquée « jamais joué » s'estompe sans disparaître (cercle vide, 
 | Changer de plateforme | → E02 sur une autre plateforme, période conservée |
 | « Voir ma timeline » | → E03 |
 | Titre absent | saisie libre → déclaration non résolue (§3.5) |
+| **Voir la fiche** (dans le panneau d'affinage) | → **E05**, en conservant la position |
 
 ## États
 
@@ -198,6 +199,12 @@ Ce n'est pas un raffinement de Phase 7 : c'est ce qui protège la mécanique cen
 
 - **Entrant** : E01 (fin d'onboarding, préfiltré) · navigation principale (« Ajouter ») · E05 fiche plateforme (« voir tous les jeux ») · E03 timeline (« compléter cette période »).
 - **Sortant** : → E03 (voir le résultat) · → E05 (détail d'un jeu, en conservant la position) · → E02 (autre plateforme).
+
+> **Le geste vers E05 est livré le 23 septembre 2026, et il vit dans le PANNEAU d'affinage.** Une seconde cible sur la ligne est exactement ce que la refonte en deux passes interdit — quatre cibles de 44 px ne laissent que 143 px de titre. Le budget d'un tap par jeu ne bouge donc pas : aucune des trente lignes ne le paie.
+>
+> **Conséquence assumée** : le panneau n'existe que sur une ligne **déclarée**. Ouvrir la fiche d'un jeu qu'on hésite à cocher — le cas « c'est quoi, ce jeu ? » — attend un autre geste, et il est inscrit dans [TODO-ECRANS-2.md](../TODO-ECRANS-2.md).
+>
+> **« En conservant la position » a un coût réel.** E05 est une page : l'état local de cet écran — lignes cochées depuis l'ouverture, affinages, souvenirs — part avec le démontage. Revenir **relit** donc la base, où tout a été écrit au geste qui l'a produit. Sans cela, l'écran reviendrait en montrant moins que ce qu'elle contient.
 
 Cette boucle **E02 → E03 → E02** est le cycle central du produit : déclarer, constater, revenir en déclarer plus. Elle doit être sans friction dans les deux sens.
 

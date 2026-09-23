@@ -99,7 +99,7 @@ chemin a laissé.
 | La nature de la table des liens | **un résumé des liens dominants** | T7 |
 | La timeline condensée d'E04 | **construite** | T8 |
 
-- [ ] **T6 — E02 ouvre la fiche depuis le panneau d'affinage.** (E02,
+- [x] **T6 — E02 ouvre la fiche depuis le panneau d'affinage.** (E02,
   relations · E05) Ses relations promettent « → E05 (détail d'un jeu, **en
   conservant la position**) », et aucun geste ne l'ouvrait. **Décidé** : le
   panneau d'affinage, qui n'ajoute **aucune cible à la ligne** — la refonte
@@ -155,6 +155,26 @@ chemin a laissé.
 ---
 
 ## Journal
+
+- **T6** — le geste vers E05 vit dans le **panneau d'affinage**. Il suit
+  exactement le sort des trois questions : il paraît avec elles, il part avec
+  elles — donc aucune cible n'est ajoutée à la ligne, et le budget d'un tap
+  par jeu ne bouge pas.
+
+  **Le retour relit.** E05 est une page, l'état local de la sélection part
+  avec le démontage, et tout ce qu'il portait est en base depuis le geste qui
+  l'a produit. Le parcours le mesure sur les trente déclarations : elles sont
+  toutes là au retour. C'est T1 à une autre échelle — là, un repliage ; ici,
+  deux heures de saisie.
+
+  **Et l'axe est relu à l'ALLER**, ce qui est moins évident : la fiche tire
+  sa couche personnelle de la timeline, qui n'a pas été lue quand on vient de
+  la sélection. Sans cela, la fiche aurait dit « rien de déclaré » sur un jeu
+  qu'on venait de cocher.
+
+  Ce qui est laissé, et que la décision assumait : le panneau n'existe que
+  sur une ligne **déclarée**. Le cas « c'est quoi, ce jeu ? » attend un autre
+  geste.
 
 - **T5** — les préférés sont nommés, un par plateforme, et c'est le
   **domaine** qui le dit : l'invariant 6 est tenu à l'écriture, et la lecture

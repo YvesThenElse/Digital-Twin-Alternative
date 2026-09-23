@@ -26,12 +26,14 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
   const ecrireSouvenir = vi.fn().mockResolvedValue(undefined);
   const recharger = vi.fn();
   const retracter = vi.fn().mockResolvedValue(undefined);
+  const ouvrirFiche = vi.fn();
   const rendu = render(
     <SelectionMassive
       oeuvres={oeuvres}
       region="PAL"
       disposition="liste"
       envoyer={envoyer}
+      ouvrirFiche={ouvrirFiche}
       ecrireSouvenir={ecrireSouvenir}
       recharger={recharger}
       retracter={retracter}
@@ -43,7 +45,7 @@ function monter(surcharge: Partial<Parameters<typeof SelectionMassive>[0]> = {})
       {...surcharge}
     />,
   );
-  return { envoyer, ecrireSouvenir, recharger, retracter, rendu };
+  return { envoyer, ecrireSouvenir, recharger, retracter, ouvrirFiche, rendu };
 }
 
 const bande = () => screen.getByTestId("bande-epoque");
@@ -1728,5 +1730,63 @@ describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
     await utilisateur.click(lignes()[1]);
 
     expect(envoyer).toHaveBeenCalledTimes(2);
+  });
+});
+
+/**
+ * E02 → E05 — <b>par le panneau, jamais par la ligne</b>.
+ *
+ * Les relations d'E02 promettent « → E05 (détail d'un jeu, en conservant la
+ * position) » et aucun geste ne l'ouvrait. Le geste vit dans le panneau
+ * d'affinage : une seconde cible par ligne est exactement ce que la refonte
+ * en deux passes interdit — quatre cibles de 44 px ne laissent que 143 px de
+ * titre, sur l'écran dont toute la mécanique repose sur la reconnaissance.
+ */
+describe("SelectionMassive — la fiche d'un jeu (E02 → E05)", () => {
+  it("s'ouvre depuis le panneau, en nommant le jeu", async () => {
+    const utilisateur = userEvent.setup();
+    const { ouvrirFiche } = monter();
+    await utilisateur.click(lignes()[0]);
+
+    await utilisateur.click(
+      screen.getByRole("button", { name: /Voir la fiche de Super Mario World/ }));
+
+    expect(ouvrirFiche).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "w1", titre: "Super Mario World" }));
+  });
+
+  it("vit DANS le panneau : il apparaît et disparaît avec les questions", async () => {
+    // C'est la contrainte dure d'E02 : la ligne entière est la cible, et une
+    // seconde la ferait tronquer le titre. Le geste est donc lié au panneau
+    // d'affinage, pas à la ligne — il suit exactement le même sort que les
+    // trois questions.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    const fiche = () => screen.queryByRole("button", { name: /Voir la fiche/ });
+    const questions = () => screen.queryAllByRole("group");
+
+    expect(fiche()).toBeNull();
+    expect(questions()).toHaveLength(0);
+
+    await utilisateur.click(lignes()[0]);
+    expect(fiche()).toBeInTheDocument();
+    expect(questions()).toHaveLength(3);
+
+    // Décochée, la ligne les remporte tous les deux.
+    await utilisateur.click(screen.getByRole("button", { name: /^Déclaré : / }));
+    expect(fiche()).toBeNull();
+    expect(questions()).toHaveLength(0);
+  });
+
+  it("le geste n'existe que sur une ligne déclarée", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+
+    expect(screen.queryByRole("button", { name: /Voir la fiche/ })).toBeNull();
+    // Le témoin (78) : cochée, la ligne l'offre.
+    await utilisateur.click(lignes()[0]);
+    expect(screen.getByRole("button", { name: /Voir la fiche de Super Mario World/ }))
+      .toBeInTheDocument();
   });
 });

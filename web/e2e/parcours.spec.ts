@@ -463,6 +463,27 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // qu'il venait de dire.
   await toucher(page.getByRole("button", { name: "Toujours en cours" }).nth(1).click());
 
+  // --- 3 bis ter. la fiche d'un jeu, depuis E02 --------------------------
+  //
+  // E02 promet « → E05 (détail d'un jeu, EN CONSERVANT LA POSITION) » et
+  // aucun geste ne l'ouvrait. Il vit dans le PANNEAU d'affinage : la ligne
+  // garde sa cible unique, et le budget d'un tap par jeu ne bouge pas.
+  const declaree = page.getByRole("button", { name: /^Déclaré : / }).first();
+  const titreDeclare = (await declaree.getAttribute("aria-label"))!
+    .replace("Déclaré : ", "");
+
+  await toucher(page.getByRole("button", { name: `Voir la fiche de ${titreDeclare}`, exact: true })
+    .click());
+  await expect(page.getByTestId("fiche")).toContainText(titreDeclare);
+
+  await toucher(page.getByRole("button", { name: /Revenir/ }).click());
+
+  // **Et la liste est telle qu'on l'a laissée.** E05 est une page : l'état
+  // local de la sélection est parti avec le démontage, et c'est la relecture
+  // qui le rend — pas une copie gardée en mémoire.
+  await expect(page.getByRole("button", { name: /^Déclaré : / }))
+    .toHaveCount(TITRES_A_COCHER);
+
   // --- 3 ter. « jamais joué » --------------------------------------------
   //
   // §24.3 : « il n'y a pas joué » n'est pas « il ne s'est pas prononcé ».
@@ -1200,7 +1221,10 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // quatre derniers sont une vérification que seul ce test peut faire ; ils
   // sont comptés quand même, parce qu'un budget qui choisit ce qu'il compte
   // ne mesure plus rien.
-  const budget = TITRES_A_COCHER + 43;
+  // Deux gestes de plus : ouvrir la fiche d'un jeu depuis la liste, et en
+  // revenir. C'est de la LECTURE, et le geste vit dans le panneau — aucune
+  // des trente lignes ne le paie —, mais le budget doit le voir.
+  const budget = TITRES_A_COCHER + 45;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

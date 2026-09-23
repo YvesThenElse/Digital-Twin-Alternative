@@ -141,6 +141,20 @@ type Props = {
   disposition: Disposition;
   envoyer: (lot: LotDeclaration) => Promise<ReponseDeclaration>;
   /**
+   * Ouvre la fiche d'un jeu (E05) — <b>depuis le panneau d'affinage</b>.
+   *
+   * Les relations d'E02 promettent « → E05 (détail d'un jeu, en conservant
+   * la position) » et aucun geste ne l'ouvrait. Il vit dans le panneau et
+   * non sur la ligne : une seconde cible par ligne est exactement ce que la
+   * refonte en deux passes interdit — quatre cibles de 44 px ne laissent que
+   * 143 px de titre, sur l'écran dont toute la mécanique repose sur la
+   * reconnaissance.
+   *
+   * Conséquence assumée : le panneau n'existe que sur une ligne DÉCLARÉE.
+   * La fiche d'un jeu qu'on hésite à cocher attend un autre geste.
+   */
+  ouvrirFiche: (oeuvre: Oeuvre) => void;
+  /**
    * Enregistre un souvenir. Requis, sans valeur par défaut : un rappel
    * facultatif absent rendrait le champ muet sans que rien ne le signale.
    */
@@ -287,8 +301,8 @@ export function contient(titre: string, recherche: string): boolean {
 }
 
 export function SelectionMassive({
-  oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger, retracter, etatInitial,
-  souvenirsInitiaux, titresLibresInitiaux, chargement, lot,
+  oeuvres, region, disposition, envoyer, ouvrirFiche, ecrireSouvenir, recharger,
+  retracter, etatInitial, souvenirsInitiaux, titresLibresInitiaux, chargement, lot,
 }: Props) {
   const [declarees, setDeclarees] = useState<Set<string>>(
     () => new Set([
@@ -855,6 +869,16 @@ export function SelectionMassive({
                   repondre={(v) => repondre(oeuvre.id, "provenance", v)}
                   choix={CHOIX_PROVENANCE}
                 />
+              ) : null}
+
+              {declare ? (
+                <button
+                  type="button"
+                  className="discret"
+                  onClick={() => ouvrirFiche(oeuvre)}
+                >
+                  {t("action.voirLaFiche", { titre: oeuvre.titre })}
+                </button>
               ) : null}
 
               {declare ? (

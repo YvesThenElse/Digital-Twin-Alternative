@@ -419,20 +419,55 @@ export function App() {
       .filter((m) => m.targetKind === cible.kind && m.targetId === cible.id);
   }
 
-  async function ouvrirFiche(moment: MomentTimeline) {
-    const cible: CibleFiche = {
-      kind: moment.targetKind,
-      id: moment.targetId,
-      label: moment.targetLabel,
-      // Reçue avec la déclaration, jamais déduite de l'œuvre.
-      platformId: moment.platformId,
-    };
+  /**
+   * D'OÙ l'on a ouvert la fiche, pour y revenir.
+   *
+   * E02 comme E03 promettent « → E05 en conservant la position », et E05 est
+   * une PAGE : revenir à un accueil générique ferait perdre le fil — c'est
+   * ce que les règles de liaison interdisent explicitement.
+   */
+  const [retourFiche, setRetourFiche] = useState<Etape>("timeline");
+
+  async function ouvrirFicheDe(cible: CibleFiche, depuis: Etape) {
+    setRetourFiche(depuis);
     setFiche(cible);
+    // L'axe porte la couche personnelle de la fiche. Venant de la sélection,
+    // il n'a pas été lu — la fiche montrerait « rien de déclaré » sur un jeu
+    // qu'on vient de cocher.
+    if (depuis !== "timeline") await relireAxe();
     // Une revendication n'a pas de fiche de référentiel : ne pas la demander
     // évite un 404 attendu, qui se lirait comme une panne dans le journal.
     setFicheReferentiel(
       cible.kind === "work" ? await client.ficheOeuvre(cible.id) : null);
     setEtape("fiche");
+  }
+
+  function ouvrirFicheDuMoment(moment: MomentTimeline) {
+    return ouvrirFicheDe({
+      kind: moment.targetKind,
+      id: moment.targetId,
+      label: moment.targetLabel,
+      // Reçue avec la déclaration, jamais déduite de l'œuvre.
+      platformId: moment.platformId,
+    }, "timeline");
+  }
+
+  /**
+   * Revenir de la fiche — <b>en retrouvant ce qu'on a laissé</b>.
+   *
+   * Venant de la sélection, on RELIT : son état local est parti avec le
+   * démontage, et tout ce qu'il portait est en base depuis le geste qui l'a
+   * produit. Sans relecture, l'écran reviendrait en montrant moins que ce
+   * que la base contient — le défaut que la relecture d'ouverture avait
+   * déjà corrigé une fois.
+   */
+  async function fermerLaFiche(p: Plateforme | null) {
+    if (retourFiche === "selection" && p !== null) {
+      setChargementSelection("en-cours");
+      await relireEtat(p);
+      setChargementSelection("pret");
+    }
+    setEtape(retourFiche);
   }
 
   /**
@@ -698,6 +733,15 @@ export function App() {
             retracter={(workId) =>
               client.retracter(UTILISATEUR, machine.id, workId).then(() => undefined)
             }
+            ouvrirFiche={(oeuvre) => {
+              void essayer(() => ouvrirFicheDe({
+                kind: "work",
+                id: oeuvre.id,
+                label: oeuvre.titre,
+                // La machine de l'écran : c'est sur elle qu'on déclare ici.
+                platformId: machine.id,
+              }, "selection"));
+            }}
             etatInitial={etatInitial}
             souvenirsInitiaux={souvenirsInitiaux}
             titresLibresInitiaux={titresLibresInitiaux}
@@ -728,7 +772,7 @@ export function App() {
             entrees={timeline.entries}
             sansDate={timeline.undated}
             avertissements={timeline.warnings}
-            ouvrirFiche={(moment) => { void essayer(() => ouvrirFiche(moment)); }}
+            ouvrirFiche={(moment) => { void essayer(() => ouvrirFicheDuMoment(moment)); }}
             // L'horloge est lue ICI, une fois, comme pour l'écran de période :
             // un composant qui l'interroge lui-même a des tests qui dépendent
             // du jour où on les lance.
@@ -778,7 +822,7 @@ export function App() {
           souvenir={momentsDe(fiche).find((m) => m.memory !== null)?.memory ?? null}
           declarer={() => { void essayer(() => declarerDepuisFiche(fiche)); }}
           retracter={() => { void essayer(() => retracterDepuisFiche(fiche)); }}
-          fermer={() => setEtape("timeline")}
+          fermer={() => { void essayer(() => fermerLaFiche(machine)); }}
         />
       ) : null}
       <EtatDuService etat={sante} />
