@@ -71,6 +71,12 @@ La phrase seule ne suffit pas à produire l'effet recherché, et une prose gén�
 
 **E bis ⑴ — Vos préférés.** Un titre par plateforme, nommé (§4.7). C'est la ligne la plus personnelle que le système sache produire sans que l'utilisateur ait écrit une phrase — et le meilleur retour sur l'affect déclaré pendant la saisie. Sans cette restitution, l'affect ne serait que de la collecte.
 
+> **Livré le 23 septembre 2026.** Un par plateforme, et c'est le **domaine** qui le dit : l'invariant 6 est tenu à l'écriture, et la lecture n'en rend qu'un même si la collection est fautive — en rendre deux ferait dire à l'écran ce que le modèle interdit. Elle ne **répare** pas pour autant : réparer est une écriture, et une lecture qui écrit surprend là où on ne l'attend pas.
+>
+> **Ils ne suivent pas le seuil du portrait**, contrairement aux chiffres et à la bande : un préféré est un **fait déclaré**, pas une statistique. Un taux calculé sur cinq jeux ment ; un préféré déclaré sur un profil maigre reste vrai — et c'est justement la ligne qu'on veut montrer en premier à qui vient de commencer.
+>
+> Rien du tout quand aucun n'est déclaré : une section vide se lirait comme une donnée manquante, alors qu'il n'y a simplement rien eu à dire.
+
 **F — Un souvenir mis en avant.** Rotation à chaque visite. Le contenu écrit par l'utilisateur est ce qui différencie son profil de celui de n'importe quel joueur de sa génération.
 
 ## Mobile et desktop
@@ -118,7 +124,7 @@ En Phase 1, l'image peut déjà être générée pour un usage privé (« garder
 | B — les quatre chiffres | ⑴ | **livré** : `consoles · jeux déclarés · terminés · souvenirs écrits` |
 | C — la timeline condensée | ⑴ | absent — la timeline E03, elle, est juste en dessous |
 | D — les périodes d'activité | ⑴ | **livré** : une tranche par décennie, creux compris |
-| E bis — vos préférés | ⑴ | absent : l'affect n'est pas encore saisissable (E07) |
+| E bis — vos préférés | ⑴ | **livré** : un par plateforme, nommé |
 | E — goûts · F — souvenir mis en avant | — | Phase 3 |
 
 Les trois blocs ⑴ absents sont inscrits dans [TODO-ECRANS.md](../TODO-ECRANS.md) : ils attendent le verdict de la session de test, qui dit s'il faut approfondir le portrait ou passer à la suite.

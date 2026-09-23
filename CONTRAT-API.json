@@ -84,7 +84,7 @@
     },
     "GET /profile/{user}": {
       "": {
-        "lit": ["moments", "birthYear", "figures", "activity", "opening"],
+        "lit": ["moments", "birthYear", "figures", "activity", "favourites", "opening"],
         "ignore": {}
       },
       "figures": {
@@ -93,6 +93,10 @@
       },
       "activity[]": {
         "lit": ["decade", "moments"],
+        "ignore": {}
+      },
+      "favourites[]": {
+        "lit": ["platformName", "title"],
         "ignore": {}
       },
       "opening": {

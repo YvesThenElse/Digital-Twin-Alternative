@@ -55,6 +55,14 @@ export type SyntheseDuProfil = {
    * qu'un taux calculé sur cinq jeux.
    */
   activity: TrancheActivite[] | null;
+  /**
+   * Un préféré par plateforme, nommé (§4.7).
+   *
+   * <b>Ils ne suivent PAS le seuil du portrait</b> : un préféré est un fait
+   * déclaré, pas une statistique. Un seul, sur un profil maigre, reste
+   * vrai — contrairement à un taux calculé sur cinq jeux.
+   */
+  favourites: { platformName: string; title: string }[];
   opening: DebutDuProfil | null;
 };
 
@@ -96,7 +104,7 @@ export function SyntheseProfil({ synthese, completer }: {
   // rien à dire : un en-tête qui s'affiche vide puis se remplit ferait sauter
   // l'écran au moment précis où le joueur le découvre.
   if (synthese === null) return null;
-  const { figures, activity, opening } = synthese;
+  const { figures, activity, favourites, opening } = synthese;
   if (figures === null && opening === null) return null;
 
   return (
@@ -141,6 +149,23 @@ export function SyntheseProfil({ synthese, completer }: {
           elle, pas à sa place. */}
       {activity !== null && activity.length > 0 ? (
         <BandeDActivite tranches={activity} />
+      ) : null}
+
+      {/* Bloc ⒠ bis. « Sans cette restitution, l'affect ne serait que de la
+          collecte. » Rien du tout quand aucun préféré n'est déclaré : une
+          section vide se lirait comme une donnée manquante, alors qu'il n'y
+          a simplement rien eu à dire. */}
+      {favourites.length > 0 ? (
+        <div className="preferes" data-testid="preferes">
+          <h3 className="portrait-libelle">{t("portrait.preferes")}</h3>
+          <ul>
+            {favourites.map((p) => (
+              <li key={`${p.platformName}/${p.title}`} data-testid="prefere">
+                {t("portrait.prefere", { machine: p.platformName, titre: p.title })}
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : null}
     </header>
   );

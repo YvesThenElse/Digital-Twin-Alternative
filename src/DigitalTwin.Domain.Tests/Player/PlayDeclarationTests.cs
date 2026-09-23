@@ -247,4 +247,51 @@ public class PlayDeclarationTests
 
         Assert.False(Assert.Single(apres).NeverPlayed);
     }
+
+    // ---------- les préférés, à la LECTURE (E04, bloc ⒠ bis) --------------
+
+    [Fact]
+    public void Un_prefere_par_plateforme_est_rendu()
+    {
+        var preferes = PlayDeclaration.FavouritePerPlatform([
+            new PlayDeclaration("usr_yves", "wrk_a", "plt_snes") { Affect = Affect.Favourite },
+            new PlayDeclaration("usr_yves", "wrk_b", "plt_snes") { Affect = Affect.Loved },
+            new PlayDeclaration("usr_yves", "wrk_c", "plt_ps1") { Affect = Affect.Favourite },
+        ]);
+
+        Assert.Equal(["wrk_a", "wrk_c"], preferes.Select(d => d.WorkId).Order());
+        Assert.Equal(2, preferes.Count);
+    }
+
+    [Fact]
+    public void Une_collection_fautive_n_en_rend_qu_UN_et_toujours_le_meme()
+    {
+        // L'invariant 6 est tenu à l'écriture. Si deux préférés coexistent
+        // malgré tout, en rendre deux ferait dire à l'écran ce que le modèle
+        // interdit — et choisir au hasard ferait bouger le profil d'une
+        // visite à l'autre.
+        PlayDeclaration[] fautive = [
+            new PlayDeclaration("usr_yves", "wrk_b", "plt_snes") { Affect = Affect.Favourite },
+            new PlayDeclaration("usr_yves", "wrk_a", "plt_snes") { Affect = Affect.Favourite },
+        ];
+
+        var premier = PlayDeclaration.FavouritePerPlatform(fautive);
+        var second = PlayDeclaration.FavouritePerPlatform(fautive.Reverse());
+
+        Assert.Single(premier);
+        Assert.Equal(premier[0].WorkId, second[0].WorkId);
+    }
+
+    [Fact]
+    public void Sans_prefere_il_n_y_a_rien_a_rendre()
+    {
+        Assert.Empty(PlayDeclaration.FavouritePerPlatform([
+            new PlayDeclaration("usr_yves", "wrk_a", "plt_snes") { Affect = Affect.Loved },
+        ]));
+
+        // Le témoin (78) : le MÊME jeu, désigné préféré, paraît.
+        Assert.Single(PlayDeclaration.FavouritePerPlatform([
+            new PlayDeclaration("usr_yves", "wrk_a", "plt_snes") { Affect = Affect.Favourite },
+        ]));
+    }
 }

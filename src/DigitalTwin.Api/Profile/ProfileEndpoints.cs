@@ -43,6 +43,16 @@ public sealed record OpeningView(int? Years, string? Platform, TemporalView Occu
 /// </summary>
 public sealed record ActivityView(int Decade, int Moments);
 
+/// <summary>
+/// Un préféré, <b>nommé</b> (E04, bloc ⒠ bis · §4.7).
+///
+/// <para>« C'est la ligne la plus personnelle que le système sache produire
+/// sans que l'utilisateur ait écrit une phrase, et le meilleur retour sur
+/// l'affect déclaré pendant la saisie. <b>Sans cette restitution, l'affect
+/// ne serait que de la collecte.</b> »</para>
+/// </summary>
+public sealed record FavouriteView(string PlatformName, string Title);
+
 /// <param name="Figures">
 /// <b><c>null</c> quand le profil est trop maigre pour un portrait.</b> E04 :
 /// « Des statistiques calculées sur cinq jeux détruisent la crédibilité de
@@ -72,7 +82,8 @@ public sealed record ActivityView(int Decade, int Moments);
 /// </param>
 public sealed record ProfileView(
     int Moments, int? BirthYear, FiguresView? Figures,
-    IReadOnlyList<ActivityView>? Activity, OpeningView? Opening);
+    IReadOnlyList<ActivityView>? Activity,
+    IReadOnlyList<FavouriteView> Favourites, OpeningView? Opening);
 
 /// <summary>
 /// L'année de naissance, seule — <b>jamais publiée</b> (§12.3), et demandée
@@ -111,6 +122,26 @@ public static class ProfileEndpoints
             var machines = source.Dataset.Platforms.ToDictionary(
                 p => p.CanonicalId, p => p.Name, StringComparer.Ordinal);
 
+            // Les préférés ne suivent PAS le seuil du portrait : un préféré
+            // est un fait déclaré, pas une statistique. Un seul, sur un
+            // profil maigre, reste vrai — et c'est justement la ligne la
+            // plus personnelle que le système sache produire.
+            var titres = source.Dataset.Works.ToDictionary(
+                w => w.CanonicalId, w => w.Title, StringComparer.Ordinal);
+            var revendications = (await magasin.ReadClaimsAsync(userId, ct))
+                .ToDictionary(c => c.Id, c => c.Title, StringComparer.Ordinal);
+            var jugements = (await magasin.ReadDeclarationsAsync(userId, ct))
+                .Select(PlayDeclarationMapping.ToDomain);
+            var preferes = PlayDeclaration.FavouritePerPlatform(jugements)
+                .Select(d => new FavouriteView(
+                    machines.GetValueOrDefault(d.PlatformId) ?? d.PlatformId,
+                    titres.GetValueOrDefault(d.WorkId)
+                        ?? revendications.GetValueOrDefault(d.WorkId)
+                        // Un identifiant à l'écran ferait remonter le modèle
+                        // (principe 9) : mieux vaut dire qu'on ne sait pas.
+                        ?? "Œuvre inconnue du référentiel"))
+                .ToList();
+
             return Results.Ok(new ProfileView(
                 synthese.Moments,
                 birthYear,
@@ -122,6 +153,7 @@ public static class ProfileEndpoints
                 synthese.MakesAPortrait && synthese.Activity.Count > 0
                     ? [.. synthese.Activity.Select(t => new ActivityView(t.Decade, t.Moments))]
                     : null,
+                preferes,
                 synthese.Opening is { } debut
                     ? new OpeningView(
                         debut.Years,

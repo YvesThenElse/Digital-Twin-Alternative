@@ -276,6 +276,23 @@ public class ContratApiTests(PostgresFixture bdd)
         // décrirait un `birthYear` nul et ne vérifierait rien de sa présence.
         await client.PostAsJsonAsync($"/profile/{user}/birth-year", new { birthYear = 1982 });
 
+        // Et un PRÉFÉRÉ, pour la même raison : une liste vide ne décrit
+        // aucune forme, et le contrat se croirait satisfait.
+        var plateformes = await Lire(client, "/platforms");
+        var pf = plateformes[0].GetProperty("id").GetString()!;
+        var oeuvres = await Lire(client, $"/platforms/{pf}/works");
+        await client.PostAsJsonAsync("/declarations", new
+        {
+            batchId = $"bat_pref_{user}",
+            userId = user,
+            platformId = pf,
+            period = new { kind = "year", year = 1995 },
+            entries = new[]
+            {
+                new { workId = oeuvres[0].GetProperty("id").GetString()!, affect = "favourite" },
+            },
+        });
+
         var profil = await Lire(client, $"/profile/{user}");
         Assert.Equal(JsonValueKind.Object, profil.GetProperty("figures").ValueKind);
         Assert.Equal(JsonValueKind.Object, profil.GetProperty("opening").ValueKind);

@@ -129,6 +129,28 @@ public sealed record PlayDeclaration
     public PlayDeclaration Closed() => this with { StillPlaying = false };
 
     /// <summary>
+    /// Les préférés, <b>un par plateforme</b> — la lecture de l'invariant 6.
+    ///
+    /// <para>Une collection saine n'en porte qu'un : c'est
+    /// <see cref="DesignateFavourite"/> qui le garantit à l'écriture. Si
+    /// plusieurs coexistent malgré tout, cette lecture n'en rend <b>qu'un</b>
+    /// et le choisit de façon déterministe : en rendre deux ferait dire à
+    /// l'écran ce que le modèle interdit, et choisir au hasard ferait bouger
+    /// le profil d'une visite à l'autre.</para>
+    ///
+    /// <para>Elle ne RÉPARE pas : réparer est une écriture, et une lecture
+    /// qui écrit surprendrait là où on ne l'attend pas. La collection fautive
+    /// se répare au prochain préféré désigné.</para>
+    /// </summary>
+    public static IReadOnlyList<PlayDeclaration> FavouritePerPlatform(
+        IEnumerable<PlayDeclaration> declarations) =>
+        [.. declarations
+            .Where(d => d.Affect == Affect.Favourite)
+            .GroupBy(d => d.PlatformId, StringComparer.Ordinal)
+            .OrderBy(g => g.Key, StringComparer.Ordinal)
+            .Select(g => g.OrderBy(d => d.WorkId, StringComparer.Ordinal).First())];
+
+    /// <summary>
     /// Désigne un préféré sur une plateforme. <b>Invariant 6 : il y en a un
     /// seul.</b> En désigner un second rétrograde le précédent en
     /// <see cref="Affect.Loved"/> — le modèle ne refuse pas le nouveau choix,

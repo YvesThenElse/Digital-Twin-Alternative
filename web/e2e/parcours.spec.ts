@@ -1086,11 +1086,22 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await toucher(page.getByRole("button", { name: /Fermer sans corriger/ }).click());
 
   // Et il SURVIT au rechargement du panneau : relu, pas gardé en mémoire.
+  // (bloc vérifié plus bas)
   await toucher(ligneFinie.getByTestId("moment-corriger").click());
   await expect(page.getByTestId("panneau-etat")
     .getByRole("button", { name: "Mon préféré" }))
     .toHaveAttribute("aria-pressed", "true");
   await toucher(page.getByRole("button", { name: /Fermer sans corriger/ }).click());
+
+  // --- 7 quinquies. le préféré remonte jusqu'au portrait (E04 ⒠ bis) -----
+  //
+  // « Sans cette restitution, l'affect ne serait que de la collecte. » On
+  // vient de désigner un préféré dans le panneau ; il doit se lire en haut
+  // de /mon-histoire, NOMMÉ, avec sa machine.
+  await expect(page.getByTestId("prefere")).toHaveCount(1);
+  await expect(page.getByTestId("prefere")).toContainText(titreAffine!);
+  await expect(page.getByTestId("prefere"))
+    .toContainText("Super Nintendo Entertainment System");
 
   // --- 8. les trous sont des invitations (E03) ---------------------------
   //

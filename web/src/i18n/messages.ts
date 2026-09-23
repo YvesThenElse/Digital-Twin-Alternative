@@ -274,6 +274,10 @@ export const MESSAGES = {
   // joué entre 2005 et 2010* ». Le nom dit une répartition, pas un total.
   "portrait.activite": "Vos périodes",
   "portrait.activiteTranche": "Années {decennie} : {n}",
+  // E04, bloc ⒠ bis (§4.7). « La ligne la plus personnelle que le système
+  // sache produire sans que l'utilisateur ait écrit une phrase. »
+  "portrait.preferes": "Vos préférés",
+  "portrait.prefere": "{machine} : {titre}",
 
   // --- E05, la fiche de jeu ----------------------------------------------
   //

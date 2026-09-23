@@ -21,6 +21,7 @@ import { SyntheseProfil, type SyntheseDuProfil } from "./SyntheseProfil";
 const DEBUT: SyntheseDuProfil = {
   moments: 52,
   birthYear: null,
+  favourites: [{ platformName: "Super Nintendo", title: "Chrono Trigger" }],
   activity: [
     { decade: 1990, moments: 12 },
     { decade: 2000, moments: 0 },
@@ -130,7 +131,7 @@ describe("SyntheseProfil — le portrait, jamais le tableau de bord", () => {
     // Un profil sans rien n'a pas un taux de zéro : il n'en a pas. L'en-tête
     // disparaît plutôt que d'afficher une coquille.
     const { container } = poser(
-      { moments: 0, birthYear: null, activity: null, figures: null, opening: null });
+      { moments: 0, birthYear: null, activity: null, favourites: [], figures: null, opening: null });
 
     expect(container.textContent).toBe("");
     expect(screen.queryByTestId("portrait")).toBeNull();
@@ -181,7 +182,7 @@ describe("SyntheseProfil — un profil trop maigre propose de compléter (E04)",
   it("n'invite à rien sur un profil vide : l'axe le fait déjà", () => {
     // Deux invitations superposées n'en font pas une plus claire — l'axe
     // porte « Racontez votre première console », et l'en-tête se tait.
-    const { container } = poser({ moments: 0, birthYear: null, activity: null, figures: null, opening: null });
+    const { container } = poser({ moments: 0, birthYear: null, activity: null, favourites: [], figures: null, opening: null });
 
     expect(container.textContent).toBe("");
   });
@@ -227,5 +228,35 @@ describe("SyntheseProfil — les périodes d'activité (E04, bloc ⒟)", () => {
     // Le témoin (78) : la MÊME synthèse, la densité rendue, la dessine.
     poser(DEBUT);
     expect(screen.getAllByTestId("activite")).not.toHaveLength(0);
+  });
+});
+
+describe("SyntheseProfil — vos préférés (E04, bloc ⒠ bis)", () => {
+  it("nomme un titre par plateforme", () => {
+    // « La ligne la plus personnelle que le système sache produire sans que
+    // l'utilisateur ait écrit une phrase. »
+    poser(DEBUT);
+
+    const preferes = screen.getAllByTestId("prefere").map((n) => n.textContent);
+    expect(preferes).toEqual(["Super Nintendo : Chrono Trigger"]);
+  });
+
+  it("ne rend RIEN quand aucun préféré n'est déclaré", () => {
+    // Une section vide se lirait comme une donnée manquante, alors qu'il n'y
+    // a simplement rien eu à dire.
+    poser({ ...DEBUT, favourites: [] });
+
+    expect(screen.queryByTestId("preferes")).toBeNull();
+    // Le témoin (78) : la MÊME synthèse, un préféré déclaré, le nomme.
+    poser(DEBUT);
+    expect(screen.getAllByTestId("preferes")).not.toHaveLength(0);
+  });
+
+  it("les montre même sans chiffres : un préféré est un FAIT, pas une statistique", () => {
+    // Un taux calculé sur cinq jeux ment ; un préféré déclaré sur un profil
+    // maigre reste vrai. Les deux ne suivent donc pas le même seuil.
+    poser({ ...DEBUT, figures: null, activity: null });
+
+    expect(screen.getAllByTestId("prefere")).toHaveLength(1);
   });
 });

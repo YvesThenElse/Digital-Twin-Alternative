@@ -78,7 +78,7 @@ chemin a laissé.
   partir d'assez de moments pour qu'une forme se dessine », et son absence
   n'est pas un blanc ; sa hauteur se mesure dans le navigateur.*
 
-- [ ] **T5 — E04 nomme vos préférés.** (E04, bloc ⒠ bis · §4.7) Marqué
+- [x] **T5 — E04 nomme vos préférés.** (E04, bloc ⒠ bis · §4.7) Marqué
   Phase 1, et il attendait que l'affect soit saisissable — ce que S8 a fait.
   « C'est la ligne la plus personnelle que le système sache produire sans que
   l'utilisateur ait écrit une phrase, et le meilleur retour sur l'affect
@@ -131,6 +131,24 @@ tranchent.
 ---
 
 ## Journal
+
+- **T5** — les préférés sont nommés, un par plateforme, et c'est le
+  **domaine** qui le dit : l'invariant 6 est tenu à l'écriture, et la lecture
+  n'en rend qu'un même sur une collection fautive — de façon déterministe,
+  sans quoi le profil bougerait d'une visite à l'autre. Elle ne **répare**
+  pas : réparer est une écriture, et une lecture qui écrit surprend là où on
+  ne l'attend pas.
+
+  **Ils ne suivent pas le seuil du portrait**, contrairement aux chiffres et
+  à la bande. C'est la décision de fond de l'item : un taux calculé sur cinq
+  jeux ment, un préféré déclaré sur un profil maigre reste vrai. Deux
+  natures, deux règles — et c'est justement la ligne qu'on veut montrer en
+  premier à qui vient de commencer.
+
+  Le parcours suit désormais un affect **de bout en bout** : désigné dans le
+  panneau d'E07, relu en haut de `/mon-histoire` avec sa machine. C'est la
+  boucle « déclarer → restituer » que la fiche demande, et elle n'existait
+  dans aucun sens il y a trois itérations.
 
 - **T4** — la bande de densité est là, **creux compris** : une tranche par
   décennie, zéro inclus, jusqu'à **aujourd'hui** et non jusqu'à la dernière

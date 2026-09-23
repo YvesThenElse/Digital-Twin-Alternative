@@ -223,6 +223,50 @@ public class ProfileTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task Les_preferes_sont_nommes_et_ne_suivent_PAS_le_seuil()
+    {
+        // « Sans cette restitution, l'affect ne serait que de la collecte. »
+        // Et un préféré est un FAIT déclaré, pas une statistique : un seul,
+        // sur un profil maigre, reste vrai — contrairement à un taux.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var user = Neuf("pref");
+        var plateformes = await client.GetFromJsonAsync<JsonElement>("/platforms");
+        var pf = plateformes[0].GetProperty("id").GetString()!;
+        var nomPf = plateformes[0].GetProperty("name").GetString()!;
+        var oeuvres = await client.GetFromJsonAsync<JsonElement>($"/platforms/{pf}/works");
+        var oeuvre = oeuvres[0].GetProperty("id").GetString()!;
+        var titre = oeuvres[0].GetProperty("title").GetString()!;
+
+        await client.PostAsJsonAsync("/declarations", new
+        {
+            batchId = $"bat_{user}",
+            userId = user,
+            platformId = pf,
+            period = new { kind = "year", year = 1995 },
+            entries = new[] { new { workId = oeuvre, affect = "favourite" } },
+        });
+
+        var vue = await client.GetFromJsonAsync<JsonElement>($"/profile/{user}");
+        // Le profil est MAIGRE — un seul moment —, donc pas de chiffres…
+        Assert.Equal(JsonValueKind.Null, vue.GetProperty("figures").ValueKind);
+        // …et le préféré est là quand même, avec son NOM et sa machine.
+        var prefere = vue.GetProperty("favourites")[0];
+        Assert.Equal(titre, prefere.GetProperty("title").GetString());
+        Assert.Equal(nomPf, prefere.GetProperty("platformName").GetString());
+    }
+
+    [Fact]
+    public async Task Sans_prefere_declare_la_liste_est_vide()
+    {
+        using var usine = Usine();
+        var vue = await usine.CreateClient()
+            .GetFromJsonAsync<JsonElement>($"/profile/{Neuf("sanspref")}");
+
+        Assert.Empty(vue.GetProperty("favourites").EnumerateArray());
+    }
+
+    [Fact]
     public async Task Un_profil_vide_ne_rend_ni_chiffres_ni_debut()
     {
         // Il n'existe pas dans le parcours normal — E01 garantit un moment —

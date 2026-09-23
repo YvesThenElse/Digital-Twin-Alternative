@@ -80,7 +80,7 @@ beforeEach(() => {
   });
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
-  faux.synthese.mockResolvedValue({ activity: null, moments: 0, birthYear: null, figures: null, opening: null });
+  faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 0, birthYear: null, figures: null, opening: null });
   faux.corrigerDate.mockResolvedValue(undefined);
   faux.anneeDeNaissance.mockResolvedValue(undefined);
   faux.ficheOeuvre.mockResolvedValue({
@@ -225,7 +225,7 @@ describe("App — la timeline s'ouvre", () => {
     // lecture détaillée, pas après.
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
-      activity: null, moments: 52,
+      activity: null, favourites: [], moments: 52,
       birthYear: null,
       figures: { consoles: 2, gamesDeclared: 40, finished: 9, memoriesWritten: 3 },
       opening: { years: 35, platform: "Game Boy",
@@ -252,7 +252,7 @@ describe("App — la timeline s'ouvre", () => {
     // l'API rend — y compris quand ils ne ressemblent pas à l'écran.
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
-      activity: null, moments: 160,
+      activity: null, favourites: [], moments: 160,
       birthYear: null,
       figures: { consoles: 4, gamesDeclared: 128, finished: 31, memoriesWritten: 7 },
       opening: null,
@@ -290,9 +290,11 @@ describe("App — la timeline s'ouvre", () => {
     const utilisateur = userEvent.setup();
     faux.synthese
       .mockResolvedValueOnce({
-        moments: 0, birthYear: null, activity: null, figures: null, opening: null })
+        moments: 0, birthYear: null, activity: null, favourites: [],
+        figures: null, opening: null })
       .mockResolvedValue({
         activity: null,
+        favourites: [],
         moments: 33,
         figures: { consoles: 1, gamesDeclared: 30, finished: 2, memoriesWritten: 1 },
         opening: null,
@@ -660,7 +662,7 @@ describe("App — E03, les trous sont des invitations", () => {
     // PLATEFORME, et aucune n'est choisie quand on lit son histoire.
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
-      activity: null, moments: 4, birthYear: null, figures: null,
+      activity: null, favourites: [], moments: 4, birthYear: null, figures: null,
       opening: { years: 31, platform: "Super Nintendo",
                  occurredAt: { kind: "Year", year: 1995 } },
     });
@@ -714,7 +716,7 @@ describe("App — E01, le visiteur qui revient", () => {
   });
 
   it("propose de reprendre quand l'historique n'est pas vide", async () => {
-    faux.synthese.mockResolvedValue({ activity: null, moments: 33, birthYear: null, figures: null, opening: null });
+    faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 33, birthYear: null, figures: null, opening: null });
     render(<App />);
 
     expect(await screen.findByTestId("reprise")).toHaveTextContent("33");
@@ -737,7 +739,7 @@ describe("App — E01, le visiteur qui revient", () => {
   it("reprend l'histoire en UN geste, sans repasser par les trois temps", async () => {
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
-      activity: null, moments: 33,
+      activity: null, favourites: [], moments: 33,
       birthYear: null,
       figures: { consoles: 1, gamesDeclared: 30, finished: 2, memoriesWritten: 1 },
       opening: { years: 31, platform: "Super Nintendo",
@@ -755,7 +757,7 @@ describe("App — E01, le visiteur qui revient", () => {
 
   it("laisse l'accueil intact quand on ignore l'offre", async () => {
     const utilisateur = userEvent.setup();
-    faux.synthese.mockResolvedValue({ activity: null, moments: 33, birthYear: null, figures: null, opening: null });
+    faux.synthese.mockResolvedValue({ activity: null, favourites: [], moments: 33, birthYear: null, figures: null, opening: null });
     render(<App />);
     await screen.findByTestId("reprise");
 

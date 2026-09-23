@@ -1582,3 +1582,29 @@ figure[data-testid="bande-epoque"] figcaption {
   font-variant-numeric: tabular-nums;
   color: var(--ink-3);
 }
+
+/* --- E04, vos préférés (bloc ⒠ bis) -------------------------------------- */
+
+/*
+ * « La ligne la plus personnelle que le système sache produire sans que
+ * l'utilisateur ait écrit une phrase. » Elle se lit comme une phrase, donc :
+ * en corps de texte, pas en `meta`, et sans puce — une liste à puces en
+ * ferait un inventaire.
+ */
+.preferes {
+  margin-block-start: var(--e6);
+}
+
+.preferes ul {
+  list-style: none;
+  margin: var(--e2) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.preferes li {
+  font: var(--body);
+  color: var(--ink);
+}
