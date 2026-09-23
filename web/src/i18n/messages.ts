@@ -29,6 +29,15 @@ export const MESSAGES = {
   // donnée — c'est exactement le défaut que la période choisie a corrigé.
   "recit.premiereConsole": "Votre histoire commence avec {machine}, une machine de {annee}.",
 
+  // --- E01, le visiteur qui revient --------------------------------------
+  //
+  // « Proposer de le reprendre plutôt que de recommencer. » L'offre dit ce
+  // qu'il Y A — pas « vous avez une saisie en cours », qui ferait du retour
+  // un incident là où la fiche en fait une continuité.
+  "reprise.invite.un": "{n} moment déjà déclaré dans votre histoire.",
+  "reprise.invite.plusieurs": "{n} moments déjà déclarés dans votre histoire.",
+  "reprise.action": "Reprendre mon histoire",
+
   // --- E01, temps 3 : la récompense immédiate ----------------------------
   //
   // « Le temps 3 n'est pas une confirmation, c'est un cadeau. Il ne dit pas

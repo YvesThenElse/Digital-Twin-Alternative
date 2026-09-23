@@ -28,6 +28,15 @@ export type DebutDuProfil = {
 };
 
 export type SyntheseDuProfil = {
+  /**
+   * Tout le journal — <b>pas un chiffre du portrait</b>.
+   *
+   * Il ne s'affiche nulle part : il répond à « cet historique est-il
+   * vide ? », question que l'accueil pose avant de proposer une reprise
+   * (E01). Le fonder sur `figures`, qui disparaît sous le seuil, ferait
+   * proposer de tout recommencer à qui a déjà trois déclarations.
+   */
+  moments: number;
   /** `null` quand le profil est trop maigre pour qu'un chiffre veuille dire
    * quelque chose. L'API ne les envoie pas ; l'écran n'en invente pas. */
   figures: ChiffresDuProfil | null;

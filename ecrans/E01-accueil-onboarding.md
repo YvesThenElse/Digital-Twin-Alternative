@@ -93,7 +93,7 @@ L'aperçu de quatre jaquettes n'est pas décoratif : il montre concrètement ce 
 > Deux écarts à la fiche, assumés et inscrits :
 >
 > - **« Je ne sais plus » ne porte pas de bande.** Trois éléments au lieu de quatre. Invariant 2 : ce qui n'a pas d'intervalle n'a pas de place sur un axe, et en dessiner une affirmerait une position que personne n'a donnée. La phrase, l'aperçu et la continuation, eux, sont là — « jamais un blocage ».
-> - **Le visiteur qui revient rejoue le temps 3.** L'état « Retour d'un visiteur non authentifié » ci-dessous promet de proposer une reprise ; la Phase 1 n'a ni cette reprise ni la redirection vers `/mon-histoire` annoncée en tête de fiche. Le manque est inscrit dans [TODO-ECRANS.md](../TODO-ECRANS.md).
+> - **Le visiteur qui revient ne rejoue plus le temps 3** — livré le 23 septembre, voir l'état « Retour d'un visiteur non authentifié » ci-dessous.
 
 ## Mobile et desktop
 
@@ -118,6 +118,12 @@ La séquence reste identique : ce sont les mêmes trois temps, pas un parcours d
 
 - **Vide** : c'est l'état par défaut, et le seul de cet écran.
 - **Retour d'un visiteur non authentifié** : si un historique local existe, proposer de le reprendre plutôt que de recommencer. Perdre une saisie faite sans compte est le meilleur moyen de perdre l'utilisateur.
+
+  > **Livré le 23 septembre 2026 — et c'est « proposer », pas « rediriger ».** L'en-tête de cette fiche annonce que `/` redirige vers `/mon-histoire` quand l'historique n'est pas vide ; les deux phrases ne disent pas la même chose, et c'est celle-ci qui tient tant que l'écran de lecture n'a **aucun retour vers la sélection** : une redirection dure y enfermerait le visiteur revenu ajouter une console. Le jour où ce retour existera (→ S5), la redirection redeviendra discutable.
+  >
+  > L'offre nomme ce qui est déjà là — « 33 moments déjà déclarés dans votre histoire » —, la reprise coûte **un** geste au lieu de quatre, et l'ignorer laisse l'accueil entier.
+  >
+  > Elle **n'attend rien** : la sonde qui compte les moments tourne à côté du temps 1, jamais devant. Le parcours de bout en bout le mesure en retenant la réponse et en exigeant que l'accueil soit déjà utilisable — « Chargement : aucun » reste vrai, et le chronomètre du KPI démarre bien au premier clic.
 - **Chargement** : aucun. Les données nécessaires (une poignée de plateformes et de vignettes) sont embarquées.
 - **Hors ligne** : l'écran fonctionne intégralement.
 

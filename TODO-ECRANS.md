@@ -90,7 +90,7 @@ du périmètre n'ont jamais été livrées.
   vraies jaquettes de la plateforme choisie, et le parcours mesure qu'il
   n'attend aucun chargement.*
 
-- [ ] **S2 bis — Le visiteur qui revient reprend son histoire.** (E01, état
+- [x] **S2 bis — Le visiteur qui revient reprend son histoire.** (E01, état
   « Retour d'un visiteur non authentifié » · en-tête de fiche) Recharger la
   page remet tout le monde au temps 1 : console, décennie, affinage,
   continuation — quatre gestes pour revenir à ce qui est déjà en base. Rien
@@ -231,8 +231,8 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   part — `/mon-histoire` est un cul-de-sac. C'est le même manque que S5, vu
   depuis l'autre écran.
 
-- **Le visiteur qui revient rejoue l'accueil** — ⤳ devenu **S2 bis**, et
-  décidé avant la session. E01 annonce deux choses
+- ~~**Le visiteur qui revient rejoue l'accueil**~~ — ⤳ devenu **S2 bis**, et
+  livré le 23 septembre. E01 annonce deux choses
   qu'aucune n'existe : la route `/` « redirige vers `/mon-histoire` si
   l'historique n'est pas vide », et l'état « retour d'un visiteur non
   authentifié » demande de « proposer de le reprendre plutôt que de
@@ -278,3 +278,18 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   Le budget de gestes passe à `TITRES_A_COCHER + 24` — la continuation est un
   geste réel, et le cacher reviendrait à cacher ce que la décision coûte.
   Ce qui est laissé : la reprise du visiteur qui revient, inscrite ci-dessus.
+
+- **S2 bis** — l'accueil propose de reprendre à qui a déjà une histoire, en
+  nommant ce qui est là. **Proposer, pas rediriger** : l'en-tête d'E01
+  annonce une redirection, son état demande une offre, et l'offre gagne tant
+  que l'écran de lecture n'a aucun retour vers la sélection — une redirection
+  dure y enfermerait le visiteur venu ajouter une console. La sonde est
+  `GET /profile/{user}`, qui rend désormais `moments` : le fonder sur
+  `figures` aurait proposé de tout recommencer à qui a trois déclarations,
+  puisque les chiffres disparaissent sous le seuil du portrait. Elle tourne
+  **à côté** du temps 1 et jamais devant — E01 dit « Chargement : aucun », et
+  le chronomètre du KPI démarre au premier clic ; le parcours le mesure en
+  retenant la réponse et en exigeant que l'accueil soit déjà utilisable.
+  Reprendre coûte **un** geste au lieu de quatre ; l'ignorer laisse les trois
+  temps entiers. Ce qui est laissé : la redirection annoncée en tête de
+  fiche, qui attend S5.

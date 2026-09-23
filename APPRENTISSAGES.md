@@ -2589,3 +2589,35 @@ dépendance. « Assez vite » dépend de la machine ; « ne demande rien » n'en
 dépend pas — et c'est presque toujours ce qu'on voulait dire. Quand
 l'attendu est une absence, la garde compte ce qui n'a pas eu lieu (voir
 [[78]] pour son témoin obligatoire).
+
+### 82 — Une absence ne se constate pas là où la chose ne pourrait pas être
+
+Le test devait dire qu'un profil vierge ne se voit proposer aucune reprise.
+Il était écrit ainsi :
+
+```tsx
+render(<App />);
+await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+expect(screen.queryByTestId("reprise")).toBeNull();   // ✅ toujours
+```
+
+Le clic fait passer au temps 2. Or l'offre n'est rendue qu'à l'accueil : à
+l'endroit où le test regarde, **elle ne pourrait pas être là de toute
+façon**. L'assertion était donc vraie avant même que la règle existe.
+
+Il est tombé sur une mutation qui supprimait le cas « profil vierge » : deux
+tests devaient rougir, un seul l'a fait. Le compte annoncé a encore servi de
+détecteur — comme pour [[80]], c'est l'écart, pas la lecture, qui a montré le
+trou.
+
+C'est [[78]] resserré d'un cran. Le témoin existait bien, mais dans le test
+**suivant**, sur un autre montage : il prouvait que le composant sait
+s'afficher, et rien sur le montage qui nous occupe. Un témoin ne protège que
+la mise en scène dans laquelle il joue.
+
+**La règle** : pour asserter une absence, se placer exactement où la chose
+apparaîtrait si la règle tombait — même écran, même état, même instant — et
+vérifier dans le MÊME montage qu'elle y apparaît quand elle doit. Deux
+questions à se poser avant d'écrire `queryBy…).toBeNull()` : *est-ce que
+j'ai navigué depuis ?* et *qu'est-ce qui, ici, la ferait paraître ?* Si la
+seconde n'a pas de réponse, le test ne garde rien.

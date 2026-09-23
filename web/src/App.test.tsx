@@ -77,7 +77,7 @@ beforeEach(() => {
   });
   faux.declarer.mockResolvedValue({ created: 1, claims: [] });
   faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
-  faux.synthese.mockResolvedValue({ figures: null, opening: null });
+  faux.synthese.mockResolvedValue({ moments: 0, figures: null, opening: null });
 });
 
 afterEach(() => vi.clearAllMocks());
@@ -215,6 +215,7 @@ describe("App — la timeline s'ouvre", () => {
     // lecture détaillée, pas après.
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
+      moments: 52,
       figures: { consoles: 2, gamesDeclared: 40, finished: 9, memoriesWritten: 3 },
       opening: { years: 35, platform: "Game Boy",
                  occurredAt: { kind: "ApproximateYear", year: 1991, margin: 2 } },
@@ -240,6 +241,7 @@ describe("App — la timeline s'ouvre", () => {
     // l'API rend — y compris quand ils ne ressemblent pas à l'écran.
     const utilisateur = userEvent.setup();
     faux.synthese.mockResolvedValue({
+      moments: 160,
       figures: { consoles: 4, gamesDeclared: 128, finished: 31, memoriesWritten: 7 },
       opening: null,
     });
@@ -253,13 +255,41 @@ describe("App — la timeline s'ouvre", () => {
       .toEqual(["4", "128", "31", "7"]);
   });
 
-  it("demande la synthèse pour CE profil, et une seule fois", async () => {
+  it("demande la synthèse pour le MÊME profil que l'axe", async () => {
     const utilisateur = userEvent.setup();
     await jusquALaSelection(utilisateur);
     await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
 
-    await waitFor(() => expect(faux.synthese).toHaveBeenCalledTimes(1));
+    // DEUX appels, et c'est la conception : la sonde de reprise au montage
+    // (E01), puis la lecture fraîche à l'ouverture de l'axe. Ils portent sur
+    // le même profil — le contraire ferait lire à quelqu'un l'histoire d'un
+    // autre.
+    await waitFor(() => expect(faux.synthese).toHaveBeenCalledTimes(2));
+    expect(faux.synthese.mock.calls[1]).toEqual(faux.timeline.mock.calls[0]);
     expect(faux.synthese.mock.calls[0]).toEqual(faux.timeline.mock.calls[0]);
+  });
+
+  it("ne montre pas un portrait d'AVANT la saisie", async () => {
+    // La tentation est de réutiliser la réponse de la sonde plutôt que de
+    // relire : elle est déjà là. Elle date pourtant du montage — c'est-à-dire
+    // d'avant tout ce que le joueur vient de déclarer —, et le portrait
+    // montrerait des chiffres périmés au moment précis où il demande « est-ce
+    // que ça me ressemble ? ».
+    const utilisateur = userEvent.setup();
+    faux.synthese
+      .mockResolvedValueOnce({ moments: 0, figures: null, opening: null })
+      .mockResolvedValue({
+        moments: 33,
+        figures: { consoles: 1, gamesDeclared: 30, finished: 2, memoriesWritten: 1 },
+        opening: null,
+      });
+
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    await screen.findByTestId("portrait");
+    expect(screen.getAllByTestId("portrait-nombre").map((n) => n.textContent))
+      .toEqual(["1", "30", "2", "1"]);
   });
 
   it("dit que rien n'a pu s'ouvrir quand la synthèse échoue", async () => {
@@ -274,6 +304,84 @@ describe("App — la timeline s'ouvre", () => {
 
     expect(await screen.findByRole("alert")).toBeInTheDocument();
     expect(screen.queryByTestId("axe")).toBeNull();
+  });
+});
+
+describe("App — E01, le visiteur qui revient", () => {
+  it("ne propose rien sur un profil vierge", async () => {
+    // ⚠️ L'absence se constate SUR LE TEMPS 1. Une première écriture de ce
+    // test cliquait d'abord une console : l'offre n'est rendue qu'à
+    // l'accueil, donc il passait quoi qu'il arrive — une mutation l'a montré
+    // en ne faisant tomber qu'un test sur les deux attendus.
+    render(<App />);
+    await screen.findByRole("button", { name: /^Super Nintendo/ });
+
+    expect(screen.queryByTestId("reprise")).toBeNull();
+    // Le témoin est dans le test suivant : le MÊME écran propose bien la
+    // reprise dès qu'un moment existe.
+  });
+
+  it("propose de reprendre quand l'historique n'est pas vide", async () => {
+    faux.synthese.mockResolvedValue({ moments: 33, figures: null, opening: null });
+    render(<App />);
+
+    expect(await screen.findByTestId("reprise")).toHaveTextContent("33");
+  });
+
+  it("n'attend PAS la sonde pour rendre l'accueil utilisable", async () => {
+    // E01 : « Chargement : aucun », et le chronomètre du KPI démarre au
+    // premier clic. Si le temps 1 dépendait de cette lecture, tout le monde
+    // la paierait — y compris celui qui arrive pour la première fois et n'a
+    // rien à reprendre.
+    const utilisateur = userEvent.setup();
+    faux.synthese.mockReturnValue(new Promise(() => {}));
+    render(<App />);
+
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+
+    expect(screen.getByRole("heading", { name: /quand/i })).toBeInTheDocument();
+  });
+
+  it("reprend l'histoire en UN geste, sans repasser par les trois temps", async () => {
+    const utilisateur = userEvent.setup();
+    faux.synthese.mockResolvedValue({
+      moments: 33,
+      figures: { consoles: 1, gamesDeclared: 30, finished: 2, memoriesWritten: 1 },
+      opening: { years: 31, platform: "Super Nintendo",
+                 occurredAt: { kind: "Year", year: 1995 } },
+    });
+    render(<App />);
+
+    await utilisateur.click(await screen.findByRole("button", { name: /Reprendre/ }));
+
+    expect(await screen.findByTestId("portrait")).toBeInTheDocument();
+    expect(screen.getByTestId("axe")).toBeInTheDocument();
+    // Ni période ni sélection en chemin : c'est tout l'intérêt de l'offre.
+    expect(faux.etatSelection).not.toHaveBeenCalled();
+  });
+
+  it("laisse l'accueil intact quand on ignore l'offre", async () => {
+    const utilisateur = userEvent.setup();
+    faux.synthese.mockResolvedValue({ moments: 33, figures: null, opening: null });
+    render(<App />);
+    await screen.findByTestId("reprise");
+
+    await utilisateur.click(screen.getByRole("button", { name: /^Super Nintendo/ }));
+
+    expect(screen.getByRole("heading", { name: /quand/i })).toBeInTheDocument();
+  });
+
+  it("reste muet quand la sonde échoue, sans alarmer", async () => {
+    // L'offre est un bonus. Une alerte au premier écran pour une lecture
+    // facultative coûterait plus qu'elle ne rapporte — mais l'échec ne doit
+    // pas non plus ressembler à un profil vierge : c'est pourquoi il rend
+    // `null` et non zéro.
+    faux.synthese.mockRejectedValue(new Error("réseau"));
+    render(<App />);
+
+    expect(await screen.findByRole("button", { name: /^Super Nintendo/ })).toBeInTheDocument();
+    expect(screen.queryByTestId("reprise")).toBeNull();
+    expect(screen.queryByRole("alert")).toBeNull();
   });
 });
 

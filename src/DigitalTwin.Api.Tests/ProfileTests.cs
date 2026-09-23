@@ -168,6 +168,30 @@ public class ProfileTests(PostgresFixture bdd)
     }
 
     [Fact]
+    public async Task Le_nombre_de_moments_est_rendu_meme_sous_le_seuil_du_portrait()
+    {
+        // C'est la seule chose qu'un profil MAIGRE puisse dire de lui-même, et
+        // elle a un lecteur : l'accueil propose de reprendre son histoire à
+        // qui en a déjà une (E01). Sans ce compte, l'offre devrait se fonder
+        // sur `figures`, qui disparaît justement sous le seuil — et un joueur
+        // avec trois déclarations se verrait proposer de tout recommencer.
+        using var usine = Usine();
+        var client = usine.CreateClient();
+        var user = Neuf("compte");
+        var (machine, _) = await UneMachine(client);
+
+        await Ecrire(
+            Ev("evt_c0", user, PlayerEventType.StartedGame, "wrk_c0", new Year(1995), machine),
+            Ev("evt_c1", user, PlayerEventType.StartedGame, "wrk_c1", new Year(1995), machine));
+
+        var vue = await client.GetFromJsonAsync<JsonElement>($"/profile/{user}");
+
+        Assert.Equal(2, vue.GetProperty("moments").GetInt32());
+        // Le témoin : les chiffres, eux, sont bien absents à ce compte-là.
+        Assert.Equal(JsonValueKind.Null, vue.GetProperty("figures").ValueKind);
+    }
+
+    [Fact]
     public async Task Un_profil_vide_ne_rend_ni_chiffres_ni_debut()
     {
         // Il n'existe pas dans le parcours normal — E01 garantit un moment —
@@ -179,6 +203,10 @@ public class ProfileTests(PostgresFixture bdd)
 
         Assert.Equal(JsonValueKind.Null, vue.GetProperty("figures").ValueKind);
         Assert.Equal(JsonValueKind.Null, vue.GetProperty("opening").ValueKind);
+        // Zéro moment, et c'est un FAIT, pas une absence : c'est ce qui
+        // permet à l'accueil de ne rien proposer plutôt que de se taire
+        // faute de savoir.
+        Assert.Equal(0, vue.GetProperty("moments").GetInt32());
     }
 
     [Fact]

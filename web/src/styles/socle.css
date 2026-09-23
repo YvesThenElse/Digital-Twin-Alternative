@@ -1141,3 +1141,32 @@ figure[data-testid="bande-epoque"] figcaption {
 .primaire:hover {
   background: var(--ink-2);
 }
+
+/* --- E01, le visiteur qui revient --------------------------------------- */
+
+/*
+ * L'offre de reprise. Au-dessus du temps 1 et détachée de lui : « proposer
+ * de le reprendre plutôt que de recommencer » — pas une étape à franchir.
+ *
+ * Elle ne prend PAS la couleur d'une alerte. Le retour est une continuité,
+ * pas un incident, et un fond d'avertissement ferait lire « vous avez une
+ * saisie en cours » là où la fiche veut lire « votre histoire est là ».
+ */
+.reprise {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e3) var(--e4);
+  margin-block-end: var(--e6);
+  padding: var(--e4);
+  border-radius: var(--r2);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+.reprise-invite {
+  font: var(--body);
+  color: var(--ink-2);
+  margin: 0;
+}

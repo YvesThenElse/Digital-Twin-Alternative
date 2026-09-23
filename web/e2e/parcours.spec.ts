@@ -565,7 +565,46 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // décochées alors que les déclarations étaient en base, et le testeur en
   // concluait qu'il avait perdu deux heures de saisie. C'est le seul endroit
   // où ce défaut se voit — aucun test de composant ne recharge une page.
+  // **La sonde de reprise ne retarde PAS l'accueil.** E01 : « Chargement :
+  // aucun », et le chronomètre du KPI démarre au premier clic. On tient donc
+  // la réponse en otage et on exige que le temps 1 soit déjà utilisable —
+  // une assertion de durée aurait mesuré la machine, pas la règle.
+  let libererLaSonde: () => void = () => {};
+  const sondeTenue = new Promise<void>((r) => { libererLaSonde = r; });
+  await page.route("**/api/profile/**", async (route) => {
+    await sondeTenue;
+    await route.continue();
+  });
+
   await page.goto(`/?profil=${profil}`);
+
+  await expect(page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }))
+    .toBeEnabled();
+  await expect(page.getByTestId("reprise"),
+    "l'offre paraît avant que la sonde ait répondu").toHaveCount(0);
+
+  libererLaSonde();
+  await page.unroute("**/api/profile/**");
+
+  // Et l'offre arrive ensuite, en nommant ce qui est déjà là.
+  const reprise = page.getByTestId("reprise");
+  await expect(reprise).toBeVisible();
+  await expect(reprise).toContainText(String(MOMENTS_ATTENDUS));
+
+  // **UN geste au lieu de quatre.** C'est toute la valeur de l'offre : le
+  // visiteur qui revient retrouve son histoire sans redonner une console,
+  // une décennie, un affinage et une continuation qu'il a déjà donnés.
+  await reprise.getByRole("button", { name: /Reprendre/ }).click();
+  await expect(page.getByTestId("portrait")).toBeVisible();
+  await expect(page.getByTestId("axe")).toBeVisible();
+
+  // --- 5 ter. et l'accueil reste entier si on l'ignore -------------------
+  //
+  // C'est l'autre moitié de « proposer » : les trois temps sont toujours là
+  // pour qui revient ajouter une console. On les rejoue, et la liste doit
+  // montrer ce qui est en base.
+  await page.goto(`/?profil=${profil}`);
+  await expect(page.getByTestId("reprise")).toBeVisible();
   await page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }).click();
   // Les deux mêmes gestes qu'à l'aller : la décennie ouvre l'affinage, et
   // c'est l'affinage qui continue. Ces gestes-ci ne comptent pas au budget —

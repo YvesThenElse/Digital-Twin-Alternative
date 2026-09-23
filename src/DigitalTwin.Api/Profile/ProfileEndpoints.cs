@@ -42,7 +42,16 @@ public sealed record OpeningView(int? Years, string? Platform, TemporalView Occu
 /// `if` de rendu ; ici, un défaut d'affichage ne peut pas faire fuiter un
 /// chiffre qui ment.
 /// </param>
-public sealed record ProfileView(FiguresView? Figures, OpeningView? Opening);
+/// <param name="Moments">
+/// Tout le journal — <b>le seul chiffre qu'un profil maigre puisse dire de
+/// lui-même</b>. Il n'est pas là pour être affiché comme les quatre autres :
+/// il répond à « cet historique est-il vide ? », question que l'accueil pose
+/// avant de proposer une reprise (E01). Le fonder sur <c>Figures</c>, qui
+/// disparaît sous le seuil du portrait, ferait proposer de tout recommencer
+/// à qui a déjà trois déclarations.
+/// </param>
+public sealed record ProfileView(
+    int Moments, FiguresView? Figures, OpeningView? Opening);
 
 public static class ProfileEndpoints
 {
@@ -71,6 +80,7 @@ public static class ProfileEndpoints
                 p => p.CanonicalId, p => p.Name, StringComparer.Ordinal);
 
             return Results.Ok(new ProfileView(
+                synthese.Moments,
                 synthese.MakesAPortrait
                     ? new FiguresView(
                         synthese.Consoles, synthese.GamesDeclared,

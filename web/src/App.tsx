@@ -6,6 +6,7 @@ import { t } from "./i18n/t";
 import { ChoixMachine } from "./machine/ChoixMachine";
 import { ChoixPeriode } from "./periode/ChoixPeriode";
 import { SyntheseProfil, type SyntheseDuProfil } from "./profil/SyntheseProfil";
+import { RepriseProposee } from "./reprise/RepriseProposee";
 import { PhraseDeRecit } from "./recit/PhraseDeRecit";
 import { TroisiemeTemps } from "./recit/TroisiemeTemps";
 import { ContexteDeSaisie } from "./periode/ContexteDeSaisie";
@@ -136,6 +137,16 @@ export function App() {
    * s'afficher vide puis de sauter sous les yeux du joueur.
    */
   const [synthese, setSynthese] = useState<SyntheseDuProfil | null>(null);
+
+  /**
+   * Ce que le profil contient déjà — <b>la sonde de reprise</b> (E01).
+   *
+   * `null` tant qu'on ne sait pas, et « je ne sais pas » n'est pas « il n'y
+   * a rien » : les deux ne proposent aucune reprise, mais pour des raisons
+   * opposées, et les confondre ferait disparaître l'offre le jour où la
+   * sonde tombe sans que rien ne le distingue d'un profil neuf.
+   */
+  const [historique, setHistorique] = useState<number | null>(null);
   const [timeline, setTimeline] = useState<{
     entries: EntreeTimeline[];
     undated: MomentTimeline[];
@@ -221,6 +232,29 @@ export function App() {
     client.plateformes()
       .then((liste) => { setPlateformes(liste); setChargement("pret"); })
       .catch(() => { setChargement("echec"); void demanderSante(); });
+  }, []);
+
+  /**
+   * La sonde de reprise, <b>à côté de l'accueil et jamais devant lui</b>.
+   *
+   * E01 est formel : « Chargement : aucun », et le chronomètre du KPI
+   * démarre au premier clic. Attendre cette réponse pour rendre le temps 1
+   * ferait payer une lecture à tout le monde — y compris à celui qui arrive
+   * pour la première fois et n'a rien à reprendre.
+   *
+   * Son échec est <b>silencieux</b>, et c'est une décision : l'offre est un
+   * bonus, une alerte au premier écran coûterait plus qu'elle ne rapporte.
+   *
+   * Il rend `null` — « je ne sais pas » — et non `0`. ⚠️ Aujourd'hui les deux
+   * s'affichent pareil : rien. La distinction n'est donc pas observable ici,
+   * et elle n'est gardée que là où elle porte, dans le type du composant.
+   * Elle est écrite parce qu'elle sera vraie le jour où quelque chose
+   * dépendra de « on n'a pas pu vérifier » — pas parce qu'un test l'exige.
+   */
+  useEffect(() => {
+    client.synthese(UTILISATEUR)
+      .then((s) => setHistorique(s.moments))
+      .catch(() => setHistorique(null));
   }, []);
 
   /**
@@ -341,11 +375,20 @@ export function App() {
       {panne !== null ? <p role="alert">{panne}</p> : null}
 
       {etape === "machine" ? (
-        <ChoixMachine
-          plateformes={plateformes}
-          chargement={chargement}
-          choisir={(p) => { void essayer(() => choisirMachine(p)); }}
-        />
+        <>
+          {/* E01 : « si un historique local existe, PROPOSER de le reprendre
+              plutôt que de recommencer ». Au-dessus du temps 1, jamais à sa
+              place : l'ignorer laisse l'accueil entier. */}
+          <RepriseProposee
+            moments={historique}
+            reprendre={() => { void essayer(ouvrirTimeline); }}
+          />
+          <ChoixMachine
+            plateformes={plateformes}
+            chargement={chargement}
+            choisir={(p) => { void essayer(() => choisirMachine(p)); }}
+          />
+        </>
       ) : null}
 
       {etape === "periode" && machine !== null ? (

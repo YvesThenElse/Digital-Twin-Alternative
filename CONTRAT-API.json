@@ -84,7 +84,7 @@
     },
     "GET /profile/{user}": {
       "": {
-        "lit": ["figures", "opening"],
+        "lit": ["moments", "figures", "opening"],
         "ignore": {}
       },
       "figures": {
