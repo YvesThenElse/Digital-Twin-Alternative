@@ -40,6 +40,13 @@ du périmètre n'ont jamais été livrées.
 > les testeurs diront ordonne le reste : S3 à S9 attendent ce verdict —
 > E07 compris, ce qui tranche D2. `PHASING.md` §11 le rappelle : si la porte
 > se ferme, la réponse est d'itérer sur la Phase 1, pas d'avancer.
+>
+> **Amendement du 23 septembre 2026 : S2 bis entre dans le lot.** S2 a fait
+> apparaître que le visiteur qui revient rejoue tout l'accueil. Décision
+> prise de le corriger **avant** la session : un testeur qui recharge est un
+> cas ordinaire, et lui faire redonner console et période à chaque retour
+> mesurerait une friction que le produit ne veut pas avoir. Le lot est donc
+> **S1 + S2 + S2 bis**.
 
 ---
 
@@ -82,6 +89,36 @@ du périmètre n'ont jamais été livrées.
   *Acceptation : le temps 3 rend les quatre éléments, l'aperçu montre de
   vraies jaquettes de la plateforme choisie, et le parcours mesure qu'il
   n'attend aucun chargement.*
+
+- [ ] **S2 bis — Le visiteur qui revient reprend son histoire.** (E01, état
+  « Retour d'un visiteur non authentifié » · en-tête de fiche) Recharger la
+  page remet tout le monde au temps 1 : console, décennie, affinage,
+  continuation — quatre gestes pour revenir à ce qui est déjà en base. Rien
+  n'est perdu, et c'est justement ce qui rend le détour absurde. Trouvé en
+  rechargeant pendant S2, pas en lisant.
+
+  **La fiche dit deux choses différentes**, et l'item tranche pour la
+  seconde. L'en-tête annonce que `/` « redirige vers `/mon-histoire` si
+  l'historique n'est pas vide » ; l'état, lui, demande de « **proposer** de
+  le reprendre plutôt que de recommencer ». Une redirection dure
+  **enfermerait** le visiteur : l'écran de lecture n'a aujourd'hui aucun
+  retour vers la sélection — c'est le manque inscrit plus bas, et le même que
+  S5. On propose donc, on ne redirige pas. Le jour où le retour existe, la
+  redirection redeviendra discutable.
+
+  **Le piège est le chargement.** E01 est formel : « Chargement : aucun », et
+  le chronomètre du KPI démarre au premier clic. Savoir si un historique
+  existe demande pourtant une lecture. L'offre doit donc arriver **sans
+  retarder le temps 1** — c'est exactement le garde que S2 a posé, et il
+  s'applique ici à l'envers.
+
+  *Acceptation : un profil qui a déjà des moments se voit proposer de
+  reprendre, et un profil vierge ne voit rien ; l'offre n'ajoute aucune
+  attente au temps 1, et le parcours le mesure comme pour S2 ; reprendre
+  ouvre l'histoire — le portrait et l'axe — sans repasser par les trois
+  temps ; ignorer l'offre laisse l'accueil intact ; et le parcours vérifie
+  qu'après un rechargement on atteint son histoire en UN geste au lieu de
+  quatre.*
 
 - [ ] **S3 — Un filtre dans la liste.** (`PHASING.md` §4, E02 repère B)
   « Recherche d'un jeu ou d'une console » est au périmètre et n'existe pas.
@@ -194,7 +231,8 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   part — `/mon-histoire` est un cul-de-sac. C'est le même manque que S5, vu
   depuis l'autre écran.
 
-- **Le visiteur qui revient rejoue l'accueil.** E01 annonce deux choses
+- **Le visiteur qui revient rejoue l'accueil** — ⤳ devenu **S2 bis**, et
+  décidé avant la session. E01 annonce deux choses
   qu'aucune n'existe : la route `/` « redirige vers `/mon-histoire` si
   l'historique n'est pas vide », et l'état « retour d'un visiteur non
   authentifié » demande de « proposer de le reprendre plutôt que de

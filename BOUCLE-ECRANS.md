@@ -63,9 +63,11 @@
 
 ## Conditions d'arrêt
 
-- ⚠️ **S1 et S2 sont cochés** — c'est le lot décidé avant la session de test.
-  Arrête-toi là, dis-le, et propose la session : ce que les testeurs diront
-  ordonne S3 à S9. Ne continue que si on te le demande explicitement.
+- ⚠️ **S1, S2 et S2 bis sont cochés** — c'est le lot décidé avant la session
+  de test. Arrête-toi là, dis-le, et propose la session : ce que les testeurs
+  diront ordonne S3 à S9. Ne continue que si on te le demande explicitement.
+  (S2 bis a été ajouté au lot le 23 septembre, sur décision, parce que S2 a
+  fait apparaître que le visiteur qui revient rejoue tout l'accueil.)
 - tous les items sont cochés ;
 - l'item courant est de la section **« attend une décision »** ;
 - un attendu de la spécification paraît faux ou contradictoire ;
