@@ -82,6 +82,16 @@ Les chips affichent leur marque (§3 du [langage visuel](./00-langage-visuel.md)
 
 **B — Barre de contrôle.** Compteur, filtre de recherche dans la liste. Le tri par notoriété (§3.3) est le défaut et n'a pas besoin d'être exposé en Phase 1.
 
+> **Livré le 23 septembre 2026 — et c'est ce filtre qui tient la ligne « recherche d'un jeu ou d'une console » du périmètre** ([PHASING.md](../PHASING.md) §4), pas un écran. La saisie libre de §3.5 couvre le titre *absent* ; elle ne répond pas à « je sais que j'y ai joué, où est-il ? » dans 221 lignes. E06, la recherche transverse, sort de la Phase 1 avec sa raison.
+>
+> Trois règles le tiennent :
+>
+> - **il cherche un titre, il ne trie pas par état.** Une ligne déjà déclarée qui correspond reste affichée — le piège ci-dessous l'exige, « l'utilisateur perd ses repères et ne peut plus corriger » ;
+> - **le compteur dit sur quoi il porte** — « 4 jeux sur 147 » —, et le compte des *déclarés* ne rétrécit pas avec le filtre : c'est la récompense permanente du repère D, pas un sous-total, et la voir tomber en tapant trois lettres se lirait comme une perte ;
+> - **il ne perd rien.** Filtrer est une lecture : ce qui a été déclaré depuis l'ouverture traverse le filtre et sa levée, et vider rend la liste entière sans état intermédiaire (aucune temporisation — sur une liste déjà en mémoire, elle ne ferait que montrer la liste d'avant pendant deux frappes).
+>
+> Sans accent ni casse : le dataset porte « Pokémon » et « Astérix », et exiger l'accent ferait échouer la recherche sur les titres qu'on tape le plus vite. Quand rien ne correspond, l'écran le dit en nommant ce qui est cherché et renvoie à la saisie libre, juste en dessous — jamais une page blanche.
+
 **C — La ligne.** Hauteur 56 px, **la ligne entière est la cible**. Elle contient une vignette (jaquette ou tuile générée, cf. [langage visuel](./00-langage-visuel.md) §5), le titre non tronqué, l'année, et l'état sous forme d'**icônes** en fin de ligne — manette, drapeau, boîte, cœur selon ce qui est déclaré (§3). Ces icônes affichent, elles ne commandent pas : elles n'ont pas à être des cibles.
 
 **D — La récompense permanente.** Pas un compteur qui s'incrémente : une **bande d'époque qui grandit** à chaque déclaration, colorée selon la génération. L'utilisateur voit son histoire pousser pendant qu'il coche (principe 1, et langage visuel §7).

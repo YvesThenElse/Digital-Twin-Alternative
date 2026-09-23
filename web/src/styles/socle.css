@@ -497,6 +497,34 @@ main {
 .compte {
   font: var(--meta);
   color: var(--ink-2);
+  margin: 0;
+}
+
+/*
+ * La barre de contrôle (E02 repère B) — « 147 jeux · 12 déclarés 🔍 ».
+ *
+ * Le compteur et la recherche sur une ligne, et la recherche prend la place
+ * qui reste : c'est un champ qu'on remplit en marchant, pas une option de
+ * réglage.
+ */
+.barre-controle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e2) var(--e3);
+  margin-block-end: var(--e3);
+}
+
+.filtre {
+  display: flex;
+  align-items: center;
+  gap: var(--e2);
+  flex: 1 1 200px;
+}
+
+.champ-filtre {
+  flex: 1 1 auto;
+  min-inline-size: 0;
 }
 
 /*

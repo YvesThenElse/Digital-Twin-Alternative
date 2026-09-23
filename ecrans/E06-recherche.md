@@ -1,6 +1,10 @@
 # E06 — Recherche
 
-**Type** : surcouche accessible depuis tout écran · **Phase** : 1 · **Route** : `/recherche?q=` (état profond ; la surcouche reste le mode normal)
+**Type** : surcouche accessible depuis tout écran · **Phase** : 3 · **Route** : `/recherche?q=` (état profond ; la surcouche reste le mode normal)
+
+> **Sortie de Phase 1 le 23 septembre 2026.** La fiche se déclarait Phase 1 et l'écran n'existait pas — un écrit qui se lit comme un fait. La ligne « recherche d'un jeu ou d'une console » du périmètre ([PHASING.md](../PHASING.md) §4) est tenue autrement : par le **filtre dans la liste** d'[E02](./E02-selection-massive.md) repère B, qui ne fait pas quitter l'écran.
+>
+> Une recherche transverse suppose plusieurs espaces à traverser — un profil qui dure, une collection, des personnes. La Phase 1 n'en a qu'un, déjà sous les yeux. Le raisonnement complet, et ce qu'il laisse dehors, sont dans `PHASING.md` §4.
 
 ## Objectif
 

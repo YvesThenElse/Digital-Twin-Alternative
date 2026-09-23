@@ -1430,3 +1430,201 @@ describe("SelectionMassive — les quatre états obligatoires (principes §5)", 
       .toBeInTheDocument();
   });
 });
+
+/**
+ * Le filtre de la barre de contrôle (E02 repère B) — <b>« 147 jeux ·
+ * 12 déclarés 🔍 »</b>.
+ *
+ * `PHASING.md` §4 met « recherche d'un jeu ou d'une console » au périmètre
+ * de la Phase 1, et rien ne le tenait. La saisie libre de §3.5 couvre le
+ * titre **absent** ; elle ne répond pas à « je sais que j'y ai joué, où
+ * est-il ? » dans 221 lignes.
+ *
+ * <b>Un filtre, pas un écran.</b> Il ne fait pas quitter la liste, ce qui
+ * est la moitié de sa valeur sur le geste le plus répétitif du produit.
+ */
+const filtre = () => screen.getByRole("textbox", { name: /chercher/i });
+const compte = () => screen.getByTestId("compte");
+/**
+ * Les titres affichés. `queryAll` et non `getAll` : le filtre peut ne rien
+ * retenir, et un helper qui lève dans ce cas empêcherait d'éprouver
+ * précisément l'état qui compte.
+ */
+const titres = () =>
+  screen.queryAllByRole("button", { name: /déclarer|déclaré/i })
+    .map((b) => b.getAttribute("aria-label")!.replace(/^[^:]+ : /, ""));
+
+describe("SelectionMassive — le filtre de la liste (E02 repère B)", () => {
+  it("ne retient que les titres qui contiennent la recherche", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.type(filtre(), "mario");
+
+    expect(titres()).toEqual(["Super Mario World"]);
+  });
+
+  it("ignore la casse et les accents", async () => {
+    // Le dataset est réel : « Pokémon », « Légende », « Astérix ». Exiger
+    // l'accent ferait échouer la recherche sur les titres qu'on tape le plus
+    // vite — et l'utilisateur en conclurait que le jeu n'y est pas.
+    const utilisateur = userEvent.setup();
+    monter({
+      oeuvres: [
+        { id: "w9", titre: "Pokémon Édition Rouge", rang: 1,
+          sortie: { kind: "Year", year: 1999 }, couverture: null,
+          regions: ["PAL"], statutRegional: {} },
+      ],
+    });
+
+    await utilisateur.type(filtre(), "POKEMON e");
+
+    expect(titres()).toEqual(["Pokémon Édition Rouge"]);
+  });
+
+  it("garde les lignes DÉJÀ déclarées qui correspondent", async () => {
+    // E02, pièges : « Masquer les jeux déjà déclarés : l'utilisateur perd ses
+    // repères et ne peut plus corriger. » Le filtre cherche un titre, il ne
+    // trie pas par état.
+    const utilisateur = userEvent.setup();
+    monter();
+    await utilisateur.click(lignes()[0]);
+
+    await utilisateur.type(filtre(), "mario");
+
+    expect(titres()).toEqual(["Super Mario World"]);
+    expect(lignes()[0]).toHaveAttribute("aria-pressed", "true");
+  });
+
+  // ------------------------------------------------- ce que dit le compteur
+
+  it("dit sur quoi il porte quand le filtre est posé", async () => {
+    // « 147 jeux » au-dessus d'une liste qui en montre trois est un compte
+    // juste appliqué à autre chose. Le total reste dit : sans lui, on ne sait
+    // plus ce qu'on a écarté.
+    const utilisateur = userEvent.setup();
+    monter();
+    expect(compte()).toHaveTextContent("3 jeux");
+
+    await utilisateur.type(filtre(), "mario");
+
+    expect(compte()).toHaveTextContent("1 jeu sur 3");
+  });
+
+  it("ne fait pas rétrécir le compte des déclarés", async () => {
+    // C'est la RÉCOMPENSE de §24.4, pas un sous-total : la voir tomber de
+    // douze à un en tapant trois lettres se lirait comme une perte.
+    const utilisateur = userEvent.setup();
+    monter();
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(lignes()[1]);
+
+    await utilisateur.type(filtre(), "mario");
+
+    expect(compte()).toHaveTextContent("2 déclarés");
+  });
+
+  // ---------------------------------------------------- vider, et retrouver
+
+  it("rend la liste entière quand on vide le filtre", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+    await utilisateur.type(filtre(), "mario");
+    expect(titres()).toHaveLength(1);
+
+    await utilisateur.click(screen.getByRole("button", { name: /vider/i }));
+
+    expect(titres()).toHaveLength(3);
+    expect(compte()).toHaveTextContent("3 jeux");
+    expect(compte()).not.toHaveTextContent("sur");
+  });
+
+  it("n'offre à vider que lorsqu'il y a quelque chose à vider", async () => {
+    const utilisateur = userEvent.setup();
+    monter();
+
+    expect(screen.queryByRole("button", { name: /vider/i })).toBeNull();
+    // Le témoin (78) : le bouton EXISTE dès qu'on tape. Sans lui, « aucun
+    // bouton » se satisferait d'un filtre jamais rendu.
+    await utilisateur.type(filtre(), "m");
+    expect(screen.getByRole("button", { name: /vider/i })).toBeInTheDocument();
+  });
+
+  // ------------------------------------------- ce que le filtre ne perd pas
+
+  it("ne perd aucune déclaration faite depuis l'ouverture", async () => {
+    // Le piège de l'apprentissage 73 : un état dérivé de la liste AFFICHÉE
+    // repartirait à chaque frappe. Ici on coche avant, pendant, et on vide.
+    const utilisateur = userEvent.setup();
+    monter();
+    await utilisateur.click(lignes()[0]);
+
+    await utilisateur.type(filtre(), "chrono");
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(screen.getByRole("button", { name: /vider/i }));
+
+    const coches = lignes().filter((b) => b.getAttribute("aria-pressed") === "true");
+    expect(coches.map((b) => b.getAttribute("aria-label"))).toEqual([
+      "Déclaré : Super Mario World",
+      "Déclaré : Chrono Trigger",
+    ]);
+  });
+
+  it("n'envoie rien de plus parce qu'on a filtré", async () => {
+    // Filtrer est une lecture. Si le composant redéclarait ce qu'il affiche,
+    // le journal porterait des moments que personne n'a déclarés.
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+    await utilisateur.click(lignes()[0]);
+    const avant = envoyer.mock.calls.length;
+
+    await utilisateur.type(filtre(), "chrono");
+    await utilisateur.click(screen.getByRole("button", { name: /vider/i }));
+
+    expect(envoyer.mock.calls.length).toBe(avant);
+  });
+
+  // -------------------------------------------------------- aucun résultat
+
+  it("dit qu'aucun titre ne correspond, et nomme ce qui est cherché", async () => {
+    // §5 : jamais une page blanche. Et la sortie existe juste en dessous —
+    // la saisie libre de §3.5 est la réponse au titre qui n'y est pas.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.type(filtre(), "zzz");
+
+    expect(titres()).toHaveLength(0);
+    const vide = screen.getByTestId("filtre-sans-resultat");
+    expect(vide).toHaveTextContent("zzz");
+    // Le témoin (78) : le message DISPARAÎT dès qu'un titre correspond.
+    await utilisateur.click(screen.getByRole("button", { name: /vider/i }));
+    expect(screen.queryByTestId("filtre-sans-resultat")).toBeNull();
+  });
+
+  it("ne confond pas « rien ne correspond » avec « la liste est vide »", () => {
+    // Deux silences différents. Sans filtre, une liste vide se dit par
+    // l'état vide de §5 ; annoncer en plus « aucun titre ne contient "" »
+    // répondrait à une recherche que personne n'a faite — et l'état le plus
+    // important de l'écran se lirait comme une panne de filtre.
+    //
+    // ⚠️ Écrit APRÈS une mutation qui n'a fait échouer personne : retirer la
+    // condition de filtre ne cassait rien, parce qu'aucun test ne montait
+    // l'écran avec zéro œuvre ET sans recherche.
+    monter({ oeuvres: [] });
+
+    expect(screen.getByText(/aucun jeu|pas de jeu|liste est vide/i)).toBeInTheDocument();
+    expect(screen.queryByTestId("filtre-sans-resultat")).toBeNull();
+  });
+
+  it("laisse la saisie libre atteignable quand rien ne correspond", async () => {
+    // C'est l'issue, et elle doit rester là : filtrer jusqu'au vide est
+    // exactement le moment où l'on découvre qu'un titre manque.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    await utilisateur.type(filtre(), "zzz");
+
+    expect(screen.getByRole("textbox", { name: /Titre absent/i })).toBeInTheDocument();
+  });
+});

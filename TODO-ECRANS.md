@@ -129,7 +129,7 @@ du périmètre n'ont jamais été livrées.
   qu'après un rechargement on atteint son histoire en UN geste au lieu de
   quatre.*
 
-- [ ] **S3 — Un filtre dans la liste.** (`PHASING.md` §4, E02 repère B)
+- [x] **S3 — Un filtre dans la liste.** (`PHASING.md` §4, E02 repère B)
   « Recherche d'un jeu ou d'une console » est au périmètre et n'existe pas.
   La saisie libre de §3.5 couvre le titre **absent**, pas le titre présent
   qu'on ne retrouve pas dans 221 lignes — « je sais que j'y ai joué, où
@@ -302,3 +302,23 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   Reprendre coûte **un** geste au lieu de quatre ; l'ignorer laisse les trois
   temps entiers. Ce qui est laissé : la redirection annoncée en tête de
   fiche, qui attend S5.
+
+- **S3** — la barre de contrôle d'E02 porte son filtre. Il cherche un
+  **titre**, sans accent ni casse, et il ne trie pas par état : une ligne
+  déjà déclarée qui correspond reste affichée, parce que la masquer ferait
+  perdre ses repères et empêcherait de corriger. Le compteur dit sur quoi il
+  porte — « 4 jeux sur 147 » — et le compte des *déclarés*, lui, ne rétrécit
+  pas : c'est la récompense permanente du repère D. Vider rend la liste
+  entière, sans temporisation : sur une liste déjà en mémoire, une attente ne
+  ferait que montrer la liste d'avant pendant deux frappes. Quand rien ne
+  correspond, l'écran le dit en nommant ce qui est cherché et laisse la
+  saisie libre atteignable juste en dessous — c'est exactement le moment où
+  l'on découvre qu'un titre manque. `PHASING.md` §4 inscrit **E06 en
+  Phase 3** avec sa raison, et la fiche E06 cesse de se déclarer Phase 1.
+  Le parcours l'éprouve sur le dataset réel — c'est la seule échelle où un
+  filtre a un sens — et paie ses deux gestes au budget.
+
+  Une mutation n'a fait échouer **personne** : retirer la moitié de la
+  condition qui garde l'état « aucun résultat » ne cassait rien, faute d'un
+  test montant l'écran avec zéro œuvre **et** sans recherche. Le test manquant
+  a été écrit, et la règle en est tirée (apprentissage 83).

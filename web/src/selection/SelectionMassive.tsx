@@ -284,6 +284,20 @@ function ChampSouvenir({ titre, valeur, surSaisie, surSortie }: {
   );
 }
 
+/**
+ * La comparaison du filtre — <b>sans casse ni accent</b>.
+ *
+ * `NFD` sépare la lettre de son signe, la classe `\p{Diacritic}` retire le
+ * second : « Pokémon » se trouve en tapant « pokemon ». Faire l'inverse —
+ * exiger l'accent — ferait échouer la recherche sur les titres qu'on tape
+ * le plus vite.
+ */
+export function contient(titre: string, recherche: string): boolean {
+  const nu = (s: string) =>
+    s.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLocaleLowerCase("fr");
+  return nu(titre).includes(nu(recherche.trim()));
+}
+
 export function SelectionMassive({
   oeuvres, region, disposition, envoyer, ecrireSouvenir, recharger, retracter, etatInitial,
   souvenirsInitiaux, titresLibresInitiaux, chargement, lot,
@@ -360,6 +374,21 @@ export function SelectionMassive({
     })),
   );
   const [saisie, setSaisie] = useState("");
+
+  /**
+   * La recherche de la barre de contrôle (E02 repère B).
+   *
+   * <b>Elle ne touche à RIEN d'autre.</b> Les lignes cochées, les affinages,
+   * les souvenirs et les titres saisis vivent dans leur propre état : filtrer
+   * est une lecture, et une lecture qui remettrait à zéro ce qui a été
+   * déclaré depuis l'ouverture perdrait la saisie au moment précis où l'on
+   * cherche quelque chose (apprentissage 73).
+   *
+   * <b>Sans temporisation</b> : sur 221 lignes déjà en mémoire, filtrer coûte
+   * une comparaison de chaînes. Une attente ferait voir la liste d'avant
+   * pendant deux frappes — « jamais un état intermédiaire ».
+   */
+  const [recherche, setRecherche] = useState("");
   const compteurLibre = useRef(0);
 
   // La bande compte les titres saisis comme les autres. Un geste qui ne
@@ -604,6 +633,17 @@ export function SelectionMassive({
   const ordonnees = [...oeuvres].sort((a, b) => a.rang - b.rang);
 
   /**
+   * Ce que la recherche retient — <b>le titre, et rien d'autre</b>.
+   *
+   * Sans accent ni casse : le dataset porte « Pokémon », « Astérix »,
+   * « Légende ». Exiger l'accent ferait échouer la recherche sur les titres
+   * qu'on tape le plus vite, et le joueur en conclurait que le jeu n'y est
+   * pas — l'inverse exact de ce que ce filtre sert.
+   */
+  const filtrees = ordonnees.filter((o) => contient(o.titre, recherche));
+  const filtreActif = recherche.trim().length > 0;
+
+  /**
    * Le squelette : la STRUCTURE attendue, pas un spinner.
    *
    * Un spinner centré ne dit pas ce qui arrive ; le squelette annonce une
@@ -640,12 +680,45 @@ export function SelectionMassive({
       {/* Repère B — « 147 jeux · 12 déclarés ». Le second nombre vient de
           l'état relu : sans lui, l'écran annoncerait zéro déclaré à un
           profil plein. */}
-      <p className="compte">
-        {t("selection.compte", {
-          jeux: String(oeuvres.length),
-          declares: String(declarees.size),
-        })}
-      </p>
+      <div className="barre-controle">
+        <p className="compte" data-testid="compte">
+          {filtreActif
+            ? t(
+                filtrees.length > 1
+                  ? "selection.compte.filtre.plusieurs"
+                  : "selection.compte.filtre.un",
+                {
+                  n: String(filtrees.length),
+                  jeux: String(oeuvres.length),
+                  // Les DÉCLARÉS ne suivent pas le filtre : c'est la
+                  // récompense permanente du repère D, pas un sous-total.
+                  declares: String(declarees.size),
+                },
+              )
+            : t("selection.compte", {
+                jeux: String(oeuvres.length),
+                declares: String(declarees.size),
+              })}
+        </p>
+
+        <div className="filtre">
+          <input
+            type="text"
+            className="champ-filtre"
+            aria-label={t("selection.filtre")}
+            value={recherche}
+            onChange={(e) => setRecherche(e.target.value)}
+          />
+          {/* Il n'existe que s'il y a quelque chose à vider. Sur un
+              téléphone, effacer un champ à la main coûte plus que le geste
+              qu'on vient d'économiser. */}
+          {filtreActif ? (
+            <button type="button" className="discret" onClick={() => setRecherche("")}>
+              {t("selection.viderFiltre")}
+            </button>
+          ) : null}
+        </div>
+      </div>
 
       {/* L'état VIDE — le plus important de §5, parce que c'est celui que
           voit un nouvel utilisateur. Il ne propose que des issues qui
@@ -654,8 +727,18 @@ export function SelectionMassive({
           de les changer ferait tourner en rond. */}
       {oeuvres.length === 0 ? <p role="status">{t("selection.vide")}</p> : null}
 
+      {/* Jamais une page blanche (§5), et l'issue est juste en dessous : la
+          saisie libre de §3.5 est la réponse au titre qui n'est pas au
+          référentiel. Filtrer jusqu'au vide est exactement le moment où l'on
+          s'en aperçoit. */}
+      {filtreActif && filtrees.length === 0 ? (
+        <p role="status" data-testid="filtre-sans-resultat">
+          {t("selection.filtreSansResultat", { texte: recherche })}
+        </p>
+      ) : null}
+
       <ul data-disposition={disposition}>
-        {ordonnees.map((oeuvre) => {
+        {filtrees.map((oeuvre) => {
           const declare = declarees.has(oeuvre.id);
           const jamais = jamaisJoues.has(oeuvre.id);
           const enGrille = disposition === "grille";

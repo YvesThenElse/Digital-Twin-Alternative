@@ -184,6 +184,22 @@ export const MESSAGES = {
   // Repère B d'E02, et le compte de jeux d'une console : deux nombres que
   // l'API calculait et que personne n'affichait.
   "selection.compte": "{jeux} jeux · {declares} déclarés",
+  // Filtré, le compteur DIT sur quoi il porte : « 147 jeux » au-dessus d'une
+  // liste qui en montre trois est un compte juste appliqué à autre chose. Le
+  // total reste nommé — sans lui, on ne sait plus ce qu'on a écarté. Les
+  // déclarés, eux, ne rétrécissent pas : c'est la récompense de §24.4, et la
+  // voir tomber en tapant trois lettres se lirait comme une perte.
+  "selection.compte.filtre.un": "{n} jeu sur {jeux} · {declares} déclarés",
+  "selection.compte.filtre.plusieurs": "{n} jeux sur {jeux} · {declares} déclarés",
+  // §4 du plan met « recherche d'un jeu ou d'une console » au périmètre :
+  // c'est ce filtre, pas un écran. Il ne fait pas quitter la liste, ce qui
+  // est la moitié de sa valeur sur le geste le plus répétitif du produit.
+  "selection.filtre": "Chercher un jeu dans la liste",
+  "selection.viderFiltre": "Vider la recherche",
+  // Jamais une page blanche (§5). L'issue est juste en dessous : la saisie
+  // libre de §3.5 est la réponse au titre qui n'est pas au référentiel.
+  "selection.filtreSansResultat":
+    "Aucun titre ne contient « {texte} ». S'il manque à cette liste, ajoutez-le ci-dessous.",
   "machine.resume": "{annee} · {jeux} jeux",
 
   // Les noms accessibles des icônes (§3). Une icône seule n'informe pas :

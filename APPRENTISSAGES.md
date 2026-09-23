@@ -2621,3 +2621,38 @@ vérifier dans le MÊME montage qu'elle y apparaît quand elle doit. Deux
 questions à se poser avant d'écrire `queryBy…).toBeNull()` : *est-ce que
 j'ai navigué depuis ?* et *qu'est-ce qui, ici, la ferait paraître ?* Si la
 seconde n'a pas de réponse, le test ne garde rien.
+
+### 83 — Dans une conjonction, chaque moitié demande son propre cas
+
+Le message « aucun titre ne correspond » est gardé par deux conditions :
+
+```tsx
+{filtreActif && filtrees.length === 0 ? <p>…</p> : null}
+```
+
+Une mutation a retiré la première — `{filtrees.length === 0 ? …}` — et
+**aucun test n'a échoué**. Zéro. Pas « moins qu'annoncé » : rien du tout.
+
+La cause est mécanique. Tous les tests du filtre tapent quelque chose :
+`filtreActif` y vaut **toujours vrai**, et seule l'autre moitié varie.
+Retirer une condition qui ne change jamais ne change rien — la moitié
+supprimée n'était gardée par personne, alors que le fichier compte onze
+tests sur ce filtre.
+
+Ce qu'elle garde pourtant est réel : monté avec **zéro œuvre** et sans
+recherche — l'état vide de §5, celui que voit un nouvel utilisateur —,
+l'écran annonçait « aucun titre ne contient "" », c'est-à-dire la réponse à
+une question que personne n'a posée, par-dessus l'état le plus important de
+l'écran.
+
+C'est le versant « zéro » de la règle des comptes : **moins d'échecs
+qu'annoncé veut dire qu'un garde ne garde pas**, et zéro échec le dit plus
+fort que tout. C'est aussi [[82]] vu depuis le code plutôt que depuis le
+test : là, l'absence était constatée là où la chose ne pouvait pas être ;
+ici, une condition est éprouvée là où elle ne peut pas être fausse.
+
+**La règle** : devant `A && B`, exiger un cas où **A est faux pendant que B
+est vrai**, et l'inverse. Sans ces deux-là, l'une des deux conditions est
+une décoration que rien ne distingue d'une ligne morte. Et le détecteur est
+gratuit : muter chaque moitié séparément, et se méfier d'une mutation qui ne
+casse rien plus encore que d'une qui casse moins que prévu.

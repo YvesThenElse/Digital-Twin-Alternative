@@ -185,6 +185,31 @@ C'est cohérent avec le point UX central du cahier des charges (§24) : réduire
 - Page de profil simple ;
 - Données de référence locales.
 
+#### « Recherche d'un jeu ou d'une console » — ce que la ligne recouvre
+
+Le périmètre ci-dessus porte cette ligne depuis la v1, et elle a longtemps
+été lue comme un écran. Elle est tenue, **le 23 septembre 2026**, par un
+**filtre dans la liste** de [E02](./ecrans/E02-selection-massive.md) — son
+repère B le prévoit déjà : « compteur, filtre de recherche dans la liste ».
+
+| Ce qui répond à quoi | Où | Phase |
+|---|---|---|
+| « je sais que j'y ai joué, où est-il dans ces 221 lignes ? » | **filtre E02, repère B** | **Phase 1**, livré |
+| « ce titre n'est pas au référentiel » | **saisie libre** (§3.5) | Phase 1, livré |
+| « je cherche un jeu, une console, une personne, n'importe où » | [**E06**](./ecrans/E06-recherche.md), recherche transverse | **Phase 3**, pas avant |
+
+**Pourquoi E06 n'est pas en Phase 1.** Une recherche transverse suppose qu'il
+y ait plusieurs espaces à traverser — un profil qui dure, une collection, des
+personnes — et la Phase 1 n'en a qu'un : le catalogue d'une plateforme, déjà
+sous les yeux. Y ajouter un écran de recherche ferait **quitter la liste**
+pour revenir au même endroit, sur le geste le plus répétitif du produit ;
+c'est exactement ce que le filtre évite, et c'est la moitié de sa valeur.
+
+**Ce que cela laisse dehors, sciemment** : chercher une console (la grille
+d'E01 en montre six, et le choix est une reconnaissance, pas une recherche),
+et chercher un titre hors de la plateforme ouverte. Les deux attendent que
+le produit ait plus d'un espace à parcourir.
+
 ### Ajouts au périmètre (issus de la révision v2)
 
 Quatre éléments sont remontés en Phase 1 parce que la fonctionnalité centrale — la sélection massive — ou le critère de sortie de la Phase 2 en dépendent directement :

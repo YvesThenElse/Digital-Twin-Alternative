@@ -386,6 +386,55 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   );
   await expect(bande).toHaveAttribute("data-total", String(TITRES_A_COCHER));
 
+  // --- 3 bis bis. le filtre de la liste (E02 repère B) --------------------
+  //
+  // `PHASING.md` §4 met « recherche d'un jeu ou d'une console » au périmètre,
+  // et rien ne le tenait. La saisie libre de §3.5 couvre le titre ABSENT ;
+  // elle ne répond pas à « je sais que j'y ai joué, où est-il ? » dans une
+  // liste de cette taille. Sur le dataset réel, et pas sur trois lignes de
+  // fixture : c'est la seule échelle où le filtre a un sens.
+  //
+  // **Lecture seule.** Le filtre ne déclare rien ici ; ce qu'on vérifie est
+  // qu'il ne PERD rien — les trente déclarations faites depuis l'ouverture
+  // doivent traverser le filtre et sa levée.
+  const toutesLesLignes = page.getByRole("button", { name: /^(Déclarer|Déclaré) : / });
+  const avantFiltre = await toutesLesLignes.count();
+  const premierDeclare = (await page.getByRole("button", { name: /^Déclaré : / })
+    .first().getAttribute("aria-label"))!.replace("Déclaré : ", "");
+  const mot = premierDeclare.split(" ").find((m) => m.length >= 4)!;
+
+  const chercher = page.getByRole("textbox", { name: /Chercher un jeu/ });
+  await toucher(chercher.fill(mot));
+
+  const apresFiltre = await toutesLesLignes.count();
+  expect(apresFiltre, `« ${mot} » n'a rien retenu`).toBeGreaterThan(0);
+  expect(apresFiltre, `« ${mot} » n'a rien écarté : le filtre ne filtre pas`)
+    .toBeLessThan(avantFiltre);
+
+  // Le compteur DIT sur quoi il porte : « 4 jeux sur 147 ». Un total affiché
+  // au-dessus d'une liste réduite est un compte juste appliqué à autre chose.
+  await expect(page.getByTestId("compte")).toContainText(
+    new RegExp(`${apresFiltre} jeux? sur ${avantFiltre}`));
+
+  // Et la ligne trouvée est TOUJOURS déclarée : E02 interdit de masquer les
+  // jeux déjà cochés — « l'utilisateur perd ses repères et ne peut plus
+  // corriger ».
+  // `exact` n'est pas un détail : le nom accessible se cherche par SOUS-CHAÎNE
+  // par défaut, et « Super Mario World » est le préfixe de « Super Mario
+  // World 2 ». Sans lui, l'assertion trouvait deux lignes et échouait pour
+  // une raison qui n'a rien à voir avec le filtre.
+  await expect(page.getByRole("button", {
+    name: `Déclaré : ${premierDeclare}`, exact: true,
+  })).toBeVisible();
+
+  await toucher(page.getByRole("button", { name: "Vider la recherche" }).click());
+
+  // La liste ENTIÈRE revient, et les trente déclarations avec elle.
+  await expect(toutesLesLignes).toHaveCount(avantFiltre);
+  await expect(page.getByRole("button", { name: /^Déclaré : / }))
+    .toHaveCount(TITRES_A_COCHER);
+  await expect(page.getByTestId("compte")).not.toContainText(" sur ");
+
   // --- 3 bis. la passe 2, sur une ligne déclarée --------------------------
   //
   // Facultative par construction : les vingt-neuf autres lignes n'y touchent
@@ -890,7 +939,11 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // paie — §24.4 veut le bénéfice PENDANT la saisie, pas à la fin, et E01
   // fait de cet écran celui où se joue le KPI de première session. Le nier
   // au budget reviendrait à cacher ce que la décision coûte.
-  const budget = TITRES_A_COCHER + 24;
+  // Deux gestes de plus : chercher, puis vider. Le filtre est FACULTATIF —
+  // aucune des trente lignes ne le paie — mais le parcours le paie, et ce
+  // qu'il coûte doit se voir : c'est la seule façon de savoir s'il reste
+  // dans le budget « un tap par jeu » le jour où il servira vraiment.
+  const budget = TITRES_A_COCHER + 26;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });
