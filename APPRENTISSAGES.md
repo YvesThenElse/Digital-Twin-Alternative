@@ -2688,3 +2688,37 @@ Un test qui remplace « le réseau » ne doit avoir à simuler que du réseau ;
 ce qu'il est forcé de simuler en plus mesure exactement ce qui s'est glissé
 dans la mauvaise couche. C'est une frontière de conception **rendue
 observable** par un outil de test, et c'est rare assez pour qu'on l'écoute.
+
+### 85 — « Les enfants de ce conteneur » est une hypothèse d'homogénéité
+
+L'axe ne contenait que des entrées. Trois assertions l'écrivaient ainsi, dans
+trois fichiers différents :
+
+```ts
+axe().querySelectorAll(":scope > li")        // le test de composant
+axe.locator("> li")                          // le parcours
+[...axe().children]                          // un troisième
+```
+
+Le jour où les décennies vides s'y sont glissées — des `li` de même niveau,
+et c'est bien leur place —, les trois ont cassé d'un coup. Aucune ne disait
+ce qu'elle voulait : elles disaient *où regarder*, en supposant qu'il n'y
+avait là qu'une seule espèce.
+
+Le réflexe est de déplacer la nouveauté ailleurs pour que les tests se
+taisent. C'est l'inverse : les tests avaient raison de casser, et ils
+demandaient une chose précise — **que les deux espèces soient
+distinguables**. Un `data-testid="entree"` sur l'entrée, et chaque assertion
+redit ce qu'elle veut vraiment : « les entrées », pas « les enfants ».
+
+Le compte `data-entrees`, lui, n'a pas bougé : il portait déjà un nom.
+
+C'est la même famille que [[70]] — un compte qui change nomme ce qu'on vient
+d'ajouter — mais prise à l'endroit où le compte n'est même pas écrit : un
+sélecteur de position en fabrique un implicitement, et il grandit en
+silence.
+
+**La règle** : sélectionner par ce que la chose EST, jamais par l'endroit où
+elle se trouve. `> li`, `children[0]`, `nth(2)` encodent une hypothèse — « ce
+conteneur n'aura jamais qu'une sorte d'enfant » — que rien n'écrit et que
+personne ne relit. Quand elle tombe, elle tombe partout à la fois.

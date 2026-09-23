@@ -88,6 +88,12 @@ La relation **E03 ⇄ E07** est volontairement un panneau et non une page : date
 
 **Les trous sont des invitations.** Une décennie vide n'est pas un défaut d'affichage : c'est l'endroit exact où proposer E02. C'est le mécanisme de relance le plus naturel du produit, et il ne coûte aucune notification.
 
+> **Livré le 23 septembre 2026.** Chaque décennie que rien ne couvre porte, à sa place chronologique sur l'axe, une invitation qui **nomme ses années** — « compléter » seul laisserait deviner lesquelles, et l'invitation deviendrait une question de plus.
+>
+> Trois bornes, et chacune évite une phrase fausse : **rien avant la première déclaration** (ce n'est pas un trou, c'est la préhistoire — proposer 1972–1989 à qui a commencé en 1995 lui demanderait des années qu'il n'a pas vécues comme joueur) ; **rien après aujourd'hui** (un souvenir ne se situe pas dans l'avenir, donc la décennie courante s'arrête à l'année courante) ; **rien sur un axe vide**, qui porte déjà sa propre invitation. Un chevauchement suffit à remplir une décennie : une bande 1998–2003 les remplit toutes les deux, et en réclamer une serait affirmer ce que le joueur n'a pas dit (§7.5).
+>
+> **On repasse par le choix de machine**, et ce n'est pas un détour : E02 est une liste *par plateforme*, et il n'y en a aucune de choisie quand on lit son axe. Le chemin existant fait le reste — la période est conservée si elle reste tenable sur la machine choisie, sinon elle est redemandée plutôt que de conduire à un cul-de-sac. Et le lot ouvert est un **nouveau passage** : le rattacher à l'ancien ferait une seule bande là où le joueur est revenu deux fois (§4.4), et la relance qu'on vient de lui proposer deviendrait invisible.
+
 ## Pièges
 
 - Trier les `Range` par leur borne de début : deux périodes qui se chevauchent n'ont pas d'ordre strict (§7.5), le rendu doit assumer le chevauchement plutôt que l'aplatir.

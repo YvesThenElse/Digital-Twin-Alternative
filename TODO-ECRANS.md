@@ -156,7 +156,7 @@ du périmètre n'ont jamais été livrées.
   déclarer depuis la fiche produit les mêmes événements que la sélection
   massive — pas un second chemin d'écriture.*
 
-- [ ] **S5 — Les trous sont des invitations.** (E03 · « Zone vide d'une
+- [x] **S5 — Les trous sont des invitations.** (E03 · « Zone vide d'une
   période → E02 préfiltré sur cette période ») « C'est le mécanisme de
   relance le plus naturel du produit, et il ne coûte aucune notification. »
   Le lien E03 → E02 n'existe que dans un sens. *Acceptation : depuis une
@@ -312,6 +312,28 @@ Inscrit, pas construit — la boucle ne livre que ce que l'item dit.
   Reprendre coûte **un** geste au lieu de quatre ; l'ignorer laisse les trois
   temps entiers. Ce qui est laissé : la redirection annoncée en tête de
   fiche, qui attend S5.
+
+- **S5** — chaque décennie vide de l'axe porte son invitation, à sa place
+  chronologique, et elle **nomme ses années**. Trois bornes : rien avant la
+  première déclaration — c'est la préhistoire, pas un trou —, rien après
+  aujourd'hui, rien sur un axe vide qui porte déjà la sienne. Un
+  chevauchement suffit à remplir une décennie (§7.5). Accepter l'invitation
+  repasse par le choix de machine — E02 est une liste *par plateforme*, et
+  aucune n'est choisie quand on lit son axe —, la période du trou est posée,
+  et le lot est un **nouveau passage** : le rattacher à l'ancien ferait une
+  seule bande là où le joueur est revenu deux fois, et la relance
+  deviendrait invisible.
+
+  Et `/mon-histoire` cesse d'être un cul-de-sac — le manque relevé deux fois
+  depuis le début de cette liste. Le retour vers E02 que l'état « trop
+  maigre » d'E04 demandait existe désormais, par ce chemin-ci.
+
+  Cinq mutations. L'une n'a fait échouer personne : le retour anticipé sur un
+  axe vide ne change aucun comportement, `Math.min()` d'une liste vide valant
+  `Infinity`. Il reste, **nommé comme tel dans le code** — le cas vide doit
+  être une décision lisible et non la conséquence d'une règle d'IEEE 754,
+  et un futur lecteur ne doit pas le prendre pour une branche gardée
+  (apprentissage 83).
 
 - **S4** — la fiche de jeu (E05, variante A) s'ouvre en cliquant un titre sur
   l'axe, comme E03 le spécifie. Deux couches, **la personnelle en haut** :

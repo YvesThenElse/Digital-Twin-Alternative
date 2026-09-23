@@ -442,6 +442,26 @@ export function App() {
     setSynthese(portrait);
   }
 
+  /**
+   * « Les trous sont des invitations » (E03) — <b>la relance la moins chère
+   * du produit</b>.
+   *
+   * On repasse par le choix de machine, et ce n'est pas un détour : E02 est
+   * une liste PAR PLATEFORME, et il n'y en a aucune de choisie quand on lit
+   * son axe. Le chemin existant fait le reste — `choisirMachine` garde la
+   * période quand elle reste tenable et ouvre directement la liste, sinon il
+   * redemande la période plutôt que de conduire à un cul-de-sac.
+   *
+   * <b>Le lot n'est pas repris.</b> C'est `ouvrirSelection` qui en frappe un
+   * neuf : ce qu'on déclare en revenant est un NOUVEAU passage, et le
+   * rattacher à l'ancien ferait une bande sur l'axe là où il y a eu deux
+   * sessions (§4.4).
+   */
+  function completerLaPeriode(trou: { debut: number; fin: number }) {
+    setPeriode({ kind: "range", from: trou.debut, to: trou.fin });
+    setEtape("machine");
+  }
+
   async function ouvrirTimeline() {
     // Les deux ENSEMBLE, et l'étape ne change qu'après. L'en-tête arrivant
     // après l'axe ferait sauter l'écran au moment précis où le joueur
@@ -586,6 +606,11 @@ export function App() {
             sansDate={timeline.undated}
             avertissements={timeline.warnings}
             ouvrirFiche={(moment) => { void essayer(() => ouvrirFiche(moment)); }}
+            // L'horloge est lue ICI, une fois, comme pour l'écran de période :
+            // un composant qui l'interroge lui-même a des tests qui dépendent
+            // du jour où on les lance.
+            anneeCourante={new Date().getFullYear()}
+            completer={completerLaPeriode}
           />
         </>
       ) : null}

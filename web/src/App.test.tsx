@@ -436,6 +436,76 @@ describe("App — E05, la fiche de jeu s'ouvre depuis l'axe", () => {
   });
 });
 
+describe("App — E03, les trous sont des invitations", () => {
+  /** Un axe qui ne couvre QUE 1990 : tout ce qui suit est un trou. */
+  const AXE_MAIGRE = {
+    entries: [
+      { isEpisode: false, interval: { start: "1990-01-01", end: "1990-12-31" },
+        moments: [{ id: "m1", type: "StartedGame", targetKind: "work", targetId: "w1",
+          targetLabel: "Super Mario World",
+          occurredAt: { kind: "Year", year: 1990 }, platformId: "plt_snes",
+          memory: null }] },
+    ],
+    undated: [],
+    warnings: [],
+  };
+
+  it("ramène à la sélection avec CETTE période déjà posée", async () => {
+    // E03 : « zone vide d'une période → E02 préfiltré sur cette période ».
+    // On repasse par le choix de machine, parce que E02 est une liste PAR
+    // PLATEFORME et qu'il n'y en a aucune de choisie quand on lit son axe.
+    const utilisateur = userEvent.setup();
+    faux.timeline.mockResolvedValue(AXE_MAIGRE);
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    await screen.findByTestId("axe");
+
+    const invitations = screen.getAllByRole("button", { name: /Compléter ces années/ });
+    await utilisateur.click(invitations[0]);
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+
+    // La période du TROU, pas celle qu'on avait saisie à l'aller.
+    expect(await screen.findByTestId("contexte")).toHaveTextContent("2000");
+    expect(screen.getByTestId("contexte")).toHaveTextContent("2009");
+  });
+
+  it("ouvre un NOUVEAU passage, pas la suite de l'ancien", async () => {
+    // §4.4 : le lot fait l'épisode. Reprendre celui d'avant collerait sur
+    // l'axe une seule bande là où le joueur est revenu deux fois — et la
+    // relance qu'on vient de lui proposer deviendrait invisible.
+    const utilisateur = userEvent.setup();
+    faux.timeline.mockResolvedValue(AXE_MAIGRE);
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: /^Déclarer : Super Mario World$/ }));
+    await waitFor(() => expect(faux.declarer).toHaveBeenCalled());
+    const premierLot = faux.declarer.mock.calls[0][0].batchId;
+
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+    await screen.findByTestId("axe");
+    await utilisateur.click(
+      screen.getAllByRole("button", { name: /Compléter ces années/ })[0]);
+    await utilisateur.click(await screen.findByRole("button", { name: /^Super Nintendo/ }));
+    await utilisateur.click(
+      await screen.findByRole("button", { name: /^Déclarer : Chrono Trigger$/ }));
+
+    await waitFor(() => expect(faux.declarer).toHaveBeenCalledTimes(2));
+    const secondLot = faux.declarer.mock.calls[1][0].batchId;
+    expect(secondLot).not.toBe(premierLot);
+  });
+
+  it("ne propose rien à compléter quand l'axe est vide", async () => {
+    // Le témoin est dans les deux tests ci-dessus : le MÊME écran, nourri,
+    // propose bien. Ici l'axe porte déjà sa propre invitation.
+    const utilisateur = userEvent.setup();
+    faux.timeline.mockResolvedValue({ entries: [], undated: [], warnings: [] });
+    await jusquALaSelection(utilisateur);
+    await utilisateur.click(screen.getByRole("button", { name: "Voir ma timeline" }));
+
+    await screen.findByTestId("axe");
+    expect(screen.queryByRole("button", { name: /Compléter ces années/ })).toBeNull();
+  });
+});
+
 describe("App — E01, le visiteur qui revient", () => {
   it("ne propose rien sur un profil vierge", async () => {
     // ⚠️ L'absence se constate SUR LE TEMPS 1. Une première écriture de ce

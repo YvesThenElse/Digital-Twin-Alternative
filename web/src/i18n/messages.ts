@@ -222,6 +222,10 @@ export const MESSAGES = {
   // Un souvenir sans repère reste un souvenir : l'axe le marque quand même,
   // faute de quoi écrire une phrase sans la titrer la ferait disparaître.
   "timeline.souvenirSansRepere": "Un souvenir",
+  // E03 : « les trous sont des invitations ». Les années sont NOMMÉES —
+  // « compléter » seul laisserait deviner lesquelles, et l'invitation
+  // deviendrait une question de plus.
+  "timeline.completer": "Compléter ces années : {debut}–{fin}",
   // §5.4 : « en avertissement doux et JAMAIS en blocage ». La phrase informe
   // et n'accuse pas — elle dit d'emblée que rien n'a été changé, sans quoi
   // le joueur chercherait ce qu'il doit corriger.

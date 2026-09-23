@@ -1317,3 +1317,31 @@ figure[data-testid="bande-epoque"] figcaption {
   text-decoration-style: dotted;
   text-underline-offset: 3px;
 }
+
+/* --- E03, les trous sont des invitations --------------------------------- */
+
+/*
+ * Une décennie vide. « Ce n'est pas un défaut d'affichage : c'est l'endroit
+ * exact où proposer E02. »
+ *
+ * Le filet POINTILLÉ dit le vide sans le peindre en erreur — un fond
+ * d'avertissement ferait lire « il manque quelque chose à votre profil » là
+ * où la fiche veut lire « il y a encore à raconter ». Et il occupe une
+ * hauteur : un trou sans hauteur n'est pas un trou, c'est une absence.
+ */
+.trou {
+  border-inline-start: 3px dashed var(--line);
+  padding: var(--e2) var(--e4);
+  margin-block: var(--e2);
+}
+
+.trou button {
+  font: var(--meta);
+  color: var(--ink-2);
+  text-align: start;
+  padding-inline: 0;
+}
+
+.trou button:hover {
+  color: var(--ink);
+}

@@ -823,7 +823,9 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // période : ils forment UN épisode (§4.4), pas trente moments empilés.
   // L'axe le montre replié — c'est précisément ce que l'agrégation sert.
   await expect(axe).toHaveAttribute("data-entrees", "1");
-  const entree = axe.locator("> li");
+  // L'ENTRÉE, pas tous les enfants : l'axe porte aussi les invitations à
+  // compléter une décennie vide, qui sont des `li` de même niveau.
+  const entree = axe.locator('> [data-testid="entree"]');
   await expect(entree).toHaveAttribute("data-moments", String(MOMENTS_ATTENDUS));
 
   // Déplié, le joueur retrouve ses titres. Le NOMBRE EXACT, et non « il y a
@@ -950,6 +952,44 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   await toucher(page.getByRole("button", { name: /Revenir/ }).click());
   await expect(page.getByTestId("axe")).toBeVisible();
 
+  // --- 8. les trous sont des invitations (E03) ---------------------------
+  //
+  // « Une décennie vide n'est pas un défaut d'affichage : c'est l'endroit
+  // exact où proposer E02. C'est le mécanisme de relance le plus naturel du
+  // produit, et il ne coûte aucune notification. » Le lien E03 → E02
+  // n'existait que dans un sens.
+  //
+  // Le profil ne couvre que 1990–1994 : tout ce qui suit est un trou.
+  const invitations = page.getByTestId("trou");
+  await expect(invitations.first()).toBeVisible();
+
+  // **Il a une hauteur.** Un trou déclaré en attribut et invisible à l'écran
+  // ne relance personne — c'est le défaut qu'avait déjà la bande d'époque.
+  const hauteurTrou = await invitations.first()
+    .evaluate((n) => n.getBoundingClientRect().height);
+  expect(hauteurTrou, "l'invitation à compléter n'a aucune hauteur")
+    .toBeGreaterThan(24);
+
+  // Il NOMME ses années. La décennie 1990 est COUVERTE — la période déclarée
+  // est 1990–1994, et un chevauchement suffit à remplir une décennie —, donc
+  // la première invitation porte sur les années 2000. Attendre « 1995 » ici
+  // était ma propre erreur de lecture, et le parcours l'a dite.
+  await expect(invitations.first()).toContainText("2000");
+  await expect(invitations.first()).toContainText("2009");
+
+  await toucher(invitations.first().getByRole("button").click());
+
+  // On revient au choix de machine — E02 est une liste PAR PLATEFORME, et il
+  // n'y en a aucune de choisie quand on lit son axe.
+  await expect(page.getByRole("heading", { name: /console/i })).toBeVisible();
+  await toucher(
+    page.getByRole("button", { name: /^Super Nintendo Entertainment System/ }).click(),
+  );
+
+  // Et la période du TROU est posée, pas celle de l'aller.
+  await expect(page.getByTestId("contexte")).toContainText("2000\u20132009");
+  await expect(page.getByTestId("contexte")).not.toContainText(PERIODE_LUE);
+
   // --- le KPI de §22.3 ---------------------------------------------------
   //
   // Un geste par titre, plus l'amorce (machine, période), les deux notes, le
@@ -992,7 +1032,11 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   // la LECTURE — le budget de §22.3 mesure l'effort de saisie —, mais un
   // geste reste un geste, et le compter est ce qui empêche la lecture de
   // grignoter le budget de la saisie sans qu'on s'en aperçoive.
-  const budget = TITRES_A_COCHER + 28;
+  // Deux gestes de plus : accepter l'invitation d'un trou, et rechoisir la
+  // console. C'est la RELANCE d'E03 — le mécanisme le moins cher du produit
+  // —, et elle coûte deux gestes qu'il vaut mieux voir dans le budget que
+  // découvrir en session.
+  const budget = TITRES_A_COCHER + 30;
   expect(gestes, `${gestes} gestes pour ${MOMENTS_ATTENDUS} titres`).toBeLessThanOrEqual(budget);
 
   await infos.attach("gestes", { body: String(gestes), contentType: "text/plain" });

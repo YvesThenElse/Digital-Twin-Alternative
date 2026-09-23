@@ -2,6 +2,7 @@ import { useState } from "react";
 import { accentEpoque } from "../disposition/epoque";
 import { t } from "../i18n/t";
 import { ZoneSansDate } from "../temporel/ZoneSansDate";
+import { decenniesVides, intercaler, type Trou } from "./trous";
 import { Icone, type NomIcone } from "../icones/Icone";
 import { forme, libelle } from "../temporel/valeur";
 import type {
@@ -28,6 +29,8 @@ export function Timeline({
   sansDate,
   avertissements,
   ouvrirFiche,
+  anneeCourante,
+  completer,
 }: {
   entrees: EntreeTimeline[];
   sansDate: MomentTimeline[];
@@ -39,6 +42,18 @@ export function Timeline({
    * ouvrir une fiche de jeu quand on voulait corriger une date.
    */
   ouvrirFiche: (moment: MomentTimeline) => void;
+  /**
+   * L'année d'aujourd'hui, <b>reçue et jamais lue ici</b>. Un composant qui
+   * interroge l'horloge a des tests qui dépendent du jour où on les lance,
+   * et ceux-là finissent toujours par échouer un matin.
+   */
+  anneeCourante: number;
+  /**
+   * « Zone vide d'une période → E02 préfiltré sur cette période, compléter
+   * ces années » (E03, actions). C'est « le mécanisme de relance le plus
+   * naturel du produit, et il ne coûte aucune notification ».
+   */
+  completer: (trou: Trou) => void;
   /**
    * Les incohérences que le domaine a constatées (§5.4).
    *
@@ -76,14 +91,35 @@ export function Timeline({
       ) : null}
 
       <ol data-testid="axe" data-entrees={entrees.length}>
-        {entrees.map((entree) => (
-          <Entree
-            key={entree.moments[0].id}
-            entree={entree}
-            avertissements={parMoment}
-            ouvrirFiche={ouvrirFiche}
-          />
-        ))}
+        {intercaler(entrees, decenniesVides(entrees, anneeCourante)).map((element) =>
+          element.kind === "entree" ? (
+            <Entree
+              key={element.entree.moments[0].id}
+              entree={element.entree}
+              avertissements={parMoment}
+              ouvrirFiche={ouvrirFiche}
+            />
+          ) : (
+            <li
+              key={`trou-${element.trou.debut}`}
+              className="trou"
+              data-testid="trou"
+              data-decennie={element.trou.debut}
+            >
+              {/* Une invitation, pas un vide. « Une décennie vide n'est pas
+                  un défaut d'affichage : c'est l'endroit exact où proposer
+                  E02. » Un seul geste, et il nomme les années qu'il
+                  propose — « compléter » seul laisserait deviner
+                  lesquelles. */}
+              <button type="button" onClick={() => completer(element.trou)}>
+                {t("timeline.completer", {
+                  debut: element.trou.debut,
+                  fin: element.trou.fin,
+                })}
+              </button>
+            </li>
+          ),
+        )}
       </ol>
 
       <ZoneSansDate
@@ -188,6 +224,7 @@ function Entree({ entree, avertissements, ouvrirFiche }: {
 
   return (
     <li
+      data-testid="entree"
       data-episode={entree.isEpisode}
       data-moments={entree.moments.length}
       data-epoque={epoque.nom}
