@@ -40,6 +40,12 @@ Quatre questions, une ligne de chips chacune, toutes facultatives. Elles ne coû
 | 3 | **Ça vous a marqué ?** | sans plus · j'ai adoré · mon préféré | §4.7 |
 | 4 | **Comment y avez-vous joué ?** | je l'avais · chez quelqu'un · emprunté | §4.5 |
 
+> **Livré le 23 septembre 2026 — trois des quatre.** L'écran posait « fini ? » et « comment ? » ; l'**affect** s'y ajoute, entre les deux, à sa place. Il n'était saisissable que depuis E07 alors que tout son intérêt est d'être « un tap qui capte ce qui a compté » **pendant** la saisie (§9.1).
+>
+> « Quand y avez-vous joué ? » reste absente : elle est relative à la sortie du jeu, ce qui demande une date par réponse et non trois chips fixes. La période de l'écran (repère A) tient ce rôle en attendant.
+>
+> Le composant de chips et les réponses sont **partagés avec E07** — « une divergence entre eux serait un défaut » —, et le budget d'un tap par jeu ne bouge pas : le parcours coche trente lignes sans répondre et compte les mêmes gestes qu'avant.
+
 **L'ordre n'est pas arbitraire.** « Quand » vient en premier parce que situer un souvenir dans le temps amorce le rappel de tout le reste — c'est ainsi que la mémoire fonctionne. Viennent ensuite le factuel, puis l'émotionnel, et enfin la provenance, la plus accessoire : un utilisateur qui s'arrête après trois questions n'a rien perdu d'essentiel.
 
 Deux points de conception y sont enfouis et méritent d'être explicités.

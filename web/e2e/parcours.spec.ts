@@ -439,6 +439,19 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
   //
   // Facultative par construction : les vingt-neuf autres lignes n'y touchent
   // pas et restent des déclarations valables.
+  // **Les TROIS questions sont là.** E02 en liste quatre et n'en posait que
+  // deux : l'affect n'était saisissable que depuis E07, alors que son
+  // intérêt est d'être « un tap qui capte ce qui a compté » PENDANT la
+  // saisie. L'ordre est une décision de conception — le factuel, puis
+  // l'émotionnel, puis la provenance —, et on le mesure sur la page.
+  const questions = page.getByRole("group");
+  // TROIS par ligne déclarée, pas deux : le compte le dit mieux qu'une
+  // présence, et il tomberait à soixante si la question disparaissait.
+  await expect(questions).toHaveCount(TITRES_A_COCHER * 3);
+  await expect(questions.nth(0)).toHaveAttribute("aria-label", "Vous l'avez fini ?");
+  await expect(questions.nth(1)).toHaveAttribute("aria-label", "Ça vous a marqué ?");
+  await expect(questions.nth(2)).toHaveAttribute("aria-label", "Comment y avez-vous joué ?");
+
   await toucher(page.getByRole("button", { name: "Fini" }).first().click());
   await toucher(page.getByRole("button", { name: "Je l'avais" }).first().click());
 

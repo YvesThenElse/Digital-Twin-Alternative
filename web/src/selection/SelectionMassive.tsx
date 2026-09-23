@@ -5,7 +5,12 @@ import { StatutRegional } from "../region/StatutRegional";
 import { statutRegion } from "../region/statut";
 import { t } from "../i18n/t";
 import { Tuile } from "../disposition/Tuile";
-import { CHOIX_ACHEVEMENT, CHOIX_PROVENANCE, Question } from "./Question";
+import {
+  CHOIX_ACHEVEMENT,
+  CHOIX_AFFECT,
+  CHOIX_PROVENANCE,
+  Question,
+} from "./Question";
 import type { Disposition } from "../disposition/epoque";
 import { anneeDe, forme, libelle } from "../temporel/valeur";
 import { construireBande } from "./bande";
@@ -29,6 +34,13 @@ export type EntreeDeclaration =
        * l'omettre veut dire « rien de dit », jamais « faux ».
        */
       neverPlayed?: boolean;
+      /**
+       * indifferent · loved · favourite · `null` = pas prononcé (§4.7).
+       *
+       * Trois marches, pas une note : « une note jugerait l'œuvre, l'affect
+       * enregistre une relation ».
+       */
+      affect?: string | null;
     }
   | { title: string };
 
@@ -90,10 +102,14 @@ export type EtatLigne = {
   affect: string | null;
 };
 
-/** Les deux réponses de passe 2 que le modèle sait porter aujourd'hui. */
-type Affinage = { completion: string | null; provenance: string | null };
+/** Les trois réponses de passe 2 que l'écran pose (§4.5 à §4.7). */
+type Affinage = {
+  completion: string | null;
+  provenance: string | null;
+  affect: string | null;
+};
 
-const SANS_REPONSE: Affinage = { completion: null, provenance: null };
+const SANS_REPONSE: Affinage = { completion: null, provenance: null, affect: null };
 
 /** Un titre saisi, et la revendication que l'API lui a donnée. */
 type TitreLibre = Oeuvre & { claimId: string | null };
@@ -289,7 +305,8 @@ export function SelectionMassive({
   // ne pas le faire inviterait à répondre deux fois la même chose.
   const [affinages, setAffinages] = useState<Record<string, Affinage>>(() =>
     Object.fromEntries(etatInitial.map((l) => [
-      l.workId, { completion: l.completion, provenance: l.provenance },
+      l.workId,
+      { completion: l.completion, provenance: l.provenance, affect: l.affect },
     ])),
   );
 
@@ -387,6 +404,7 @@ export function SelectionMassive({
         workId: oeuvre,
         completion: reponse.completion,
         provenance: reponse.provenance,
+        affect: reponse.affect,
       }],
     }).catch(() => setErreur(t("erreur.declaration")));
   }
@@ -810,6 +828,19 @@ export function SelectionMassive({
                   valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).completion}
                   repondre={(v) => repondre(oeuvre.id, "completion", v)}
                   choix={CHOIX_ACHEVEMENT}
+                />
+              ) : null}
+
+              {/* L'ORDRE compte : « le factuel, puis l'émotionnel, et enfin
+                  la provenance, la plus accessoire ». Un utilisateur qui
+                  s'arrête après trois questions n'a rien perdu
+                  d'essentiel. */}
+              {declare ? (
+                <Question
+                  intitule={t("passe2.affect")}
+                  valeur={(affinages[oeuvre.id] ?? SANS_REPONSE).affect}
+                  repondre={(v) => repondre(oeuvre.id, "affect", v)}
+                  choix={CHOIX_AFFECT}
                 />
               ) : null}
 

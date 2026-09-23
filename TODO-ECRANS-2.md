@@ -42,7 +42,7 @@ chemin a laissé.
   l'assertion qui constatait le défaut est retirée du parcours, et le geste
   qu'elle coûtait disparaît du budget.*
 
-- [ ] **T2 — E02 pose la question de l'affect.** (E02, passe 2 · §4.7) Sa
+- [x] **T2 — E02 pose la question de l'affect.** (E02, passe 2 · §4.7) Sa
   fiche liste **quatre** questions ; l'écran en pose deux. L'affect n'est
   saisissable que depuis E07, alors que son intérêt est justement d'être
   « un tap qui capte ce qui a compté » pendant la saisie en masse.
@@ -125,6 +125,25 @@ tranchent.
 ---
 
 ## Journal
+
+- **T2** — l'affect s'ajoute à la passe 2 d'E02, **entre** l'achèvement et la
+  provenance : « le factuel, puis l'émotionnel, et enfin la provenance, la
+  plus accessoire ». L'ordre est mesuré sur le document, pas supposé.
+
+  Le composant et les réponses étaient déjà partagés avec E07 depuis S8 :
+  l'écran envoie donc exactement ce qu'envoie le panneau, et un second clic
+  retire la réponse — « pas prononcé » doit rester atteignable, faute de
+  quoi un geste par erreur serait définitif.
+
+  **Le budget n'a pas bougé** : `TITRES_A_COCHER + 43`. Le parcours coche
+  trente lignes sans répondre et compte les mêmes gestes ; il vérifie en
+  revanche qu'il y a bien **trois** questions par ligne déclarée — quatre-vingt-dix
+  groupes, et le compte tomberait à soixante si la question disparaissait.
+
+  Ce qui est laissé : la quatrième question, « quand y avez-vous joué ? ».
+  Elle est **relative à la sortie du jeu** — « à sa sortie · peu après · bien
+  plus tard », avec les années réelles calculées par titre —, donc trois
+  chips fixes n'y suffisent pas. La fiche E02 le dit désormais.
 
 - **T1** — le repliage a quitté l'entrée. Il vit chez le parent, parce qu'il
   doit **survivre** au démontage de l'axe : ouvrir la fiche d'un jeu remonte

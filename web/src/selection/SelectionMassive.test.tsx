@@ -860,7 +860,7 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     await utilisateur.click(lignes()[1]);
 
     expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
-      entries: [{ workId: "w1", completion: "finished", provenance: null }],
+      entries: [{ workId: "w1", completion: "finished", provenance: null , affect: null }],
     }));
   });
 
@@ -876,7 +876,7 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     rendu.unmount();
 
     expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
-      entries: [{ workId: "w1", completion: null, provenance: "owned" }],
+      entries: [{ workId: "w1", completion: null, provenance: "owned", affect: null }],
     }));
   });
 
@@ -904,7 +904,7 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     await utilisateur.click(lignes()[1]);
 
     expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
-      entries: [{ workId: "w1", completion: "abandoned", provenance: "elsewhere" }],
+      entries: [{ workId: "w1", completion: "abandoned", provenance: "elsewhere" , affect: null }],
     }));
   });
 
@@ -921,7 +921,7 @@ describe("SelectionMassive — la passe 2 (E02)", () => {
     await utilisateur.click(lignes()[1]);
 
     expect(envoyer).not.toHaveBeenCalledWith(expect.objectContaining({
-      entries: [{ workId: "w1", completion: "finished", provenance: null }],
+      entries: [{ workId: "w1", completion: "finished", provenance: null , affect: null }],
     }));
   });
 
@@ -1626,5 +1626,107 @@ describe("SelectionMassive — le filtre de la liste (E02 repère B)", () => {
     await utilisateur.type(filtre(), "zzz");
 
     expect(screen.getByRole("textbox", { name: /Titre absent/i })).toBeInTheDocument();
+  });
+});
+
+/**
+ * La troisième question de la passe 2 — <b>l'affect</b> (§4.7).
+ *
+ * E02 en liste quatre et n'en posait que deux. L'affect n'était saisissable
+ * que depuis E07, alors que son intérêt est justement d'être « un tap qui
+ * capte ce qui a compté » <b>pendant</b> la saisie en masse : « le journal
+ * produit l'irremplaçable mais coûte de la frappe ; l'affect coûte un tap »
+ * (§9.1).
+ *
+ * <b>L'ordre n'est pas arbitraire</b> : le factuel, puis l'émotionnel, et
+ * enfin la provenance — « un utilisateur qui s'arrête après trois questions
+ * n'a rien perdu d'essentiel ».
+ */
+describe("SelectionMassive — l'affect en passe 2 (§4.7)", () => {
+  it("ne paraît que sur une ligne DÉCLARÉE", async () => {
+    // Comme les deux autres : poser la question sur 221 lignes non cochées
+    // occuperait l'écran le plus dense du produit et suggérerait un travail
+    // à faire.
+    const utilisateur = userEvent.setup();
+    monter();
+
+    expect(screen.queryByRole("group", { name: /marqué/i })).toBeNull();
+    await utilisateur.click(lignes()[0]);
+    expect(screen.getByRole("group", { name: /marqué/i })).toBeInTheDocument();
+  });
+
+  it("vient APRÈS l'achèvement et AVANT la provenance", async () => {
+    // « Le factuel, puis l'émotionnel, et enfin la provenance, la plus
+    // accessoire. » L'ordre est une décision de conception, pas une mise en
+    // page — on le mesure sur le document.
+    const utilisateur = userEvent.setup();
+    monter();
+    await utilisateur.click(lignes()[0]);
+
+    const groupes = screen.getAllByRole("group").map((g) => g.getAttribute("aria-label"));
+    expect(groupes).toEqual([
+      "Vous l'avez fini ?", "Ça vous a marqué ?", "Comment y avez-vous joué ?",
+    ]);
+  });
+
+  it("envoie exactement ce qu'envoie E07", async () => {
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+    await utilisateur.click(lignes()[0]);
+
+    await utilisateur.click(screen.getByRole("button", { name: "Mon préféré" }));
+    // La validation part au passage sur une AUTRE ligne : le journal est en
+    // ajout seul, et deux réponses contradictoires y resteraient toutes les
+    // deux.
+    await utilisateur.click(lignes()[1]);
+
+    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+      entries: [expect.objectContaining({ workId: "w1", affect: "favourite" })],
+    }));
+  });
+
+  it("remontre l'affect déjà déclaré", () => {
+    // Relu, jamais supposé : une chip qui revient vierge fait disparaître ce
+    // que le joueur a dit, et c'est ce que « toujours en cours » a déjà
+    // coûté (apprentissage 76).
+    monter({
+      etatInitial: [
+        { workId: "w1", played: true, completion: null, provenance: null,
+          neverPlayed: false, affect: "loved" },
+      ],
+    });
+
+    // Aucun clic : la ligne est DÉJÀ déclarée par l'état relu, donc ses
+    // chips sont là. Cliquer la ligne la décocherait, et les chips
+    // partiraient avec elle.
+    expect(screen.getByRole("button", { name: "J'ai adoré" }))
+      .toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("se retire d'un second clic : « pas prononcé » reste atteignable", async () => {
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+    await utilisateur.click(lignes()[0]);
+
+    await utilisateur.click(screen.getByRole("button", { name: "J'ai adoré" }));
+    await utilisateur.click(screen.getByRole("button", { name: "J'ai adoré" }));
+    await utilisateur.click(lignes()[1]);
+
+    expect(envoyer).toHaveBeenCalledWith(expect.objectContaining({
+      entries: [expect.objectContaining({ workId: "w1", affect: null })],
+    }));
+  });
+
+  it("ne coûte rien à qui l'ignore", async () => {
+    // « Elles ne coûtent rien à qui les ignore et changent la nature du
+    // profil pour qui y répond. » Cocher trente lignes sans répondre ne doit
+    // produire aucun envoi de plus.
+    const utilisateur = userEvent.setup();
+    const { envoyer } = monter();
+
+    await utilisateur.click(lignes()[0]);
+    await utilisateur.click(lignes()[1]);
+
+    expect(envoyer).toHaveBeenCalledTimes(2);
   });
 });
