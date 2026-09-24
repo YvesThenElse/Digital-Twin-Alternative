@@ -107,6 +107,44 @@ test("reconstruire trente titres et voir la timeline se remplir", async ({ page 
     .evaluate((n) => n.getBoundingClientRect().height);
   expect(hauteurBouton, "une cible sous 44 px").toBeGreaterThanOrEqual(44);
 
+  // **L'écran du choix a une SURFACE, et elle est peinte.** Une couche
+  // déclarée dans une feuille de style et rendue à zéro pixel passerait tous
+  // les tests de composant — ils rendent dans un document sans CSS — et ne
+  // se verrait nulle part. C'est le défaut qu'ont déjà eu la bande d'époque,
+  // la bande d'activité et la ligne du temps, et on le mesure sur les DEUX
+  // dispositions : la même règle peut être juste sur l'une et fausse sur
+  // l'autre.
+  const surface = await page.getByTestId("choix-machine").evaluate((n) => {
+    const couche = getComputedStyle(n, "::before");
+    const boite = n.getBoundingClientRect();
+    const carte = n.querySelector<HTMLElement>('[data-testid="carte-machine"]')!;
+    const c = carte.getBoundingClientRect();
+    return {
+      peinture: couche.backgroundImage,
+      largeur: boite.width,
+      hauteur: boite.height,
+      // Ce que le doigt touche au CENTRE d'une carte : si la couche passait
+      // devant, ce serait elle — et aucune console ne serait cliquable.
+      dessus: document.elementFromPoint(c.x + c.width / 2, c.y + c.height / 2)
+        ?.closest('[data-testid="carte-machine"]') !== null,
+      encre: getComputedStyle(n).color,
+      encreCorps: getComputedStyle(document.body).color,
+    };
+  });
+  expect(surface.peinture, "le fond du choix de machine n'est pas peint")
+    .not.toBe("none");
+  expect(surface.largeur, "la surface du choix de machine n'a pas de largeur")
+    .toBeGreaterThan(280);
+  expect(surface.hauteur, "la surface du choix de machine n'a pas de hauteur")
+    .toBeGreaterThan(120);
+  // Elle est DERRIÈRE : une surface qui intercepte le geste aurait remplacé
+  // un écran joli par un écran inutilisable.
+  expect(surface.dessus, "la surface passe devant les cartes").toBe(true);
+  // Et elle ne change pas l'encre : le fond ajoute de la profondeur, pas un
+  // contraste à retrouver.
+  expect(surface.encre, "le fond a changé la couleur du texte")
+    .toBe(surface.encreCorps);
+
   // --- 1. la machine, et on se trompe ------------------------------------
   //
   // Se tromper de console est une erreur d'AMORCE, et seul un rechargement en

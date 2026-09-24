@@ -304,6 +304,84 @@ textarea {
  * reconnaissance avant qu'on ait lu le nom : le gradient de température se
  * lit d'un coup d'œil, et deux consoles de la même décennie se répondent.
  */
+/* --- E01 temps 1 : la surface du choix de machine ------------------------ */
+
+/*
+ * « Ce serait beaucoup plus joli. » Oui — mais le langage visuel §1 écarte le
+ * néon, les dégradés RGB et le fond noir « gamer », et §3 interdit plus de
+ * DEUX accents simultanés. Cette grille en affiche déjà un par carte : un
+ * fond coloré leur disputerait ce qui les rend reconnaissables d'un coup
+ * d'œil, et c'est toute la mécanique de l'écran.
+ *
+ * Le fond reste donc dans les neutres chauds, et ce qu'il ajoute est de la
+ * PROFONDEUR : une lumière douce en haut, la surface qui se creuse vers le
+ * bas, et une trame géométrique discrète — le vocabulaire que §5 pose déjà
+ * pour les tuiles générées. Les cartes cessent de flotter sur du papier
+ * blanc ; elles sont posées sur quelque chose.
+ *
+ * Aucun fichier : une image serait un octet de plus à charger avant le
+ * premier écran du produit, et une photo de console est protégée
+ * séparément (§19.2).
+ */
+.choix-machine {
+  position: relative;
+  /* La marge négative puis le rembourrage : la surface déborde la colonne de
+     contenu, sinon elle se lirait comme une boîte de plus au lieu d'un fond. */
+  margin-inline: calc(var(--e6) * -1);
+  padding: var(--e6);
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+
+.choix-machine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    /* La trame : un semis régulier, à peine visible. Elle ne se lit pas, elle
+       se sent — c'est ce qui distingue une surface d'un aplat. */
+    radial-gradient(circle at center, rgb(26 24 21 / 6%) 1px, transparent 1.2px)
+      0 0 / 14px 14px,
+    /* La lumière, en haut à gauche, comme celle d'une pièce. */
+    radial-gradient(120% 90% at 15% 0%, rgb(255 255 255 / 85%), transparent 60%),
+    /* Et la surface qui se creuse : le papier chaud du socle, un ton plus
+       profond vers le bas. */
+    linear-gradient(180deg, var(--surface) 0%, #f1ece4 100%);
+}
+
+/*
+ * Le contenu passe DEVANT.
+ *
+ * ⚠️ **Cette règle ne porte rien à elle seule** : la retirer ne change rien,
+ * une mutation l'a vérifié. C'est le `z-index: 0` de la couche qui fait le
+ * travail — elle ouvre un contexte d'empilement au niveau zéro, et le contenu
+ * positionné se peint après elle dans l'ordre du document. Ce qui tient
+ * l'ordre est donc écrit LÀ-HAUT, pas ici.
+ *
+ * On la garde parce qu'elle rend l'intention explicite là où on la cherche,
+ * et qu'une couche dont le `z-index` passerait à 2 recouvrirait les cartes :
+ * ce cas-là, lui, rougit — le parcours touche le centre d'une carte et
+ * regarde ce que le navigateur lui rend.
+ */
+.choix-machine > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Thème sombre : la même construction, pas la même peinture. Une lumière
+   blanche sur un fond brun foncé ferait un halo laiteux ; c'est la chaleur
+   qui remonte, et la trame qui s'éclaircit au lieu de s'assombrir. */
+@media (prefers-color-scheme: dark) {
+  .choix-machine::before {
+    background:
+      radial-gradient(circle at center, rgb(255 255 255 / 5%) 1px, transparent 1.2px)
+        0 0 / 14px 14px,
+      radial-gradient(120% 90% at 15% 0%, rgb(166 87 47 / 18%), transparent 60%),
+      linear-gradient(180deg, #1c1913 0%, var(--surface) 100%);
+  }
+}
+
 .grille-cartes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

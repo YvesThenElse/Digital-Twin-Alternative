@@ -37,6 +37,27 @@ Grandes cibles visuelles, pas une liste déroulante. Le choix doit être **recon
 
 Six cartes maximum. En proposer quarante transformerait la reconnaissance en recherche, et l'écran perdrait sa fonction.
 
+> **L'écran a une surface, depuis le 24 septembre 2026** — et c'est une
+> surface, pas une image. Les cartes flottaient sur du papier blanc ; elles
+> sont désormais posées sur quelque chose : une lumière douce en haut, le fond
+> qui se creuse vers le bas, et une **trame géométrique discrète** — le
+> vocabulaire que [langage visuel](./00-langage-visuel.md) §5 pose déjà pour
+> les tuiles générées.
+>
+> **Pourquoi pas une image ?** Trois raisons, et aucune n'est la difficulté.
+> §1 du langage visuel écarte « les dégradés RGB » et « le fond noir *gamer* » ;
+> §3 interdit **plus de deux accents simultanés**, or cette grille en affiche
+> déjà un par carte, et un fond coloré leur disputerait exactement ce qui les
+> rend reconnaissables d'un coup d'œil. Enfin une photo de console est
+> protégée séparément ([spec §19.2](../SPECIFICATION.md)) : elle demanderait
+> une source licenciée, une vérification, et un fichier de plus à charger
+> **avant le premier écran du produit**.
+>
+> **Ce qui reste ouvert** : une vignette par console — « photo licenciée ou
+> tuile générée » — est toujours ce que cette fiche demande, et c'est elle qui
+> ferait la reconnaissance. La surface ne la remplace pas ; elle donne de la
+> profondeur à ce qui existe.
+
 ### Temps 2 — Situer dans le temps, par décennie
 
 ```
